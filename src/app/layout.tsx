@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Instrument_Serif } from "next/font/google";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
+import { CTABanner } from "@/components/cta-banner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,7 +31,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${instrumentSerif.variable} antialiased h-full`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <Navigation />
+        <div className="flex-1">
+          {children}
+        </div>
+        <CTABanner />
+        <Footer />
+      </body>
     </html>
   );
 }

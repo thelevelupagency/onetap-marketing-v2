@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const faqs = [
   {
@@ -24,8 +27,6 @@ const faqs = [
 ];
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   return (
     <section className="py-24 bg-white" id="faq">
       <div className="container mx-auto px-4 md:px-8 max-w-3xl">
@@ -38,41 +39,22 @@ export function FAQ() {
           </p>
         </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => {
-            const isOpen = openIndex === index;
-            return (
-              <div 
-                key={index}
-                className={cn(
-                  "border rounded-2xl overflow-hidden transition-colors duration-200",
-                  isOpen ? "border-brand-turquoise/50 bg-brand-turquoise/5" : "border-brand-midnight/10 bg-white"
-                )}
-              >
-                <button
-                  className="w-full px-6 py-5 flex items-center justify-between text-left font-serif text-xl text-brand-midnight hover:bg-brand-midnight/5 transition-colors"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                >
-                  {faq.question}
-                  <span className="text-brand-turquoise shrink-0 ml-4">
-                    {isOpen ? <Minus size={20} /> : <Plus size={20} />}
-                  </span>
-                </button>
-                
-                <div 
-                  className={cn(
-                    "px-6 overflow-hidden transition-all duration-300 ease-in-out",
-                    isOpen ? "max-h-40 pb-5 opacity-100" : "max-h-0 opacity-0"
-                  )}
-                >
-                  <p className="text-brand-midnight/70 font-sans">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <Accordion className="space-y-4">
+          {faqs.map((faq, index) => (
+            <AccordionItem 
+              key={index} 
+              value={`item-${index}`} 
+              className="border border-brand-midnight/10 rounded-2xl px-6 bg-white data-[state=open]:border-brand-turquoise/50 data-[state=open]:bg-brand-turquoise/5 transition-colors duration-200"
+            >
+              <AccordionTrigger className="font-serif text-xl text-brand-midnight hover:no-underline py-5">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-brand-midnight/70 font-sans text-base pb-5">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
     </section>
   );

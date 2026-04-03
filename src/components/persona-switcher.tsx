@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { User, Users, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 
 export function PersonaSwitcher() {
-  const [activeTab, setActiveTab] = useState<"individuals" | "teams">("individuals");
-
   const tabData = {
     individuals: {
       title: "For Individuals",
@@ -33,8 +32,6 @@ export function PersonaSwitcher() {
     }
   };
 
-  const activeData = tabData[activeTab];
-
   return (
     <section className="py-24 bg-brand-cream relative" id="solutions">
       <div className="container mx-auto px-4 md:px-8">
@@ -47,88 +44,76 @@ export function PersonaSwitcher() {
           </p>
         </div>
 
-        {/* Custom High-End Tab Switcher */}
-        <div className="flex justify-center mb-16">
-          <div className="inline-flex bg-white p-1.5 rounded-full border border-brand-midnight/10 shadow-sm relative">
-            {/* Active Tab Background Pill */}
-            <motion.div
-              layoutId="active-pill"
-              className={cn(
-                "absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-brand-midnight/5 rounded-full shadow-sm border border-brand-midnight/10 z-0 transition-all duration-300",
-                activeTab === "teams" ? "left-[calc(50%+3px)]" : "left-1.5"
-              )}
-            />
-            
-            <button
-              onClick={() => setActiveTab("individuals")}
-              className={cn(
-                "relative z-10 px-8 py-3 rounded-full flex items-center gap-2 font-medium transition-colors",
-                activeTab === "individuals" ? "text-brand-midnight" : "text-brand-midnight/50 hover:text-brand-midnight"
-              )}
-            >
-              <User size={18} />
-              Individuals
-            </button>
-            <button
-              onClick={() => setActiveTab("teams")}
-              className={cn(
-                "relative z-10 px-8 py-3 rounded-full flex items-center gap-2 font-medium transition-colors",
-                activeTab === "teams" ? "text-brand-midnight" : "text-brand-midnight/50 hover:text-brand-midnight"
-              )}
-            >
-              <Users size={18} />
-              Teams
-            </button>
+        <Tabs defaultValue="individuals" className="w-full">
+          <div className="flex justify-center mb-16">
+            <TabsList className="bg-white p-1.5 rounded-full border border-brand-midnight/10 shadow-sm h-auto flex">
+              <TabsTrigger 
+                value="individuals" 
+                className="rounded-full px-8 py-3 text-base font-medium data-[state=active]:bg-brand-midnight/5 data-[state=active]:text-brand-midnight data-[state=active]:shadow-sm text-brand-midnight/50 flex items-center gap-2 transition-all"
+              >
+                <User size={18} />
+                Individuals
+              </TabsTrigger>
+              <TabsTrigger 
+                value="teams" 
+                className="rounded-full px-8 py-3 text-base font-medium data-[state=active]:bg-brand-midnight/5 data-[state=active]:text-brand-midnight data-[state=active]:shadow-sm text-brand-midnight/50 flex items-center gap-2 transition-all"
+              >
+                <Users size={18} />
+                Teams
+              </TabsTrigger>
+            </TabsList>
           </div>
-        </div>
 
-        {/* Content Area */}
-        <div className="bg-white rounded-[2.5rem] border border-brand-midnight/5 shadow-xl overflow-hidden min-h-[450px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="grid lg:grid-cols-2 h-full"
-            >
-              <div className="p-12 lg:p-16 flex flex-col justify-center">
-                <h3 className="font-serif text-3xl md:text-4xl text-brand-midnight mb-4">
-                  {activeData.title}
-                </h3>
-                <p className="text-lg text-brand-midnight/60 mb-8">
-                  {activeData.subtitle}
-                </p>
-                <ul className="space-y-4">
-                  {activeData.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-3 text-brand-midnight/80">
-                      <CheckCircle2 className="text-brand-turquoise" size={20} />
-                      <span className="font-medium">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-12">
-                  <button className="bg-brand-midnight text-brand-cream px-8 py-4 rounded-xl font-medium hover:bg-brand-turquoise hover:text-brand-midnight transition-colors shadow-lg">
-                    {activeTab === "individuals" ? "Build your card" : "Book a demo"}
-                  </button>
-                </div>
-              </div>
-              <div className={cn("hidden lg:block relative", activeData.imageGradient)}>
-                <div className="absolute inset-0 flex items-center justify-center p-12">
-                  <div className="w-full h-full bg-white/60 backdrop-blur-md rounded-2xl border border-white/80 shadow-2xl p-6 flex flex-col gap-4">
-                     <div className="h-8 w-1/3 bg-brand-midnight/10 rounded-md"></div>
-                     <div className="h-4 w-1/2 bg-brand-midnight/5 rounded-md"></div>
-                     <div className="flex-1 mt-4 grid grid-cols-2 gap-4">
-                       <div className="bg-brand-midnight/5 rounded-xl"></div>
-                       <div className="bg-brand-midnight/5 rounded-xl"></div>
-                     </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+          <div className="bg-white rounded-[2.5rem] border border-brand-midnight/5 shadow-xl overflow-hidden min-h-[450px]">
+            {["individuals", "teams"].map((key) => {
+              const activeData = tabData[key as "individuals" | "teams"];
+              return (
+                <TabsContent key={key} value={key} className="mt-0 h-full data-[state=inactive]:hidden data-[state=active]:h-full">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid lg:grid-cols-2 h-full"
+                  >
+                    <div className="p-12 lg:p-16 flex flex-col justify-center">
+                      <h3 className="font-serif text-3xl md:text-4xl text-brand-midnight mb-4">
+                        {activeData.title}
+                      </h3>
+                      <p className="text-lg text-brand-midnight/60 mb-8">
+                        {activeData.subtitle}
+                      </p>
+                      <ul className="space-y-4">
+                        {activeData.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-3 text-brand-midnight/80">
+                            <CheckCircle2 className="text-brand-turquoise" size={20} />
+                            <span className="font-medium">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-12">
+                        <Button size="lg" className="bg-brand-midnight text-brand-cream px-8 h-14 rounded-xl font-medium hover:bg-brand-turquoise hover:text-brand-midnight transition-colors shadow-lg text-lg">
+                          {key === "individuals" ? "Build your card" : "Book a demo"}
+                        </Button>
+                      </div>
+                    </div>
+                    <div className={cn("hidden lg:block relative", activeData.imageGradient)}>
+                      <div className="absolute inset-0 flex items-center justify-center p-12">
+                        <div className="w-full h-full bg-white/60 backdrop-blur-md rounded-2xl border border-white/80 shadow-2xl p-6 flex flex-col gap-4">
+                          <div className="h-8 w-1/3 bg-brand-midnight/10 rounded-md"></div>
+                          <div className="h-4 w-1/2 bg-brand-midnight/5 rounded-md"></div>
+                          <div className="flex-1 mt-4 grid grid-cols-2 gap-4">
+                            <div className="bg-brand-midnight/5 rounded-xl"></div>
+                            <div className="bg-brand-midnight/5 rounded-xl"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </TabsContent>
+              );
+            })}
+          </div>
+        </Tabs>
       </div>
     </section>
   );

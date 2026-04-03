@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { MagneticWrapper } from "@/components/ui/magnetic-button";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,13 +23,13 @@ export function Navigation() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-brand-cream/80 backdrop-blur-md border-b border-brand-midnight/10 py-3"
+          ? "bg-brand-cream/60 backdrop-blur-2xl border-b border-brand-midnight/5 shadow-glass py-3"
           : "bg-transparent py-5"
       )}
     >
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-brand-turquoise rounded-full flex items-center justify-center font-serif text-brand-midnight text-xl font-bold">
+          <div className="w-8 h-8 bg-brand-turquoise rounded-full flex items-center justify-center font-serif text-brand-midnight text-xl font-bold shadow-soft-diffusion">
             O
           </div>
           <span className="font-serif text-2xl tracking-tight text-brand-midnight hidden sm:block">
@@ -38,27 +39,29 @@ export function Navigation() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8 text-brand-midnight font-medium">
-          <Link href="#solutions" className="hover:text-brand-turquoise transition-colors">
+          <Link href="/solutions" className="hover:text-brand-turquoise transition-colors">
             Solutions
           </Link>
-          <Link href="#pricing" className="hover:text-brand-turquoise transition-colors">
+          <Link href="/pricing" className="hover:text-brand-turquoise transition-colors">
             Pricing
           </Link>
-          <Link href="#faq" className="hover:text-brand-turquoise transition-colors">
+          <Link href="/faq" className="hover:text-brand-turquoise transition-colors">
             FAQ
           </Link>
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link href="/login" className="text-brand-midnight font-medium hover:text-brand-turquoise transition-colors">
+          <Link href="/login" className="text-brand-midnight font-medium hover:text-brand-turquoise transition-colors px-2">
             Log in
           </Link>
-          <Link
-            href="/signup"
-            className="bg-brand-midnight text-brand-cream px-5 py-2.5 rounded-full font-medium hover:bg-brand-midnight/90 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200"
-          >
-            Get your card
-          </Link>
+          <MagneticWrapper>
+            <Link
+              href="/signup"
+              className="inline-block bg-brand-midnight text-brand-cream px-6 py-2.5 rounded-full font-medium hover:bg-brand-midnight/90 transition-colors shadow-soft-diffusion"
+            >
+              Get your card
+            </Link>
+          </MagneticWrapper>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -72,14 +75,14 @@ export function Navigation() {
 
       {/* Mobile Nav */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-brand-cream border-b border-brand-midnight/10 py-4 px-4 flex flex-col gap-4 shadow-xl">
-          <Link href="#solutions" className="text-lg font-medium text-brand-midnight" onClick={() => setIsMobileMenuOpen(false)}>
+        <div className="md:hidden absolute top-full left-0 right-0 bg-brand-cream border-b border-brand-midnight/10 py-4 px-4 flex flex-col gap-4 shadow-xl backdrop-blur-xl">
+          <Link href="/solutions" className="text-lg font-medium text-brand-midnight" onClick={() => setIsMobileMenuOpen(false)}>
             Solutions
           </Link>
-          <Link href="#pricing" className="text-lg font-medium text-brand-midnight" onClick={() => setIsMobileMenuOpen(false)}>
+          <Link href="/pricing" className="text-lg font-medium text-brand-midnight" onClick={() => setIsMobileMenuOpen(false)}>
             Pricing
           </Link>
-          <Link href="#faq" className="text-lg font-medium text-brand-midnight" onClick={() => setIsMobileMenuOpen(false)}>
+          <Link href="/faq" className="text-lg font-medium text-brand-midnight" onClick={() => setIsMobileMenuOpen(false)}>
             FAQ
           </Link>
           <hr className="border-brand-midnight/10" />
@@ -88,7 +91,7 @@ export function Navigation() {
           </Link>
           <Link
             href="/signup"
-            className="bg-brand-midnight text-brand-cream px-5 py-3 rounded-full font-medium text-center w-full mt-2"
+            className="bg-brand-midnight text-brand-cream px-5 py-3 rounded-full font-medium text-center w-full mt-2 shadow-soft-diffusion"
             onClick={() => setIsMobileMenuOpen(false)}
           >
              Get your card

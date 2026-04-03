@@ -1,142 +1,108 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { MacbookScroll } from "@/components/ui/macbook-scroll";
+import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 
 export function Hero() {
   const [name, setName] = useState("");
 
-  const displayName = name.trim() || "Your Name";
-
   return (
-    <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-brand-cream">
+    <div className="w-full bg-brand-cream dark:bg-[#0B0B0F] relative">
+
       {/* Background gradients */}
-      <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-brand-turquoise/20 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] bg-brand-midnight/5 rounded-full blur-3xl opacity-50" />
-      
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left Column: The Aha Moment */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col gap-8 max-w-xl"
-          >
-            <div className="inline-flex gap-2 items-center bg-brand-midnight/5 px-4 py-2 rounded-full border border-brand-midnight/10 w-fit">
-              <Zap size={16} className="text-brand-turquoise" />
-              <span className="text-sm font-medium text-brand-midnight">No App Required</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-brand-midnight">
-              Your professional identity, <span className="text-brand-turquoise italic p-1">one tap</span> away.
-            </h1>
-            
-            <p className="text-lg md:text-xl text-brand-midnight/70 font-sans">
-              Build your modern digital business card in 60 seconds. Claim your custom URL and never carry paper again.
-            </p>
+      <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-brand-turquoise/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] bg-brand-midnight/5 rounded-full blur-3xl opacity-50 pointer-events-none" />
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <div className="relative flex-1 group">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-midnight/50 font-medium">
-                  onetap.link/
-                </span>
-                <input 
-                  type="text" 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="yourname"
-                  className="w-full pl-32 pr-4 py-4 rounded-xl border border-brand-midnight/20 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition-all"
-                />
-              </div>
-              <button className="bg-brand-midnight text-brand-cream px-8 py-4 rounded-xl font-medium hover:bg-brand-turquoise hover:text-brand-midnight transition-colors shadow-lg flex items-center justify-center gap-2 group whitespace-nowrap">
-                Claim URL
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </motion.div>
+      {/* Isolated Hero Text Content */}
+      <div className="pt-32 pb-4 container mx-auto px-4 text-center relative z-10 flex flex-col items-center justify-center">
+        <div className="inline-flex gap-2 items-center bg-brand-midnight/5 px-4 py-2 rounded-full border border-brand-midnight/10 w-fit mb-6">
+          <Zap size={16} className="text-brand-turquoise" />
+          <span className="text-sm font-medium text-brand-midnight">No App Required</span>
+        </div>
 
-          {/* Right Column: 3D Mockup */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="relative h-[600px] flex items-center justify-center lg:justify-end"
-          >
-            {/* Phone Frame */}
-            <motion.div 
-              animate={{ y: [0, -15, 0], rotate: [-5, -6, -5] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className="relative w-[300px] h-[600px] bg-brand-midnight rounded-[3rem] p-3 shadow-2xl border-4 border-white/20"
-              style={{ transformOrigin: "bottom right" }}
-            >
-              {/* Screen */}
-              <div className="relative w-full h-full bg-brand-cream rounded-[2.5rem] overflow-hidden flex flex-col">
-                {/* Simulated Notch */}
-                <div className="absolute top-0 inset-x-0 h-6 flex justify-center z-20">
-                  <div className="w-24 h-6 bg-brand-midnight rounded-b-xl"></div>
-                </div>
-                
-                {/* Digital Card Preview inside Screen */}
-                <div className="flex-1 mt-12 px-4 pb-6 flex flex-col gap-4">
-                  <div className="h-32 rounded-2xl bg-gradient-to-br from-brand-midnight to-brand-midnight/80 relative">
-                    <div className="absolute -bottom-8 left-4 w-20 h-20 bg-white rounded-full p-1 shadow-md">
-                      <div className="w-full h-full bg-brand-turquoise rounded-full flex items-center justify-center">
-                        <span className="font-serif text-3xl text-brand-midnight">{displayName.charAt(0).toUpperCase()}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-8">
-                    <h3 className="font-serif text-3xl text-brand-midnight tracking-tight truncate">
-                      {displayName}
-                    </h3>
-                    <p className="text-brand-midnight/60 text-sm font-sans mt-1">Digital Marketing Expert</p>
-                  </div>
-                  
-                  <div className="flex gap-2 mt-2">
-                    <button className="flex-1 bg-brand-midnight text-brand-cream py-2 rounded-lg text-sm font-medium">
-                      Save Contact
-                    </button>
-                    <button className="w-10 bg-brand-midnight/5 text-brand-midnight py-2 rounded-lg flex items-center justify-center">
-                      <ArrowRight size={16} />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-3 mt-4">
-                    <div className="h-12 bg-white rounded-xl shadow-sm border border-brand-midnight/5 flex items-center px-4 gap-3">
-                      <div className="w-6 h-6 bg-brand-midnight/10 rounded-full"></div>
-                      <div className="h-2 w-24 bg-brand-midnight/10 rounded-full"></div>
-                    </div>
-                    <div className="h-12 bg-white rounded-xl shadow-sm border border-brand-midnight/5 flex items-center px-4 gap-3">
-                      <div className="w-6 h-6 bg-brand-midnight/10 rounded-full"></div>
-                      <div className="h-2 w-32 bg-brand-midnight/10 rounded-full"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif tracking-tight text-brand-midnight leading-tight mb-6">
+          Your professional identity, <br /> <span className="italic text-brand-turquoise">one tap away.</span>
+        </h1>
 
-            {/* Floating Elements */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-              className="absolute -left-12 top-1/4 bg-white p-4 rounded-2xl shadow-xl border border-brand-midnight/5"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-turquoise/20 rounded-full flex items-center justify-center text-brand-turquoise">
-                  <Zap size={20} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-brand-midnight">NFC Ready</p>
-                  <p className="text-xs text-brand-midnight/60">Tap to share</p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+        <p className="text-lg md:text-xl text-brand-midnight/70 font-sans max-w-2xl mx-auto mb-10">
+          Build your modern digital business card in 60 seconds. Claim your custom URL and never carry paper again.
+        </p>
+
+        <div className="flex items-center gap-0 bg-brand-midnight/5 border border-brand-midnight/10 rounded-full p-1.5 w-full max-w-sm mx-auto shadow-sm">
+          <span className="pl-4 pr-1 text-sm text-brand-midnight/50 whitespace-nowrap font-sans">
+            onetap.link/
+          </span>
+          <input
+            type="text"
+            placeholder="yourname"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="flex-1 bg-transparent text-brand-midnight font-sans text-sm outline-none placeholder:text-brand-midnight/30 min-w-0"
+          />
+          <Button className="bg-brand-midnight text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full px-5 h-9 text-sm shrink-0 transition-colors shadow-soft-diffusion">
+            Claim <ArrowRight size={14} className="ml-1" />
+          </Button>
         </div>
       </div>
-    </section>
+
+      {/* Clean, Mathematically Isolated Macbook Scroll Scroll Target */}
+      <div className="w-full overflow-hidden flex flex-col items-center">
+        <MacbookScroll
+          title={null}
+          badge={
+            <a href="#">
+              <Badge className="h-10 w-10 -rotate-12 transform" />
+            </a>
+          }
+          src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop"
+          showGradient={false}
+        />
+      </div>
+    </div>
   );
 }
+
+// Peerlist logo
+const Badge = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 56 56"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28Z"
+        fill="#00AA45"
+      ></path>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M28 54C42.3594 54 54 42.3594 54 28C54 13.6406 42.3594 2 28 2C13.6406 2 2 13.6406 2 28C2 42.3594 13.6406 54 28 54ZM28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z"
+        fill="#219653"
+      ></path>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M27.0769 12H15V46H24.3846V38.8889H27.0769C34.7305 38.8889 41 32.9048 41 25.4444C41 17.984 34.7305 12 27.0769 12ZM24.3846 29.7778V21.1111H27.0769C29.6194 21.1111 31.6154 23.0864 31.6154 25.4444C31.6154 27.8024 29.6194 29.7778 27.0769 29.7778H24.3846Z"
+        fill="#24292E"
+      ></path>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M18 11H29.0769C36.2141 11 42 16.5716 42 23.4444C42 30.3173 36.2141 35.8889 29.0769 35.8889H25.3846V43H18V11ZM25.3846 28.7778H29.0769C32.1357 28.7778 34.6154 26.39 34.6154 23.4444C34.6154 20.4989 32.1357 18.1111 29.0769 18.1111H25.3846V28.7778Z"
+        fill="white"
+      ></path>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M17 10H29.0769C36.7305 10 43 15.984 43 23.4444C43 30.9048 36.7305 36.8889 29.0769 36.8889H26.3846V44H17V10ZM19 12V42H24.3846V34.8889H29.0769C35.6978 34.8889 41 29.7298 41 23.4444C41 17.1591 35.6978 12 29.0769 12H19ZM24.3846 17.1111H29.0769C32.6521 17.1111 35.6154 19.9114 35.6154 23.4444C35.6154 26.9775 32.6521 29.7778 29.0769 29.7778H24.3846V17.1111ZM26.3846 19.1111V27.7778H29.0769C31.6194 27.7778 33.6154 25.8024 33.6154 23.4444C33.6154 21.0864 31.6194 19.1111 29.0769 19.1111H26.3846Z"
+        fill="#24292E"
+      ></path>
+    </svg>
+  );
+};
