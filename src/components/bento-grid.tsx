@@ -1,54 +1,75 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, Scale, Video, ArrowRight } from "lucide-react";
+import { Smartphone, Target, RefreshCw, BarChart3, ImagePlay, Globe2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function BentoGrid() {
-  const industries = [
+  const features = [
     {
-      id: "real-estate",
-      title: "Real Estate Brokers",
-      description: "Embed virtual tours, active listings, and booking links.",
-      icon: Building2,
-      color: "bg-blue-500/10 text-blue-600",
+      id: "no-app",
+      title: "No-App Experience",
+      description: "Recipients view your card in any mobile browser instantly without downloading anything.",
+      icon: Smartphone,
+      color: "bg-indigo-500/10 text-indigo-500",
       colSpan: "lg:col-span-2",
-      image: "Virtual Tour Link Preview"
     },
     {
-      id: "lawyers",
-      title: "Lawyers & Partners",
-      description: "Direct V-Card save with secure contact and firm branding.",
-      icon: Scale,
-      color: "bg-brand-midnight/10 text-brand-midnight",
+      id: "leads",
+      title: "Lead Capture",
+      description: "Integrated forms send inquiries directly to your email or CRM.",
+      icon: Target,
+      color: "bg-rose-500/10 text-rose-500",
       colSpan: "lg:col-span-1",
-      image: "Save Contact Button"
     },
     {
-      id: "creators",
-      title: "Creators & Coaches",
-      description: "Video intros, social hubs, and course sign-ups in one tap.",
-      icon: Video,
+      id: "realtime",
+      title: "Real-Time Updates",
+      description: "Change your phone number or logo once; it updates everywhere.",
+      icon: RefreshCw,
       color: "bg-brand-turquoise/10 text-brand-turquoise",
-      colSpan: "lg:col-span-3",
-      image: "Video Hub Preview"
+      colSpan: "lg:col-span-1",
+    },
+    {
+      id: "analytics",
+      title: "Analytics Dashboard",
+      description: "Track every view, click, and contact save natively.",
+      icon: BarChart3,
+      color: "bg-amber-500/10 text-amber-500",
+      colSpan: "lg:col-span-2",
+    },
+    {
+      id: "rich-media",
+      title: "Rich Media",
+      description: "Embed video intros, image galleries, and PDF portfolios directly inside.",
+      icon: ImagePlay,
+      color: "bg-fuchsia-500/10 text-fuchsia-500",
+      colSpan: "lg:col-span-2",
+    },
+    {
+      id: "global",
+      title: "Global Ready",
+      description: "Native support for English, Hebrew, Spanish, French, and Arabic.",
+      icon: Globe2,
+      color: "bg-emerald-500/10 text-emerald-500",
+      colSpan: "lg:col-span-1",
     }
   ];
 
   return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="mb-16">
-          <h2 className="font-serif text-4xl md:text-5xl text-brand-midnight mb-4">
-            Perfect for <span className="text-brand-turquoise italic border-b-2 border-brand-turquoise">your</span> industry.
+    <section className="py-32 bg-brand-cream">
+      <div className="container mx-auto px-6 lg:px-24">
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <h2 className="font-serif text-5xl md:text-6xl text-brand-midnight mb-6">
+            Every feature you need. <br/> <span className="text-brand-turquoise italic border-none">Nothing you don't.</span>
           </h2>
-          <p className="text-lg text-brand-midnight/70 max-w-2xl">
-            Custom-built components that highlight what matters most to your clients.
+          <p className="text-xl text-brand-midnight/70 font-sans">
+            Powerful enterprise-grade tools packed into a beautiful, lightning-fast digital interface.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {industries.map((item, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((item, idx) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
@@ -56,29 +77,17 @@ export function BentoGrid() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
               className={cn(
-                "group relative bg-brand-cream/50 rounded-3xl border border-brand-midnight/5 p-8 overflow-hidden hover:shadow-xl transition-all duration-300",
+                "group relative bg-white rounded-[2rem] border border-brand-midnight/5 p-10 overflow-hidden hover:shadow-soft-diffusion transition-all duration-500",
                 item.colSpan
               )}
             >
               <div className="relative z-10 flex flex-col h-full">
-                <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center mb-6", item.color)}>
-                  <item.icon size={28} />
+                <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:scale-110 duration-500", item.color)}>
+                  <item.icon size={32} strokeWidth={1.5} />
                 </div>
-                <h3 className="font-serif text-2xl text-brand-midnight mb-3">{item.title}</h3>
-                <p className="text-brand-midnight/70 mb-8 max-w-md">{item.description}</p>
-                
-                <div className="mt-auto group-hover:translate-x-2 transition-transform">
-                  <a href="#" className="inline-flex items-center gap-2 text-sm font-bold text-brand-midnight">
-                    See templates <ArrowRight size={16} />
-                  </a>
-                </div>
+                <h3 className="font-serif text-3xl text-brand-midnight mb-4">{item.title}</h3>
+                <p className="text-brand-midnight/70 text-lg leading-relaxed">{item.description}</p>
               </div>
-
-              {/* Abstract decorative background representing the image/preview */}
-              <div className={cn(
-                "absolute -bottom-10 right-0 left-0 h-40 bg-gradient-to-t from-white to-transparent opacity-80 z-0",
-                item.colSpan === "lg:col-span-3" ? "w-1/2 ml-auto" : ""
-              )}></div>
             </motion.div>
           ))}
         </div>

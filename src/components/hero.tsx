@@ -45,6 +45,15 @@ export function Hero() {
             Claim <ArrowRight size={14} className="ml-1" />
           </Button>
         </div>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+          <Button className="bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-14 px-8 rounded-xl font-medium text-lg shadow-soft-diffusion">
+            Get Started for Free
+          </Button>
+          <Button variant="outline" className="bg-transparent border-brand-midnight/20 text-brand-midnight hover:bg-brand-midnight/5 h-14 px-8 rounded-xl font-medium text-lg">
+            Watch 30s Demo
+          </Button>
+        </div>
       </div>
 
       {/* Clean, Mathematically Isolated Macbook Scroll Scroll Target */}

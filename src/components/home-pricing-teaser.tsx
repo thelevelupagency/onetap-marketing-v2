@@ -29,15 +29,15 @@ export function HomePricingTeaser() {
             <ul className="space-y-4 mb-8 flex-1">
               <li className="flex items-center gap-3 text-brand-midnight/80">
                 <CheckCircle2 className="text-brand-turquoise" size={20} />
-                <span>Custom URL (onetap.link/name)</span>
+                <span>1 Active Digital Card</span>
               </li>
               <li className="flex items-center gap-3 text-brand-midnight/80">
                 <CheckCircle2 className="text-brand-turquoise" size={20} />
-                <span>Unlimited Link sharing</span>
+                <span>6 Basic Social Buttons</span>
               </li>
               <li className="flex items-center gap-3 text-brand-midnight/80">
                 <CheckCircle2 className="text-brand-turquoise" size={20} />
-                <span>Basic VCF Contact Download</span>
+                <span>Standard Templates</span>
               </li>
             </ul>
             <Button className="w-full bg-white text-brand-midnight border border-brand-midnight/10 hover:bg-brand-midnight/5 h-14 rounded-xl font-medium text-lg mt-auto">
@@ -48,35 +48,41 @@ export function HomePricingTeaser() {
           {/* Premium */}
           <div className="bg-brand-midnight text-brand-cream rounded-3xl p-8 border border-brand-turquoise/30 shadow-soft-diffusion relative overflow-hidden flex flex-col">
             <div className="absolute top-0 right-0 p-4">
-              <span className="bg-brand-turquoise text-brand-midnight text-xs font-bold px-3 py-1 rounded-full">PREMIUM</span>
+              <span className="bg-brand-turquoise text-brand-midnight text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</span>
             </div>
-            <h3 className="font-serif text-2xl text-white mb-2">Pro</h3>
+            <h3 className="font-serif text-2xl text-white mb-2">Premium</h3>
             <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-5xl font-bold text-white">$9</span>
+              <span className="text-5xl font-bold text-white">$10</span>
               <span className="text-brand-cream/60 font-sans">/mo</span>
             </div>
             <ul className="space-y-4 mb-8 text-brand-cream/90 flex-1">
               <li className="flex items-center gap-3">
                 <CheckCircle2 className="text-brand-turquoise" size={20} />
-                <span>Advanced Analytics & Lead Capture</span>
+                <span>Unlimited Active Cards</span>
               </li>
               <li className="flex items-center gap-3">
                 <CheckCircle2 className="text-brand-turquoise" size={20} />
-                <span>Custom Branding & Colors</span>
+                <span>Deep Custom Branding</span>
               </li>
               <li className="flex items-center gap-3">
                 <CheckCircle2 className="text-brand-turquoise" size={20} />
-                <span>CRM Sync (HubSpot, Salesforce)</span>
+                <span>Advanced Analytics & Leads</span>
               </li>
             </ul>
             <MagneticWrapper className="w-full mt-auto">
               <Link href="/pricing" className="block w-full">
                 <Button className="w-full bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-14 rounded-xl font-medium text-lg border-none shadow-glass">
-                  Upgrade to Pro
+                  Upgrade to Premium
                 </Button>
               </Link>
             </MagneticWrapper>
           </div>
+        </div>
+        
+        <div className="mt-12 text-center">
+            <Link href="/pricing" className="text-brand-midnight/60 hover:text-brand-midnight font-medium transition-colors inline-flex items-center gap-2">
+                View all plans and features <span>→</span>
+            </Link>
         </div>
       </div>
     </section>

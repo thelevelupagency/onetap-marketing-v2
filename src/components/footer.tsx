@@ -1,58 +1,144 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { IconBrandGithub, IconBrandTwitter, IconBrandLinkedin, IconBrandInstagram } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    product: [
+      { name: "Solutions", href: "/solutions" },
+      { name: "Pricing", href: "/pricing" },
+      { name: "Features", href: "/#features" },
+      { name: "Templates", href: "/templates" },
+      { name: "Integrations", href: "/integrations" },
+    ],
+    company: [
+      { name: "About Us", href: "/about" },
+      { name: "Careers", href: "/careers" },
+      { name: "Blog", href: "/blog" },
+      { name: "Press Kit", href: "/press" },
+      { name: "Contact", href: "/contact" },
+    ],
+    resources: [
+      { name: "Help Center", href: "/help" },
+      { name: "FAQ", href: "/faq" },
+      { name: "Community", href: "/community" },
+      { name: "Terms of Service", href: "/terms" },
+      { name: "Privacy Policy", href: "/privacy" },
+    ],
+  };
+
   return (
-    <footer className="bg-brand-midnight text-brand-cream border-t border-white/10 pt-20 pb-10">
+    <footer className="w-full bg-brand-midnight text-brand-cream pt-24 pb-12 overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-4 md:px-8">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+          {/* Logo and About */}
+          <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-brand-turquoise rounded-full flex items-center justify-center font-serif text-brand-midnight text-xl font-bold">
+              <div className="w-10 h-10 bg-brand-turquoise rounded-full flex items-center justify-center font-serif text-brand-midnight text-2xl font-bold">
                 O
               </div>
-              <span className="font-serif text-2xl tracking-tight text-brand-cream">
-                OneTap
-              </span>
+              <span className="font-serif text-3xl tracking-tight text-white">OneTap</span>
             </Link>
-            <div className="max-w-md">
-              <p className="text-white/60 mb-6 leading-relaxed">
-                We believe in reducing waste while improving connections. 
-                Our platform eliminates the need for paper business cards, 
-                saving trees and helping professionals network sustainably.
-              </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-turquoise/10 rounded-full border border-brand-turquoise/20 text-brand-turquoise text-sm font-medium">
-                <Zap size={16} /> Eco-friendly networking
-              </div>
+            <p className="text-brand-cream/60 max-w-sm mb-8 text-lg leading-relaxed">
+              Elevate your networking with professional digital business cards. Save contacts, capture leads, and grow your brand in one tap.
+            </p>
+            <div className="flex gap-5">
+              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors">
+                <IconBrandTwitter size={22} />
+              </Link>
+              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors">
+                <IconBrandLinkedin size={22} />
+              </Link>
+              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors">
+                <IconBrandInstagram size={22} />
+              </Link>
+              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors">
+                <IconBrandGithub size={22} />
+              </Link>
             </div>
           </div>
-          
+
+          {/* Links Sections */}
           <div>
-            <h4 className="font-bold mb-6 text-white text-lg">Product</h4>
+            <h4 className="font-serif text-xl text-white mb-6">Product</h4>
             <ul className="space-y-4">
-              <li><Link href="#" className="text-brand-turquoise hover:underline">Features</Link></li>
-              <li><Link href="#pricing" className="text-brand-turquoise hover:underline">Pricing</Link></li>
-              <li><Link href="#" className="text-brand-turquoise hover:underline">Integration</Link></li>
-              <li><Link href="#" className="text-brand-turquoise hover:underline">Enterprise</Link></li>
+              {footerLinks.product.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          
+
           <div>
-            <h4 className="font-bold mb-6 text-white text-lg">Company</h4>
+            <h4 className="font-serif text-xl text-white mb-6">Company</h4>
             <ul className="space-y-4">
-              <li><Link href="#" className="text-brand-turquoise hover:underline">About</Link></li>
-              <li><Link href="#" className="text-brand-turquoise hover:underline">Support</Link></li>
-              <li><Link href="#" className="text-brand-turquoise hover:underline">Privacy Policy</Link></li>
-              <li><Link href="#" className="text-brand-turquoise hover:underline">Terms of Service</Link></li>
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-serif text-xl text-white mb-6">Resources</h4>
+            <ul className="space-y-4">
+              {footerLinks.resources.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
-        
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-white/40 text-sm">
-          <p>© {new Date().getFullYear()} OneTap Inc. All rights reserved.</p>
-          <p>Designed with a Tech-Organic approach.</p>
+
+        {/* Newsletter Section */}
+        <div className="border-y border-white/10 py-12 mb-12 flex flex-col lg:flex-row justify-between items-center gap-8">
+            <div className="max-w-md text-center lg:text-left">
+                <h3 className="font-serif text-2xl text-white mb-2">Join our newsletter</h3>
+                <p className="text-brand-cream/60">Get the latest networking tips and product updates delivered to your inbox.</p>
+            </div>
+            <div className="w-full max-w-md flex flex-col sm:flex-row gap-3">
+                <input 
+                    type="email" 
+                    placeholder="Enter your email" 
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-brand-cream/30 focus:outline-none focus:ring-2 focus:ring-brand-turquoise/50 transition-all"
+                />
+                <Button className="bg-brand-turquoise text-brand-midnight hover:bg-white transition-colors h-12 px-6 rounded-xl font-medium shadow-glass">
+                    Subscribe
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+            </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-brand-cream/40">
+          <div className="flex items-center gap-1">
+            <span>© {currentYear} OneTap Card. All rights reserved.</span>
+            <span className="hidden md:inline mx-2">•</span>
+            <span className="italic">Built for modern professionals.</span>
+          </div>
+          <div className="flex gap-8">
+            <Link href="/privacy" className="hover:text-brand-turquoise transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-brand-turquoise transition-colors">Terms</Link>
+            <Link href="/security" className="hover:text-brand-turquoise transition-colors">Security</Link>
+            <Link href="/cookies" className="hover:text-brand-turquoise transition-colors">Cookies</Link>
+          </div>
         </div>
       </div>
+
+      {/* Aesthetic blur effect */}
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-turquoise/5 rounded-full blur-[120px] -z-10 translate-x-1/2 translate-y-1/2" />
     </footer>
   );
 }
