@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export function HomePricingTeaser() {
   return (
-    <section className="py-24 bg-white relative">
+    <section className="py-24 md:py-32 bg-white relative">
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-brand-midnight mb-4">

@@ -5,7 +5,7 @@ import { Trash2, Smartphone, Sparkles, Check } from "lucide-react";
 
 export function VillainVsHero() {
   return (
-    <section className="py-24 bg-brand-midnight text-brand-cream overflow-hidden">
+    <section className="py-24 md:py-32 bg-brand-midnight text-brand-cream overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2 

@@ -9,29 +9,30 @@ export function Hero() {
   const [name, setName] = useState("");
 
   return (
-    <div className="w-full bg-brand-cream dark:bg-[#0B0B0F] relative">
+    <div className="w-full bg-brand-cream dark:bg-[#0B0B0F] relative overflow-hidden">
 
       {/* Background gradients */}
-      <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-brand-turquoise/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] bg-brand-midnight/5 rounded-full blur-3xl opacity-50 pointer-events-none" />
+      <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-brand-turquoise/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-midnight/5 rounded-full blur-3xl opacity-50 pointer-events-none" />
 
-      {/* Isolated Hero Text Content */}
-      <div className="pt-32 pb-4 container mx-auto px-4 text-center relative z-10 flex flex-col items-center justify-center">
-        <div className="inline-flex gap-2 items-center bg-brand-midnight/5 px-4 py-2 rounded-full border border-brand-midnight/10 w-fit mb-6">
+      {/* Hero Text Content */}
+      <div className="pt-32 md:pt-48 pb-16 md:pb-24 container mx-auto px-6 md:px-4 text-center relative z-10 flex flex-col items-center justify-center">
+        <div className="inline-flex gap-2 items-center bg-brand-midnight/5 px-4 py-2 rounded-full border border-brand-midnight/10 w-fit mb-6 animate-in fade-in slide-in-from-top-4 duration-1000">
           <Zap size={16} className="text-brand-turquoise" />
           <span className="text-sm font-medium text-brand-midnight">No App Required</span>
         </div>
 
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif tracking-tight text-brand-midnight leading-tight mb-6">
-          Your professional identity, <br /> <span className="italic text-brand-turquoise">one tap away.</span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif tracking-tight text-brand-midnight leading-[1.1] mb-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
+          Your professional identity, <br className="hidden sm:block" /> <span className="italic text-brand-turquoise">one tap away.</span>
         </h1>
 
-        <p className="text-lg md:text-xl text-brand-midnight/70 font-sans max-w-2xl mx-auto mb-10">
+        <p className="text-base md:text-xl text-brand-midnight/70 font-sans max-w-2xl mx-auto mb-10 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
           Build your modern digital business card in 60 seconds. Claim your custom URL and never carry paper again.
         </p>
 
-        <div className="flex items-center gap-0 bg-brand-midnight/5 border border-brand-midnight/10 rounded-full p-1.5 w-full max-w-sm mx-auto shadow-sm">
-          <span className="pl-4 pr-1 text-sm text-brand-midnight/50 whitespace-nowrap font-sans">
+        {/* Claim Input */}
+        <div className="flex items-center gap-0 bg-brand-midnight/5 border border-brand-midnight/10 rounded-full p-1.5 w-full max-w-sm mx-auto shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
+          <span className="pl-3 md:pl-4 pr-1 text-xs md:text-sm text-brand-midnight/50 whitespace-nowrap font-sans">
             onetap.link/
           </span>
           <input
@@ -39,34 +40,35 @@ export function Hero() {
             placeholder="yourname"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="flex-1 bg-transparent text-brand-midnight font-sans text-sm outline-none placeholder:text-brand-midnight/30 min-w-0"
+            className="flex-1 bg-transparent text-brand-midnight font-sans text-xs md:text-sm outline-none placeholder:text-brand-midnight/30 min-w-0"
           />
-          <Button className="bg-brand-midnight text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full px-5 h-9 text-sm shrink-0 transition-colors shadow-soft-diffusion">
+          <Button className="bg-brand-midnight text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full px-4 md:px-5 h-8 md:h-9 text-xs md:text-sm shrink-0 transition-colors shadow-soft-diffusion">
             Claim <ArrowRight size={14} className="ml-1" />
           </Button>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-          <Button className="bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-14 px-8 rounded-xl font-medium text-lg shadow-soft-diffusion">
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 mt-8 w-full sm:w-auto px-4 sm:px-0 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+          <Button className="bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-12 md:h-14 px-8 rounded-xl font-medium text-base md:text-lg shadow-soft-diffusion">
             Get Started for Free
           </Button>
-          <Button variant="outline" className="bg-transparent border-brand-midnight/20 text-brand-midnight hover:bg-brand-midnight/5 h-14 px-8 rounded-xl font-medium text-lg">
+          <Button variant="outline" className="bg-transparent border-brand-midnight/20 text-brand-midnight hover:bg-brand-midnight/5 h-12 md:h-14 px-8 rounded-xl font-medium text-base md:text-lg">
             Watch 30s Demo
           </Button>
         </div>
       </div>
 
-      {/* Clean, Mathematically Isolated Macbook Scroll Scroll Target */}
-      <div className="w-full overflow-hidden flex flex-col items-center">
+      {/* Macbook Scroll Section */}
+      <div className="w-full flex flex-col items-center mt-0">
         <MacbookScroll
           title={null}
           badge={
-            <a href="#">
-              <Badge className="h-10 w-10 -rotate-12 transform" />
-            </a>
+            <div className="h-8 w-8 md:h-10 md:w-10 -rotate-12 transform">
+              <Badge />
+            </div>
           }
           src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop"
-          showGradient={false}
+          showGradient={true}
         />
       </div>
     </div>
@@ -74,15 +76,14 @@ export function Hero() {
 }
 
 // Peerlist logo
-const Badge = ({ className }: { className?: string }) => {
+const Badge = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="100%"
+      height="100%"
       viewBox="0 0 56 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
     >
       <path
         d="M56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28Z"

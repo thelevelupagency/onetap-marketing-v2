@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import {
@@ -46,9 +46,12 @@ export const MacbookScroll = ({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (window && window.innerWidth < 768) {
-      setIsMobile(true);
-    }
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const scaleX = useTransform(
@@ -69,7 +72,7 @@ export const MacbookScroll = ({
   return (
     <div
       ref={ref}
-      className="flex min-h-[150vh] shrink-0 scale-[0.35] transform flex-col items-center justify-start py-0 pb-40 [perspective:800px] sm:scale-50 md:scale-100 md:pt-24 md:pb-80"
+      className="flex min-h-[120vh] md:min-h-[180vh] shrink-0 scale-[0.6] sm:scale-[0.8] md:scale-100 transform origin-top flex-col items-center justify-start pt-48 pb-32 md:py-24 md:pb-64 [perspective:800px]"
     >
       {title !== null && (
         <motion.h2
@@ -77,7 +80,7 @@ export const MacbookScroll = ({
             translateY: textTransform,
             opacity: textOpacity,
           }}
-          className="mb-20 text-center text-3xl font-bold text-neutral-800 dark:text-white"
+          className="mb-10 md:mb-20 text-center text-2xl md:text-3xl font-bold text-neutral-800 dark:text-white px-4"
         >
           {title || (
             <span>
@@ -93,8 +96,9 @@ export const MacbookScroll = ({
         scaleY={scaleY}
         rotate={rotate}
         translate={translate}
-        children={children}
-      />
+      >
+        {children}
+      </Lid>
       {/* Base area */}
       <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
         {/* above keyboard bar */}
@@ -177,8 +181,8 @@ export const Lid = ({
         ) : (
           <img
             src={src as string}
-            alt="aceternity logo"
-            className="absolute inset-0 h-full w-full rounded-lg object-contain object-center p-2 bg-[#272729]"
+            alt="macbook content"
+            className="absolute inset-0 h-full w-full rounded-lg object-cover object-center p-2 bg-[#272729]"
           />
         )}
         
@@ -243,7 +247,7 @@ export const Keypad = () => {
         </KBtn>
         <KBtn>
           <IconPlayerTrackNext className="h-[6px] w-[6px]" />
-          <span className="mt-1 inline-block">F8</span>
+          <span className="mt-1 inline-block">F9</span>
         </KBtn>
         <KBtn>
           <IconVolume3 className="h-[6px] w-[6px]" />
@@ -287,7 +291,7 @@ export const Keypad = () => {
           <span className="block">4</span>
         </KBtn>
         <KBtn>
-          <span className="block">%</span>
+          <span className="block text-[6px]">%</span>
           <span className="block">5</span>
         </KBtn>
         <KBtn>
@@ -493,7 +497,7 @@ export const Keypad = () => {
             <IconChevronUp className="h-[6px] w-[6px]" />
           </div>
           <div className="flex w-full justify-start pl-1">
-            <span className="block">control</span>
+            <span className="block text-[4px]">control</span>
           </div>
         </KBtn>
         <KBtn className="" childrenClassName="h-full justify-between py-[4px]">
@@ -501,7 +505,7 @@ export const Keypad = () => {
             <OptionKey className="h-[6px] w-[6px]" />
           </div>
           <div className="flex w-full justify-start pl-1">
-            <span className="block">option</span>
+            <span className="block text-[4px]">option</span>
           </div>
         </KBtn>
         <KBtn
@@ -512,7 +516,7 @@ export const Keypad = () => {
             <IconCommand className="h-[6px] w-[6px]" />
           </div>
           <div className="flex w-full justify-start pl-1">
-            <span className="block">command</span>
+            <span className="block text-[4px]">command</span>
           </div>
         </KBtn>
         <KBtn className="w-[8.2rem]"></KBtn>
@@ -524,7 +528,7 @@ export const Keypad = () => {
             <IconCommand className="h-[6px] w-[6px]" />
           </div>
           <div className="flex w-full justify-start pl-1">
-            <span className="block">command</span>
+            <span className="block text-[4px]">command</span>
           </div>
         </KBtn>
         <KBtn className="" childrenClassName="h-full justify-between py-[4px]">
@@ -532,7 +536,7 @@ export const Keypad = () => {
             <OptionKey className="h-[6px] w-[6px]" />
           </div>
           <div className="flex w-full justify-start pl-1">
-            <span className="block">option</span>
+            <span className="block text-[4px]">option</span>
           </div>
         </KBtn>
         <div className="mt-[2px] flex h-6 w-[4.9rem] flex-col items-center justify-end rounded-[4px] p-[0.5px]">
@@ -586,7 +590,7 @@ export const KBtn = ({
       >
         <div
           className={cn(
-            "flex w-full flex-col items-center justify-center text-[5px] text-neutral-200",
+            "flex w-full flex-col items-center justify-center text-[5px] text-neutral-200 leading-none",
             childrenClassName,
             backlit && "text-white",
           )}

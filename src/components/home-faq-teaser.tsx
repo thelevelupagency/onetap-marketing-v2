@@ -27,7 +27,7 @@ const faqs = [
 
 export function HomeFaqTeaser() {
   return (
-    <section className="py-24 bg-brand-cream border-t border-brand-midnight/5">
+    <section className="py-24 md:py-32 bg-brand-cream border-t border-brand-midnight/5">
       <div className="container mx-auto px-4 md:px-8 max-w-5xl">
         <div className="flex flex-col md:flex-row gap-16 items-start">
           <div className="flex-1">
