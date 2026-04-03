@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { BackgroundGradientAnimation } from "@/components/ui/background-gradient
 export function Hero() {
   const [name, setName] = useState("");
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -22,14 +22,14 @@ export function Hero() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
         duration: 0.8,
-        ease: [0.21, 0.47, 0.32, 0.98]
+        ease: [0.21, 0.47, 0.32, 0.98] as const
       }
     }
   };
