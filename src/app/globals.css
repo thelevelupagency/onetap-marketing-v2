@@ -8,6 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand-turquoise: #2DE1C2;
+  --color-brand-turquoise-dark: #1CA391;
   --color-brand-cream: #FDFCF0;
   --color-brand-midnight: #101828;
   --font-sans: var(--font-geist-sans);
@@ -38,6 +39,28 @@
   
   --shadow-soft-diffusion: 0 20px 40px -10px rgba(45, 225, 194, 0.15), 0 0 20px 0 rgba(45, 225, 194, 0.05);
   --shadow-glass: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9), 0 10px 30px -10px rgba(16, 24, 40, 0.1);
+
+  --animate-first: moveVertical 30s ease infinite;
+  --animate-second: moveInCircle 20s reverse infinite;
+  --animate-third: moveInCircle 40s linear infinite;
+  --animate-fourth: moveHorizontal 40s ease infinite;
+  --animate-fifth: moveInCircle 20s ease infinite;
+}
+
+@keyframes moveHorizontal {
+  0% { transform: translateX(-50%) translateY(-10%); }
+  50% { transform: translateX(50%) translateY(10%); }
+  100% { transform: translateX(-50%) translateY(-10%); }
+}
+@keyframes moveInCircle {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes moveVertical {
+  0% { transform: translateY(-50%); }
+  50% { transform: translateY(50%); }
+  100% { transform: translateY(-50%); }
 }
 
 @layer base {

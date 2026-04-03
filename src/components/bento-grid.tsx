@@ -61,7 +61,7 @@ export function BentoGrid() {
       <div className="container mx-auto px-6 lg:px-24">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="font-serif text-5xl md:text-6xl text-brand-midnight mb-6">
-            Every feature you need. <br/> <span className="text-brand-turquoise italic border-none">Nothing you don't.</span>
+            Every feature you need. <br/> <span className="text-brand-turquoise-dark italic border-none">Nothing you don't.</span>
           </h2>
           <p className="text-xl text-brand-midnight/70 font-sans">
             Powerful enterprise-grade tools packed into a beautiful, lightning-fast digital interface.

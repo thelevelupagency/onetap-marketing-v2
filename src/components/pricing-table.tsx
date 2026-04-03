@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { CheckCircle2, ShieldCheck, Zap, Globe, Headset } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function PricingTable() {
   const [isAnnual, setIsAnnual] = useState(true);
+  const LOGIN_URL = "https://app.onetap-card.com/login";
 
   return (
     <div className="container mx-auto px-6">
@@ -42,9 +44,11 @@ export function PricingTable() {
             <span className="text-5xl font-bold text-brand-midnight">$0</span>
             <span className="text-brand-midnight/60 font-sans text-sm">/forever</span>
           </div>
-          <Button className="w-full bg-brand-midnight/5 text-brand-midnight hover:bg-brand-midnight/10 h-12 rounded-xl text-lg mb-8 shadow-none border-none transition-colors border-transparent">
-            Get Started Free
-          </Button>
+          <Link href={LOGIN_URL}>
+            <Button className="w-full bg-brand-midnight/5 text-brand-midnight hover:bg-brand-midnight/10 h-12 rounded-xl text-lg mb-8 shadow-none border-none transition-colors border-transparent">
+              Get Started Free
+            </Button>
+          </Link>
           <ul className="space-y-4 mb-8 flex-1">
             <li className="flex items-center gap-3 text-brand-midnight/80 text-sm">
               <CheckCircle2 className="text-brand-turquoise" size={18} />
@@ -76,9 +80,11 @@ export function PricingTable() {
             <span className="text-5xl font-bold text-white">${isAnnual ? "10" : "15"}</span>
             <span className="text-brand-cream/60 font-sans text-sm">/mo</span>
           </div>
-          <Button className="w-full bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-12 rounded-xl text-lg mb-8 border-none shadow-glass transition-colors">
-            Upgrade to Premium
-          </Button>
+          <Link href={LOGIN_URL}>
+            <Button className="w-full bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-12 rounded-xl text-lg mb-8 border-none shadow-glass transition-colors">
+              Upgrade to Premium
+            </Button>
+          </Link>
           <ul className="space-y-4 mb-8 flex-1 text-brand-cream/90">
             <li className="flex items-center gap-3 text-sm">
               <CheckCircle2 className="text-brand-turquoise" size={18} />
@@ -107,9 +113,11 @@ export function PricingTable() {
             <span className="text-5xl font-bold text-brand-midnight">${isAnnual ? "249" : "299"}</span>
             <span className="text-brand-midnight/60 font-sans text-sm">/mo</span>
           </div>
-          <Button className="w-full bg-brand-midnight text-brand-cream hover:bg-brand-midnight/90 h-12 rounded-xl text-lg mb-8 shadow-soft-diffusion transition-colors">
-            Contact Sales
-          </Button>
+          <Link href={LOGIN_URL}>
+            <Button className="w-full bg-brand-midnight text-brand-cream hover:bg-brand-midnight/90 h-12 rounded-xl text-lg mb-8 shadow-soft-diffusion transition-colors">
+              Contact Sales
+            </Button>
+          </Link>
           <ul className="space-y-4 mb-8 flex-1">
             <li className="flex items-center gap-3 text-brand-midnight/80 text-sm">
               <CheckCircle2 className="text-brand-turquoise" size={18} />
@@ -143,18 +151,22 @@ export function PricingTable() {
                 Enterprise Solution
               </div>
               <h3 className="font-serif text-4xl md:text-5xl text-brand-midnight mb-6">
-                Scale without <span className="italic text-brand-turquoise">compromise.</span>
+                Scale without <span className="italic text-brand-turquoise-dark">compromise.</span>
               </h3>
               <p className="text-lg text-brand-midnight/60 font-sans max-w-xl mb-8 leading-relaxed">
                 For global organizations requiring advanced security, custom integrations, and white-glove support.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button className="bg-brand-midnight text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight h-14 px-10 rounded-2xl text-lg font-medium shadow-lg transition-all">
-                  Book a Demo
-                </Button>
-                <Button variant="outline" className="h-14 px-10 rounded-2xl text-lg font-medium border-brand-midnight/10 hover:bg-brand-midnight/5">
-                  Talk to Sales
-                </Button>
+                <Link href={LOGIN_URL}>
+                  <Button className="bg-brand-midnight text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight h-14 px-10 rounded-2xl text-lg font-medium shadow-lg transition-all">
+                    Book a Demo
+                  </Button>
+                </Link>
+                <Link href={LOGIN_URL}>
+                  <Button variant="outline" className="h-14 px-10 rounded-2xl text-lg font-medium border-brand-midnight/10 hover:bg-brand-midnight/5">
+                    Talk to Sales
+                  </Button>
+                </Link>
               </div>
             </div>
 

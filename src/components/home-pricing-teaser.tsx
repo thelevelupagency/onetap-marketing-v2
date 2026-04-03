@@ -6,12 +6,14 @@ import { MagneticWrapper } from "@/components/ui/magnetic-button";
 import Link from "next/link";
 
 export function HomePricingTeaser() {
+  const LOGIN_URL = "https://app.onetap-card.com/login";
+
   return (
     <section className="py-24 md:py-32 bg-white relative">
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-brand-midnight mb-4">
-            Start for free. <span className="text-brand-turquoise italic">Scale infinitely.</span>
+            Start for free. <span className="text-brand-turquoise-dark italic">Scale infinitely.</span>
           </h2>
           <p className="text-lg text-brand-midnight/70 font-sans">
             Your digital identity shouldn't have a paywall. Get the platform that converts more leads today.
@@ -40,9 +42,11 @@ export function HomePricingTeaser() {
                 <span>Standard Templates</span>
               </li>
             </ul>
-            <Button className="w-full bg-white text-brand-midnight border border-brand-midnight/10 hover:bg-brand-midnight/5 h-14 rounded-xl font-medium text-lg mt-auto">
-              Create Free Card
-            </Button>
+            <Link href={LOGIN_URL}>
+              <Button className="w-full bg-white text-brand-midnight border border-brand-midnight/10 hover:bg-brand-midnight/5 h-14 rounded-xl font-medium text-lg mt-auto">
+                Create Free Card
+              </Button>
+            </Link>
           </div>
 
           {/* Premium */}
@@ -70,7 +74,7 @@ export function HomePricingTeaser() {
               </li>
             </ul>
             <MagneticWrapper className="w-full mt-auto">
-              <Link href="/pricing" className="block w-full">
+              <Link href={LOGIN_URL} className="block w-full">
                 <Button className="w-full bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 h-14 rounded-xl font-medium text-lg border-none shadow-glass">
                   Upgrade to Premium
                 </Button>

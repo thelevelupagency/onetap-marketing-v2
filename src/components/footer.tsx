@@ -8,6 +8,7 @@ export function Footer() {
 
   const footerLinks = {
     product: [
+      { name: "Home", href: "/" },
       { name: "Solutions", href: "/solutions" },
       { name: "Pricing", href: "/pricing" },
       { name: "Features", href: "/#features" },

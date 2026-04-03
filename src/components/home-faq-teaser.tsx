@@ -38,7 +38,7 @@ export function HomeFaqTeaser() {
               Everything you need to know about switching your business to OneTap.
             </p>
             <MagneticWrapper>
-              <Link href="/faq" className="inline-flex items-center gap-2 text-brand-turquoise font-medium hover:opacity-80 transition-opacity text-lg">
+              <Link href="/faq" className="inline-flex items-center gap-2 text-brand-turquoise-dark font-medium hover:opacity-80 transition-opacity text-lg">
                 View all FAQs <ArrowRight size={20} />
               </Link>
             </MagneticWrapper>
