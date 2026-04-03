@@ -69,21 +69,23 @@ export const MacbookScroll = ({
   return (
     <div
       ref={ref}
-      className="flex min-h-[200vh] shrink-0 scale-[0.35] transform flex-col items-center justify-start py-0 [perspective:800px] sm:scale-50 md:scale-100 md:py-80"
+      className="flex min-h-[150vh] shrink-0 scale-[0.35] transform flex-col items-center justify-start py-0 pb-40 [perspective:800px] sm:scale-50 md:scale-100 md:pt-24 md:pb-80"
     >
-      <motion.h2
-        style={{
-          translateY: textTransform,
-          opacity: textOpacity,
-        }}
-        className="mb-20 text-center text-3xl font-bold text-neutral-800 dark:text-white"
-      >
-        {title || (
-          <span>
-            This Macbook is built with Tailwindcss. <br /> No kidding.
-          </span>
-        )}
-      </motion.h2>
+      {title !== null && (
+        <motion.h2
+          style={{
+            translateY: textTransform,
+            opacity: textOpacity,
+          }}
+          className="mb-20 text-center text-3xl font-bold text-neutral-800 dark:text-white"
+        >
+          {title || (
+            <span>
+              This Macbook is built with Tailwindcss. <br /> No kidding.
+            </span>
+          )}
+        </motion.h2>
+      )}
       {/* Lid */}
       <Lid
         src={src}
@@ -176,7 +178,7 @@ export const Lid = ({
           <img
             src={src as string}
             alt="aceternity logo"
-            className="absolute inset-0 h-full w-full rounded-lg object-cover object-left-top"
+            className="absolute inset-0 h-full w-full rounded-lg object-contain object-center p-2 bg-[#272729]"
           />
         )}
         
