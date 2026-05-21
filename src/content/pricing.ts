@@ -15,6 +15,42 @@ export interface Plan {
   features: string[];
 }
 
+export type BillingPeriod = "monthly" | "annual";
+
+export type PlanPriceDisplay = {
+  current: number;
+  previous: number | null;
+  billedNote: string | null;
+};
+
+/** Display values for plan cards — single source of truth for price formatting. */
+export function getPlanPriceDisplay(
+  plan: Plan,
+  period: BillingPeriod,
+): PlanPriceDisplay {
+  const monthlyPrice = plan.monthlyPrice;
+  const annualPrice = plan.annualPrice;
+
+  if (monthlyPrice === null || annualPrice === null) {
+    return { current: 0, previous: null, billedNote: null };
+  }
+
+  if (period === "annual") {
+    const hasDiscount = annualPrice < monthlyPrice;
+    return {
+      current: annualPrice,
+      previous: hasDiscount ? monthlyPrice : null,
+      billedNote: plan.annualBilled ?? null,
+    };
+  }
+
+  return {
+    current: monthlyPrice,
+    previous: null,
+    billedNote: null,
+  };
+}
+
 export const plans: Plan[] = [
   {
     id: "free",

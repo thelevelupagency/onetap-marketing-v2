@@ -1,11 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import type { BlogHeading } from "@/content/blog/posts";
 
+function scrollToHeading(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  window.history.replaceState(null, "", `#${id}`);
+}
+
 export function BlogToc({ headings }: { headings: BlogHeading[] }) {
   const [activeId, setActiveId] = useState(headings[0]?.id ?? "");
+
+  function handleHeadingClick(e: MouseEvent<HTMLAnchorElement>, id: string) {
+    e.preventDefault();
+    scrollToHeading(id);
+    setActiveId(id);
+  }
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash && headings.some((h) => h.id === hash)) {
+      requestAnimationFrame(() => scrollToHeading(hash));
+      setActiveId(hash);
+    }
+  }, [headings]);
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -34,6 +55,7 @@ export function BlogToc({ headings }: { headings: BlogHeading[] }) {
           <li key={h.id}>
             <a
               href={`#${h.id}`}
+              onClick={(e) => handleHeadingClick(e, h.id)}
               className={cn(
                 "text-sm transition-colors block py-0.5",
                 h.level === 3 && "pl-3",

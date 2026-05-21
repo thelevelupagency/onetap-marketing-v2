@@ -15,6 +15,7 @@ import {
   PHONE_OUTER_WIDTH,
   PHONE_OUTER_HEIGHT,
 } from "@/lib/phone-mockup";
+import { CARD_HOST_PREFIX } from "@/lib/constants";
 
 const STATUS_AND_URL_BAR_HEIGHT = 88;
 
@@ -28,7 +29,7 @@ export function IPhoneMockup({ children, scale = 0.55, url }: IPhoneMockupProps)
     setIsClient(true);
   }, []);
 
-  const displayBaseUrl = "onetap-card.com/";
+  const displayBaseUrl = CARD_HOST_PREFIX;
 
   return (
     <div

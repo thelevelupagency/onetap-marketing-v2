@@ -67,7 +67,7 @@ export default function AgenciesPage() {
           </p>
           <p className="text-brand-midnight/60 mb-8">— Managing Partner, Park & Associates</p>
           <Link href="/pricing">
-            <Button size="lg" className="bg-brand-midnight text-brand-cream rounded-full h-14 px-8">
+            <Button size="lg" className="bg-brand-navy text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full h-14 px-8">
               View Agency pricing
             </Button>
           </Link>

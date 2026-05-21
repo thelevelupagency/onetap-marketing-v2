@@ -31,7 +31,7 @@ export default function FreelancersPage() {
           Freelancers using OneTap report 80% more inquiries. Look professional, capture leads, and follow up faster.
         </p>
         <Link href={LOGIN_URL}>
-          <Button size="lg" className="bg-brand-midnight text-brand-cream rounded-full h-14 px-8 text-lg">
+          <Button size="lg" className="bg-brand-navy text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full h-14 px-8 text-lg">
             Create your free card <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </Link>
@@ -57,7 +57,7 @@ export default function FreelancersPage() {
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <Badge className="mb-4 bg-fuchsia-500/10 text-fuchsia-700 border-fuchsia-200">For Creators</Badge>
+              <Badge className="mb-4 bg-brand-turquoise-light text-brand-turquoise-dark border-brand-turquoise/30">For Creators</Badge>
               <h2 className="font-display text-4xl text-brand-midnight mb-6">
                 5x faster <span className="italic text-brand-turquoise">exposure</span>
               </h2>
@@ -65,7 +65,7 @@ export default function FreelancersPage() {
                 Showcase your gallery, embed videos, and link every platform from one stunning mobile profile. Your audience saves your contact in one tap.
               </p>
               <Link href={LOGIN_URL}>
-                <Button className="bg-brand-midnight text-brand-cream rounded-full">Start creating</Button>
+                <Button className="bg-brand-navy text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full">Start creating</Button>
               </Link>
             </div>
             <div className="flex justify-center lg:justify-end leading-none">

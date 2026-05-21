@@ -8,7 +8,7 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="py-16 border-t border-brand-midnight/10">
+    <section className="pt-12 pb-4">
       <h2 className="font-display text-3xl text-brand-midnight mb-8">Related posts</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {posts.map((post) => (

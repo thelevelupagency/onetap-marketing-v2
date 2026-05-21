@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Image, Video, ContactRound, UserPlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { MarketingPhonePreview } from "@/components/marketing/marketing-phone-preview";
+import { CardUxPhonePreview } from "@/components/marketing/card-ux-phone-preview";
 
 const features = [
   { icon: Image, label: "Gallery", description: "Showcase your work and portfolio" },
@@ -53,14 +53,9 @@ export function CardUxSection() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="order-1 lg:order-2 flex justify-center leading-none"
+            className="order-1 flex justify-center overflow-visible leading-none lg:order-2"
           >
-            <div className="relative leading-none">
-              <MarketingPhonePreview scale={0.65} url="almog-menashe" />
-              <div className="absolute -right-2 sm:-right-4 top-[28%] bg-white rounded-2xl px-3 py-2.5 shadow-lg border border-brand-midnight/5 text-xs font-medium text-brand-midnight whitespace-nowrap">
-                +847 views this week
-              </div>
-            </div>
+            <CardUxPhonePreview />
           </motion.div>
         </div>
       </div>

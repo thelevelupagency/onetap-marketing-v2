@@ -1,7 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { BarChart3, RefreshCw, Edit3, Users, Lock } from "lucide-react";
+import { BarChart3, RefreshCw, Edit3 } from "lucide-react";
+
+const DASHBOARD_IMAGE =
+  "https://res.cloudinary.com/dudwjf2pu/image/upload/v1779393898/onetap/static/marketing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2026-05-13_%D7%91-20.56.31_gtx3y5.png";
 
 const features = [
   { icon: Edit3, title: "Real-Time Edit", description: "Update any card instantly. Changes reflect everywhere in seconds." },
@@ -11,12 +15,15 @@ const features = [
 
 export function DashboardSection() {
   return (
-    <section className="py-24 bg-brand-midnight text-brand-cream overflow-hidden relative">
-      <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-brand-turquoise/10 rounded-full blur-3xl pointer-events-none" aria-hidden />
+    <section className="relative overflow-hidden bg-brand-midnight py-24 text-brand-cream">
+      <div
+        className="pointer-events-none absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-brand-turquoise/10 blur-3xl"
+        aria-hidden
+      />
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-display text-4xl md:text-5xl mb-4">
+      <div className="relative z-10 container mx-auto px-4 md:px-8">
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <h2 className="mb-4 font-display text-4xl md:text-5xl">
             Your professional <span className="italic text-brand-turquoise">command center.</span>
           </h2>
           <p className="text-lg text-brand-cream/70">
@@ -24,46 +31,21 @@ export function DashboardSection() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-[#1A2333] rounded-3xl border border-white/10 shadow-2xl p-6"
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl lg:aspect-[16/10]"
           >
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-turquoise rounded-lg flex items-center justify-center">
-                  <Users size={20} className="text-brand-midnight" />
-                </div>
-                <div>
-                  <p className="font-bold">OneTap Dashboard</p>
-                  <p className="text-xs text-white/50">12 active cards</p>
-                </div>
-              </div>
-              <span className="bg-brand-turquoise/20 text-brand-turquoise text-xs font-bold px-3 py-1 rounded-full border border-brand-turquoise/30 flex items-center gap-1">
-                <Lock size={10} /> Brand Locked
-              </span>
-            </div>
-            <div className="space-y-3">
-              {[
-                { name: "Sarah Chen", views: "1.2k", leads: 24 },
-                { name: "Marcus Webb", views: "890", leads: 18 },
-                { name: "Elena Torres", views: "2.1k", leads: 41 },
-              ].map((row) => (
-                <div key={row.name} className="bg-white/5 rounded-xl p-4 flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-sm">{row.name}</p>
-                    <p className="text-xs text-white/40">{row.views} views</p>
-                  </div>
-                  <span className="text-brand-turquoise text-sm font-bold">{row.leads} leads</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 pt-4 border-t border-white/5 flex gap-4 text-xs text-white/50">
-              <span className="flex items-center gap-1"><BarChart3 size={12} className="text-brand-turquoise" /> Analytics live</span>
-              <span className="flex items-center gap-1"><RefreshCw size={12} className="text-brand-turquoise" /> CRM synced</span>
-            </div>
+            <Image
+              src={DASHBOARD_IMAGE}
+              alt="OneTap dashboard with card overview, analytics, and live phone preview"
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority={false}
+            />
           </motion.div>
 
           <div className="space-y-8">
@@ -76,11 +58,11 @@ export function DashboardSection() {
                 transition={{ delay: i * 0.1 }}
                 className="flex gap-4"
               >
-                <div className="w-12 h-12 rounded-xl bg-brand-turquoise/20 flex items-center justify-center shrink-0">
-                  <f.icon className="w-6 h-6 text-brand-turquoise" />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-turquoise/20">
+                  <f.icon className="h-6 w-6 text-brand-turquoise" />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl mb-1">{f.title}</h3>
+                  <h3 className="mb-1 font-display text-xl">{f.title}</h3>
                   <p className="text-brand-cream/60">{f.description}</p>
                 </div>
               </motion.div>

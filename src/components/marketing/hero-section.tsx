@@ -1,19 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { LOGIN_URL } from "@/lib/constants";
+import { SlugClaimCta } from "@/components/marketing/slug-claim-cta";
 import { HeroPhonePreview } from "@/components/marketing/hero-phone-preview";
 
 export function HeroSection() {
+  const [slug, setSlug] = useState("");
+  const centerPhoneSlug = slug.trim() || "your-name";
   return (
     <section className="relative flex items-center bg-brand-cream pt-24 pb-8 lg:pt-28 lg:pb-12">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-brand-turquoise/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-brand-turquoise/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-brand-turquoise/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-brand-navy/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-brand-turquoise/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
@@ -34,7 +38,7 @@ export function HeroSection() {
               className="font-display text-5xl md:text-6xl lg:text-7xl text-brand-midnight mb-6"
             >
               Your Digital Business Card in{" "}
-              <span className="italic text-brand-turquoise-dark">One Tap.</span>
+              <span className="italic text-brand-turquoise">One Tap.</span>
               <br />
               Appear Everywhere.
             </motion.h1>
@@ -52,16 +56,15 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center lg:items-stretch"
+              className="flex flex-col gap-4 justify-center lg:justify-start items-center lg:items-stretch w-full"
             >
-              <Link href={LOGIN_URL}>
-                <Button size="lg" className="bg-brand-midnight text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full h-14 px-8 text-lg shadow-soft-diffusion w-full sm:w-auto">
-                  Get your card free
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="#how-it-works">
-                <Button size="lg" variant="outline" className="rounded-full h-14 px-8 text-lg border-brand-midnight/20 hover:bg-brand-midnight/5 w-full sm:w-auto">
+              <SlugClaimCta slug={slug} onSlugChange={setSlug} className="mx-auto lg:mx-0" />
+              <Link href="#how-it-works" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full h-14 px-8 text-lg border-brand-midnight/20 hover:bg-brand-midnight/5 w-full sm:w-auto"
+                >
                   See how it works
                 </Button>
               </Link>
@@ -83,7 +86,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex justify-center leading-none m-0 p-0 min-w-0 w-full"
           >
-            <HeroPhonePreview />
+            <HeroPhonePreview centerSlug={centerPhoneSlug} />
           </motion.div>
         </div>
       </div>

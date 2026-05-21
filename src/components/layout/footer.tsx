@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { IconBrandLinkedin, IconBrandInstagram, IconBrandTwitter } from "@tabler/icons-react";
+import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -33,12 +34,12 @@ export function Footer() {
       <div className="container mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12 md:mb-16">
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-brand-turquoise rounded-full flex items-center justify-center font-logo text-brand-midnight text-2xl font-bold">
-                O
-              </div>
-              <span className="font-logo text-3xl tracking-tight text-white">OneTap</span>
-            </Link>
+            <Logo
+              href="/"
+              theme="bright"
+              className="mb-6"
+              imageClassName="h-10 w-auto md:h-11"
+            />
             <p className="text-brand-cream/60 max-w-sm mb-8 text-lg leading-relaxed">
               Elevate your networking with professional digital business cards. Save contacts, capture leads, and grow your brand in one tap.
             </p>
@@ -58,7 +59,7 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:col-span-3 gap-8">
             {Object.entries(footerLinks).map(([key, links]) => (
               <div key={key}>
-                <h4 className="font-display text-xl text-white mb-6 capitalize">{key}</h4>
+                <h4 className="font-display text-xl text-white mb-6">{key}</h4>
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>

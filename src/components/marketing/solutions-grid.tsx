@@ -9,7 +9,7 @@ const solutions = [
     stat: "80% more inquiries",
     description: "Stand out at every meeting. Capture leads automatically and look professional from day one.",
     href: "/solutions/freelancers",
-    accent: "from-blue-500/10 to-brand-turquoise/10",
+    accent: "from-brand-navy/10 to-brand-turquoise/10",
   },
   {
     icon: Sparkles,
@@ -17,7 +17,7 @@ const solutions = [
     stat: "5x faster exposure",
     description: "One link for your entire brand. Gallery, video, and socials in a beautiful mobile-first profile.",
     href: "/solutions/freelancers#creators",
-    accent: "from-fuchsia-500/10 to-purple-500/10",
+    accent: "from-brand-turquoise-light to-brand-turquoise/10",
   },
   {
     icon: Building2,
@@ -25,7 +25,7 @@ const solutions = [
     stat: "50+ hours saved",
     description: "Brand Lock, bulk import, and team analytics. Manage hundreds of cards from one dashboard.",
     href: "/solutions/agencies",
-    accent: "from-brand-midnight/10 to-brand-turquoise/10",
+    accent: "from-brand-midnight/10 to-brand-navy/10",
   },
 ];
 

@@ -111,7 +111,7 @@ export const posts: BlogPost[] = [
     category: "how-to",
     date: "2026-03-10",
     author: "OneTap Team",
-    coverImage: "https://images.unsplash.com/photo-1558618666-fcd25c85b820?w=800&auto=format&fit=crop",
+    coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop",
     headings: [
       { id: "what-is-nfc", text: "What is NFC?", level: 2 },
       { id: "onetap-nfc", text: "OneTap + NFC", level: 2 },

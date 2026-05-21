@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -8,42 +8,75 @@ import { cn } from "@/lib/utils";
 import { posts, categoryLabels, type BlogCategory } from "@/content/blog/posts";
 import { formatDate } from "@/lib/blog";
 import { Badge } from "@/components/ui/badge";
+import { ContentSearch } from "@/components/marketing/content-search";
 
 const categories: (BlogCategory | "all")[] = ["all", "best-practice", "success-stories", "how-to", "news"];
+
+function matchesQuery(
+  post: (typeof posts)[number],
+  query: string
+) {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return true;
+  return (
+    post.title.toLowerCase().includes(needle) ||
+    post.excerpt.toLowerCase().includes(needle) ||
+    post.author.toLowerCase().includes(needle) ||
+    categoryLabels[post.category].toLowerCase().includes(needle)
+  );
+}
 
 export function BlogList() {
   const searchParams = useSearchParams();
   const activeCategory = (searchParams.get("category") as BlogCategory) || null;
+  const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
     const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
-    if (!activeCategory) return sorted;
-    return sorted.filter((p) => p.category === activeCategory);
-  }, [activeCategory]);
+    return sorted
+      .filter((p) => !activeCategory || p.category === activeCategory)
+      .filter((p) => matchesQuery(p, query));
+  }, [activeCategory, query]);
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 justify-center mb-12">
+      <ContentSearch
+        value={query}
+        onChange={setQuery}
+        placeholder="Search posts..."
+        className="relative max-w-md mx-auto w-full mb-8"
+      />
+
+      <div className="flex flex-wrap gap-3 justify-center mb-14 max-w-3xl mx-auto">
         {categories.map((cat) => {
           const href = cat === "all" ? "/blog" : `/blog?category=${cat}`;
           const isActive = cat === "all" ? !activeCategory : activeCategory === cat;
+          const label = cat === "all" ? "All" : categoryLabels[cat];
           return (
-            <Link key={cat} href={href}>
-              <Badge
+            <Link
+              key={cat}
+              href={href}
+              aria-current={isActive ? "page" : undefined}
+              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-navy/25 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream"
+            >
+              <span
                 className={cn(
-                  "cursor-pointer px-4 py-1.5 text-sm transition-colors",
+                  "inline-flex min-h-11 items-center justify-center rounded-full border px-5 py-2.5 text-sm font-medium tracking-tight transition-all duration-200 sm:min-h-12 sm:px-6 sm:py-3 sm:text-base",
                   isActive
-                    ? "bg-brand-midnight text-brand-cream hover:bg-brand-midnight"
-                    : "bg-white text-brand-midnight/70 border-brand-midnight/10 hover:bg-brand-cream"
+                    ? "border-brand-midnight bg-brand-midnight text-brand-cream shadow-soft-diffusion"
+                    : "border-brand-midnight/12 bg-white text-brand-midnight/75 shadow-sm hover:border-brand-turquoise/35 hover:bg-brand-turquoise/15 hover:text-brand-midnight hover:shadow-md"
                 )}
               >
-                {cat === "all" ? "All" : categoryLabels[cat]}
-              </Badge>
+                {label}
+              </span>
             </Link>
           );
         })}
       </div>
 
+      {filtered.length === 0 ? (
+        <p className="text-center text-brand-midnight/50 py-12">No posts match your search.</p>
+      ) : (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {filtered.map((post) => (
           <Link
@@ -73,6 +106,7 @@ export function BlogList() {
           </Link>
         ))}
       </div>
+      )}
     </>
   );
 }

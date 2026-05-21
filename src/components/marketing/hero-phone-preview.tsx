@@ -8,6 +8,7 @@ import {
   CARD_SCREENSHOT_INTERIOR,
   CARD_SCREENSHOT_BARBER,
 } from "@/components/marketing/marketing-phone-preview";
+import { FloatWrap } from "@/components/marketing/float-wrap";
 import { PHONE_OUTER_HEIGHT, phoneLayoutDimensions } from "@/lib/phone-mockup";
 
 const FAN_WIDTH = 460;
@@ -89,22 +90,16 @@ function PhoneClipShell({
   );
 }
 
-function FloatWrap({ delay, children }: { delay: number; children: React.ReactNode }) {
-  return (
-    <motion.div
-      animate={{ y: [0, -8, 0] }}
-      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 /**
  * Hero fan: canvas includes bleed for rotated side phones; scales to column
  * width via ResizeObserver and clips each phone so screenshots stay in frame.
  */
-export function HeroPhonePreview() {
+interface HeroPhonePreviewProps {
+  /** Live slug for the center phone Safari bar (defaults to demo slug). */
+  centerSlug?: string;
+}
+
+export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const fanScale = useFanScale(containerRef);
 
@@ -174,7 +169,7 @@ export function HeroPhonePreview() {
             <PhoneClipShell scale={CENTER_SCALE}>
               <MarketingPhonePreview
                 scale={CENTER_SCALE}
-                url="almog-menashe"
+                url={centerSlug}
                 imageSrc={CARD_SCREENSHOT_FITNESS}
                 alt="Fitness professional OneTap digital business card"
                 priority

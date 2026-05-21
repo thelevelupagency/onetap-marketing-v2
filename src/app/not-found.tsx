@@ -9,7 +9,7 @@ export default function NotFound() {
         This page doesn&apos;t exist — but your next great connection is one tap away.
       </p>
       <Link href="/">
-        <Button className="bg-brand-midnight text-brand-cream rounded-full px-8 h-12">Back to Home</Button>
+        <Button className="bg-brand-navy text-brand-cream hover:bg-brand-turquoise hover:text-brand-midnight rounded-full px-8 h-12">Back to Home</Button>
       </Link>
     </div>
   );

@@ -57,18 +57,14 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {formatDate(post.date)} · {post.author}
               </p>
 
-              <div className="relative aspect-[21/9] rounded-3xl overflow-hidden mb-10 border border-brand-midnight/5">
+              <div className="relative aspect-[21/9] rounded-3xl overflow-hidden mb-8 border border-brand-midnight/5">
                 <Image src={post.coverImage} alt={post.title} fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 768px" />
-              </div>
-
-              <div className="mb-10">
-                <BlogShare title={post.title} slug={post.slug} />
               </div>
 
               <BlogPostContent post={post} />
 
-              <div className="mt-12 pt-8 border-t border-brand-midnight/10">
-                <BlogShare title={post.title} slug={post.slug} />
+              <div className="mt-10 py-5 border-t border-brand-midnight/10">
+                <BlogShare title={post.title} slug={post.slug} label="Share this article" />
               </div>
 
               <RelatedPosts posts={related} />

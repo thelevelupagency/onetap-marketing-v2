@@ -26,6 +26,10 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "OneTap-Card | Your professional identity, one tap away",
   description: "A premium, web-first digital business card platform.",
+  icons: {
+    icon: "/logos/onetap_logo.png",
+    apple: "/logos/onetap_logo.png",
+  },
 };
 
 export default function RootLayout({

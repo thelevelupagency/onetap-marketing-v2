@@ -1,4 +1,16 @@
-import { posts, type BlogCategory, type BlogPost } from "@/content/blog/posts";
+import { posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
+
+/** Resolve DOM id for a heading line — prefers explicit ids from post.headings. */
+export function getHeadingId(text: string, headings: BlogHeading[]): string {
+  const match = headings.find((h) => h.text === text);
+  if (match) return match.id;
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
 
 export function getPosts(category?: BlogCategory | null): BlogPost[] {
   if (!category) return [...posts].sort((a, b) => b.date.localeCompare(a.date));
@@ -34,21 +46,24 @@ export function formatDate(dateStr: string): string {
   });
 }
 
-export function renderContentBlock(block: string): { type: "heading" | "paragraph"; level?: 2 | 3; text: string; id?: string } {
+export function renderContentBlock(
+  block: string,
+  headings: BlogHeading[] = []
+): { type: "heading" | "paragraph"; level?: 2 | 3; text: string; id?: string } {
   if (block.startsWith("## ")) {
     const text = block.slice(3).split("\n")[0];
-    return { type: "heading", level: 2, text, id: text.toLowerCase().replace(/\s+/g, "-") };
+    return { type: "heading", level: 2, text, id: getHeadingId(text, headings) };
   }
   if (block.startsWith("### ")) {
     const text = block.slice(4).split("\n")[0];
-    return { type: "heading", level: 3, text, id: text.toLowerCase().replace(/\s+/g, "-") };
+    return { type: "heading", level: 3, text, id: getHeadingId(text, headings) };
   }
   const parts = block.split("\n\n");
   const headingPart = parts.find((p) => p.startsWith("## "));
   if (headingPart) {
     const text = headingPart.slice(3);
     const body = parts.filter((p) => !p.startsWith("## ")).join("\n\n");
-    return { type: "paragraph", text: body, id: text.toLowerCase().replace(/\s+/g, "-") };
+    return { type: "paragraph", text: body, id: getHeadingId(text, headings) };
   }
   return { type: "paragraph", text: block };
 }

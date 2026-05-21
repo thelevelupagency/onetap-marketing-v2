@@ -2,17 +2,32 @@
 
 import { Check, X } from "lucide-react";
 import { comparisonFeatures } from "@/content/pricing";
+import { cn } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-function CellValue({ value }: { value: string | boolean }) {
+function CellValue({
+  value,
+  className,
+}: {
+  value: string | boolean;
+  className?: string;
+}) {
   if (typeof value === "boolean") {
-    return value ? (
-      <Check className="w-5 h-5 text-brand-turquoise mx-auto" />
-    ) : (
-      <X className="w-5 h-5 text-brand-midnight/20 mx-auto" />
+    const Icon = value ? Check : X;
+    return (
+      <Icon
+        className={cn(
+          "size-5 shrink-0",
+          value ? "text-brand-turquoise" : "text-brand-midnight/20",
+          className
+        )}
+        aria-hidden
+      />
     );
   }
-  return <span className="text-sm text-brand-midnight/80">{value}</span>;
+  return (
+    <span className={cn("text-sm text-brand-midnight/80", className)}>{value}</span>
+  );
 }
 
 export function PricingComparison() {
@@ -38,9 +53,9 @@ export function PricingComparison() {
               {comparisonFeatures.map((row, i) => (
                 <tr key={row.name} className={i % 2 === 0 ? "bg-white" : "bg-brand-cream/30"}>
                   <td className="p-4 text-sm font-medium text-brand-midnight">{row.name}</td>
-                  <td className="p-4 text-center"><CellValue value={row.free} /></td>
-                  <td className="p-4 text-center bg-brand-turquoise/5"><CellValue value={row.premium} /></td>
-                  <td className="p-4 text-center"><CellValue value={row.agency} /></td>
+                  <td className="p-4 text-center"><CellValue value={row.free} className="mx-auto" /></td>
+                  <td className="p-4 text-center bg-brand-turquoise/5"><CellValue value={row.premium} className="mx-auto" /></td>
+                  <td className="p-4 text-center"><CellValue value={row.agency} className="mx-auto" /></td>
                 </tr>
               ))}
             </tbody>
@@ -57,9 +72,11 @@ export function PricingComparison() {
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 space-y-3">
                   {(["free", "premium", "agency"] as const).map((tier) => (
-                    <div key={tier} className="flex justify-between items-center">
+                    <div key={tier} className="flex min-h-5 items-center justify-between gap-4">
                       <span className="text-sm capitalize text-brand-midnight/60">{tier}</span>
-                      <CellValue value={row[tier]} />
+                      <div className="flex w-28 shrink-0 items-center justify-end">
+                        <CellValue value={row[tier]} />
+                      </div>
                     </div>
                   ))}
                 </AccordionContent>
