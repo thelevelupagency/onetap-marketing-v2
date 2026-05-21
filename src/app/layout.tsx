@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Instrument_Serif } from "next/font/google";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { CTABanner } from "@/components/cta-banner";
+import { Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
+import { Navigation } from "@/components/layout/navigation";
+import { Footer } from "@/components/layout/footer";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["500", "700"],
 });
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  weight: "400",
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: "700",
 });
 
 export const metadata: Metadata = {
@@ -29,15 +36,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${instrumentSerif.variable} antialiased h-full`}
+      suppressHydrationWarning
+      className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">
-        <Navigation />
-        <div className="flex-1">
-          {children}
-        </div>
-        <CTABanner />
-        <Footer />
+      <body className="min-h-svh flex flex-col font-sans bg-brand-cream overflow-x-clip">
+        <ThemeProvider>
+          <Navigation />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

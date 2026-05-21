@@ -1,0 +1,19 @@
+const PHONE_WIDTH = 393;
+const PHONE_HEIGHT = 852;
+
+export const PHONE_BEZEL = 14;
+export const PHONE_OUTER_RADIUS = 54;
+export const PHONE_SCREEN_RADIUS = PHONE_OUTER_RADIUS - PHONE_BEZEL + 2;
+
+export const PHONE_OUTER_WIDTH = PHONE_WIDTH + PHONE_BEZEL * 2;
+export const PHONE_OUTER_HEIGHT = PHONE_HEIGHT + PHONE_BEZEL * 2;
+
+/** Layout box size after scale transform (transform does not shrink flow otherwise). */
+export function phoneLayoutDimensions(scale: number) {
+  return {
+    width: Math.round(PHONE_OUTER_WIDTH * scale),
+    height: Math.round(PHONE_OUTER_HEIGHT * scale),
+    outerRadius: Math.round(PHONE_OUTER_RADIUS * scale),
+    screenRadius: Math.round(PHONE_SCREEN_RADIUS * scale),
+  };
+}

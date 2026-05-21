@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -11,8 +12,11 @@
   --color-brand-turquoise-dark: #1CA391;
   --color-brand-cream: #FDFCF0;
   --color-brand-midnight: #101828;
-  --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-instrument-serif);
+  /* Plus Jakarta Sans (body) | Space Grotesk (display) | Montserrat (logo) */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -45,6 +49,12 @@
   --animate-third: moveInCircle 40s linear infinite;
   --animate-fourth: moveHorizontal 40s ease infinite;
   --animate-fifth: moveInCircle 20s ease infinite;
+  --animate-marquee: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 @keyframes moveHorizontal {
@@ -87,6 +97,11 @@
     --radius: 0.75rem;
   }
 
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -94,6 +109,27 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
+    font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  h1 {
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  h2 {
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  h3 {
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  h4, h5, h6 {
+    line-height: 1.15;
+    letter-spacing: -0.02em;
   }
 }
