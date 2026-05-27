@@ -60,13 +60,6 @@
   --shadow-soft-diffusion: 0 20px 40px -10px rgba(42, 70, 120, 0.12), 0 0 20px 0 rgba(42, 157, 143, 0.08);
   --shadow-glass: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9), 0 10px 30px -10px rgba(22, 27, 38, 0.08);
 
-  --animate-first: moveVertical 30s ease infinite;
-  --animate-second: moveInCircle 20s reverse infinite;
-  --animate-third: moveInCircle 40s linear infinite;
-  --animate-fourth: moveHorizontal 40s ease infinite;
-  --animate-fifth: moveInCircle 20s ease infinite;
-  --animate-marquee: marquee 30s linear infinite;
-
   /* Marketing layout spacing (see :root --marketing-* tokens) */
   --spacing-marketing-gutter-x: var(--marketing-gutter-x);
   --spacing-marketing-gutter-x-md: var(--marketing-gutter-x-md);
@@ -78,6 +71,10 @@
   --spacing-marketing-header-gap: var(--marketing-header-gap);
   --spacing-marketing-header-gap-md: var(--marketing-header-gap-md);
   --spacing-marketing-card-padding: var(--marketing-card-padding);
+  --spacing-marketing-grid-gap: var(--marketing-grid-gap);
+  --spacing-marketing-grid-gap-md: var(--marketing-grid-gap-md);
+  --spacing-marketing-stack-gap: var(--marketing-stack-gap);
+  --spacing-marketing-stack-gap-sm: var(--marketing-stack-gap-sm);
 }
 
 /* Marketing type scale — sizes/colors; base h1–h6 set family, weight, uppercase, tracking */
@@ -153,25 +150,43 @@
   @apply font-sans text-base font-medium text-brand-midnight md:text-lg;
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+@keyframes ambientDrift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(12px, -8px) scale(1.04);
+    opacity: 0.85;
+  }
 }
 
-@keyframes moveHorizontal {
-  0% { transform: translateX(-50%) translateY(-10%); }
-  50% { transform: translateX(50%) translateY(10%); }
-  100% { transform: translateX(-50%) translateY(-10%); }
+@keyframes dashboardGlowPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.06);
+  }
 }
-@keyframes moveInCircle {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(180deg); }
-  100% { transform: rotate(360deg); }
+
+.hero-ambient-blob {
+  animation: ambientDrift 18s ease-in-out infinite;
 }
-@keyframes moveVertical {
-  0% { transform: translateY(-50%); }
-  50% { transform: translateY(50%); }
-  100% { transform: translateY(-50%); }
+
+.dashboard-glow-pulse {
+  animation: dashboardGlowPulse 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ambient-blob,
+  .dashboard-glow-pulse {
+    animation: none;
+  }
 }
 
 @layer base {
@@ -224,6 +239,10 @@
     --marketing-header-gap: calc(var(--spacing) * 16);
     --marketing-header-gap-md: calc(var(--spacing) * 12);
     --marketing-card-padding: calc(var(--spacing) * 6);
+    --marketing-grid-gap: calc(var(--spacing) * 6);
+    --marketing-grid-gap-md: calc(var(--spacing) * 8);
+    --marketing-stack-gap: calc(var(--spacing) * 6);
+    --marketing-stack-gap-sm: calc(var(--spacing) * 4);
   }
 
   html,

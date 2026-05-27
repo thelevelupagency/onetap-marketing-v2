@@ -43,3 +43,5 @@ Tokens in `globals.css` (`--marketing-*`) → primitives → sections. No raw `c
 | Section default / compact / hero | `py-marketing-section-y` / `py-marketing-section-y-compact` / `pt-marketing-page-top pb-marketing-hero-bottom` |
 | Page shell | `pt-marketing-page-top pb-marketing-page-bottom` |
 | Header gaps | `mb-marketing-header-gap` (PageHero), `mb-marketing-header-gap-md` (SectionHeader) |
+| Card grids | `gap-marketing-grid-gap md:gap-marketing-grid-gap-md` via `FeatureGrid` / `MarketingStaggerGrid` |
+| Stacks | `gap-marketing-stack-gap`, `space-y-marketing-stack-gap-sm` (FAQ, dense feature rows) |

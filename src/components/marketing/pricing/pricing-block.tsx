@@ -9,6 +9,7 @@ import {
   SectionHeader,
   TextLink,
 } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 import { homepagePricingHeader } from "@/content/homepage";
 
 interface PricingBlockProps {
@@ -30,12 +31,14 @@ export function PricingBlock({
     <MarketingContainer width={showHeader ? "full" : "wide"}>
       {showHeader ? (
         <>
-          <SectionHeader
-            title={homepagePricingHeader.title}
-            accent={homepagePricingHeader.accent}
-            lead={homepagePricingHeader.lead}
-          />
-          <div className="mb-10 flex justify-center">
+          <Reveal>
+            <SectionHeader
+              title={homepagePricingHeader.title}
+              accent={homepagePricingHeader.accent}
+              lead={homepagePricingHeader.lead}
+            />
+          </Reveal>
+          <div className="mb-marketing-header-gap-md flex justify-center">
             <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} />
           </div>
         </>
@@ -43,10 +46,14 @@ export function PricingBlock({
         <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} className="mb-16" />
       )}
 
-      <PricingPlanCards isAnnual={isAnnual} surface={surface} />
+      <PricingPlanCards
+        isAnnual={isAnnual}
+        surface={surface}
+        withStagger={showHeader}
+      />
 
       {showFullPricingLink ? (
-        <p className="mt-10 text-center">
+        <p className="mt-marketing-header-gap-md text-center">
           <TextLink href="/pricing" showArrow={false}>
             View full pricing & comparison →
           </TextLink>

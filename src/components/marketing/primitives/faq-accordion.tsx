@@ -21,7 +21,7 @@ export function FaqAccordion({
   className,
 }: FaqAccordionProps) {
   return (
-    <Accordion className={cn("space-y-3", className)}>
+    <Accordion className={cn("space-y-marketing-stack-gap-sm", className)}>
       {items.map((faq, index) => (
         <AccordionItem
           key={getValue(faq, index)}

@@ -28,6 +28,10 @@ CSS variables live in `src/app/globals.css` (`:root` + `@theme` aliases). Primit
 | `--marketing-header-gap` | `mb-marketing-header-gap` | `PageHero` |
 | `--marketing-header-gap-md` | `mb-marketing-header-gap-md` | `SectionHeader` (default) |
 | `--marketing-card-padding` | `p-marketing-card-padding` | Marketing cards / tiles |
+| `--marketing-grid-gap` | `gap-marketing-grid-gap` | Card grids (mobile / default row gap) |
+| `--marketing-grid-gap-md` | `md:gap-marketing-grid-gap-md` | Card grids at `md+` |
+| `--marketing-stack-gap` | `gap-marketing-stack-gap`, `space-y-marketing-stack-gap` | Split sections, vertical stacks |
+| `--marketing-stack-gap-sm` | `gap-marketing-stack-gap-sm`, `space-y-marketing-stack-gap-sm` | Dense rows (FAQ accordion, compact features) |
 
 | `MarketingSection` spacing | When |
 |----------------------------|------|
@@ -43,6 +47,14 @@ CSS variables live in `src/app/globals.css` (`:root` + `@theme` aliases). Primit
 | `wide` | `max-w-6xl` |
 | `full` | `max-w-7xl` |
 | `prose` | `max-w-4xl` |
+
+## Motion (homepage / marketing sections)
+
+- Tokens and hooks: `@/lib/motion` (`useMotionConfig`, `MOTION_VIEWPORT`).
+- UI primitives: `@/components/marketing/motion` (`Reveal`, `RevealStagger`, `RevealItem`, `CardReveal`, `MarketingStaggerGrid`).
+- Card grids: `CardReveal` uses per-item `whileInView` (`MOTION_CARD_VIEWPORT`) with stronger `getCardMotionTokens()` — not the parent-grid stagger pattern (which fired too early).
+- Scroll reveals use `whileInView` with `viewport.once`; hero fold uses `mode="mount"`.
+- Do not duplicate raw `initial={{ opacity: 0, y: 20 }}` in sections — see `.cursor/rules/motion-a11y.mdc`.
 
 ## Imports
 
