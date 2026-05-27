@@ -22,4 +22,4 @@ alwaysApply: false
 
 ## Env
 
-- Document new vars in `.env.example` and `.github/workflows/quality-gates.yml` CI env block.
+- Document new vars in `docs/engineering/environment-variables.md` and `.github/workflows/quality-gates.yml` CI env block.

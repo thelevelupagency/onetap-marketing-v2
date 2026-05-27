@@ -32,11 +32,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Environment files (committed, public URLs only):
-
-- [`.env.development`](.env.development) — `next dev` / preview (`card-dev`, `app-dev`)
-- [`.env.production`](.env.production) — production builds (`card`, `app`)
-- [`.env.local`](.env.local) — optional machine overrides (gitignored), e.g. `NEXT_PUBLIC_SITE_URL=http://localhost:3000`
+Environment variables are **not committed**. Copy values from [`docs/engineering/environment-variables.md`](docs/engineering/environment-variables.md) into `.env.local` (gitignored).
 
 ### Checks before PR
 

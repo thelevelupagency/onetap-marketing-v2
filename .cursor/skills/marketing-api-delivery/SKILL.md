@@ -12,7 +12,7 @@ description: "INACTIVE for static site — delivers public API routes with valid
 1. Confirm endpoint contract and data store (Supabase, Redis queue, etc.).
 2. Start from `.cursor/templates/route-handler.ts`.
 3. Add Zod validation, auth if needed, rate limits, Turnstile for public POST.
-4. Wire env vars in `.env.example` and CI workflow.
+4. Document env vars in `docs/engineering/environment-variables.md` and CI workflow.
 5. Security review via `@security-reviewer`.
 6. Integration tests for non-trivial handlers.
 

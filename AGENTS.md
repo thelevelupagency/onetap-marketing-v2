@@ -28,7 +28,7 @@ Delivery follows **`feature/*` → `dev` → `main`** (never direct merge of pro
   - `src/components/layout/` — navigation, footer.
   - `src/components/ui/` — shadcn primitives only; extend marketing via primitives, not forks.
 - **Lib:** `src/lib/*` — blog helpers, typography, constants, search. Keep helpers pure and typed.
-- **Cross-app links:** Dashboard CTAs use `APP_ORIGIN`, `LOGIN_URL`, `SIGNUP_URL` from [`src/lib/constants.ts`](src/lib/constants.ts) (`NEXT_PUBLIC_MAIN_APP_URL`). Card host uses `NEXT_PUBLIC_CARD_BASE_URL` via `getCardHostPrefix()` / `buildCreateBasicsUrl()`. Env sets: [`.env.development`](.env.development) (dev card/app hosts), [`.env.production`](.env.production). Use `GetCardCta` and `SlugClaimCta` — do not hardcode origins in new UI.
+- **Cross-app links:** Dashboard CTAs use `APP_ORIGIN`, `LOGIN_URL`, `SIGNUP_URL` from [`src/lib/constants.ts`](src/lib/constants.ts) (`NEXT_PUBLIC_MAIN_APP_URL`). Card host uses `NEXT_PUBLIC_CARD_BASE_URL` via `getCardHostPrefix()` / `buildCreateBasicsUrl()`. Local env: [`docs/engineering/environment-variables.md`](docs/engineering/environment-variables.md) (never commit `.env*` files). Use `GetCardCta` and `SlugClaimCta` — do not hardcode origins in new UI.
 - **Brand alignment:** Design tokens in `src/app/globals.css` are aligned with `onetap-app`. When changing brand colors or spacing tokens, note whether `onetap-app` needs the same update.
 - **SEO:** Per-route `metadata`; site map in `src/app/sitemap.ts` via `getSiteUrl()` from [`src/lib/site-url.ts`](src/lib/site-url.ts) (default `https://onetap-card.com`). Update sitemap when adding/removing public routes.
 

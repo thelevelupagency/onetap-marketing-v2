@@ -11,6 +11,7 @@ Ship marketing pages quickly and safely. Prefer simple, reliable solutions align
 
 ## Core Defaults
 
+- **Never commit** `.env`, `.env.local`, `.env.development`, `.env.production`, or any env file with values — see `docs/engineering/environment-variables.md`.
 - Default path: **Next.js App Router + TypeScript + in-repo content** (`src/content/`).
 - No Redux, no slice folders, no Supabase until API routes are explicitly added.
 - Favor narrow, incremental changes over broad refactors unless requested.
