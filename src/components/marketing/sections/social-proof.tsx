@@ -70,7 +70,6 @@ export function SocialProof() {
         <SectionHeader
           title="Join thousands of professionals"
           lead="Trusted by freelancers, creators, and agencies worldwide."
-          className="mb-12"
         />
 
         <div className="relative mb-20 overflow-hidden">

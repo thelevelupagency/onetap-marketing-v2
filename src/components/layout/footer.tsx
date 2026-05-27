@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { IconBrandLinkedin, IconBrandInstagram, IconBrandTwitter } from "@tabler/icons-react";
 import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
+import { MarketingContainer } from "@/components/marketing/primitives";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,7 +32,7 @@ export function Footer() {
 
   return (
     <footer className="relative w-full overflow-hidden bg-brand-midnight text-brand-cream pt-16 md:pt-24 pb-8 md:pb-12 border-t border-white/5">
-      <div className="container mx-auto px-4 md:px-8">
+      <MarketingContainer width="full">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12 md:mb-16">
           <div className="lg:col-span-2">
             <Logo
@@ -99,7 +100,7 @@ export function Footer() {
             <Link href="#" className="hover:text-brand-turquoise transition-colors">Terms</Link>
           </div>
         </div>
-      </div>
+      </MarketingContainer>
       <div className="absolute -bottom-24 -right-24 w-[400px] h-[400px] bg-brand-turquoise/5 rounded-full blur-[120px] pointer-events-none" aria-hidden />
     </footer>
   );

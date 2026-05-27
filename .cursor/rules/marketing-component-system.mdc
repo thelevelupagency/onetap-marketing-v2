@@ -35,8 +35,11 @@ Canonical reference: `docs/component-system.md`
 
 ## Spacing contract
 
-| Token | Value |
-|-------|--------|
-| Horizontal | `px-4 md:px-8` via `MarketingContainer` |
-| Section vertical | `py-24` default; `py-16` compact only |
-| Page top | `pt-32` under fixed nav (`PageShell`) |
+Tokens in `globals.css` (`--marketing-*`) → primitives → sections. No raw `container` / `py-*` / `pt-*` on route files.
+
+| Variant | Utility |
+|---------|---------|
+| Gutter | `px-marketing-gutter-x md:px-marketing-gutter-x-md` via `MarketingContainer` |
+| Section default / compact / hero | `py-marketing-section-y` / `py-marketing-section-y-compact` / `pt-marketing-page-top pb-marketing-hero-bottom` |
+| Page shell | `pt-marketing-page-top pb-marketing-page-bottom` |
+| Header gaps | `mb-marketing-header-gap` (PageHero), `mb-marketing-header-gap-md` (SectionHeader) |

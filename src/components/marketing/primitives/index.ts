@@ -3,6 +3,7 @@ export { MarketingSection } from "./marketing-section";
 export { MarketingContainer } from "./marketing-container";
 export { PageShell } from "./page-shell";
 export { PageHero } from "./page-hero";
+export { MarketingPageHero } from "./marketing-page-hero";
 export { SectionHeader } from "./section-header";
 export { MarketingBadge } from "./marketing-badge";
 export { MarketingLinkCard } from "./marketing-link-card";

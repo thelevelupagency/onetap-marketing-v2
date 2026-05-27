@@ -156,3 +156,10 @@ Do not introduce API routes or Supabase dependencies until explicitly requested.
 ## Marketing UI
 
 Follow [`docs/component-system.md`](docs/component-system.md) for layout primitives, spacing, CTAs, and typography. Use `src/components/marketing/primitives/` for new pages and sections — do not duplicate section shells, FAQ accordion styles, or brand accent spans.
+
+### Spacing governance
+
+- **Single source:** change `--marketing-*` tokens in `src/app/globals.css`, then update primitives — not individual pages.
+- **Forbidden on routes:** raw `container`, `py-*`, `pt-*`, `pb-*`, or inline `max-w-*` in `src/app/**/page.tsx`.
+- **Allowed exception:** fold heroes via `MarketingSection spacing="hero"` or `MarketingPageHero` only.
+- **Cross-repo:** brand **color** token changes may need `onetap-app` sync; marketing **layout** tokens stay in this repo unless product requests parity.

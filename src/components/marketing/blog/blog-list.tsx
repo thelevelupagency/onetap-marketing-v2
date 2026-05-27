@@ -84,7 +84,7 @@ export function BlogList() {
       {filtered.length === 0 ? (
         <p className="py-12 text-center text-brand-midnight/50">No posts match your search.</p>
       ) : (
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((post) => (
             <MarketingLinkCard
               key={post.slug}
@@ -100,7 +100,7 @@ export function BlogList() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
-              <div className="p-6">
+              <div className="p-marketing-card-padding">
                 <MarketingBadge className="mb-3 text-xs">
                   {categoryLabels[post.category]}
                 </MarketingBadge>

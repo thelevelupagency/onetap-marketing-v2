@@ -11,11 +11,7 @@ export function FaqSection() {
   return (
     <MarketingSection background="cream">
       <MarketingContainer width="narrow">
-        <SectionHeader
-          title="Frequently asked"
-          accent="questions"
-          className="mb-12"
-        />
+        <SectionHeader title="Frequently asked" accent="questions" />
         <FaqAccordion items={homeFaqs} />
         <div className="mt-10 text-center">
           <TextLink href="/faq">View all FAQs</TextLink>

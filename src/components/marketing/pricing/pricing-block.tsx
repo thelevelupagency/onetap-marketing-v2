@@ -26,13 +26,12 @@ export function PricingBlock({
   const [isAnnual, setIsAnnual] = useState(true);
 
   const content = (
-    <MarketingContainer width={showHeader ? "full" : "default"}>
+    <MarketingContainer width={showHeader ? "full" : "wide"}>
       {showHeader ? (
         <>
           <SectionHeader
             title="Simple, honest pricing."
             lead="Start for free. Upgrade when you need more power."
-            className="mb-8"
           />
           <div className="mb-16 flex justify-center">
             <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} />

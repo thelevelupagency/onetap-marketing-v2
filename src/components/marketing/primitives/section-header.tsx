@@ -7,6 +7,8 @@ interface SectionHeaderProps {
   accent?: React.ReactNode;
   lead?: React.ReactNode;
   align?: "center" | "left";
+  /** Gap below header block before section content. */
+  spacingBelow?: "default" | "none";
   className?: string;
   titleClassName?: string;
 }
@@ -16,6 +18,7 @@ export function SectionHeader({
   accent,
   lead,
   align = "center",
+  spacingBelow = "default",
   className,
   titleClassName,
 }: SectionHeaderProps) {
@@ -24,6 +27,7 @@ export function SectionHeader({
       className={cn(
         align === "center" && "mx-auto max-w-3xl text-center",
         align === "left" && "text-left",
+        spacingBelow === "default" && "mb-marketing-header-gap-md",
         className
       )}
     >

@@ -46,15 +46,14 @@ export function SolutionsGrid() {
           title="Built for"
           accent="every professional"
           lead="Whether you fly solo or manage a team of hundreds, OneTap scales with you."
-          className="mb-16"
         />
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-3">
           {solutions.map((sol) => (
             <MarketingLinkCard
               key={sol.title}
               href={sol.href}
               background="cream"
-              className="p-8"
+              className="p-marketing-card-padding"
             >
               <div
                 className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${sol.accent}`}
