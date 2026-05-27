@@ -1,0 +1,22 @@
+---
+description: shadcn/ui v4 usage for marketing site base components.
+globs: "src/components/ui/**"
+alwaysApply: false
+---
+
+# shadcn (marketing)
+
+## Source of truth
+
+- `components.json` — style `base-nova`, aliases `@/components/ui`.
+- Add components via shadcn CLI; do not fork primitives for marketing-only styling.
+
+## Usage
+
+- Marketing-specific layout belongs in `src/components/marketing/primitives/`, composing `ui/*` where needed.
+- Use `cn()` from `@/lib/utils` for class merging.
+- Button brand variants: `variant="brandPrimary"` etc. as defined in project button component.
+
+## Registries
+
+- Additional blocks may come from configured registries in `components.json` — prefer existing marketing primitives before importing heavy external blocks.

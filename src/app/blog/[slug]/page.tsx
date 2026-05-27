@@ -5,12 +5,13 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getPostBySlug, getRelatedPosts, getAllSlugs, formatDate } from "@/lib/blog";
 import { categoryLabels } from "@/content/blog/posts";
-import { BlogReadingProgress } from "@/components/marketing/blog-reading-progress";
-import { BlogToc } from "@/components/marketing/blog-toc";
-import { BlogShare } from "@/components/marketing/blog-share";
-import { BlogPostContent } from "@/components/marketing/blog-post-content";
-import { RelatedPosts } from "@/components/marketing/related-posts";
-import { Badge } from "@/components/ui/badge";
+import { BlogReadingProgress } from "@/components/marketing/blog/blog-reading-progress";
+import { BlogToc } from "@/components/marketing/blog/blog-toc";
+import { BlogShare } from "@/components/marketing/blog/blog-share";
+import { BlogPostContent } from "@/components/marketing/blog/blog-post-content";
+import { RelatedPosts } from "@/components/marketing/blog/related-posts";
+import { MarketingBadge, MarketingContainer } from "@/components/marketing/primitives";
+import { type as typography } from "@/lib/typography";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -42,17 +43,15 @@ export default async function BlogPostPage({ params }: PageProps) {
     <>
       <BlogReadingProgress />
       <div className="flex flex-col w-full pt-28 pb-24 bg-brand-cream min-h-screen">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <MarketingContainer width="wide">
           <Link href="/blog" className="inline-flex items-center gap-2 text-brand-midnight/60 hover:text-brand-midnight mb-8 text-sm transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Blog
           </Link>
 
           <div className="grid xl:grid-cols-[1fr_220px] gap-12">
             <div className="max-w-3xl">
-              <Badge className="mb-4 bg-brand-turquoise/20 text-brand-midnight border-brand-turquoise/30">
-                {categoryLabels[post.category]}
-              </Badge>
-              <h1 className="font-display text-4xl md:text-5xl text-brand-midnight mb-4">{post.title}</h1>
+              <MarketingBadge className="mb-4">{categoryLabels[post.category]}</MarketingBadge>
+              <h1 className={`${typography.pageTitle} mb-4`}>{post.title}</h1>
               <p className="text-brand-midnight/50 text-sm mb-8">
                 {formatDate(post.date)} · {post.author}
               </p>
@@ -72,7 +71,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             <BlogToc headings={post.headings} />
           </div>
-        </div>
+        </MarketingContainer>
       </div>
     </>
   );

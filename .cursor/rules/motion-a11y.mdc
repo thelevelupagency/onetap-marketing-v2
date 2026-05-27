@@ -1,0 +1,20 @@
+---
+description: Framer Motion and reduced-motion patterns for marketing visuals.
+globs: "{src/components/marketing/phones/**,**/float-wrap.tsx}"
+alwaysApply: false
+---
+
+# Motion And Accessibility
+
+## Reduced motion
+
+- Use `useReducedMotion()` from Framer Motion (see `float-wrap.tsx`) to disable or simplify animations when the user prefers reduced motion.
+
+## Performance
+
+- Avoid layout shift from animated elements; reserve space where floats/phones animate.
+- Prefer `transform` and `opacity` over layout-triggering properties.
+
+## Scope
+
+- Marketing motion lives under `src/components/marketing/phones/` and related section wrappers — do not add gratuitous motion to forms or critical CTAs.

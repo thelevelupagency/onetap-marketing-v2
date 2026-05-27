@@ -1,0 +1,28 @@
+---
+description: In-repo content modules — blog, FAQ, pricing.
+globs: "src/content/**"
+alwaysApply: false
+---
+
+# Content Authoring
+
+## Blog (`src/content/blog/posts.ts`)
+
+- `BlogPost`: `slug`, `title`, `excerpt`, `category`, `date`, `author`, `coverImage`, `content[]`, `headings[]`.
+- Slugs: kebab-case, unique, stable (URLs depend on them).
+- `headings[].id` must match `##` anchor ids implied in markdown-style `content` blocks.
+- `category` must be a valid `BlogCategory` key.
+
+## FAQ / pricing
+
+- Keep structured data in `src/content/faqs.ts` and `src/content/pricing.ts`.
+- UI reads content modules — avoid duplicating the same copy in components.
+
+## Dates and locale
+
+- ISO dates in content (`YYYY-MM-DD`); display formatting via `src/lib/blog.ts` / `toLocaleDateString("en-US")` until i18n exists.
+
+## After adding blog posts
+
+- No `generateStaticParams` change needed if slug is in `posts` array.
+- Sitemap picks up slugs via `getAllSlugs()`.

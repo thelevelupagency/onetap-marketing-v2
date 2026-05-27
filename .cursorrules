@@ -1,0 +1,20 @@
+# OneTap marketing v2 — Cursor project rules
+
+## Ship it
+
+When the user says **Ship it** (any casing), run in the repo:
+
+1. `npm run typecheck`
+2. `npm run lint`
+3. `npm run build`
+
+Then output a **PR-ready summary**:
+
+- Intent of the change
+- Key files touched
+- Routes / SEO impact (if any)
+- Risk notes
+- Verification completed (commands above)
+- Screenshot note for visible UI changes
+
+These steps are run by the agent when asked — they are not automatic git hooks.

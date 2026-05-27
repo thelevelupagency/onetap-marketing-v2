@@ -164,6 +164,28 @@ const Navbar1 = ({
   className,
 }: Navbar1Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+
+  const blurMenuFocus = () => {
+    requestAnimationFrame(() => {
+      const active = document.activeElement;
+      if (active instanceof HTMLElement) {
+        active.blur();
+      }
+    });
+  };
+
+  const closeDesktopMenu = () => {
+    setOpenMenu(null);
+    blurMenuFocus();
+  };
+
+  const handleMenuValueChange = (value: string | null) => {
+    setOpenMenu(value);
+    if (value === null) {
+      blurMenuFocus();
+    }
+  };
 
   return (
     <section className={cn("py-0", className)}>
@@ -173,21 +195,22 @@ const Navbar1 = ({
             <LogoMark logo={logo} />
           </div>
           <div className="flex items-center justify-center overflow-visible">
-            <NavigationMenu className="flex-none max-w-none overflow-visible">
+            <NavigationMenu
+              className="flex-none max-w-none overflow-visible"
+              value={openMenu}
+              onValueChange={handleMenuValueChange}
+            >
               <NavigationMenuList>
-                {menu.map((item) => renderMenuItem(item))}
+                {menu.map((item) => renderMenuItem(item, closeDesktopMenu))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
           <div className="flex shrink-0 items-center justify-end gap-2">
             {auth?.login?.title ? (
               <Button
-                variant="outline"
+                variant="brandOutline"
                 size="sm"
-                className={cn(
-                  "h-8 rounded-full border-brand-midnight/20 text-brand-midnight hover:bg-brand-midnight/5",
-                  auth.login.className
-                )}
+                className={cn("h-8 rounded-full", auth.login.className)}
                 render={<NavAnchor href={auth.login.url}>{auth.login.title}</NavAnchor>}
                 nativeButton={false}
               />
@@ -244,8 +267,8 @@ const Navbar1 = ({
                   <div className="flex shrink-0 flex-col gap-3 border-t border-brand-midnight/10 px-4 py-4">
                     {auth.login?.title ? (
                       <Button
-                        variant="outline"
-                        className="h-12 w-full rounded-full border-brand-midnight/20 bg-transparent text-base font-medium text-brand-midnight shadow-none hover:bg-brand-midnight/5 hover:text-brand-midnight"
+                        variant="brandOutline"
+                        className="h-12 w-full rounded-full text-base font-medium"
                         render={
                           <NavAnchor href={auth.login.url} onClick={() => setMobileOpen(false)}>
                             {auth.login.title}
@@ -255,15 +278,14 @@ const Navbar1 = ({
                       />
                     ) : null}
                     {auth.signup?.title ? (
-                      <div className="w-full" onClick={() => setMobileOpen(false)}>
-                        <GetCardCta
-                          href={auth.signup.url}
-                          size="lg"
-                          className={cn("w-full [&_a]:block [&_button]:h-12 [&_button]:w-full [&_button]:text-base", auth.signup.className)}
-                        >
-                          {auth.signup.title}
-                        </GetCardCta>
-                      </div>
+                      <GetCardCta
+                        href={auth.signup.url}
+                        size="mobileNav"
+                        onClick={() => setMobileOpen(false)}
+                        className={auth.signup.className}
+                      >
+                        {auth.signup.title}
+                      </GetCardCta>
                     ) : null}
                   </div>
                 ) : null}
@@ -276,11 +298,19 @@ const Navbar1 = ({
   );
 };
 
-const renderMenuItem = (item: MenuItem) => {
+const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void) => {
   if (item.items) {
     return (
-      <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger className="text-brand-midnight/60 hover:text-brand-midnight bg-transparent">
+      <NavigationMenuItem key={item.title} value={item.title}>
+        <NavigationMenuTrigger
+          className={cn(
+            "text-brand-midnight/60 hover:text-brand-midnight",
+            "bg-transparent hover:bg-transparent focus:bg-transparent",
+            "data-open:bg-transparent data-popup-open:bg-transparent",
+            "data-open:hover:bg-transparent data-popup-open:hover:bg-transparent",
+            "focus-visible:ring-brand-navy/25"
+          )}
+        >
           {item.title}
         </NavigationMenuTrigger>
         <NavigationMenuContent className="bg-white text-brand-midnight border border-brand-midnight/10">
@@ -288,7 +318,14 @@ const renderMenuItem = (item: MenuItem) => {
             <NavigationMenuLink
               key={subItem.title}
               className="w-80"
-              render={<SubMenuLink item={subItem} className="min-w-80" />}
+              closeOnClick
+              render={
+                <SubMenuLink
+                  item={subItem}
+                  className="min-w-80"
+                  onClick={closeDesktopMenu}
+                />
+              }
             />
           ))}
         </NavigationMenuContent>
@@ -300,6 +337,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
+        closeOnClick
         className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-brand-midnight/60 transition-colors hover:bg-brand-cream hover:text-brand-midnight"
       >
         {item.title}
