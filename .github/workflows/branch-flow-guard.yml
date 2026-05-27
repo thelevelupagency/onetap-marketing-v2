@@ -1,0 +1,31 @@
+name: Branch Flow Guard
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  enforce_promotion_path:
+    name: Promotion Path
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce branch promotion flow
+        run: |
+          echo "Base branch: ${{ github.base_ref }}"
+          echo "Head branch: ${{ github.head_ref }}"
+
+          PROTECTED_BRANCHES_REGEX='^(main|dev|staging|preprod|production)$'
+
+          if [ "${{ github.base_ref }}" = "main" ] && [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "::error::PRs to main must come from dev. Open/merge into dev first, then promote dev -> main."
+            exit 1
+          fi
+
+          if [ "${{ github.base_ref }}" = "dev" ] && echo "${{ github.head_ref }}" | grep -Eq "$PROTECTED_BRANCHES_REGEX"; then
+            echo "::error::PRs to dev must come from a side branch (for example feature/*), not from protected environment branches."
+            exit 1
+          fi
+
+          echo "Branch flow policy passed."

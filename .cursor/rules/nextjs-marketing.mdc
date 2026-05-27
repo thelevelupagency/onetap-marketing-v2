@@ -1,0 +1,31 @@
+---
+description: Next.js App Router patterns for static marketing routes.
+globs: "src/app/**"
+alwaysApply: false
+---
+
+# Next.js (marketing)
+
+## Defaults
+
+- Prefer **Server Components**; add `"use client"` only for interactivity, hooks, or browser APIs.
+- Use static generation where possible (`generateStaticParams` for blog slugs).
+- Keep `layout.tsx` for fonts, global styles, and shell providers only.
+
+## Routes
+
+- One primary concern per `page.tsx`: metadata + composition.
+- Colocate route-specific sections in `src/components/marketing/`, not bloated page files.
+
+## Data
+
+- Read marketing copy from `src/content/` or `src/lib/` helpers — not fetches to CMS unless explicitly added.
+
+## Images
+
+- Use `next/image` with configured remote patterns (`next.config.ts`).
+- Provide meaningful `alt` text for marketing imagery.
+
+## Future
+
+- API routes under `src/app/api/**` follow `marketing-api-future.mdc` when introduced.

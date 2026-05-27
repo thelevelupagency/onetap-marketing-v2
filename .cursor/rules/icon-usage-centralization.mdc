@@ -1,0 +1,23 @@
+---
+description: Consistent icon libraries for marketing components.
+globs: "{src/**/*.tsx,src/**/*.ts}"
+alwaysApply: false
+---
+
+# Icon Usage
+
+## Libraries
+
+- **Lucide** (`lucide-react`) — UI icons (arrows, checks, feature glyphs).
+- **Tabler** (`@tabler/icons-react`) — brand/social icons where already used (footer).
+
+## Rules
+
+- Pick one library per component file when possible; do not mix duplicate glyphs (e.g. two different check icons) without reason.
+- Keep imports tree-shaken (named imports only).
+- If an icon is reused in many files, consider a small re-export module under `src/components/marketing/icons.ts` when touching those files — not required for one-off usage.
+
+## Avoid
+
+- Inline SVG duplicates of icons already available in Lucide/Tabler.
+- Enormous icon bundles from importing entire libraries.

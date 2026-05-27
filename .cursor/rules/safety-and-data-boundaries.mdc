@@ -1,0 +1,32 @@
+---
+description: Security and data boundaries for the public marketing site.
+alwaysApply: true
+---
+
+# Safety And Data Boundaries
+
+## Non-negotiables
+
+- Never commit secrets, API keys, or service-role tokens.
+- Never expose server-only env vars to client bundles (`NEXT_PUBLIC_*` only for client-safe values).
+- Treat any future API input as untrusted.
+
+## Static site (current)
+
+- No PII in repo content unless intentional marketing copy.
+- External links (app login, card host) must use `src/lib/constants.ts` helpers where applicable.
+
+## Future public endpoints
+
+When adding `src/app/api/**`:
+
+- Validate with explicit schemas (prefer Zod).
+- Rate-limit public submission endpoints.
+- Use Cloudflare Turnstile on lead forms.
+- Return safe client errors; keep details in server logs only.
+- No email/phone/name in logs.
+
+## Analytics
+
+- Do not add third-party tracking SDKs unless explicitly approved.
+- First-party analytics (if added) must follow team privacy policy and AGENTS.md.

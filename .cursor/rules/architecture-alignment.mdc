@@ -1,0 +1,34 @@
+---
+description: Enforce marketing site layering — pages, primitives, content, and lib helpers.
+alwaysApply: true
+---
+
+# Architecture Alignment (marketing v2)
+
+## Layering
+
+| Layer | Location | Responsibility |
+|-------|----------|----------------|
+| Routes | `src/app/**/page.tsx` | `metadata`, compose sections, minimal logic |
+| Domain UI | `src/components/marketing/{sections,pricing,blog,solutions,phones}/` | Page-specific presentation |
+| Primitives | `src/components/marketing/primitives/` | `PageShell`, `MarketingSection`, headers, CTAs, FAQ |
+| Content | `src/content/**` | Copy, FAQ data, pricing tables, blog posts |
+| Lib | `src/lib/**` | Pure helpers (blog, typography, constants, search) |
+| Shell | `src/components/layout/` | Nav, footer |
+| shadcn | `src/components/ui/` | Base UI only |
+
+## Required boundaries
+
+- Route files must not embed long copy blocks — use `src/content/` or section components.
+- Do not duplicate section padding (`py-*` on routes) — use `MarketingSection` / `PageShell`.
+- Do not hardcode app or card origins — use `@/lib/constants` and CTA primitives.
+- New major logic belongs in `src/lib/` until API slices are introduced.
+
+## Future APIs
+
+When `src/app/api/**` appears, add thin route handlers and delegate to modules under a dedicated folder (for example `src/server/` or slice-style `src/slices/`). Activate `marketing-api-future.mdc`.
+
+## Verification
+
+- Run typecheck, lint, build before merge.
+- See `testing-strategy.mdc` for risk-based expectations.

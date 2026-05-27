@@ -1,0 +1,30 @@
+---
+description: React component standards for marketing UI.
+globs: "src/components/**/*.tsx"
+alwaysApply: false
+---
+
+# React UI Patterns
+
+## Component design
+
+- Keep components focused and composable.
+- Use typed props; avoid `any` for public component APIs.
+- Extract hooks only when logic is reused across components.
+
+## Server vs client
+
+- Default to Server Components.
+- `"use client"` for state, effects, Framer Motion, search inputs, and event handlers.
+- For client-only display (live clock, `window` access): use `useIsClient()` from `@/lib/use-is-client` — not `useEffect` + `setState` for hydration gates.
+
+## Accessibility
+
+- Semantic HTML for landmarks and headings.
+- Keyboard and focus for interactive controls (accordions, nav, CTAs).
+- Respect `useReducedMotion` where motion is used (see `motion-a11y.mdc`).
+
+## Styling
+
+- Use `cn()` and existing variants before new abstractions.
+- Keep conditional classes readable.

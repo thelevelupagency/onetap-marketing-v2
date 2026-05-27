@@ -1,16 +1,27 @@
 import { sanitizeCardSlug } from "@/lib/card-slug";
 
-export const APP_ORIGIN = "https://app.onetap-card.com";
-export const LOGIN_URL = `${APP_ORIGIN}/login`;
-export const SIGNUP_URL = `${APP_ORIGIN}/register`;
-
+const DEFAULT_APP_ORIGIN = "https://app.onetap-card.com";
 const DEFAULT_CARD_BASE_URL = "https://card.onetap-card.com";
+
+function normalizeOrigin(value: string): string {
+  return value.replace(/\/$/, "");
+}
+
+function getAppOrigin(): string {
+  const raw = process.env.NEXT_PUBLIC_MAIN_APP_URL?.trim();
+  if (!raw) return DEFAULT_APP_ORIGIN;
+  return normalizeOrigin(raw);
+}
 
 function getCardBaseUrl(): string {
   const raw = process.env.NEXT_PUBLIC_CARD_BASE_URL?.trim();
   if (!raw) return DEFAULT_CARD_BASE_URL;
-  return raw.replace(/\/$/, "");
+  return normalizeOrigin(raw);
 }
+
+export const APP_ORIGIN = getAppOrigin();
+export const LOGIN_URL = `${APP_ORIGIN}/login`;
+export const SIGNUP_URL = `${APP_ORIGIN}/register`;
 
 /** Host + trailing slash for inline slug inputs (e.g. `card.onetap-card.com/`). */
 export function getCardHostPrefix(): string {

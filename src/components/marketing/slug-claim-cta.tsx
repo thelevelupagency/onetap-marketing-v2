@@ -76,6 +76,7 @@ export function SlugClaimCta({ slug, onSlugChange, className }: SlugClaimCtaProp
         </div>
         <Button
           type="submit"
+          variant="brandPrimary"
           size="lg"
           disabled={!canSubmit}
           className={cn(
