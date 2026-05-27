@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function FreelancersPage() {
   return (
-    <PageShell offsetTop="none" className="bg-brand-cream">
+    <PageShell offsetTop="none" pageBottom="none" className="bg-brand-cream">
       <FreelancerHero />
       <FreelancerFeatures />
       <FreelancerCreators />

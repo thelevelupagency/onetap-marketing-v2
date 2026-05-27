@@ -13,6 +13,7 @@ import {
   MarketingContainer,
   MarketingSection,
 } from "@/components/marketing/primitives";
+import { heroCopy } from "@/content/homepage";
 import { type as typography } from "@/lib/typography";
 
 export function HeroSection() {
@@ -20,7 +21,12 @@ export function HeroSection() {
   const centerPhoneSlug = slug.trim() || "your-name";
 
   return (
-    <MarketingSection background="cream" spacing="hero" className="relative flex items-center">
+    <MarketingSection
+      id="hero"
+      background="cream"
+      spacing="hero"
+      className="relative flex items-center"
+    >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full bg-brand-turquoise/10 blur-3xl" />
         <div className="absolute bottom-1/4 -right-32 h-96 w-96 rounded-full bg-brand-navy/5 blur-3xl" />
@@ -36,7 +42,7 @@ export function HeroSection() {
               transition={{ duration: 0.6 }}
             >
               <MarketingBadge icon={Sparkles} className="mb-6 hover:bg-brand-turquoise/30">
-                Digital business cards, reimagined
+                {heroCopy.badge}
               </MarketingBadge>
             </motion.div>
 
@@ -57,8 +63,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className={`${typography.lead} mx-auto mb-10 max-w-xl lg:mx-0`}
             >
-              Create a stunning personal microsite, share it with a tap or scan, and capture
-              leads automatically — no app required for recipients.
+              {heroCopy.subheadline}
             </motion.p>
 
             <motion.div
@@ -85,7 +90,16 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="mt-8 text-sm text-brand-midnight/50"
             >
-              No credit card required · Setup in 60 seconds
+              {heroCopy.microcopy}
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.55 }}
+              className="mt-4 text-sm text-brand-midnight/60"
+            >
+              {heroCopy.trustLine}
             </motion.p>
           </div>
 
@@ -93,7 +107,7 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="m-0 flex min-w-0 w-full justify-center p-0 leading-none"
+            className="m-0 flex min-w-0 w-full justify-center p-0 leading-none lg:sticky lg:top-28 lg:self-start"
           >
             <HeroPhonePreview centerSlug={centerPhoneSlug} />
           </motion.div>

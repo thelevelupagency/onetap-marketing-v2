@@ -1,27 +1,27 @@
 export const homeFaqs = [
   {
-    q: "Do recipients need an app to use OneTap?",
-    a: "No app required. OneTap cards open instantly in any smartphone's browser when tapped or scanned via QR code.",
+    q: "Do people need an app to view my card?",
+    a: "No. OneTap is web-first. People can open your card in any browser, save your contact, click your links, and contact you without downloading an app.",
   },
   {
-    q: "Can I update my info after printing physical cards?",
-    a: "Yes, instantly. Your QR code and NFC link point to a dynamic URL. Update your dashboard, and it reflects everywhere in real-time.",
+    q: "Can I update my card after sharing it?",
+    a: "Yes. You can update your information anytime from the dashboard. Your live card updates instantly.",
   },
   {
-    q: "Does it work with NFC?",
-    a: "Yes, fully compatible. We support NFC business cards, keychains, and phone tags that link directly to your OneTap profile.",
+    q: "Can visitors save my contact to their phone?",
+    a: "Yes. OneTap supports contact saving through a vCard-style experience, making it easier for people to keep your details.",
   },
   {
-    q: "Is my data secure?",
-    a: "OneTap features enterprise-grade security and is fully GDPR compliant. You control exactly what is public.",
+    q: "Can I use OneTap for my business, not just myself?",
+    a: "Yes. OneTap works for freelancers, service businesses, shops, agencies, teams, and companies that want a professional mobile profile.",
   },
   {
-    q: "What happens if I lose my phone?",
-    a: "Your digital identity is safe in the cloud. Log in from any new device to instantly access and manage your profile.",
+    q: "Can I collect leads from my card?",
+    a: "Yes. You can add a lead capture form so visitors can send their name, phone, email, and message directly from your card.",
   },
   {
-    q: "Can teams manage multiple cards?",
-    a: "Yes. Agency plans include an admin dashboard, Brand Lock, bulk import, and team-wide analytics.",
+    q: "Is OneTap only for digital business cards?",
+    a: "No. OneTap is more than a card. It works like a personal microsite where you can show your services, links, portfolio, videos, testimonials, contact options, and more.",
   },
 ];
 
@@ -33,6 +33,6 @@ export const allFaqs = [
   },
   {
     q: "Can I use my own domain?",
-    a: "Premium and Agency plans support custom URLs and deeper branding options. Contact sales for white-label domain setup.",
+    a: "Pro and Agencies & Teams plans support custom URLs and deeper branding options. Contact sales for white-label domain setup.",
   },
 ];

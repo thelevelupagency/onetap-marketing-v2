@@ -50,9 +50,11 @@ export function PricingComparison() {
                 <th className="p-4 text-left font-medium text-brand-midnight">Feature</th>
                 <th className={`${typography.tableHeading} p-4 text-center`}>Free</th>
                 <th className={`${typography.tableHeading} bg-brand-turquoise/5 p-4 text-center`}>
-                  Premium
+                  Pro
                 </th>
-                <th className={`${typography.tableHeading} p-4 text-center`}>Agency</th>
+                <th className={`${typography.tableHeading} p-4 text-center`}>
+                  Agencies & Teams
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -81,12 +83,18 @@ export function PricingComparison() {
           <Accordion className="space-y-3">
             {comparisonFeatures.map((row, i) => (
               <FaqAccordionComparisonItem key={row.name} value={`row-${i}`} title={row.name}>
-                {(["free", "premium", "agency"] as const).map((tier) => (
+                {(
+                  [
+                    { key: "free" as const, label: "Free" },
+                    { key: "premium" as const, label: "Pro" },
+                    { key: "agency" as const, label: "Agencies & Teams" },
+                  ] as const
+                ).map(({ key: tier, label }) => (
                   <div
                     key={tier}
                     className="flex min-h-5 items-center justify-between gap-4"
                   >
-                    <span className="text-sm capitalize text-brand-midnight/60">{tier}</span>
+                    <span className="text-sm text-brand-midnight/60">{label}</span>
                     <div className="flex w-28 shrink-0 items-center justify-end">
                       <CellValue value={row[tier]} />
                     </div>
