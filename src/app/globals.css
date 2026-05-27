@@ -30,8 +30,9 @@
   /* Plus Jakarta Sans (body) | Space Grotesk (display) | Montserrat (logo) */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  /* Alias: prefer font-display in new code */
+  --font-heading: var(--font-display);
   --font-logo: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
 
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -65,6 +66,79 @@
   --animate-fourth: moveHorizontal 40s ease infinite;
   --animate-fifth: moveInCircle 20s ease infinite;
   --animate-marquee: marquee 30s linear infinite;
+}
+
+/* Marketing type scale — sizes/colors; base h1–h6 set family, weight, uppercase, tracking */
+@utility type-hero {
+  @apply font-display text-5xl text-brand-midnight md:text-6xl lg:text-7xl;
+}
+
+@utility type-display {
+  @apply font-display text-4xl text-brand-midnight md:text-5xl lg:text-6xl;
+}
+
+@utility type-page-title {
+  @apply font-display text-5xl text-brand-midnight md:text-6xl lg:text-7xl;
+}
+
+@utility type-section-title {
+  @apply font-display text-4xl text-brand-midnight md:text-5xl;
+}
+
+@utility type-subsection-title {
+  @apply font-display text-xl text-brand-midnight md:text-2xl;
+}
+
+@utility type-step-title {
+  @apply font-display text-2xl text-brand-midnight md:text-3xl;
+}
+
+@utility type-card-title {
+  @apply font-display text-xl text-brand-midnight;
+}
+
+@utility type-eyebrow {
+  @apply font-sans text-xs font-medium uppercase tracking-wider;
+}
+
+@utility type-display-error {
+  @apply font-display text-6xl text-brand-midnight md:text-8xl;
+}
+
+@utility type-price {
+  @apply font-display text-5xl font-bold;
+}
+
+@utility type-table-heading {
+  @apply font-display text-lg font-bold tracking-tight text-brand-midnight uppercase;
+}
+
+@utility type-lead {
+  @apply font-sans text-lg leading-relaxed text-brand-midnight/70 md:text-xl;
+}
+
+@utility type-section-lead {
+  @apply font-sans text-lg leading-relaxed text-brand-midnight/70;
+}
+
+@utility type-body {
+  @apply font-sans text-base leading-relaxed text-brand-midnight/80;
+}
+
+@utility type-body-sm {
+  @apply font-sans text-sm leading-relaxed text-brand-midnight/70;
+}
+
+@utility type-label {
+  @apply font-sans text-sm font-medium text-brand-midnight;
+}
+
+@utility type-caption {
+  @apply font-sans text-sm text-brand-midnight/60;
+}
+
+@utility type-accordion-question {
+  @apply font-sans text-base font-medium text-brand-midnight md:text-lg;
 }
 
 @keyframes marquee {
@@ -162,7 +236,4 @@
     letter-spacing: -0.02em;
   }
 
-  th.font-display {
-    text-transform: uppercase;
-  }
 }

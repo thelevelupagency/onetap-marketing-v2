@@ -1,0 +1,19 @@
+---
+description: Route AI work to the smallest applicable rule set (marketing project map).
+globs: "**/*"
+alwaysApply: true
+---
+
+# Project map
+
+- src/components/marketing/** and src/app/**/page.tsx → @marketing-component-system.mdc @seo-metadata.mdc — see docs/component-system.md
+- src/content/** → @content-authoring.mdc
+- src/app/** (routes, layout, sitemap) → @nextjs-marketing.mdc @seo-metadata.mdc
+- src/app/api/** (future) → @marketing-api-future.mdc @supabase-backend-future.mdc
+- src/components/ui/** → @shadcn-marketing.mdc
+- src/components/** (general UI) → @react-ui-patterns.mdc
+- src/**/*.tsx and src/app/globals.css → @tailwind-marketing.mdc
+- src/components/marketing/phones/** and float-wrap.tsx → @motion-a11y.mdc
+- Icons in TSX → @icon-usage-centralization.mdc
+- CI / verification → @testing-strategy.mdc docs/engineering/ci-workflow.md
+- Stack, workflows, playbooks → AGENTS.md

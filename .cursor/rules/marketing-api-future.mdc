@@ -1,0 +1,34 @@
+---
+description: "INACTIVE until src/app/api exists — public API safety checklist for leads/analytics."
+globs: "src/app/api/**"
+alwaysApply: false
+---
+
+# Marketing API (future)
+
+**Status:** Dormant until `src/app/api/**` routes exist. See `AGENTS.md` → Future Backend.
+
+When activating lead capture or sync endpoints:
+
+## Handler shape
+
+- Thin route handlers; delegate to application modules.
+- Zod (or equivalent) validation on all inputs.
+- `Cache-Control: no-store` on mutation responses.
+
+## Security
+
+- Rate limiting on public POST endpoints (Redis/Upstash pattern from `onetap-marketing` v1).
+- Cloudflare Turnstile verification on public forms.
+- Safe client errors; no stack traces or internal ids leaked.
+- No PII in logs.
+
+## Privacy
+
+- Privacy Policy link on forms collecting personal data.
+- Do not add tracking fields without stated legal basis.
+
+## Skill and template
+
+- `.cursor/skills/marketing-api-delivery/SKILL.md`
+- `.cursor/templates/route-handler.ts`

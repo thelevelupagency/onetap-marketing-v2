@@ -1,29 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Navbar1 } from "@/components/navbar1";
 import { cn } from "@/lib/utils";
 import { LOGIN_URL, SIGNUP_URL } from "@/lib/constants";
 
-const navSignInClassName =
-  "rounded-full border-brand-midnight/20 bg-transparent px-6 text-sm font-medium text-brand-midnight shadow-none hover:bg-brand-midnight/5 hover:text-brand-midnight";
+const navSignInClassName = "rounded-full px-6 text-sm font-medium";
 
 export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-100 flex h-[72px] items-center overflow-visible transition-[background-color,backdrop-filter,box-shadow,border-color] duration-300",
-        isScrolled
-          ? "bg-brand-cream/80 backdrop-blur-2xl border-b border-brand-midnight/5 shadow-glass"
-          : "bg-transparent border-b border-transparent"
+        "fixed top-0 left-0 right-0 z-100 flex h-[72px] items-center overflow-visible bg-brand-cream/80 backdrop-blur-2xl border-b border-brand-midnight/5 transition-shadow duration-300",
+        isScrolled && "shadow-glass"
       )}
     >
       <Navbar1

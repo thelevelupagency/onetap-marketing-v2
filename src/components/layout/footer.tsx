@@ -31,7 +31,7 @@ export function Footer() {
 
   return (
     <footer className="relative w-full overflow-hidden bg-brand-midnight text-brand-cream pt-16 md:pt-24 pb-8 md:pb-12 border-t border-white/5">
-      <div className="container mx-auto px-6 md:px-8">
+      <div className="container mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12 md:mb-16">
           <div className="lg:col-span-2">
             <Logo
@@ -59,7 +59,7 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:col-span-3 gap-8">
             {Object.entries(footerLinks).map(([key, links]) => (
               <div key={key}>
-                <h4 className="font-display text-xl text-white mb-6">{key}</h4>
+                <h4 className="type-subsection-title mb-6 text-white">{key}</h4>
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
@@ -76,7 +76,7 @@ export function Footer() {
 
         <div className="border-y border-white/10 py-10 mb-10 flex flex-col lg:flex-row justify-between items-center gap-6">
           <div className="max-w-md text-center lg:text-left">
-            <h3 className="font-display text-2xl text-white mb-2">Join our newsletter</h3>
+            <h3 className="type-subsection-title mb-2 text-white">Join our newsletter</h3>
             <p className="text-brand-cream/60">Get networking tips and product updates delivered to your inbox.</p>
           </div>
           <form className="w-full max-w-md flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>

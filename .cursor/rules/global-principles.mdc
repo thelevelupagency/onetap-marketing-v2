@@ -1,0 +1,35 @@
+---
+description: Phase 1 delivery principles for the static marketing site.
+alwaysApply: true
+---
+
+# Global Principles (Phase 1)
+
+## Mission
+
+Ship marketing pages quickly and safely. Prefer simple, reliable solutions aligned with the current static Next.js stack.
+
+## Core Defaults
+
+- **Never commit** `.env.local`, `.env.development`, or `.env.production` — only `.env.example` (template). See `docs/engineering/environment-variables.md`.
+- Default path: **Next.js App Router + TypeScript + in-repo content** (`src/content/`).
+- No Redux, no slice folders, no Supabase until API routes are explicitly added.
+- Favor narrow, incremental changes over broad refactors unless requested.
+- Avoid Phase 2 complexity early (CMS, analytics pipelines, microservices).
+
+## Design Principles
+
+- Make behavior explicit and typed.
+- Keep server/client boundaries clear; default to Server Components.
+- Choose readability over cleverness.
+- Reuse marketing primitives before new one-off layout patterns.
+
+## Decision Heuristics
+
+- If two options are valid, pick the one with lower operational overhead.
+- Reuse `docs/component-system.md` and existing sections before inventing new shells.
+- Document tradeoffs briefly when making non-obvious decisions.
+
+## Cross-repo
+
+- Brand token changes in `globals.css` may need a matching update in `onetap-app` — note in PR summary.

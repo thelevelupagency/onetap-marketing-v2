@@ -1,0 +1,41 @@
+---
+description: Plan-first execution workflow, change approval for substantial work, and completion criteria.
+alwaysApply: true
+---
+
+# Execution Workflow
+
+## Working mode
+
+- For substantial tasks: plan first, then implement.
+- For small localized fixes: implement directly with concise rationale.
+- Keep changes scoped; avoid unrelated edits.
+
+## Change approval (substantial work)
+
+1. Ask only critical clarification questions.
+2. Provide a concise plan.
+3. Wait for explicit user approval.
+4. Implement in small slices with progress updates.
+
+**Edit gate**
+
+- Do not make file edits for substantial tasks before explicit approval.
+- Use direct implementation without plan only for small, localized, low-risk fixes.
+
+**Plan file**
+
+- Store approved plans under `docs/plans/<date>-<short-topic>.md`.
+
+## Done criteria
+
+- `npm run typecheck`, `npm run lint`, and `npm run build` pass for touched areas.
+- Marketing pages follow `docs/component-system.md`.
+- New public routes update `src/app/sitemap.ts` when applicable.
+- Future API changes include security verification notes.
+
+## Communication
+
+- State intended approach before major edits.
+- Summarize what changed, why, and how it was verified.
+- Call out assumptions explicitly.

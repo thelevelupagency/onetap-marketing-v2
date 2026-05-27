@@ -1,0 +1,26 @@
+---
+description: Tailwind v4 and brand tokens for the marketing site.
+globs: "{src/**/*.tsx,src/app/globals.css}"
+alwaysApply: false
+---
+
+# Tailwind (marketing)
+
+## Mobile first
+
+- Base styles for mobile; `md:` / `lg:` for larger breakpoints.
+
+## Tokens
+
+- Use semantic brand tokens from `src/app/globals.css` (`brand-cream`, `brand-turquoise`, etc.).
+- Typography scales: `@/lib/typography` in TSX; `@utility` definitions in `globals.css`.
+- Do not add one-off hex colors when a token exists.
+
+## Spacing
+
+- Section spacing via `MarketingSection` / component-system contract — avoid arbitrary `py-[NNpx]` on pages.
+- Prefer Tailwind scale steps (`4`, `6`, `8`, `12`, `16`, `24`) for gaps and padding inside components.
+
+## Alignment with app
+
+- Token changes may need mirroring in `onetap-app` — note in PR.

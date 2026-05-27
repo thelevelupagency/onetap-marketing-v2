@@ -1,0 +1,42 @@
+---
+description: Marketing layout primitives, spacing contract, and CTA patterns.
+globs: "{src/components/marketing/**,src/app/**/page.tsx}"
+alwaysApply: false
+---
+
+# Marketing Component System
+
+Canonical reference: `docs/component-system.md`
+
+## Pages
+
+- Export `metadata` from `page.tsx`.
+- Compose with `PageShell` + `PageHero` + domain sections when using the standard marketing chrome.
+- No raw `container` or section `py-*` on route files.
+- No inline `italic text-brand-turquoise` accent spans — use `SectionHeader` / `PageHero` `accent` prop.
+
+## Sections
+
+- Use `MarketingSection` + `SectionHeader` + content.
+- Import primitives from `@/components/marketing/primitives`.
+
+## CTAs
+
+- Signup/card flows: `GetCardCta` or `SlugClaimCta`.
+- Other primary actions: `Button variant="brandPrimary"`.
+
+## FAQs
+
+- `FaqAccordion` + data from `src/content/`.
+
+## Typography
+
+- `import { type } from "@/lib/typography"` in TSX (synced with `@utility` in `globals.css`).
+
+## Spacing contract
+
+| Token | Value |
+|-------|--------|
+| Horizontal | `px-4 md:px-8` via `MarketingContainer` |
+| Section vertical | `py-24` default; `py-16` compact only |
+| Page top | `pt-32` under fixed nav (`PageShell`) |

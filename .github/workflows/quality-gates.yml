@@ -1,0 +1,100 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+env:
+  NEXT_PUBLIC_SITE_URL: https://onetap-card.com
+  NEXT_PUBLIC_CARD_BASE_URL: https://card.onetap-card.com
+  NEXT_PUBLIC_MAIN_APP_URL: https://app.onetap-card.com
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: dudwjf2pu
+  # Future API routes — uncomment when src/app/api/** is added:
+  # NEXT_PUBLIC_SUPABASE_URL: https://example.com
+  # NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-anon-key
+  # SUPABASE_SERVICE_ROLE_KEY: ci-service-role-key
+  # UPSTASH_REDIS_REST_URL: https://example.com
+  # UPSTASH_REDIS_REST_TOKEN: ci-upstash-token
+  # NEXT_PUBLIC_TURNSTILE_SITE_KEY: ci-turnstile-site-key
+  # TURNSTILE_SECRET_KEY: ci-turnstile-secret-key
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies (resilient)
+        shell: bash
+        run: |
+          for i in {1..5}; do
+            npm ci --no-audit --prefer-offline && exit 0
+            echo "npm ci failed (attempt $i), retrying..."
+            sleep $((i * 10))
+          done
+          exit 1
+
+      - name: Run lint
+        run: npm run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies (resilient)
+        shell: bash
+        run: |
+          for i in {1..5}; do
+            npm ci --no-audit --prefer-offline && exit 0
+            echo "npm ci failed (attempt $i), retrying..."
+            sleep $((i * 10))
+          done
+          exit 1
+
+      - name: Run TypeScript check
+        run: npm run typecheck
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies (resilient)
+        shell: bash
+        run: |
+          for i in {1..5}; do
+            npm ci --no-audit --prefer-offline && exit 0
+            echo "npm ci failed (attempt $i), retrying..."
+            sleep $((i * 10))
+          done
+          exit 1
+
+      - name: Build app
+        run: npm run build

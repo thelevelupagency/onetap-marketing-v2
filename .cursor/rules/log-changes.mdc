@@ -1,0 +1,13 @@
+---
+description: After material changes, append a two-line entry to CHLOG-AI for cross-session memory.
+alwaysApply: true
+---
+
+# AI change log (memory)
+
+When an implementation **succeeds** and the diff materially affects **architecture, component system, public routes/SEO, CI, or future API posture**, append **exactly two lines** to [`.cursor/history/CHLOG-AI.md`](.cursor/history/CHLOG-AI.md):
+
+- Line 1: `YYYY-MM-DD —` one-sentence summary
+- Line 2: optional scope (paths or areas)
+
+Skip copy-only tweaks and one-line bugfixes.

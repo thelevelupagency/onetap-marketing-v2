@@ -1,0 +1,25 @@
+---
+description: "INACTIVE until supabase/ or API data layer exists — Supabase change guidance."
+globs: "{supabase/**,src/app/api/**}"
+alwaysApply: false
+---
+
+# Supabase (future)
+
+**Status:** Dormant — marketing v2 is static today. Activate when adding Supabase-backed config or analytics storage.
+
+## When adding Supabase
+
+- Follow patterns from `onetap-app` / `onetap-marketing` v1:
+  - RLS on all user-owned tables.
+  - Service role only on server; anon key client-safe only for intended reads.
+  - Migrations in `supabase/migrations/` with explicit policies.
+
+## Safe changes
+
+- Mirror `onetap-app/.cursor/skills/supabase-safe-change/SKILL.md` for migration + RLS checklists.
+- Never expose `SUPABASE_SERVICE_ROLE_KEY` to the client.
+
+## Env
+
+- Document new vars in `.env.example`, `docs/engineering/environment-variables.md`, and `.github/workflows/quality-gates.yml`.

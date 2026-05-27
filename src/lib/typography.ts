@@ -1,0 +1,21 @@
+/** Marketing type scale — keep in sync with @utility classes in globals.css */
+export const type = {
+  hero: "type-hero",
+  display: "type-display",
+  pageTitle: "type-page-title",
+  sectionTitle: "type-section-title",
+  subsectionTitle: "type-subsection-title",
+  stepTitle: "type-step-title",
+  cardTitle: "type-card-title",
+  eyebrow: "type-eyebrow",
+  displayError: "type-display-error",
+  price: "type-price",
+  tableHeading: "type-table-heading",
+  lead: "type-lead",
+  sectionLead: "type-section-lead",
+  body: "type-body",
+  bodySm: "type-body-sm",
+  label: "type-label",
+  caption: "type-caption",
+  accordionQuestion: "type-accordion-question",
+} as const;

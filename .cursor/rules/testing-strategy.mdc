@@ -1,0 +1,41 @@
+---
+description: Risk-based verification and CI baseline for marketing v2.
+alwaysApply: true
+---
+
+# Testing Strategy
+
+## Current stack
+
+- No Vitest/Playwright suite yet — **CI gates are lint, typecheck, and build**.
+- Add unit/E2E tests when non-trivial client logic or API routes land.
+
+## Risk-based requirements
+
+| Change type | Minimum verification |
+|-------------|----------------------|
+| Copy/content only | Build (optional lint on touched files) |
+| UI / layout / new route | typecheck + lint + build; manual visual check |
+| `src/lib` logic (blog, search) | typecheck + lint + build; add unit tests when logic is non-trivial |
+| Future API/auth | Integration tests + security review |
+
+## CI execution baseline
+
+- `Quality Gates`: lint, typecheck, build on PRs to `dev` and `main`.
+- `Branch Flow Guard`: promotion path only.
+
+Local pre-flight:
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+## Merge gates
+
+- Required GitHub checks green before merge.
+- PR notes: routes/SEO touched, screenshot for visible UI changes.
+- Security-sensitive future endpoints: explicit safety notes in PR.
+
+Reference: `docs/engineering/ci-workflow.md`

@@ -1,11 +1,11 @@
-import { HeroSection } from "@/components/marketing/hero-section";
-import { HowItWorks } from "@/components/marketing/how-it-works";
-import { CardUxSection } from "@/components/marketing/card-ux-section";
-import { SolutionsGrid } from "@/components/marketing/solutions-grid";
-import { DashboardSection } from "@/components/marketing/dashboard-section";
-import { SocialProof } from "@/components/marketing/social-proof";
-import { PricingSection } from "@/components/marketing/pricing-section";
-import { FaqSection } from "@/components/marketing/faq-section";
+import { HeroSection } from "@/components/marketing/sections/hero-section";
+import { HowItWorks } from "@/components/marketing/sections/how-it-works";
+import { CardUxSection } from "@/components/marketing/sections/card-ux-section";
+import { SolutionsGrid } from "@/components/marketing/sections/solutions-grid";
+import { DashboardSection } from "@/components/marketing/sections/dashboard-section";
+import { SocialProof } from "@/components/marketing/sections/social-proof";
+import { PricingBlock } from "@/components/marketing/pricing/pricing-block";
+import { FaqSection } from "@/components/marketing/sections/faq-section";
 
 export default function Home() {
   return (
@@ -16,7 +16,12 @@ export default function Home() {
       <SolutionsGrid />
       <DashboardSection />
       <SocialProof />
-      <PricingSection />
+      <PricingBlock
+        surface="on-white"
+        showHeader
+        showFullPricingLink
+        wrapInSection
+      />
       <FaqSection />
     </main>
   );

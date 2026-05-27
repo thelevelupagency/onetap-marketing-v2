@@ -32,6 +32,23 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Copy [`.env.example`](.env.example) to `.env.local` (gitignored) and set values per [`docs/engineering/environment-variables.md`](docs/engineering/environment-variables.md).
+
+### Checks before PR
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+## AI-assisted development
+
+- **[AGENTS.md](./AGENTS.md)** — operating guide (architecture, CI, playbooks).
+- **`.cursor/`** — rules, skills, agents, and templates for Cursor.
+- **Ship it** — in Cursor chat, run typecheck + lint + build and get a PR summary (see [`.cursorrules`](.cursorrules)).
+- **CI** — PRs to `dev` / `main` require lint, typecheck, and build ([`docs/engineering/ci-workflow.md`](docs/engineering/ci-workflow.md)).
+
 ## Organization
 
 This project is maintained by [The LevelUp Agency](https://github.com/thelevelupagency).
