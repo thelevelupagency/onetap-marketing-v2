@@ -1,21 +1,24 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const containerVariants = cva("container mx-auto px-4 md:px-8", {
-  variants: {
-    width: {
-      default: "max-w-5xl",
-      narrow: "max-w-3xl",
-      wide: "max-w-6xl",
-      full: "max-w-7xl",
-      prose: "max-w-4xl",
-      none: "",
+const containerVariants = cva(
+  "container mx-auto px-marketing-gutter-x md:px-marketing-gutter-x-md",
+  {
+    variants: {
+      width: {
+        default: "max-w-5xl",
+        narrow: "max-w-3xl",
+        wide: "max-w-6xl",
+        full: "max-w-7xl",
+        prose: "max-w-4xl",
+        none: "",
+      },
     },
-  },
-  defaultVariants: {
-    width: "default",
-  },
-});
+    defaultVariants: {
+      width: "default",
+    },
+  }
+);
 
 export function MarketingContainer({
   className,

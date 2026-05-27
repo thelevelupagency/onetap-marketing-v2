@@ -2,8 +2,7 @@ import Image from "next/image";
 import { Asterisk } from "lucide-react";
 
 import { GetCardCta } from "@/components/marketing/get-card-cta";
-import { MarketingContainer } from "@/components/marketing/primitives";
-import { cn } from "@/lib/utils";
+import { MarketingContainer, MarketingSection } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 import { CREATE_BASICS_URL } from "@/lib/constants";
 
@@ -64,12 +63,12 @@ export function Process1({
   steps,
 }: Process1Props) {
   return (
-    <section className={cn("bg-white py-16 md:py-24 lg:py-32", className)}>
-      <MarketingContainer width="full" className="px-4 md:px-8">
+    <MarketingSection background="white" className={className}>
+      <MarketingContainer width="full">
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-6 lg:gap-20">
           <div className="col-span-2 flex h-fit w-full max-w-sm flex-col items-start overflow-visible lg:sticky lg:top-24">
             <div className="relative mb-6 w-fit overflow-visible">
-              <h2 className={`${typography.hero} flex w-fit flex-wrap items-start gap-x-2 gap-y-0 lg:block lg:pr-0`}>
+              <h2 className={`${typography.sectionTitle} flex w-fit flex-wrap items-start gap-x-2 gap-y-0 lg:block lg:pr-0`}>
                 <span className="inline">{title}</span>
                 <Asterisk
                   aria-hidden
@@ -120,6 +119,6 @@ export function Process1({
           </ul>
         </div>
       </MarketingContainer>
-    </section>
+    </MarketingSection>
   );
 }

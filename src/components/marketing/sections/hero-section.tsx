@@ -7,7 +7,12 @@ import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SlugClaimCta } from "@/components/marketing/slug-claim-cta";
 import { HeroPhonePreview } from "@/components/marketing/phones/hero-phone-preview";
-import { MarketingBadge, BrandAccent, MarketingContainer } from "@/components/marketing/primitives";
+import {
+  MarketingBadge,
+  BrandAccent,
+  MarketingContainer,
+  MarketingSection,
+} from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 
 export function HeroSection() {
@@ -15,7 +20,7 @@ export function HeroSection() {
   const centerPhoneSlug = slug.trim() || "your-name";
 
   return (
-    <section className="relative flex items-center bg-brand-cream pt-24 pb-8 lg:pt-28 lg:pb-12">
+    <MarketingSection background="cream" spacing="hero" className="relative flex items-center">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full bg-brand-turquoise/10 blur-3xl" />
         <div className="absolute bottom-1/4 -right-32 h-96 w-96 rounded-full bg-brand-navy/5 blur-3xl" />
@@ -23,7 +28,7 @@ export function HeroSection() {
       </div>
 
       <MarketingContainer width="full" className="relative z-10">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-2 lg:items-center lg:gap-6 xl:gap-10">
+        <div className="grid items-center gap-8 lg:grid-cols-2 lg:items-center lg:gap-6 xl:gap-10">
           <div className="text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -94,6 +99,6 @@ export function HeroSection() {
           </motion.div>
         </div>
       </MarketingContainer>
-    </section>
+    </MarketingSection>
   );
 }

@@ -7,7 +7,7 @@ import {
   MarketingSection,
   MarketingContainer,
   MarketingBadge,
-  BrandAccent,
+  SectionHeader,
 } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 
@@ -30,15 +30,17 @@ export function CardUxSection() {
             className="order-2 lg:order-1"
           >
             <MarketingBadge className="mb-4">The Card Experience</MarketingBadge>
-            <h2 className={`${typography.hero} mb-6`}>
-              More than a card.
-              <br />
-              <BrandAccent>A personal microsite.</BrandAccent>
-            </h2>
-            <p className={`${typography.sectionLead} mb-8`}>
-              Your OneTap card is a fully interactive profile — not a static link tree. Rich
-              media, lead forms, and analytics built in.
-            </p>
+            <SectionHeader
+              align="left"
+              title={
+                <>
+                  More than a card.
+                  <br />
+                </>
+              }
+              accent="A personal microsite."
+              lead="Your OneTap card is a fully interactive profile — not a static link tree. Rich media, lead forms, and analytics built in."
+            />
             <div className="grid gap-4 sm:grid-cols-2">
               {features.map((f) => (
                 <div

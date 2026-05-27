@@ -35,7 +35,7 @@ export function FaqPageContent() {
         {statCards.map((item) => (
           <div
             key={item.stat}
-            className="rounded-4xl border border-brand-midnight/5 bg-white p-8 text-center"
+            className="rounded-4xl border border-brand-midnight/5 bg-white p-marketing-card-padding text-center"
           >
             <item.icon className="mx-auto mb-4 h-10 w-10 text-brand-turquoise" />
             <p className={`${typography.subsectionTitle} mb-2`}>{item.stat}</p>

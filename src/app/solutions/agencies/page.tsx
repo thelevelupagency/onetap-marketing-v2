@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { PageShell } from "@/components/marketing/primitives";
 import { AgencyHero } from "@/components/marketing/solutions/agency-hero";
 import { DashboardSection } from "@/components/marketing/sections/dashboard-section";
 import { AgencyFeatures } from "@/components/marketing/solutions/agency-features";
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
 
 export default function AgenciesPage() {
   return (
-    <div className="flex w-full flex-col bg-brand-cream">
+    <PageShell offsetTop="none" className="bg-brand-cream">
       <AgencyHero />
       <DashboardSection variant="light" />
       <AgencyFeatures />
       <AgencyQuote />
-    </div>
+    </PageShell>
   );
 }

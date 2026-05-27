@@ -10,8 +10,9 @@ const sectionVariants = cva("w-full", {
       transparent: "bg-transparent",
     },
     spacing: {
-      default: "py-24",
-      compact: "py-16",
+      default: "py-marketing-section-y",
+      compact: "py-marketing-section-y-compact",
+      hero: "pt-marketing-page-top pb-marketing-hero-bottom",
       none: "",
     },
   },

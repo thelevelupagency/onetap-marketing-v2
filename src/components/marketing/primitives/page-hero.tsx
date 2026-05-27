@@ -13,7 +13,7 @@ interface PageHeroProps {
 
 export function PageHero({ title, accent, lead, className, children }: PageHeroProps) {
   return (
-    <MarketingContainer width="prose" className={cn("mb-16 text-center", className)}>
+    <MarketingContainer width="prose" className={cn("mb-marketing-header-gap text-center", className)}>
       <h1 className={cn(typography.pageTitle, "mb-6")}>
         {title}
         {accent != null ? <> <BrandAccent>{accent}</BrandAccent></> : null}
