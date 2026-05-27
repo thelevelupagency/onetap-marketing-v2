@@ -1,78 +1,66 @@
-import { Briefcase, Sparkles, Building2, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   MarketingSection,
   MarketingContainer,
   SectionHeader,
-  MarketingBadge,
   MarketingLinkCard,
 } from "@/components/marketing/primitives";
+import { solutionsCopy } from "@/content/homepage";
+import { solutionIcons } from "@/lib/marketing-icons";
 import { type as typography } from "@/lib/typography";
-
-const solutions = [
-  {
-    icon: Briefcase,
-    title: "Freelancers",
-    stat: "80% more inquiries",
-    description:
-      "Stand out at every meeting. Capture leads automatically and look professional from day one.",
-    href: "/solutions/freelancers",
-    accent: "from-brand-navy/10 to-brand-turquoise/10",
-  },
-  {
-    icon: Sparkles,
-    title: "Creators",
-    stat: "5x faster exposure",
-    description:
-      "One link for your entire brand. Gallery, video, and socials in a beautiful mobile-first profile.",
-    href: "/solutions/freelancers#creators",
-    accent: "from-brand-turquoise-light to-brand-turquoise/10",
-  },
-  {
-    icon: Building2,
-    title: "Agencies",
-    stat: "50+ hours saved",
-    description:
-      "Brand Lock, bulk import, and team analytics. Manage hundreds of cards from one dashboard.",
-    href: "/solutions/agencies",
-    accent: "from-brand-midnight/10 to-brand-navy/10",
-  },
-] as const;
+import { cn } from "@/lib/utils";
 
 export function SolutionsGrid() {
   return (
-    <MarketingSection background="white" id="solutions">
+    <MarketingSection background="cream" id="solutions">
       <MarketingContainer width="wide">
         <SectionHeader
-          title="Built for"
-          accent="every professional"
-          lead="Whether you fly solo or manage a team of hundreds, OneTap scales with you."
+          title={solutionsCopy.title}
+          accent={solutionsCopy.accent}
+          lead={solutionsCopy.lead}
         />
-        <div className="grid gap-8 md:grid-cols-3">
-          {solutions.map((sol) => (
-            <MarketingLinkCard
-              key={sol.title}
-              href={sol.href}
-              background="cream"
-              className="p-marketing-card-padding"
-            >
-              <div
-                className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${sol.accent}`}
+        <div className="grid gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          {solutionsCopy.cards.map((sol) => {
+            const Icon = solutionIcons[sol.icon];
+            return (
+              <MarketingLinkCard
+                key={sol.title}
+                href={sol.href}
+                background="white"
+                density="compact"
+                className="flex h-full flex-col"
               >
-                <sol.icon className="h-7 w-7 text-brand-midnight" />
-              </div>
-              <MarketingBadge className="mb-4 text-xs">{sol.stat}</MarketingBadge>
-              <h3
-                className={`${typography.subsectionTitle} mb-3 transition-colors group-hover:text-brand-turquoise-dark`}
-              >
-                {sol.title}
-              </h3>
-              <p className="mb-6 leading-relaxed text-brand-midnight/60">{sol.description}</p>
-              <span className="inline-flex items-center text-sm font-medium text-brand-midnight transition-colors group-hover:text-brand-turquoise-dark">
-                Learn more{" "}
-                <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </MarketingLinkCard>
-          ))}
+                <div
+                  className={cn(
+                    "mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br",
+                    sol.accent
+                  )}
+                >
+                  <Icon className="h-5 w-5 text-brand-midnight" />
+                </div>
+                <h3
+                  className={cn(
+                    typography.label,
+                    "mb-1.5 text-base font-semibold leading-snug transition-colors group-hover:text-brand-turquoise-dark"
+                  )}
+                >
+                  {sol.title}
+                </h3>
+                <p
+                  className={cn(
+                    typography.bodySm,
+                    "mb-4 line-clamp-2 flex-1 text-brand-midnight/65"
+                  )}
+                >
+                  {sol.description}
+                </p>
+                <span className="mt-auto inline-flex items-center text-sm font-medium text-brand-midnight transition-colors group-hover:text-brand-turquoise-dark">
+                  {sol.ctaLabel}{" "}
+                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </MarketingLinkCard>
+            );
+          })}
         </div>
       </MarketingContainer>
     </MarketingSection>

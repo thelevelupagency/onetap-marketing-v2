@@ -9,7 +9,7 @@ import {
 
 export function FaqSection() {
   return (
-    <MarketingSection background="cream">
+    <MarketingSection background="cream" id="faq">
       <MarketingContainer width="narrow">
         <SectionHeader title="Frequently asked" accent="questions" />
         <FaqAccordion items={homeFaqs} />

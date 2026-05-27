@@ -6,6 +6,7 @@ import {
   MarketingLinkCard,
   MarketingBadge,
   MarketingSection,
+  SectionHeader,
 } from "@/components/marketing/primitives";
 
 export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
@@ -13,7 +14,7 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
 
   return (
     <MarketingSection background="transparent" spacing="compact" className="px-0">
-      <h2 className={`${typography.sectionTitle} mb-marketing-header-gap-md`}>Related posts</h2>
+      <SectionHeader title="Related" accent="posts" className="mb-marketing-header-gap-md" />
       <div className="grid gap-8 md:grid-cols-3">
         {posts.map((post) => (
           <MarketingLinkCard

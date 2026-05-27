@@ -18,11 +18,22 @@ const linkCardVariants = cva(
         white: "bg-white",
         cream: "bg-brand-cream",
       },
+      density: {
+        default: "",
+        compact: "p-5",
+      },
     },
+    compoundVariants: [
+      {
+        density: "compact",
+        className: "rounded-2xl",
+      },
+    ],
     defaultVariants: {
       radius: "xl",
       lift: true,
       background: "white",
+      density: "default",
     },
   }
 );
@@ -33,6 +44,7 @@ export function MarketingLinkCard({
   radius,
   lift,
   background,
+  density,
   children,
 }: {
   href: string;
@@ -42,7 +54,7 @@ export function MarketingLinkCard({
   return (
     <Link
       href={href}
-      className={cn(linkCardVariants({ radius, lift, background }), className)}
+      className={cn(linkCardVariants({ radius, lift, background, density }), className)}
     >
       {children}
     </Link>

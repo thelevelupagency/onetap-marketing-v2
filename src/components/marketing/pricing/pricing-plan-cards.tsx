@@ -44,9 +44,21 @@ export function PricingPlanCards({ isAnnual, surface, className }: PricingPlanCa
             <h3 className={cn(typography.subsectionTitle, "mb-2", isPopular && "text-brand-turquoise")}>
               {plan.name}
             </h3>
-            <p className={cn("text-sm mb-6", isPopular ? "text-brand-cream/60" : "text-brand-midnight/60")}>
+            <p className={cn("text-sm mb-2", isPopular ? "text-brand-cream/60" : "text-brand-midnight/60")}>
               {plan.description}
             </p>
+            {plan.summary ? (
+              <p
+                className={cn(
+                  `${typography.bodySm} mb-6 line-clamp-2`,
+                  isPopular ? "text-brand-cream/50" : "text-brand-midnight/50"
+                )}
+              >
+                {plan.summary}
+              </p>
+            ) : (
+              <div className="mb-6" />
+            )}
             <div className="mb-6 min-h-22">
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 {previous !== null && (
