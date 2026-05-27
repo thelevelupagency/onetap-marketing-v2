@@ -6,7 +6,6 @@ export interface Plan {
   id: PlanTier;
   name: string;
   description: string;
-  summary?: string;
   monthlyPrice: number | null;
   annualPrice: number | null;
   annualBilled?: string;
@@ -57,8 +56,6 @@ export const plans: Plan[] = [
     id: "free",
     name: "Free",
     description: "For getting started",
-    summary:
-      "Create your first digital business card and start sharing your professional profile.",
     monthlyPrice: 0,
     annualPrice: 0,
     cta: "Start For Free",
@@ -78,8 +75,6 @@ export const plans: Plan[] = [
     id: "premium",
     name: "Pro",
     description: "For professionals who want more control",
-    summary:
-      "Build a stronger profile with advanced sections, deeper customization, and better insights.",
     monthlyPrice: 12,
     annualPrice: 10,
     annualBilled: "Billed $120 yearly",
@@ -102,8 +97,6 @@ export const plans: Plan[] = [
     id: "agency",
     name: "Agencies & Teams",
     description: "For teams that need brand consistency and centralized control",
-    summary:
-      "Manage multiple cards, keep your team on-brand, and track performance from one dashboard.",
     monthlyPrice: 299,
     annualPrice: 249,
     annualBilled: "Billed $2,988 yearly",

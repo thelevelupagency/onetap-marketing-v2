@@ -1,20 +1,30 @@
 ---
 description: Framer Motion and reduced-motion patterns for marketing visuals.
-globs: "{src/components/marketing/phones/**,**/float-wrap.tsx}"
+globs: "{src/components/marketing/**,src/lib/motion/**}"
 alwaysApply: false
 ---
 
 # Motion And Accessibility
 
+## Shared system
+
+- Use `useMotionConfig()` from `@/lib/motion` and primitives from `@/components/marketing/motion` (`Reveal`, `RevealStagger`, `RevealItem`, `CardReveal`, `MarketingStaggerGrid`).
+- Do not copy-paste `initial={{ opacity: 0, y: 20 }}` in section files — use shared variants.
+- Card grids: `CardReveal` per item with `whileInView` (`MOTION_CARD_VIEWPORT`); do not wrap the whole grid in one early-firing `RevealStagger`.
+
 ## Reduced motion
 
-- Use `useReducedMotion()` from Framer Motion (see `float-wrap.tsx`) to disable or simplify animations when the user prefers reduced motion.
+- `useMotionConfig()` wraps `useReducedMotion()` and returns instant/near-zero motion when preferred.
+- Phone floats: use `disableFloat` from config or `FloatWrap` (see `float-wrap.tsx`).
 
 ## Performance
 
 - Avoid layout shift from animated elements; reserve space where floats/phones animate.
-- Prefer `transform` and `opacity` over layout-triggering properties.
+- Prefer `transform` and `opacity` over layout-triggering properties (no `scale` on Process1 step badges/images).
+- Process1 progress rail: animate `scaleY`, not `height`.
 
 ## Scope
 
-- Marketing motion lives under `src/components/marketing/phones/` and related section wrappers — do not add gratuitous motion to forms or critical CTAs.
+- Marketing motion: sections, phones, primitives — **not** gratuitous motion on forms or critical CTAs (`SlugClaimCta`, `GetCardCta`, billing toggles).
+- Keep slug/claim inputs and primary buttons outside `Reveal` / `RevealItem` wrappers.
+- Mobile: no horizontal slide offsets (`resolveRevealDirection`); simplify floats per `useMotionConfig().isMobile`.
