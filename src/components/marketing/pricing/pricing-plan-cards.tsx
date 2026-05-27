@@ -21,7 +21,7 @@ export function PricingPlanCards({ isAnnual, surface, className }: PricingPlanCa
     surface === "on-white" ? "bg-brand-cream border border-brand-midnight/10" : "bg-white border border-brand-midnight/5";
 
   return (
-    <div className={cn("grid md:grid-cols-3 gap-8 max-w-6xl mx-auto", className)}>
+    <div className={cn("grid gap-8 md:grid-cols-3", className)}>
       {plans.map((plan) => {
         const { current, previous, billedNote } = getPlanPriceDisplay(plan, period);
         const isPopular = plan.popular;

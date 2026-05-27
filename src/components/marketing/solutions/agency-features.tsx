@@ -29,11 +29,7 @@ export function AgencyFeatures() {
   return (
     <MarketingSection background="white" spacing="compact">
       <MarketingContainer width="default">
-        <SectionHeader
-          title="Enterprise features,"
-          accent="out of the box"
-          className="mb-16"
-        />
+        <SectionHeader title="Enterprise features," accent="out of the box" />
         <FeatureGrid>
           {features.map((f) => (
             <FeatureCard key={f.title} variant="elevated" {...f} />

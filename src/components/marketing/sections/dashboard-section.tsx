@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { BarChart3, RefreshCw, Edit3 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { BrandAccent, MarketingContainer } from "@/components/marketing/primitives";
+import { BrandAccent, MarketingContainer, MarketingSection } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 
 const DASHBOARD_IMAGE =
@@ -26,10 +26,11 @@ export function DashboardSection({ variant = "dark" }: DashboardSectionProps) {
   const isLight = variant === "light";
 
   return (
-    <section
+    <MarketingSection
+      background={isLight ? "cream" : "midnight"}
       className={cn(
-        "relative overflow-hidden py-24",
-        isLight ? "bg-brand-cream text-brand-midnight" : "bg-brand-midnight text-brand-cream"
+        "relative overflow-hidden",
+        !isLight && "text-brand-cream"
       )}
     >
       <div
@@ -101,6 +102,6 @@ export function DashboardSection({ variant = "dark" }: DashboardSectionProps) {
           </div>
         </div>
       </MarketingContainer>
-    </section>
+    </MarketingSection>
   );
 }

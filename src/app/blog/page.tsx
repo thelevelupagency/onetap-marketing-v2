@@ -16,7 +16,6 @@ export default function BlogPage() {
         title="The OneTap"
         accent="Blog"
         lead="Best practices, success stories, how-tos, and news for modern professionals."
-        className="mb-12"
       />
       <MarketingContainer width="wide">
         <Suspense

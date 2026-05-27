@@ -18,7 +18,7 @@ export function FreelancerCreators() {
           title="5x faster"
           accent="exposure"
           lead="Showcase your gallery, embed videos, and link every platform from one stunning mobile profile. Your audience saves your contact in one tap."
-          className="mb-8 max-w-none"
+          className="max-w-none"
           titleClassName="mb-6"
         />
         <GetCardCta size="sm">Start creating</GetCardCta>

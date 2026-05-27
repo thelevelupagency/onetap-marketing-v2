@@ -29,6 +29,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Logo } from "@/components/shared/logo";
+import { MarketingContainer } from "@/components/marketing/primitives";
 import type { LogoTheme } from "@/lib/logos";
 import { cn } from "@/lib/utils";
 
@@ -189,7 +190,7 @@ const Navbar1 = ({
 
   return (
     <section className={cn("py-0", className)}>
-      <div className="container mx-auto h-[72px] px-4 md:px-8">
+      <MarketingContainer width="full" className="h-[72px]">
         <nav className="hidden h-full grid-cols-[1fr_auto_1fr] items-center lg:grid">
           <div className="flex items-center justify-start">
             <LogoMark logo={logo} />
@@ -293,7 +294,7 @@ const Navbar1 = ({
             </Sheet>
           </div>
         </div>
-      </div>
+      </MarketingContainer>
     </section>
   );
 };

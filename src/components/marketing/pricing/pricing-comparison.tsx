@@ -41,7 +41,7 @@ export function PricingComparison() {
   return (
     <MarketingSection background="transparent" spacing="compact">
       <MarketingContainer width="default">
-        <SectionHeader title="Feature" accent="comparison" className="mb-12" />
+        <SectionHeader title="Feature" accent="comparison" />
 
         <div className="hidden overflow-hidden rounded-2xl border border-brand-midnight/10 bg-white md:block">
           <table className="w-full">

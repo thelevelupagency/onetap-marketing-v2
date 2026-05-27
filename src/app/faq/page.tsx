@@ -14,7 +14,6 @@ export default function FaqPage() {
         title="Got"
         accent="questions?"
         lead="Everything you need to know about OneTap digital business cards."
-        className="mb-10"
       />
       <MarketingContainer width="wide">
         <FaqPageContent />

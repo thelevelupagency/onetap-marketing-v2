@@ -66,6 +66,18 @@
   --animate-fourth: moveHorizontal 40s ease infinite;
   --animate-fifth: moveInCircle 20s ease infinite;
   --animate-marquee: marquee 30s linear infinite;
+
+  /* Marketing layout spacing (see :root --marketing-* tokens) */
+  --spacing-marketing-gutter-x: var(--marketing-gutter-x);
+  --spacing-marketing-gutter-x-md: var(--marketing-gutter-x-md);
+  --spacing-marketing-page-top: var(--marketing-page-top);
+  --spacing-marketing-page-bottom: var(--marketing-page-bottom);
+  --spacing-marketing-section-y: var(--marketing-section-y);
+  --spacing-marketing-section-y-compact: var(--marketing-section-y-compact);
+  --spacing-marketing-hero-bottom: var(--marketing-hero-bottom);
+  --spacing-marketing-header-gap: var(--marketing-header-gap);
+  --spacing-marketing-header-gap-md: var(--marketing-header-gap-md);
+  --spacing-marketing-card-padding: var(--marketing-card-padding);
 }
 
 /* Marketing type scale — sizes/colors; base h1–h6 set family, weight, uppercase, tracking */
@@ -197,6 +209,21 @@
     --input: var(--brand-border);
     --ring: var(--brand-navy);
     --radius: 0.75rem;
+
+    /* Base spacing unit (aligned with onetap-app) */
+    --spacing: 0.25rem;
+
+    /* Marketing layout rhythm */
+    --marketing-gutter-x: calc(var(--spacing) * 4);
+    --marketing-gutter-x-md: calc(var(--spacing) * 8);
+    --marketing-page-top: calc(var(--spacing) * 32);
+    --marketing-page-bottom: calc(var(--spacing) * 24);
+    --marketing-section-y: calc(var(--spacing) * 24);
+    --marketing-section-y-compact: calc(var(--spacing) * 16);
+    --marketing-hero-bottom: calc(var(--spacing) * 16);
+    --marketing-header-gap: calc(var(--spacing) * 16);
+    --marketing-header-gap-md: calc(var(--spacing) * 12);
+    --marketing-card-padding: calc(var(--spacing) * 6);
   }
 
   html,

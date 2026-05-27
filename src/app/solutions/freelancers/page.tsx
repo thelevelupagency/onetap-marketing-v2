@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { PageShell } from "@/components/marketing/primitives";
 import { FreelancerHero } from "@/components/marketing/solutions/freelancer-hero";
 import { FreelancerFeatures } from "@/components/marketing/solutions/freelancer-features";
 import { FreelancerCreators } from "@/components/marketing/solutions/freelancer-creators";
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
 
 export default function FreelancersPage() {
   return (
-    <div className="flex w-full flex-col bg-brand-cream">
+    <PageShell offsetTop="none" className="bg-brand-cream">
       <FreelancerHero />
       <FreelancerFeatures />
       <FreelancerCreators />
       <FreelancerCta />
-    </div>
+    </PageShell>
   );
 }

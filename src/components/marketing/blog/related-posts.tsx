@@ -5,14 +5,15 @@ import { type as typography } from "@/lib/typography";
 import {
   MarketingLinkCard,
   MarketingBadge,
+  MarketingSection,
 } from "@/components/marketing/primitives";
 
 export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="pb-4 pt-12">
-      <h2 className={`${typography.sectionTitle} mb-8`}>Related posts</h2>
+    <MarketingSection background="transparent" spacing="compact" className="px-0">
+      <h2 className={`${typography.sectionTitle} mb-marketing-header-gap-md`}>Related posts</h2>
       <div className="grid gap-8 md:grid-cols-3">
         {posts.map((post) => (
           <MarketingLinkCard
@@ -31,7 +32,7 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
                 sizes="33vw"
               />
             </div>
-            <div className="p-5">
+            <div className="p-marketing-card-padding">
               <MarketingBadge className="mb-2 text-xs">
                 {categoryLabels[post.category]}
               </MarketingBadge>
@@ -45,6 +46,6 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
           </MarketingLinkCard>
         ))}
       </div>
-    </section>
+    </MarketingSection>
   );
 }
