@@ -32,7 +32,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Environment variables are **not committed**. Copy values from [`docs/engineering/environment-variables.md`](docs/engineering/environment-variables.md) into `.env.local` (gitignored).
+Copy [`.env.example`](.env.example) to `.env.local` (gitignored) and set values per [`docs/engineering/environment-variables.md`](docs/engineering/environment-variables.md).
 
 ### Checks before PR
 

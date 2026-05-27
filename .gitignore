@@ -30,10 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files — never commit; copy docs/engineering/environment-variables.md into .env.local
-.env
-.env.*
-.env*.local
+# env files — commit only .env.example; use .env.local for real values
+.env*
+!.env.example
 
 # vercel
 .vercel

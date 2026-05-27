@@ -32,7 +32,7 @@ In Cursor, say **Ship it** to run the same sequence and get a PR-ready summary (
 
 ## Environment variables (CI)
 
-Quality gates set minimal public env vars so `next build` succeeds. See `.github/workflows/quality-gates.yml` and `docs/engineering/environment-variables.md`.
+Quality gates set minimal public env vars so `next build` succeeds. See `.github/workflows/quality-gates.yml`, `.env.example`, and `docs/engineering/environment-variables.md`.
 
 When API routes are added, extend the workflow `env` block with Supabase, Turnstile, and Redis placeholders (commented template in the workflow file).
 

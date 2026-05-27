@@ -1,8 +1,6 @@
 # Environment variables
 
-Do **not** commit `.env`, `.env.local`, `.env.development`, or `.env.production`. They are gitignored.
-
-Create **`.env.local`** (or use Next.js `.env.development` / `.env.production` locally only) from the tables below.
+Do **not** commit `.env`, `.env.local`, `.env.development`, or `.env.production` (gitignored). **`.env.example`** is committed as a template only — copy it to `.env.local` and uncomment values from the tables below.
 
 ## Development / preview
 
