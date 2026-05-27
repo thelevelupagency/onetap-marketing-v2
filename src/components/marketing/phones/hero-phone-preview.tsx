@@ -9,15 +9,20 @@ import {
   CARD_SCREENSHOT_BARBER,
 } from "@/components/marketing/phones/marketing-phone-preview";
 import { FloatWrap } from "@/components/marketing/phones/float-wrap";
+import { EASE_OUT, useMotionConfig } from "@/lib/motion";
 import { PHONE_OUTER_HEIGHT, phoneLayoutDimensions } from "@/lib/phone-mockup";
 
 const FAN_WIDTH = 460;
 const CENTER_SCALE = 0.65;
 const SIDE_SCALE = 0.56;
 const FAN_ROTATION_DEG = 12;
+const MOBILE_FAN_ROTATION_DEG = 8;
 const FAN_CANVAS_H = Math.round(PHONE_OUTER_HEIGHT * CENTER_SCALE);
 
-/** Horizontal bleed from ±12° side phones (bottom-origin rotation). */
+const MOBILE_PHONE_EASE = EASE_OUT;
+const MOBILE_PHONE_DURATION = 0.48;
+
+/** Horizontal bleed from ±rotation side phones (bottom-origin rotation). */
 function horizontalBleedForRotation(width: number, height: number, degrees: number): number {
   const rad = (degrees * Math.PI) / 180;
   const sin = Math.sin(rad);
@@ -45,6 +50,12 @@ const FAN_BLEED_X = horizontalBleedForRotation(
   FAN_ROTATION_DEG
 );
 const FAN_CANVAS_W = FAN_WIDTH + FAN_BLEED_X * 2;
+
+const MOBILE_FAN_BLEED_X = horizontalBleedForRotation(
+  sideLayout.width,
+  sideLayout.height,
+  MOBILE_FAN_ROTATION_DEG
+);
 
 function useFanScale(containerRef: React.RefObject<HTMLDivElement | null>) {
   const [fanScale, setFanScale] = useState(1);
@@ -102,6 +113,45 @@ interface HeroPhonePreviewProps {
 export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const fanScale = useFanScale(containerRef);
+  const { prefersReducedMotion, isMobile, enterTransition } = useMotionConfig();
+
+  const useMobileFan = isMobile && !prefersReducedMotion;
+
+  const sideDelay = prefersReducedMotion ? 0 : 0.5;
+  const sideDelayRight = prefersReducedMotion ? 0 : 0.6;
+  const centerDelay = prefersReducedMotion ? 0 : 0.3;
+  const duration = prefersReducedMotion ? 0.01 : 0.85;
+
+  const sideInitial = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: 40, rotate: -24 };
+  const sideAnimate = prefersReducedMotion
+    ? { opacity: 0.9 }
+    : { opacity: 0.9, y: 0, rotate: -FAN_ROTATION_DEG };
+  const sideInitialRight = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: 40, rotate: 24 };
+  const sideAnimateRight = prefersReducedMotion
+    ? { opacity: 0.9 }
+    : { opacity: 0.9, y: 0, rotate: FAN_ROTATION_DEG };
+  const centerInitial = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: 48, scale: 0.92 };
+  const centerAnimate = prefersReducedMotion
+    ? { opacity: 1 }
+    : { opacity: 1, y: 0, scale: 1 };
+
+  const phoneTransition = {
+    ...enterTransition(0),
+    duration,
+    ease: EASE_OUT,
+  };
+
+  const mobileTransition = (delay: number) => ({
+    duration: MOBILE_PHONE_DURATION,
+    delay,
+    ease: MOBILE_PHONE_EASE,
+  });
 
   return (
     <div
@@ -121,62 +171,119 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
           transformOrigin: "top center",
         }}
       >
-        <motion.div
-          className="absolute bottom-0 z-[1] origin-bottom"
-          style={{ left: FAN_BLEED_X }}
-          initial={{ opacity: 0, y: 40, rotate: -24 }}
-          animate={{ opacity: 0.9, y: 0, rotate: -12 }}
-          transition={{ duration: 0.85, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-        >
-          <FloatWrap delay={0.35}>
-            <PhoneClipShell scale={SIDE_SCALE}>
-              <MarketingPhonePreview
-                scale={SIDE_SCALE}
-                url="sofi-schwartz"
-                imageSrc={CARD_SCREENSHOT_INTERIOR}
-                alt="Interior designer OneTap digital business card"
-              />
-            </PhoneClipShell>
-          </FloatWrap>
-        </motion.div>
+        {useMobileFan ? (
+          <>
+            <motion.div
+              className="absolute bottom-0 z-[1] origin-bottom"
+              style={{ left: MOBILE_FAN_BLEED_X }}
+              initial={{ opacity: 0, y: 10, rotate: -14 }}
+              animate={{ opacity: 0.88, y: 0, rotate: -MOBILE_FAN_ROTATION_DEG }}
+              transition={mobileTransition(0.14)}
+            >
+              <PhoneClipShell scale={SIDE_SCALE}>
+                <MarketingPhonePreview
+                  scale={SIDE_SCALE}
+                  url="sofi-schwartz"
+                  imageSrc={CARD_SCREENSHOT_INTERIOR}
+                  alt="Interior designer OneTap digital business card"
+                />
+              </PhoneClipShell>
+            </motion.div>
 
-        <motion.div
-          className="absolute bottom-0 z-[1] origin-bottom"
-          style={{ right: FAN_BLEED_X }}
-          initial={{ opacity: 0, y: 40, rotate: 24 }}
-          animate={{ opacity: 0.9, y: 0, rotate: 12 }}
-          transition={{ duration: 0.85, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-        >
-          <FloatWrap delay={0.7}>
-            <PhoneClipShell scale={SIDE_SCALE}>
-              <MarketingPhonePreview
-                scale={SIDE_SCALE}
-                url="franklin-barbershop"
-                imageSrc={CARD_SCREENSHOT_BARBER}
-                alt="Barbershop OneTap digital business card"
-              />
-            </PhoneClipShell>
-          </FloatWrap>
-        </motion.div>
+            <motion.div
+              className="absolute bottom-0 z-[1] origin-bottom"
+              style={{ right: MOBILE_FAN_BLEED_X }}
+              initial={{ opacity: 0, y: 10, rotate: 14 }}
+              animate={{ opacity: 0.88, y: 0, rotate: MOBILE_FAN_ROTATION_DEG }}
+              transition={mobileTransition(0.18)}
+            >
+              <PhoneClipShell scale={SIDE_SCALE}>
+                <MarketingPhonePreview
+                  scale={SIDE_SCALE}
+                  url="franklin-barbershop"
+                  imageSrc={CARD_SCREENSHOT_BARBER}
+                  alt="Barbershop OneTap digital business card"
+                />
+              </PhoneClipShell>
+            </motion.div>
 
-        <motion.div
-          className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 origin-bottom"
-          initial={{ opacity: 0, y: 48, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-        >
-          <FloatWrap delay={0}>
-            <PhoneClipShell scale={CENTER_SCALE}>
-              <MarketingPhonePreview
-                scale={CENTER_SCALE}
-                url={centerSlug}
-                imageSrc={CARD_SCREENSHOT_FITNESS}
-                alt="Fitness professional OneTap digital business card"
-                priority
-              />
-            </PhoneClipShell>
-          </FloatWrap>
-        </motion.div>
+            <motion.div
+              className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 origin-bottom"
+              initial={{ opacity: 0, y: 16, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={mobileTransition(0)}
+            >
+              <PhoneClipShell scale={CENTER_SCALE}>
+                <MarketingPhonePreview
+                  scale={CENTER_SCALE}
+                  url={centerSlug}
+                  imageSrc={CARD_SCREENSHOT_FITNESS}
+                  alt="Fitness professional OneTap digital business card"
+                  priority
+                />
+              </PhoneClipShell>
+            </motion.div>
+          </>
+        ) : (
+          <>
+            <motion.div
+              className="absolute bottom-0 z-[1] origin-bottom"
+              style={{ left: FAN_BLEED_X }}
+              initial={sideInitial}
+              animate={sideAnimate}
+              transition={{ ...phoneTransition, delay: sideDelay }}
+            >
+              <FloatWrap delay={0.35}>
+                <PhoneClipShell scale={SIDE_SCALE}>
+                  <MarketingPhonePreview
+                    scale={SIDE_SCALE}
+                    url="sofi-schwartz"
+                    imageSrc={CARD_SCREENSHOT_INTERIOR}
+                    alt="Interior designer OneTap digital business card"
+                  />
+                </PhoneClipShell>
+              </FloatWrap>
+            </motion.div>
+
+            <motion.div
+              className="absolute bottom-0 z-[1] origin-bottom"
+              style={{ right: FAN_BLEED_X }}
+              initial={sideInitialRight}
+              animate={sideAnimateRight}
+              transition={{ ...phoneTransition, delay: sideDelayRight }}
+            >
+              <FloatWrap delay={0.7}>
+                <PhoneClipShell scale={SIDE_SCALE}>
+                  <MarketingPhonePreview
+                    scale={SIDE_SCALE}
+                    url="franklin-barbershop"
+                    imageSrc={CARD_SCREENSHOT_BARBER}
+                    alt="Barbershop OneTap digital business card"
+                  />
+                </PhoneClipShell>
+              </FloatWrap>
+            </motion.div>
+
+            <motion.div
+              className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 origin-bottom"
+              initial={centerInitial}
+              animate={centerAnimate}
+              transition={{ ...phoneTransition, delay: centerDelay }}
+            >
+              <FloatWrap delay={0}>
+                <PhoneClipShell scale={CENTER_SCALE}>
+                  <MarketingPhonePreview
+                    scale={CENTER_SCALE}
+                    url={centerSlug}
+                    imageSrc={CARD_SCREENSHOT_FITNESS}
+                    alt="Fitness professional OneTap digital business card"
+                    priority
+                  />
+                </PhoneClipShell>
+              </FloatWrap>
+            </motion.div>
+          </>
+        )}
       </div>
     </div>
   );

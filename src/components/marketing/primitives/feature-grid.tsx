@@ -12,7 +12,7 @@ export function FeatureGrid({
   return (
     <div
       className={cn(
-        "grid gap-8",
+        "grid gap-marketing-grid-gap md:gap-marketing-grid-gap-md",
         columns === 3 && "md:grid-cols-3",
         columns === 2 && "md:grid-cols-2",
         className

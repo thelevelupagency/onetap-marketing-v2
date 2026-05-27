@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionConfig } from "@/lib/motion";
 
 type FloatWrapProps = {
   delay?: number;
@@ -8,21 +9,23 @@ type FloatWrapProps = {
   children: React.ReactNode;
 };
 
-/** Gentle vertical float loop; disabled when user prefers reduced motion. */
+/** Gentle vertical float loop; disabled when user prefers reduced motion or on mobile. */
 export function FloatWrap({
   delay = 0,
   duration = 5,
   children,
 }: FloatWrapProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const { disableFloat, prefersReducedMotion, isMobile } = useMotionConfig();
 
-  if (prefersReducedMotion) {
+  if (disableFloat || prefersReducedMotion) {
     return <>{children}</>;
   }
 
+  const amplitude = isMobile ? 4 : 8;
+
   return (
     <motion.div
-      animate={{ y: [0, -8, 0] }}
+      animate={{ y: [0, -amplitude, 0] }}
       transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
     >
       {children}

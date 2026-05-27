@@ -8,6 +8,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { FloatWrap } from "@/components/marketing/phones/float-wrap";
+import { useMotionConfig } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 export type CardUxBubbleConfig = {
@@ -53,17 +54,6 @@ export const CARD_UX_BUBBLES: CardUxBubbleConfig[] = [
   },
 ];
 
-const bubbleEnter = {
-  hidden: { opacity: 0, y: 16, scale: 0.92 },
-  visible: { opacity: 1, y: 0, scale: 1 },
-};
-
-const bubbleSpring = {
-  type: "spring" as const,
-  stiffness: 260,
-  damping: 22,
-};
-
 type PhonePreviewBubbleProps = {
   icon: LucideIcon;
   label: string;
@@ -83,7 +73,7 @@ export function PhonePreviewBubble({
     <div
       className={cn(
         "flex items-center gap-2.5 rounded-2xl border border-brand-midnight/5 bg-white/95 px-3 py-2.5 shadow-soft-diffusion backdrop-blur-md",
-        className,
+        className
       )}
     >
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-brand-turquoise/20 bg-brand-turquoise/10">
@@ -97,13 +87,9 @@ export function PhonePreviewBubble({
               aria-hidden
             />
           ) : null}
-          <p className="text-[11px] leading-tight text-brand-midnight/55">
-            {label}
-          </p>
+          <p className="text-[11px] leading-tight text-brand-midnight/55">{label}</p>
         </div>
-        <p className="text-sm font-semibold leading-tight text-brand-midnight">
-          {value}
-        </p>
+        <p className="text-sm font-semibold leading-tight text-brand-midnight">{value}</p>
       </div>
     </div>
   );
@@ -114,16 +100,32 @@ type CardUxPhoneBubblesProps = {
 };
 
 export function CardUxPhoneBubbles({ className }: CardUxPhoneBubblesProps) {
+  const { viewport, tokens, prefersReducedMotion } = useMotionConfig();
+
+  const bubbleEnter = prefersReducedMotion
+    ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
+    : { hidden: { opacity: 0, y: 16, scale: 0.92 }, visible: { opacity: 1, y: 0, scale: 1 } };
+
+  const bubbleTransition = prefersReducedMotion
+    ? { duration: 0.01 }
+    : {
+        type: "spring" as const,
+        stiffness: tokens.staggerChildren > 0 ? 260 : 200,
+        damping: 22,
+      };
+
+  const staggerDelay = tokens.staggerChildren || 0.12;
+
   return (
     <motion.div
       className={cn("pointer-events-none absolute inset-0", className)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ ...viewport, margin: "-80px" }}
       variants={{
         hidden: {},
         visible: {
-          transition: { staggerChildren: 0.12 },
+          transition: { staggerChildren: staggerDelay },
         },
       }}
     >
@@ -132,7 +134,7 @@ export function CardUxPhoneBubbles({ className }: CardUxPhoneBubblesProps) {
           key={bubble.id}
           className={bubble.positionClassName}
           variants={bubbleEnter}
-          transition={bubbleSpring}
+          transition={bubbleTransition}
         >
           <FloatWrap delay={bubble.floatDelay} duration={bubble.floatDuration}>
             <PhonePreviewBubble

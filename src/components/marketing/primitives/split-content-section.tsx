@@ -22,7 +22,7 @@ export function SplitContentSection({
       <MarketingContainer width={width}>
         <div
           className={cn(
-            "grid items-start gap-10 lg:grid-cols-2 lg:gap-12",
+            "grid items-start gap-marketing-stack-gap lg:grid-cols-2 lg:gap-marketing-grid-gap-md",
             reverseOnMobile && "[&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2"
           )}
         >
