@@ -1,4 +1,4 @@
-export const LOGIN_URL = "https://app.onetap-card.com/login";
+import { LOGIN_URL, SIGNUP_URL } from "@/lib/constants";
 
 export type PlanTier = "free" | "premium" | "agency";
 
@@ -6,6 +6,7 @@ export interface Plan {
   id: PlanTier;
   name: string;
   description: string;
+  summary?: string;
   monthlyPrice: number | null;
   annualPrice: number | null;
   annualBilled?: string;
@@ -55,61 +56,84 @@ export const plans: Plan[] = [
   {
     id: "free",
     name: "Free",
-    description: "Perfect for trying out OneTap.",
+    description: "For getting started",
+    summary:
+      "Create your first digital business card and start sharing your professional profile.",
     monthlyPrice: 0,
     annualPrice: 0,
-    cta: "Get Started",
-    ctaHref: LOGIN_URL,
+    cta: "Start For Free",
+    ctaHref: SIGNUP_URL,
     features: [
-      "1 Active digital card",
-      "6 Social/Contact links",
+      "1 active digital card",
+      "Up to 6 One-Tap buttons",
+      "24/7 profile editing",
+      "QR code and shareable link",
       "Standard templates",
-      "OneTap branding",
+      "Basic sections",
+      "Basic analytics",
+      "OneTap branding included",
     ],
   },
   {
     id: "premium",
-    name: "Premium",
-    description: "For professionals building their brand.",
+    name: "Pro",
+    description: "For professionals who want more control",
+    summary:
+      "Build a stronger profile with advanced sections, deeper customization, and better insights.",
     monthlyPrice: 12,
     annualPrice: 10,
     annualBilled: "Billed $120 yearly",
-    cta: "Upgrade to Premium",
-    ctaHref: LOGIN_URL,
+    cta: "Start Premium Trial",
+    ctaHref: SIGNUP_URL,
     popular: true,
     features: [
-      "Unlimited sections (Video, FAQ)",
-      "Custom branding & colors",
-      "Advanced analytics",
-      "Lead capture forms",
+      "Multiple active cards",
+      "Custom branding",
+      "Advanced templates",
+      "Advanced sections (Gallery, video, services, FAQ, testimonials, etc.)",
+      "Lead capture form",
+      "Lead inbox (mini CRM)",
+      "Enhanced analytics",
+      "Integrations and webhooks",
       "Remove OneTap branding",
     ],
   },
   {
     id: "agency",
-    name: "Agency",
-    description: "For teams requiring control at scale.",
+    name: "Agencies & Teams",
+    description: "For teams that need brand consistency and centralized control",
+    summary:
+      "Manage multiple cards, keep your team on-brand, and track performance from one dashboard.",
     monthlyPrice: 299,
     annualPrice: 249,
     annualBilled: "Billed $2,988 yearly",
-    cta: "Contact Sales",
+    cta: "Contact us",
     ctaHref: LOGIN_URL,
     features: [
-      "Up to 50 agent cards",
-      "Admin dashboard & Brand Lock",
-      "CRM Integration (HubSpot/Salesforce)",
-      "Dedicated success manager",
+      "Everything in Pro",
+      "Admin workspace dashboard",
+      "Team member management",
+      "Custom onboarding session",
+      "Shared brand templates",
+      "Team analytics",
+      "Leads center",
+      "CRM integrations, mail reminders & CSV export",
+      "Priority support",
     ],
   },
 ];
 
 export const comparisonFeatures = [
-  { name: "Active digital cards", free: "1", premium: "Unlimited", agency: "Up to 50" },
+  { name: "Active digital cards", free: "1", premium: "Multiple", agency: "Multiple" },
+  { name: "One-Tap buttons", free: "Up to 6", premium: "Unlimited", agency: "Unlimited" },
   { name: "Custom branding", free: false, premium: true, agency: true },
-  { name: "Lead capture forms", free: false, premium: true, agency: true },
-  { name: "Advanced analytics", free: false, premium: true, agency: true },
+  { name: "Advanced sections", free: false, premium: true, agency: true },
+  { name: "Lead capture form", free: false, premium: true, agency: true },
+  { name: "Lead inbox (mini CRM)", free: false, premium: true, agency: true },
+  { name: "Enhanced analytics", free: false, premium: true, agency: true },
   { name: "Admin dashboard", free: false, premium: false, agency: true },
-  { name: "Brand Lock", free: false, premium: false, agency: true },
+  { name: "Team member management", free: false, premium: false, agency: true },
+  { name: "Team analytics", free: false, premium: false, agency: true },
   { name: "CRM integrations", free: false, premium: false, agency: true },
   { name: "Remove OneTap branding", free: false, premium: true, agency: true },
 ];
@@ -125,10 +149,10 @@ export const pricingFaqs = [
   },
   {
     q: "Do you offer team or enterprise pricing?",
-    a: "Agency plans cover teams up to 50 cards. For larger organizations, contact our sales team for custom enterprise pricing.",
+    a: "Agencies & Teams plans cover multiple cards with centralized control. For larger organizations, contact our sales team for custom enterprise pricing.",
   },
   {
-    q: "Is there a free trial for Premium?",
-    a: "The Free plan lets you explore OneTap with no credit card required. Upgrade to Premium whenever you're ready for advanced features.",
+    q: "Is there a free trial for Pro?",
+    a: "The Free plan lets you explore OneTap with no credit card required. Start a Premium Trial on Pro whenever you're ready for advanced features.",
   },
 ];

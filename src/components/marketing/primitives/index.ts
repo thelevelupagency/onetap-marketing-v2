@@ -9,6 +9,7 @@ export { MarketingBadge } from "./marketing-badge";
 export { MarketingLinkCard } from "./marketing-link-card";
 export { FeatureGrid } from "./feature-grid";
 export { FeatureCard } from "./feature-card";
+export { PainPointCard } from "./pain-point-card";
 export { TextLink } from "./text-link";
 export {
   FaqAccordion,

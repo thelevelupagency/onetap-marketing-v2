@@ -9,6 +9,7 @@ import {
   SectionHeader,
   TextLink,
 } from "@/components/marketing/primitives";
+import { homepagePricingHeader } from "@/content/homepage";
 
 interface PricingBlockProps {
   surface: "on-white" | "on-cream";
@@ -30,10 +31,11 @@ export function PricingBlock({
       {showHeader ? (
         <>
           <SectionHeader
-            title="Simple, honest pricing."
-            lead="Start for free. Upgrade when you need more power."
+            title={homepagePricingHeader.title}
+            accent={homepagePricingHeader.accent}
+            lead={homepagePricingHeader.lead}
           />
-          <div className="mb-16 flex justify-center">
+          <div className="mb-10 flex justify-center">
             <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} />
           </div>
         </>

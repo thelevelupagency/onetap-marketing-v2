@@ -6,6 +6,7 @@ import { IconBrandLinkedin, IconBrandInstagram, IconBrandTwitter } from "@tabler
 import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import { MarketingContainer } from "@/components/marketing/primitives";
+import { footerCopy } from "@/content/site";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -42,7 +43,7 @@ export function Footer() {
               imageClassName="h-10 w-auto md:h-11"
             />
             <p className="text-brand-cream/60 max-w-sm mb-8 text-lg leading-relaxed">
-              Elevate your networking with professional digital business cards. Save contacts, capture leads, and grow your brand in one tap.
+              {footerCopy.blurb}
             </p>
             <div className="flex gap-5">
               <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors" aria-label="Twitter">
@@ -77,17 +78,19 @@ export function Footer() {
 
         <div className="border-y border-white/10 py-10 mb-10 flex flex-col lg:flex-row justify-between items-center gap-6">
           <div className="max-w-md text-center lg:text-left">
-            <h3 className="type-subsection-title mb-2 text-white">Join our newsletter</h3>
-            <p className="text-brand-cream/60">Get networking tips and product updates delivered to your inbox.</p>
+            <h3 className="type-subsection-title mb-2 text-white uppercase tracking-wide">
+              {footerCopy.newsletter.headline}
+            </h3>
+            <p className="text-brand-cream/60">{footerCopy.newsletter.body}</p>
           </div>
           <form className="w-full max-w-md flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder={footerCopy.newsletter.emailPlaceholder}
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-brand-cream/30 focus:outline-none focus:ring-2 focus:ring-brand-turquoise/50 text-sm"
             />
             <Button type="submit" className="bg-brand-turquoise text-brand-midnight hover:bg-white rounded-xl h-12 px-6 font-medium">
-              Subscribe
+              {footerCopy.newsletter.cta}
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </form>

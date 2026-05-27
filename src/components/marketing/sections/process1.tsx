@@ -4,11 +4,13 @@ import { Asterisk } from "lucide-react";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { MarketingContainer, MarketingSection } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 import { CREATE_BASICS_URL } from "@/lib/constants";
 
 export interface ProcessStep {
   step: string;
   title: string;
+  highlight?: string;
   description: string;
   image: string;
   imageAlt: string;
@@ -16,6 +18,7 @@ export interface ProcessStep {
 
 interface Process1Props {
   className?: string;
+  background?: "cream" | "white";
   title: React.ReactNode;
   description: string;
   ctaLabel?: string;
@@ -56,14 +59,17 @@ function StepIllustration(props: React.SVGProps<SVGSVGElement>) {
 
 export function Process1({
   className,
+  background = "white",
   title,
   description,
   ctaLabel = "Get your card",
   ctaHref = CREATE_BASICS_URL,
   steps,
 }: Process1Props) {
+  const stepBadgeBg = background === "cream" ? "bg-white" : "bg-brand-cream";
+
   return (
-    <MarketingSection background="white" className={className}>
+    <MarketingSection background={background} className={className}>
       <MarketingContainer width="full">
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-6 lg:gap-20">
           <div className="col-span-2 flex h-fit w-full max-w-sm flex-col items-start overflow-visible lg:sticky lg:top-24">
@@ -84,18 +90,29 @@ export function Process1({
           </div>
 
           <ul className="relative col-span-4 w-full lg:pl-20">
-            {steps.map((step) => (
+            {steps.map((step, index) => (
               <li
                 key={step.step}
+                id={index === 0 ? "step-create" : undefined}
                 className="relative flex flex-col gap-6 border-t border-brand-midnight/10 py-8 first:border-t-0 lg:gap-8 lg:py-10"
               >
                 <StepIllustration className="absolute top-4 right-0 text-brand-turquoise lg:top-6" />
 
                 <div className="flex items-start gap-6 pr-8">
-                  <div className="flex size-12 shrink-0 items-center justify-center bg-brand-cream px-4 py-1 font-display text-sm font-bold tracking-tight text-brand-midnight">
+                  <div
+                    className={cn(
+                      "flex size-12 shrink-0 items-center justify-center px-4 py-1 font-display text-sm font-bold tracking-tight text-brand-midnight",
+                      stepBadgeBg
+                    )}
+                  >
                     {step.step}
                   </div>
                   <div className="min-w-0 flex-1">
+                    {step.highlight ? (
+                      <p className={`${typography.eyebrow} mb-2 text-brand-turquoise-dark`}>
+                        {step.highlight}
+                      </p>
+                    ) : null}
                     <h3 className={`${typography.stepTitle} mb-4`}>
                       {step.title}
                     </h3>

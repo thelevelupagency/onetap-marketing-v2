@@ -9,6 +9,8 @@ interface SectionHeaderProps {
   align?: "center" | "left";
   /** Gap below header block before section content. */
   spacingBelow?: "default" | "none";
+  /** Light sections (default) or dark/midnight backgrounds. */
+  variant?: "default" | "onDark";
   className?: string;
   titleClassName?: string;
 }
@@ -19,9 +21,12 @@ export function SectionHeader({
   lead,
   align = "center",
   spacingBelow = "default",
+  variant = "default",
   className,
   titleClassName,
 }: SectionHeaderProps) {
+  const isDark = variant === "onDark";
+
   return (
     <div
       className={cn(
@@ -31,11 +36,27 @@ export function SectionHeader({
         className
       )}
     >
-      <h2 className={cn(typography.sectionTitle, "mb-4", titleClassName)}>
+      <h2
+        className={cn(
+          typography.sectionTitle,
+          "mb-4",
+          isDark && "text-brand-cream",
+          titleClassName
+        )}
+      >
         {title}
-        {accent != null ? <> <BrandAccent>{accent}</BrandAccent></> : null}
+        {accent != null ? (
+          <>
+            {" "}
+            <BrandAccent>{accent}</BrandAccent>
+          </>
+        ) : null}
       </h2>
-      {lead ? <p className={typography.sectionLead}>{lead}</p> : null}
+      {lead ? (
+        <p className={cn(typography.sectionLead, isDark && "text-brand-cream/70")}>
+          {lead}
+        </p>
+      ) : null}
     </div>
   );
 }
