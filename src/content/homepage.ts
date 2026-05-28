@@ -285,11 +285,3 @@ export const homepagePricingHeader = {
   lead: "Start free and upgrade when you grow. No hidden fees, no surprises.",
 } as const;
 
-export const finalCtaCopy = {
-  title: "Ready to transform",
-  accent: "your networking?",
-  subheadline:
-    "Create your professional digital card today and give people one place to view all your details, contact you, trust you, and take the next step.",
-  cta: "Create Your Card For FREE",
-  microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
-} as const;

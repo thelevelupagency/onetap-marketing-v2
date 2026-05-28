@@ -2,6 +2,9 @@ import { cn } from "@/lib/utils";
 import { MarketingSection } from "./marketing-section";
 import { MarketingContainer } from "./marketing-container";
 
+/** Centers copy/CTAs on mobile; left-aligns from lg (split sections). */
+export const splitCopyColumnClass = "flex flex-col items-center lg:items-start";
+
 export function SplitContentSection({
   background = "cream",
   width = "default",

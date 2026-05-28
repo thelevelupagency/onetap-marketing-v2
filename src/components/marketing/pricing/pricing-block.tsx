@@ -11,12 +11,16 @@ import {
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
 import { homepagePricingHeader } from "@/content/homepage";
+import type { PricingHeaderCopy } from "@/content/marketing-copy-types";
+
+export type { PricingHeaderCopy } from "@/content/marketing-copy-types";
 
 interface PricingBlockProps {
   surface: "on-white" | "on-cream";
   showHeader?: boolean;
   showFullPricingLink?: boolean;
   wrapInSection?: boolean;
+  headerCopy?: PricingHeaderCopy;
 }
 
 export function PricingBlock({
@@ -24,6 +28,7 @@ export function PricingBlock({
   showHeader = false,
   showFullPricingLink = false,
   wrapInSection = false,
+  headerCopy = homepagePricingHeader,
 }: PricingBlockProps) {
   const [isAnnual, setIsAnnual] = useState(true);
 
@@ -33,9 +38,9 @@ export function PricingBlock({
         <>
           <Reveal>
             <SectionHeader
-              title={homepagePricingHeader.title}
-              accent={homepagePricingHeader.accent}
-              lead={homepagePricingHeader.lead}
+              title={headerCopy.title}
+              accent={headerCopy.accent}
+              lead={headerCopy.lead}
             />
           </Reveal>
           <div className="mb-marketing-header-gap-md flex justify-center">
@@ -43,7 +48,9 @@ export function PricingBlock({
           </div>
         </>
       ) : (
-        <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} className="mb-16" />
+        <div className="mb-marketing-header-gap-md flex justify-center">
+          <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} />
+        </div>
       )}
 
       <PricingPlanCards

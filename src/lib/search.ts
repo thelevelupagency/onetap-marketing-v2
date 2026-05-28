@@ -11,3 +11,16 @@ export function matchesQuery(q: string, a: string, query: string): boolean {
   if (!needle) return true;
   return q.toLowerCase().includes(needle) || a.toLowerCase().includes(needle);
 }
+
+/** Match FAQ entry text and optional category label against a search query. */
+export function faqEntryMatchesQuery(
+  entry: { q: string; a: string },
+  query: string,
+  categoryLabel?: string
+): boolean {
+  if (!query.trim()) return true;
+  return (
+    matchesQuery(entry.q, entry.a, query) ||
+    (categoryLabel != null && textIncludes(categoryLabel, query))
+  );
+}

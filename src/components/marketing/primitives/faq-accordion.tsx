@@ -54,20 +54,31 @@ export function FaqAccordionComparisonItem({
   value,
   title,
   children,
+  className,
 }: {
   value: string;
   title: string;
   children: React.ReactNode;
+  /** Defaults to cream card — use on white section backgrounds */
+  className?: string;
 }) {
   return (
     <AccordionItem
       value={value}
-      className="rounded-2xl border border-brand-midnight/5 bg-white px-4"
+      className={cn(
+        "rounded-2xl border border-brand-midnight/10 bg-brand-cream px-4 shadow-sm",
+        className
+      )}
     >
-      <AccordionTrigger className="py-4 font-medium text-brand-midnight hover:no-underline">
+      <AccordionTrigger
+        className={cn(
+          typography.accordionQuestion,
+          "py-4 text-left font-medium text-brand-midnight hover:no-underline"
+        )}
+      >
         {title}
       </AccordionTrigger>
-      <AccordionContent className="space-y-3 pb-4">{children}</AccordionContent>
+      <AccordionContent className="space-y-2 pb-4">{children}</AccordionContent>
     </AccordionItem>
   );
 }

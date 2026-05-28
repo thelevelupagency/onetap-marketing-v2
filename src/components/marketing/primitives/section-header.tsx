@@ -31,7 +31,8 @@ export function SectionHeader({
     <div
       className={cn(
         align === "center" && "mx-auto max-w-3xl text-center",
-        align === "left" && "text-left",
+        align === "left" &&
+          "mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-none lg:text-left",
         spacingBelow === "default" && "mb-marketing-header-gap-md",
         className
       )}

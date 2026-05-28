@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { BlogList } from "@/components/marketing/blog/blog-list";
+import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
 import { PageShell, PageHero, MarketingContainer } from "@/components/marketing/primitives";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   return (
-    <PageShell>
+    <PageShell pageBottom="none">
       <PageHero
         title="The OneTap"
         accent="Blog"
@@ -24,6 +25,7 @@ export default function BlogPage() {
           <BlogList />
         </Suspense>
       </MarketingContainer>
+      <FinalCtaSection variant="blog" />
     </PageShell>
   );
 }
