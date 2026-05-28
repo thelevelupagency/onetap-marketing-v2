@@ -1,9 +1,12 @@
 import type { BlogPost } from "@/content/blog/posts";
 import { getHeadingId } from "@/lib/blog";
+import { type as typography } from "@/lib/typography";
+
+const bodyClass = `${typography.body} leading-7`;
 
 export function BlogPostContent({ post }: { post: BlogPost }) {
   return (
-    <article className="prose prose-neutral max-w-none prose-headings:font-display prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-4xl prose-h2:md:text-5xl prose-h2:leading-none prose-h3:text-xl prose-h3:md:text-2xl prose-h3:leading-tight prose-headings:text-brand-midnight prose-p:type-body prose-a:text-brand-turquoise-dark">
+    <article className="prose prose-neutral flex max-w-none flex-col gap-marketing-stack-gap normal-case prose-a:text-brand-turquoise-dark">
       {post.content.map((block, i) => {
         if (block.startsWith("## ")) {
           const lines = block.split("\n");
@@ -11,13 +14,25 @@ export function BlogPostContent({ post }: { post: BlogPost }) {
           const id = getHeadingId(heading, post.headings);
           const body = lines.slice(1).join("\n").trim();
           return (
-            <div key={i}>
-              <h2 id={id} className="scroll-mt-28">{heading}</h2>
-              {body && <p>{body}</p>}
-            </div>
+            <section
+              key={i}
+              className="flex flex-col gap-3 border-t border-brand-midnight/5 pt-marketing-stack-gap first-of-type:border-0 first-of-type:pt-0"
+            >
+              <h2
+                id={id}
+                className={`${typography.subsectionTitle} scroll-mt-28 normal-case`}
+              >
+                {heading}
+              </h2>
+              {body && <p className={bodyClass}>{body}</p>}
+            </section>
           );
         }
-        return <p key={i}>{block}</p>;
+        return (
+          <p key={i} className={bodyClass}>
+            {block}
+          </p>
+        );
       })}
     </article>
   );

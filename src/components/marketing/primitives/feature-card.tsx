@@ -8,7 +8,7 @@ const featureCardVariants = cva("", {
       plain: "p-8 text-center",
       elevated: "rounded-3xl border border-brand-midnight/5 bg-brand-cream p-8",
       compact:
-        "flex gap-3.5 rounded-2xl border border-brand-midnight/5 bg-brand-cream p-4 shadow-sm text-left",
+        "flex h-full gap-3.5 rounded-2xl border border-brand-midnight/5 bg-brand-cream p-4 shadow-sm text-left",
     },
     onDark: {
       true: "",

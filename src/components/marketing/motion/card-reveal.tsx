@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type UseInViewOptions } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useMotionConfig } from "@/lib/motion";
+import { useRevealVisibility } from "@/lib/motion/use-reveal-visibility";
 
 const GRID_GAP_CLASSES = {
   default: "gap-marketing-grid-gap md:gap-marketing-grid-gap-md",
@@ -31,15 +32,18 @@ export function CardReveal({
 }: CardRevealProps) {
   const { cardViewport, cardRevealVariant, cardEnterTransition, cardTokens } =
     useMotionConfig();
+  const { ref, initial, animate } = useRevealVisibility(
+    cardViewport as UseInViewOptions
+  );
   const staggerDelay =
     staggerIndex != null ? staggerIndex * cardTokens.staggerChildren : 0;
 
   return (
     <motion.div
+      ref={ref}
       className={cn("h-full", className)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={cardViewport}
+      initial={initial}
+      animate={animate}
       variants={cardRevealVariant()}
       transition={cardEnterTransition(staggerDelay + delay)}
     >
@@ -65,7 +69,7 @@ export function MarketingStaggerGrid({
   return (
     <div
       className={cn(
-        "grid",
+        "grid items-stretch",
         GRID_GAP_CLASSES[gap],
         columns === 3 && "md:grid-cols-3",
         columns === 2 && "md:grid-cols-2",

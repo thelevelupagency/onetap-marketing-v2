@@ -93,14 +93,14 @@ export function Process1Steps({ steps, stepBadgeBg }: Process1StepsProps) {
             }}
             id={index === 0 ? "step-create" : undefined}
             className={cn(
-              "relative flex flex-col gap-marketing-grid-gap border-t border-brand-midnight/10 py-marketing-grid-gap-md first:border-t-0 lg:gap-marketing-grid-gap-md lg:py-marketing-grid-gap-md",
+              "relative flex flex-col gap-marketing-grid-gap border-t border-brand-midnight/10 py-marketing-grid-gap-md first:border-t-0 lg:flex-row lg:items-start lg:gap-marketing-grid-gap-md lg:py-marketing-grid-gap-md",
               "transition-opacity duration-500 ease-out",
               isActive ? "opacity-100" : "opacity-55"
             )}
           >
-            <StepIllustration className="absolute top-marketing-grid-gap-md right-0 text-brand-turquoise lg:top-marketing-grid-gap-md" />
+            <div className="relative flex min-w-0 flex-1 items-start gap-marketing-grid-gap pr-8 lg:pr-10">
+              <StepIllustration className="absolute top-0 right-0 text-brand-turquoise" />
 
-            <div className="flex items-start gap-marketing-grid-gap pr-8">
               <div
                 className={cn(
                   "flex size-12 shrink-0 items-center justify-center px-4 py-1 font-display text-sm font-bold tracking-tight text-brand-midnight",
@@ -128,7 +128,8 @@ export function Process1Steps({ steps, stepBadgeBg }: Process1StepsProps) {
 
             <div
               className={cn(
-                "relative aspect-video w-full overflow-hidden rounded-2xl border shadow-sm transition-[border-color,box-shadow] duration-500",
+                "relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border shadow-sm transition-[border-color,box-shadow] duration-500",
+                "lg:aspect-[4/3] lg:w-72 xl:w-80",
                 isActive
                   ? "border-brand-turquoise/25 shadow-soft-diffusion"
                   : "border-brand-midnight/5"
@@ -139,7 +140,7 @@ export function Process1Steps({ steps, stepBadgeBg }: Process1StepsProps) {
                 alt={step.imageAlt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 66vw"
+                sizes="(max-width: 1024px) 100vw, 320px"
               />
             </div>
           </li>

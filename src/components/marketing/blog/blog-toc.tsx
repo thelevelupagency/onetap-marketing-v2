@@ -51,7 +51,7 @@ export function BlogToc({ headings }: { headings: BlogHeading[] }) {
   if (headings.length === 0) return null;
 
   return (
-    <nav className="sticky top-28 hidden xl:block">
+    <nav className="sticky top-28 hidden max-h-[calc(100vh-8rem)] self-start overflow-y-auto xl:block">
       <p className="type-eyebrow mb-4 text-brand-midnight/40">On this page</p>
       <ul className="space-y-2 border-l border-brand-midnight/10 pl-4">
         {headings.map((h) => (

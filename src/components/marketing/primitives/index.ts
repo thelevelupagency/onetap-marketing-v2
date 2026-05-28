@@ -18,3 +18,4 @@ export {
 } from "./faq-accordion";
 export { SplitContentSection } from "./split-content-section";
 export { CtaBand } from "./cta-band";
+export { AnimatedBorderPanel } from "./animated-border-panel";
