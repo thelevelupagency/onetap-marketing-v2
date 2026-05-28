@@ -102,7 +102,7 @@ export function PricingPlanCards({
         const card = (
           <div
             className={cn(
-              "flex flex-col rounded-3xl p-8",
+              "flex h-full flex-col rounded-3xl p-8",
               isPopular
                 ? "relative border-2 border-brand-turquoise bg-brand-navy text-brand-cream shadow-2xl md:-translate-y-4"
                 : cn(nonPopularCardBg, "shadow-sm")
@@ -136,7 +136,15 @@ export function PricingPlanCards({
               planId={plan.id}
               tokens={tokens}
             />
-            <Link href={plan.ctaHref} className="mb-8 block">
+            <ul className="mb-0 flex-1 space-y-3">
+              {plan.features.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-sm">
+                  <Check size={18} className="mt-0.5 shrink-0 text-brand-turquoise" />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href={plan.ctaHref} className="mt-marketing-stack-gap block shrink-0">
               <MarketingPrimaryButton
                 size="md"
                 className={cn(
@@ -148,26 +156,22 @@ export function PricingPlanCards({
                 {plan.cta}
               </MarketingPrimaryButton>
             </Link>
-            <ul className="flex-1 space-y-3">
-              {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-sm">
-                  <Check size={18} className="mt-0.5 shrink-0 text-brand-turquoise" />
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         );
 
         if (withStagger) {
           return (
             <CardReveal key={plan.id} staggerIndex={index}>
-              {card}
+              <div className="h-full">{card}</div>
             </CardReveal>
           );
         }
 
-        return <div key={plan.id}>{card}</div>;
+        return (
+          <div key={plan.id} className="h-full">
+            {card}
+          </div>
+        );
       })}
     </>
   );
@@ -183,7 +187,7 @@ export function PricingPlanCards({
   return (
     <div
       className={cn(
-        "grid gap-marketing-grid-gap md:grid-cols-3 md:gap-marketing-grid-gap-md",
+        "grid items-stretch gap-marketing-grid-gap md:grid-cols-3 md:gap-marketing-grid-gap-md",
         className
       )}
     >

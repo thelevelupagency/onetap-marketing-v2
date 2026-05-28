@@ -48,7 +48,9 @@ export function PricingBlock({
           </div>
         </>
       ) : (
-        <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} className="mb-16" />
+        <div className="mb-marketing-header-gap-md flex justify-center">
+          <PricingBillingToggle isAnnual={isAnnual} onChange={setIsAnnual} />
+        </div>
       )}
 
       <PricingPlanCards

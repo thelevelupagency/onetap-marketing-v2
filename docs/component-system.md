@@ -12,9 +12,10 @@ Reusable layout and brand primitives live in `src/components/marketing/primitive
 4. **CTAs** — `GetCardCta` for signup flows (`CREATE_BASICS_URL` via `@/lib/constants`), `MarketingPrimaryButton` for other primaries (e.g. demo → `LOGIN_URL`). Shared sizes in `get-card-cta.tsx`: `lg` (h-14, heroes + final CTA), `md` (h-12, in-section), `nav` / `sm` (compact). Do not hardcode app origins in new UI.
 5. **FAQs** — `FaqAccordion` + data from `src/content/faqs.ts` (`faqPageEntries`, audience arrays for solution pages). FAQ index: `CategoryFilterPills` with `onSelect` (in-place filter) + `faqEntryMatchesQuery` in `@/lib/search`.
 6. **Final CTA** — `FinalCtaSection` with `variant` from `@/content/final-cta.ts` on every page above the footer. Use `PageShell pageBottom="none"` when the final CTA is the last block (avoids a cream gap above the footer).
-7. **Solution pages** — Copy in `src/content/solutions.ts`; compose via `*-solution-sections.tsx` under `solutions/`; thin `src/app/solutions/*/page.tsx` with `metadata` + `PageShell` only. Alternate `MarketingSection` backgrounds (`cream` / `white`) between bands; optional `background` prop on shared sections defaults to homepage behavior.
-8. **Typography** — `import { type } from "@/lib/typography"` in TSX (kept in sync with `@utility` in `globals.css`).
-9. **Split sections** — `SplitContentSection` + `splitCopyColumnClass` (centers copy/CTAs on mobile, left-aligns at `lg+`). `SectionHeader align="left"` is centered on mobile automatically.
+7. **Pricing page bands** — Hero + plan cards: `MarketingSection` `transparent` / `spacing="none"` on cream `PageShell` (no top border). Then white (comparison) → cream (billing FAQ) → white (final CTA).
+8. **Solution pages** — Copy in `src/content/solutions.ts`; compose via `*-solution-sections.tsx` under `solutions/`; thin `src/app/solutions/*/page.tsx` with `metadata` + `PageShell` only. Alternate `MarketingSection` backgrounds (`cream` / `white`) between bands; optional `background` prop on shared sections defaults to homepage behavior.
+9. **Typography** — `import { type } from "@/lib/typography"` in TSX (kept in sync with `@utility` in `globals.css`).
+10. **Split sections** — `SplitContentSection` + `splitCopyColumnClass` (centers copy/CTAs on mobile, left-aligns at `lg+`). `SectionHeader align="left"` is centered on mobile automatically.
 
 ## Spacing contract
 
