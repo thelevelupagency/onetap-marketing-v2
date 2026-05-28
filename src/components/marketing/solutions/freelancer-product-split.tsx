@@ -8,25 +8,30 @@ import {
   FeatureCard,
 } from "@/components/marketing/primitives";
 import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
-import { cardUxCopy } from "@/content/homepage";
+import type { MarketingBandBackground } from "@/content/marketing-copy-types";
+import { freelancersProductSplitCopy } from "@/content/solutions";
 import { cardUxIcons } from "@/lib/marketing-icons";
 
-export function CardUxSection() {
+interface FreelancerProductSplitProps {
+  background?: MarketingBandBackground;
+}
+
+export function FreelancerProductSplit({ background = "cream" }: FreelancerProductSplitProps) {
   return (
-    <SplitContentSection id="features" background="white" width="full">
+    <SplitContentSection background={background} width="full">
       <div className={splitCopyColumnClass}>
         <Reveal direction="left" className="w-full">
           <SectionHeader
             align="left"
             spacingBelow="none"
-            title={cardUxCopy.title}
-            accent={cardUxCopy.accent}
-            lead={cardUxCopy.lead}
+            title={freelancersProductSplitCopy.title}
+            accent={freelancersProductSplitCopy.accent}
+            lead={freelancersProductSplitCopy.lead}
             className="mb-marketing-header-gap-md max-w-none"
           />
         </Reveal>
         <MarketingStaggerGrid columns={2} gap="tight">
-          {cardUxCopy.features.map((f, index) => {
+          {freelancersProductSplitCopy.features.map((f, index) => {
             const Icon = cardUxIcons[f.icon];
             return (
               <CardReveal key={f.label} staggerIndex={index}>

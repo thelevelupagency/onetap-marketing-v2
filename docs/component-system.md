@@ -9,9 +9,13 @@ Reusable layout and brand primitives live in `src/components/marketing/primitive
 1. **Pages** — metadata + `PageShell` + `PageHero` + domain sections only. No raw `container` or section `py-*` on route files. Use `PageShell offsetTop="none"` when the page starts with `MarketingPageHero` (hero supplies nav offset).
 2. **Sections** — `MarketingSection` + `SectionHeader` + content. Do not hand-roll section padding.
 3. **Headlines** — `SectionHeader` / `PageHero` with optional `accent` prop. Never inline `italic text-brand-turquoise`.
-4. **CTAs** — `GetCardCta` for signup flows, or `Button variant="brandPrimary"` for other primary actions.
-5. **FAQs** — `FaqAccordion` + data from `src/content/`.
-6. **Typography** — `import { type } from "@/lib/typography"` in TSX (kept in sync with `@utility` in `globals.css`).
+4. **CTAs** — `GetCardCta` for signup flows (`CREATE_BASICS_URL` via `@/lib/constants`), `MarketingPrimaryButton` for other primaries (e.g. demo → `LOGIN_URL`). Shared sizes in `get-card-cta.tsx`: `lg` (h-14, heroes + final CTA), `md` (h-12, in-section), `nav` / `sm` (compact). Do not hardcode app origins in new UI.
+5. **FAQs** — `FaqAccordion` + data from `src/content/faqs.ts` (`faqPageEntries`, audience arrays for solution pages). FAQ index: `CategoryFilterPills` with `onSelect` (in-place filter) + `faqEntryMatchesQuery` in `@/lib/search`.
+6. **Final CTA** — `FinalCtaSection` with `variant` from `@/content/final-cta.ts` on every page above the footer. Use `PageShell pageBottom="none"` when the final CTA is the last block (avoids a cream gap above the footer).
+7. **Pricing page bands** — Hero + plan cards: `MarketingSection` `transparent` / `spacing="none"` on cream `PageShell` (no top border). Then white (comparison) → cream (billing FAQ) → white (final CTA).
+8. **Solution pages** — Copy in `src/content/solutions.ts`; compose via `*-solution-sections.tsx` under `solutions/`; thin `src/app/solutions/*/page.tsx` with `metadata` + `PageShell` only. Alternate `MarketingSection` backgrounds (`cream` / `white`) between bands; optional `background` prop on shared sections defaults to homepage behavior.
+9. **Typography** — `import { type } from "@/lib/typography"` in TSX (kept in sync with `@utility` in `globals.css`).
+10. **Split sections** — `SplitContentSection` + `splitCopyColumnClass` (centers copy/CTAs on mobile, left-aligns at `lg+`). `SectionHeader align="left"` is centered on mobile automatically.
 
 ## Spacing contract
 
@@ -50,10 +54,11 @@ CSS variables live in `src/app/globals.css` (`:root` + `@theme` aliases). Primit
 
 ## Motion (homepage / marketing sections)
 
-- Tokens and hooks: `@/lib/motion` (`useMotionConfig`, `MOTION_VIEWPORT`).
+- Tokens and hooks: `@/lib/motion` (`useMotionConfig`, `useRevealVisibility`, `MOTION_VIEWPORT`).
+- Back navigation: `BackNavigationReloadScript` in `src/app/layout.tsx` (inline reload before React hydrates).
 - UI primitives: `@/components/marketing/motion` (`Reveal`, `RevealStagger`, `RevealItem`, `CardReveal`, `MarketingStaggerGrid`).
-- Card grids: `CardReveal` uses per-item `whileInView` (`MOTION_CARD_VIEWPORT`) with stronger `getCardMotionTokens()` — not the parent-grid stagger pattern (which fired too early).
-- Scroll reveals use `whileInView` with `viewport.once`; hero fold uses `mode="mount"`.
+- Card grids: `CardReveal` uses per-item `useRevealVisibility` with `MOTION_CARD_VIEWPORT` and stronger `getCardMotionTokens()` — not the parent-grid stagger pattern (which fired too early).
+- Scroll reveals use controlled `animate` (via `useInView` + in-viewport mount check), not `whileInView` in sections; hero fold uses `mode="mount"`.
 - Do not duplicate raw `initial={{ opacity: 0, y: 20 }}` in sections — see `.cursor/rules/motion-a11y.mdc`.
 
 ## Imports
@@ -68,5 +73,10 @@ import {
   SectionHeader,
   FaqAccordion,
   MarketingBadge,
+  CategoryFilterPills,
+  splitCopyColumnClass,
 } from "@/components/marketing/primitives";
+import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
 ```
+
+Copy types for section overrides: `@/content/marketing-copy-types` (`PainPointsCopy`, `SocialProofCopy`, `PricingHeaderCopy`, `MarketingFaqItem`).

@@ -1,39 +1,34 @@
-import { Zap, Link2, UserPlus } from "lucide-react";
 import {
   MarketingSection,
   MarketingContainer,
+  SectionHeader,
   FeatureGrid,
   FeatureCard,
 } from "@/components/marketing/primitives";
+import type { MarketingBandBackground } from "@/content/marketing-copy-types";
+import { freelancersFeaturesCopy } from "@/content/solutions";
+import { solutionFeatureIcons } from "@/lib/marketing-icons";
 
-const features = [
-  {
-    icon: Zap,
-    title: "60-second setup",
-    description:
-      "Launch your card before your next coffee meeting. No design skills required.",
-  },
-  {
-    icon: Link2,
-    title: "Link-in-bio replacement",
-    description:
-      "One beautiful URL for your entire professional presence — portfolio, socials, and contact.",
-  },
-  {
-    icon: UserPlus,
-    title: "Automatic lead capture",
-    description: "Built-in forms capture prospect details and notify you instantly.",
-  },
-] as const;
+interface FreelancerFeaturesProps {
+  background?: MarketingBandBackground;
+}
 
-export function FreelancerFeatures() {
+export function FreelancerFeatures({ background = "white" }: FreelancerFeaturesProps) {
   return (
-    <MarketingSection background="white" spacing="compact">
+    <MarketingSection background={background} spacing="compact">
       <MarketingContainer width="default">
+        <SectionHeader
+          title={freelancersFeaturesCopy.title}
+          accent={freelancersFeaturesCopy.accent}
+          lead={freelancersFeaturesCopy.lead}
+        />
         <FeatureGrid>
-          {features.map((f) => (
-            <FeatureCard key={f.title} variant="plain" {...f} />
-          ))}
+          {freelancersFeaturesCopy.features.map((f) => {
+            const Icon = solutionFeatureIcons[f.icon];
+            return (
+              <FeatureCard key={f.title} variant="elevated" icon={Icon} title={f.title} description={f.description} />
+            );
+          })}
         </FeatureGrid>
       </MarketingContainer>
     </MarketingSection>

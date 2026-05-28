@@ -12,6 +12,20 @@ import {
   FaqAccordionComparisonItem,
 } from "@/components/marketing/primitives";
 
+type ComparisonPlanKey = "free" | "premium" | "agency";
+
+type ComparisonPlanColumn = {
+  key: ComparisonPlanKey;
+  label: string;
+  highlight?: boolean;
+};
+
+const planColumns: ComparisonPlanColumn[] = [
+  { key: "free", label: "Free" },
+  { key: "premium", label: "Pro", highlight: true },
+  { key: "agency", label: "Agencies & Teams" },
+];
+
 function CellValue({
   value,
   className,
@@ -22,57 +36,99 @@ function CellValue({
   if (typeof value === "boolean") {
     const Icon = value ? Check : X;
     return (
-      <Icon
-        className={cn(
-          "size-5 shrink-0",
-          value ? "text-brand-turquoise" : "text-brand-midnight/20",
-          className
-        )}
-        aria-hidden
-      />
+      <span
+        className={cn("inline-flex items-center justify-center", className)}
+        aria-label={value ? "Included" : "Not included"}
+      >
+        <Icon
+          className={cn(
+            "size-5 shrink-0",
+            value ? "text-brand-turquoise" : "text-brand-midnight/25"
+          )}
+          aria-hidden
+        />
+      </span>
     );
   }
   return (
-    <span className={cn("text-sm text-brand-midnight/80", className)}>{value}</span>
+    <span className={cn(typography.bodySm, "font-medium text-brand-midnight", className)}>
+      {value}
+    </span>
   );
 }
 
 export function PricingComparison() {
   return (
-    <MarketingSection background="transparent" spacing="compact">
+    <MarketingSection background="white" spacing="compact">
       <MarketingContainer width="default">
         <SectionHeader title="Feature" accent="comparison" />
 
-        <div className="hidden overflow-hidden rounded-2xl border border-brand-midnight/10 bg-white md:block">
-          <table className="w-full">
+        <div className="hidden overflow-hidden rounded-3xl border border-brand-midnight/10 bg-brand-cream shadow-sm md:block">
+          <table className="w-full table-fixed border-collapse">
+            <colgroup>
+              <col className="w-[38%]" />
+              <col className="w-[20.66%]" />
+              <col className="w-[20.66%]" />
+              <col className="w-[20.66%]" />
+            </colgroup>
             <thead>
-              <tr className="border-b border-brand-midnight/10 bg-brand-cream">
-                <th className="p-4 text-left font-medium text-brand-midnight">Feature</th>
-                <th className={`${typography.tableHeading} p-4 text-center`}>Free</th>
-                <th className={`${typography.tableHeading} bg-brand-turquoise/5 p-4 text-center`}>
-                  Pro
+              <tr className="border-b-2 border-brand-midnight/10 bg-brand-cream">
+                <th
+                  scope="col"
+                  className={cn(
+                    typography.label,
+                    "px-6 py-5 text-left text-brand-midnight/70"
+                  )}
+                >
+                  Feature
                 </th>
-                <th className={`${typography.tableHeading} p-4 text-center`}>
-                  Agencies & Teams
-                </th>
+                {planColumns.map((col) => (
+                  <th
+                    key={col.key}
+                    scope="col"
+                    className={cn(
+                      typography.tableHeading,
+                      "px-4 py-5 text-center",
+                      col.highlight &&
+                        "border-x border-brand-turquoise/25 bg-brand-turquoise/10"
+                    )}
+                  >
+                    {col.label}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {comparisonFeatures.map((row, i) => (
                 <tr
                   key={row.name}
-                  className={i % 2 === 0 ? "bg-white" : "bg-brand-cream/30"}
+                  className={cn(
+                    "border-b border-brand-midnight/[0.06] last:border-b-0",
+                    i % 2 === 0 ? "bg-white" : "bg-brand-cream/50",
+                    "transition-colors hover:bg-brand-turquoise/[0.04]"
+                  )}
                 >
-                  <td className="p-4 text-sm font-medium text-brand-midnight">{row.name}</td>
-                  <td className="p-4 text-center">
-                    <CellValue value={row.free} className="mx-auto" />
-                  </td>
-                  <td className="bg-brand-turquoise/5 p-4 text-center">
-                    <CellValue value={row.premium} className="mx-auto" />
-                  </td>
-                  <td className="p-4 text-center">
-                    <CellValue value={row.agency} className="mx-auto" />
-                  </td>
+                  <th
+                    scope="row"
+                    className={cn(
+                      typography.bodySm,
+                      "px-6 py-4 text-left font-medium text-brand-midnight"
+                    )}
+                  >
+                    {row.name}
+                  </th>
+                  {planColumns.map((col) => (
+                    <td
+                      key={col.key}
+                      className={cn(
+                        "px-4 py-4 text-center align-middle",
+                        col.highlight &&
+                          "border-x border-brand-turquoise/15 bg-brand-turquoise/[0.06]"
+                      )}
+                    >
+                      <CellValue value={row[col.key]} className="mx-auto" />
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -80,24 +136,21 @@ export function PricingComparison() {
         </div>
 
         <div className="md:hidden">
-          <Accordion className="space-y-3">
+          <Accordion className="space-y-marketing-stack-gap-sm">
             {comparisonFeatures.map((row, i) => (
               <FaqAccordionComparisonItem key={row.name} value={`row-${i}`} title={row.name}>
-                {(
-                  [
-                    { key: "free" as const, label: "Free" },
-                    { key: "premium" as const, label: "Pro" },
-                    { key: "agency" as const, label: "Agencies & Teams" },
-                  ] as const
-                ).map(({ key: tier, label }) => (
+                {planColumns.map(({ key: tier, label, highlight }) => (
                   <div
                     key={tier}
-                    className="flex min-h-5 items-center justify-between gap-4"
+                    className={cn(
+                      "flex min-h-10 items-center justify-between gap-4 rounded-xl border border-brand-midnight/[0.06] bg-white px-3 py-2.5",
+                      highlight && "border-brand-turquoise/20 bg-brand-turquoise/10"
+                    )}
                   >
-                    <span className="text-sm text-brand-midnight/60">{label}</span>
-                    <div className="flex w-28 shrink-0 items-center justify-end">
-                      <CellValue value={row[tier]} />
-                    </div>
+                    <span className={cn(typography.label, "text-brand-midnight/70")}>
+                      {label}
+                    </span>
+                    <CellValue value={row[tier]} />
                   </div>
                 ))}
               </FaqAccordionComparisonItem>

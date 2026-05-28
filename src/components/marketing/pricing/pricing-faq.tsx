@@ -8,7 +8,7 @@ import {
 
 export function PricingFaq() {
   return (
-    <MarketingSection background="cream" spacing="compact">
+    <MarketingSection background="cream" spacing="compact" id="billing-faq">
       <MarketingContainer width="narrow">
         <SectionHeader title="Billing" accent="FAQ" />
         <FaqAccordion

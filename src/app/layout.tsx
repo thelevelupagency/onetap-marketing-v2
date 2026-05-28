@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import { BackNavigationReloadScript } from "@/components/providers/back-navigation-reload-script";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -43,6 +44,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} antialiased`}
     >
       <body className="min-h-svh flex flex-col font-sans bg-brand-cream overflow-x-clip">
+        <BackNavigationReloadScript />
         <Navigation />
         <div className="flex-1">{children}</div>
         <Footer />

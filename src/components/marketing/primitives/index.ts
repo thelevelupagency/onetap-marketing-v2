@@ -12,9 +12,14 @@ export { FeatureCard } from "./feature-card";
 export { PainPointCard } from "./pain-point-card";
 export { TextLink } from "./text-link";
 export {
+  CategoryFilterPills,
+  type CategoryFilterPill,
+} from "./category-filter-pills";
+export {
   FaqAccordion,
   FaqAccordionComparisonItem,
   type FaqItem,
 } from "./faq-accordion";
-export { SplitContentSection } from "./split-content-section";
+export { SplitContentSection, splitCopyColumnClass } from "./split-content-section";
 export { CtaBand } from "./cta-band";
+export { AnimatedBorderPanel } from "./animated-border-panel";

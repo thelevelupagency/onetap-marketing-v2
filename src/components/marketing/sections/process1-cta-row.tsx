@@ -11,7 +11,7 @@ interface Process1CtaRowProps {
 export function Process1CtaRow({ ctaLabel, ctaHref }: Process1CtaRowProps) {
   return (
     <div className="mb-marketing-header-gap-md flex justify-center">
-      <GetCardCta href={ctaHref} size="sm">
+      <GetCardCta href={ctaHref} size="md">
         {ctaLabel}
       </GetCardCta>
     </div>

@@ -14,6 +14,7 @@ import {
 } from "@/components/marketing/primitives";
 import { Reveal, RevealItem, RevealStagger } from "@/components/marketing/motion";
 import { HERO_MOBILE_MOUNT_TOKENS, useMotionConfig } from "@/lib/motion";
+import { marketingOutlineCtaClassName } from "@/components/marketing/get-card-cta";
 import { heroCopy } from "@/content/homepage";
 import { type as typography } from "@/lib/typography";
 
@@ -30,11 +31,7 @@ export function HeroSection() {
     <div className="flex w-full flex-col items-center justify-center gap-4 lg:items-stretch lg:justify-start">
       <SlugClaimCta slug={slug} onSlugChange={setSlug} className="mx-auto lg:mx-0" />
       <Link href="#how-it-works" className="w-full sm:w-auto">
-        <Button
-          size="lg"
-          variant="brandOutline"
-          className="h-14 w-full rounded-full px-8 text-lg sm:w-auto"
-        >
+        <Button size="lg" variant="brandOutline" className={marketingOutlineCtaClassName}>
           See how it works
         </Button>
       </Link>

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { FloatWrap } from "@/components/marketing/phones/float-wrap";
 import { useMotionConfig } from "@/lib/motion";
+import { useRevealVisibility } from "@/lib/motion/use-reveal-visibility";
 import { cn } from "@/lib/utils";
 
 export type CardUxBubbleConfig = {
@@ -101,6 +102,10 @@ type CardUxPhoneBubblesProps = {
 
 export function CardUxPhoneBubbles({ className }: CardUxPhoneBubblesProps) {
   const { viewport, tokens, prefersReducedMotion } = useMotionConfig();
+  const { ref, initial, animate } = useRevealVisibility({
+    ...viewport,
+    margin: "-80px",
+  });
 
   const bubbleEnter = prefersReducedMotion
     ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
@@ -118,10 +123,10 @@ export function CardUxPhoneBubbles({ className }: CardUxPhoneBubblesProps) {
 
   return (
     <motion.div
+      ref={ref}
       className={cn("pointer-events-none absolute inset-0", className)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ ...viewport, margin: "-80px" }}
+      initial={prefersReducedMotion ? false : initial}
+      animate={prefersReducedMotion ? "visible" : animate}
       variants={{
         hidden: {},
         visible: {
@@ -135,6 +140,9 @@ export function CardUxPhoneBubbles({ className }: CardUxPhoneBubblesProps) {
           className={bubble.positionClassName}
           variants={bubbleEnter}
           transition={bubbleTransition}
+          {...(prefersReducedMotion
+            ? { initial: false as const, animate: "visible" as const }
+            : {})}
         >
           <FloatWrap delay={bubble.floatDelay} duration={bubble.floatDuration}>
             <PhonePreviewBubble

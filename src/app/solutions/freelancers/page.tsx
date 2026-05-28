@@ -1,23 +1,17 @@
 import { Metadata } from "next";
 import { PageShell } from "@/components/marketing/primitives";
-import { FreelancerHero } from "@/components/marketing/solutions/freelancer-hero";
-import { FreelancerFeatures } from "@/components/marketing/solutions/freelancer-features";
-import { FreelancerCreators } from "@/components/marketing/solutions/freelancer-creators";
-import { FreelancerCta } from "@/components/marketing/solutions/freelancer-cta";
+import { FreelancersSolutionSections } from "@/components/marketing/solutions/freelancers-solution-sections";
 
 export const metadata: Metadata = {
   title: "OneTap for Freelancers | Digital Business Cards",
   description:
-    "Capture 80% more inquiries with a professional digital business card built for freelancers.",
+    "Win more clients with a professional digital card built for freelancers — lead capture, portfolio, analytics, and one link for every channel.",
 };
 
 export default function FreelancersPage() {
   return (
     <PageShell offsetTop="none" pageBottom="none" className="bg-brand-cream">
-      <FreelancerHero />
-      <FreelancerFeatures />
-      <FreelancerCreators />
-      <FreelancerCta />
+      <FreelancersSolutionSections />
     </PageShell>
   );
 }

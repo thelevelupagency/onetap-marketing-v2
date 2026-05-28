@@ -2,29 +2,42 @@ import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { MarketingPhonePreview } from "@/components/marketing/phones/marketing-phone-preview";
 import {
   SplitContentSection,
+  splitCopyColumnClass,
   MarketingBadge,
   SectionHeader,
 } from "@/components/marketing/primitives";
+import type { MarketingBandBackground } from "@/content/marketing-copy-types";
+import { freelancersCreatorsCopy } from "@/content/solutions";
 
-export function FreelancerCreators() {
+interface FreelancerCreatorsProps {
+  background?: MarketingBandBackground;
+}
+
+export function FreelancerCreators({ background = "white" }: FreelancerCreatorsProps) {
   return (
-    <SplitContentSection background="cream" id="creators">
-      <div>
+    <SplitContentSection background={background} id="creators">
+      <div className={splitCopyColumnClass}>
         <MarketingBadge tone="light" className="mb-4">
-          For Creators
+          {freelancersCreatorsCopy.badge}
         </MarketingBadge>
         <SectionHeader
           align="left"
-          title="5x faster"
-          accent="exposure"
-          lead="Showcase your gallery, embed videos, and link every platform from one stunning mobile profile. Your audience saves your contact in one tap."
+          title={freelancersCreatorsCopy.title}
+          accent={freelancersCreatorsCopy.accent}
+          lead={freelancersCreatorsCopy.lead}
           className="max-w-none"
           titleClassName="mb-6"
         />
-        <GetCardCta size="sm">Start creating</GetCardCta>
+        <div className="flex w-full justify-center lg:justify-start">
+          <GetCardCta size="md">{freelancersCreatorsCopy.cta}</GetCardCta>
+        </div>
       </div>
       <div className="flex justify-center leading-none lg:justify-end">
-        <MarketingPhonePreview scale={0.48} url="almog-menashe" alt="Creator OneTap card preview" />
+        <MarketingPhonePreview
+          scale={0.48}
+          url={freelancersCreatorsCopy.phoneUrl}
+          alt={freelancersCreatorsCopy.phoneAlt}
+        />
       </div>
     </SplitContentSection>
   );

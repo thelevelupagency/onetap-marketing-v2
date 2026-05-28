@@ -9,8 +9,10 @@ alwaysApply: false
 ## Shared system
 
 - Use `useMotionConfig()` from `@/lib/motion` and primitives from `@/components/marketing/motion` (`Reveal`, `RevealStagger`, `RevealItem`, `CardReveal`, `MarketingStaggerGrid`).
+- Scroll reveals use `useRevealVisibility()` (controlled `animate` + `useInView`) inside primitives — **do not** use `whileInView` in section files.
+- Browser Back from external links: `BackNavigationReloadScript` in root layout reloads once on `back_forward` (sessionStorage guard) or Safari bfcache `pageshow` + `persisted`. Do not add client-side restore overrides — reload is the fix.
 - Do not copy-paste `initial={{ opacity: 0, y: 20 }}` in section files — use shared variants.
-- Card grids: `CardReveal` per item with `whileInView` (`MOTION_CARD_VIEWPORT`); do not wrap the whole grid in one early-firing `RevealStagger`.
+- Card grids: `CardReveal` per item with `MOTION_CARD_VIEWPORT` via `useRevealVisibility`; do not wrap the whole grid in one early-firing `RevealStagger`.
 
 ## Reduced motion
 

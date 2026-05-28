@@ -2,17 +2,17 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { textIncludes } from "@/lib/search";
 import { type as typography } from "@/lib/typography";
 import { posts, categoryLabels, type BlogCategory } from "@/content/blog/posts";
 import { formatDate } from "@/lib/blog";
 import { ContentSearch } from "@/components/marketing/content-search";
 import {
+  CategoryFilterPills,
   MarketingLinkCard,
   MarketingBadge,
+  type CategoryFilterPill,
 } from "@/components/marketing/primitives";
 
 const categories: (BlogCategory | "all")[] = [
@@ -45,46 +45,36 @@ export function BlogList() {
       .filter((p) => postMatchesQuery(p, query));
   }, [activeCategory, query]);
 
+  const filterPills: CategoryFilterPill[] = categories.map((cat) => {
+    const href = cat === "all" ? "/blog" : `/blog?category=${cat}`;
+    const isActive = cat === "all" ? !activeCategory : activeCategory === cat;
+    return {
+      id: cat,
+      label: cat === "all" ? "All" : categoryLabels[cat],
+      href,
+      isActive,
+    };
+  });
+
   return (
     <>
       <ContentSearch
         value={query}
         onChange={setQuery}
         placeholder="Search posts..."
-        className="relative mx-auto mb-8 w-full max-w-md"
+        className="relative mx-auto mb-marketing-stack-gap w-full max-w-md"
       />
 
-      <div className="mx-auto mb-14 flex max-w-3xl flex-wrap justify-center gap-3">
-        {categories.map((cat) => {
-          const href = cat === "all" ? "/blog" : `/blog?category=${cat}`;
-          const isActive = cat === "all" ? !activeCategory : activeCategory === cat;
-          const label = cat === "all" ? "All" : categoryLabels[cat];
-          return (
-            <Link
-              key={cat}
-              href={href}
-              aria-current={isActive ? "page" : undefined}
-              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-navy/25 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream"
-            >
-              <span
-                className={cn(
-                  "inline-flex min-h-11 items-center justify-center rounded-full border px-5 py-2.5 text-sm font-medium tracking-tight transition-all duration-200 sm:min-h-12 sm:px-6 sm:py-3 sm:text-base",
-                  isActive
-                    ? "border-brand-midnight bg-brand-midnight text-brand-cream shadow-soft-diffusion"
-                    : "border-brand-midnight/12 bg-white text-brand-midnight/75 shadow-sm hover:border-brand-turquoise/35 hover:bg-brand-turquoise/15 hover:text-brand-midnight hover:shadow-md"
-                )}
-              >
-                {label}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+      <CategoryFilterPills
+        items={filterPills}
+        ariaLabel="Blog categories"
+        className="mb-marketing-header-gap-md"
+      />
 
       {filtered.length === 0 ? (
         <p className="py-12 text-center text-brand-midnight/50">No posts match your search.</p>
       ) : (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 pb-marketing-header-gap-md md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((post) => (
             <MarketingLinkCard
               key={post.slug}
@@ -109,7 +99,7 @@ export function BlogList() {
                 >
                   {post.title}
                 </h2>
-                <p className={`${typography.bodySm} mb-4 line-clamp-2`}>{post.excerpt}</p>
+                <p className={`${typography.body} mb-4 line-clamp-2`}>{post.excerpt}</p>
                 <p className="text-xs text-brand-midnight/40">
                   {formatDate(post.date)} · {post.author}
                 </p>

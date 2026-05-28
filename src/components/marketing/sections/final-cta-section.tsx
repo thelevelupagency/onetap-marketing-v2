@@ -1,55 +1,71 @@
-"use client";
+import { Check } from "lucide-react";
+import { GetCardCta } from "@/components/marketing/get-card-cta";
+import {
+  AnimatedBorderPanel,
+  BrandAccent,
+  MarketingContainer,
+  MarketingSection,
+} from "@/components/marketing/primitives";
+import { getFinalCtaCopy, type FinalCtaVariant } from "@/content/final-cta";
 
-import { useState } from "react";
-import { SlugClaimCta } from "@/components/marketing/slug-claim-cta";
-import { CtaBand } from "@/components/marketing/primitives";
-import { Reveal } from "@/components/marketing/motion";
-import { finalCtaCopy } from "@/content/homepage";
+export type { FinalCtaVariant };
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 
-export function FinalCtaSection() {
-  const [slug, setSlug] = useState("");
+interface FinalCtaSectionProps {
+  variant?: FinalCtaVariant;
+}
+
+export function FinalCtaSection({ variant = "default" }: FinalCtaSectionProps) {
+  const copy = getFinalCtaCopy(variant);
 
   return (
-    <CtaBand
-      title={finalCtaCopy.title}
-      accent={finalCtaCopy.accent}
-      containerWidth="wide"
-      titleClassName="mb-marketing-header-gap-md"
-    >
-      <Reveal>
-        <p
-          className={cn(
-            typography.sectionLead,
-            "mx-auto mb-marketing-header-gap-md max-w-2xl text-pretty text-brand-cream/70"
+    <MarketingSection background="white" spacing="compact">
+      <MarketingContainer width="wide">
+        <AnimatedBorderPanel
+          innerClassName={cn(
+            "px-marketing-card-padding py-marketing-section-y-compact text-center",
+            "md:px-10 md:py-12"
           )}
         >
-          {finalCtaCopy.subheadline}
-        </p>
-      </Reveal>
-      <SlugClaimCta
-        slug={slug}
-        onSlugChange={setSlug}
-        size="wide"
-        surface="dark"
-        submitLabel={finalCtaCopy.cta}
-        className="mx-auto w-full"
-      />
-      <Reveal delay={0.08}>
-        <p className="mt-marketing-stack-gap flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-brand-cream/50">
-          {finalCtaCopy.microcopyItems.map((item, index) => (
-            <span key={item} className="inline-flex items-center gap-2">
-              {index > 0 ? (
-                <span className="text-brand-cream/30" aria-hidden>
-                  ·
-                </span>
-              ) : null}
-              {item}
-            </span>
-          ))}
-        </p>
-      </Reveal>
-    </CtaBand>
+          <h2
+            className={cn(
+              typography.sectionTitle,
+              "mb-marketing-header-gap-md text-balance text-brand-cream"
+            )}
+          >
+            {copy.title} <BrandAccent>{copy.accent}</BrandAccent>
+          </h2>
+
+          <p
+            className={cn(
+              typography.sectionLead,
+              "mx-auto mb-marketing-header-gap-md max-w-2xl text-pretty text-brand-cream/75"
+            )}
+          >
+            {copy.subheadline}
+          </p>
+
+          <div className="flex justify-center">
+            <GetCardCta size="lg">{copy.cta}</GetCardCta>
+          </div>
+
+          <ul
+            className="mt-marketing-stack-gap flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-brand-cream/60"
+            aria-label="What's included"
+          >
+            {copy.microcopyItems.map((item) => (
+              <li key={item} className="inline-flex items-center gap-1.5">
+                <Check
+                  className="h-4 w-4 shrink-0 text-brand-turquoise"
+                  aria-hidden
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </AnimatedBorderPanel>
+      </MarketingContainer>
+    </MarketingSection>
   );
 }

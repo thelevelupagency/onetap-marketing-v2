@@ -8,9 +8,25 @@ import { CREATE_BASICS_URL } from "@/lib/constants";
 
 export const primaryCtaClassName = "rounded-full";
 
-interface MarketingPrimaryButtonProps extends React.ComponentProps<typeof Button> {
+/** Shared marketing CTA heights — hero/final use lg; in-section use md. */
+export const marketingCtaSizes = {
+  lg: "h-14 px-8 text-lg",
+  md: "h-12 px-7 text-base",
+  sm: "h-11 px-6 text-sm",
+} as const;
+
+export const marketingCtaWidths = "w-full sm:w-auto";
+
+export const marketingOutlineCtaClassName = cn(
+  primaryCtaClassName,
+  marketingCtaSizes.lg,
+  marketingCtaWidths
+);
+
+interface MarketingPrimaryButtonProps
+  extends Omit<React.ComponentProps<typeof Button>, "size"> {
   children: React.ReactNode;
-  size?: "lg" | "sm" | "default";
+  size?: "lg" | "md" | "sm" | "default";
 }
 
 /** Primary marketing button without a fixed signup link wrapper */
@@ -26,8 +42,9 @@ export function MarketingPrimaryButton({
       size={size === "lg" ? "lg" : size === "sm" ? "sm" : "default"}
       className={cn(
         primaryCtaClassName,
-        size === "lg" && "h-14 px-8 text-lg",
-        size === "sm" && "h-11 px-6 text-sm",
+        size === "lg" && marketingCtaSizes.lg,
+        size === "md" && marketingCtaSizes.md,
+        size === "sm" && marketingCtaSizes.sm,
         className
       )}
       {...props}
@@ -40,8 +57,8 @@ export function MarketingPrimaryButton({
 interface GetCardCtaProps {
   href?: string;
   children?: React.ReactNode;
-  /** lg = hero; nav = navbar (compact); sm = in-content; mobileNav = full-width sheet footer */
-  size?: "lg" | "nav" | "sm" | "mobileNav";
+  /** lg = hero & final CTA; md = in-section; nav = navbar; sm = dense UI; mobileNav = sheet footer */
+  size?: "lg" | "md" | "nav" | "sm" | "mobileNav";
   className?: string;
   onClick?: () => void;
 }
@@ -86,9 +103,10 @@ export function GetCardCta({
       size={size === "nav" ? "default" : size === "sm" ? "sm" : "lg"}
       className={cn(
         primaryCtaClassName,
-        size === "lg" && "h-14 px-8 text-lg w-full sm:w-auto",
+        size === "lg" && cn(marketingCtaSizes.lg, marketingCtaWidths),
+        size === "md" && cn(marketingCtaSizes.md, marketingCtaWidths),
         size === "nav" && "h-8 px-6 text-sm w-auto",
-        size === "sm" && "h-11 px-6 text-sm",
+        size === "sm" && cn(marketingCtaSizes.sm, marketingCtaWidths),
         size === "mobileNav" && "h-12 w-full px-6 text-base",
         className
       )}
@@ -96,7 +114,7 @@ export function GetCardCta({
       nativeButton={false}
     >
       {children}
-      {showArrow ? <ArrowRight className="ml-2 w-5 h-5 shrink-0" /> : null}
+      {showArrow ? <ArrowRight className="ml-2 h-5 w-5 shrink-0" /> : null}
     </Button>
   );
 }
