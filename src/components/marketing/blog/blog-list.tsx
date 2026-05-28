@@ -109,7 +109,7 @@ export function BlogList() {
                 >
                   {post.title}
                 </h2>
-                <p className={`${typography.bodySm} mb-4 line-clamp-2`}>{post.excerpt}</p>
+                <p className={`${typography.body} mb-4 line-clamp-2`}>{post.excerpt}</p>
                 <p className="text-xs text-brand-midnight/40">
                   {formatDate(post.date)} · {post.author}
                 </p>

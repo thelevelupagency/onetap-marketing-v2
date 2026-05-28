@@ -21,4 +21,11 @@ export {
 export type { RevealDirection } from "./variants";
 export { useMotionConfig } from "./use-motion-config";
 export type { MotionConfig } from "./use-motion-config";
+export { BACK_NAV_RELOAD_GUARD_KEY } from "./back-navigation-reload";
+export { useRevealVisibility } from "./use-reveal-visibility";
+export {
+  isBackForwardNavigation,
+  isElementInViewport,
+  VIEWPORT_VISIBILITY_MARGIN,
+} from "./navigation-restore";
 export { useIsMobile, useMediaQuery } from "./use-media-query";

@@ -16,12 +16,12 @@ export function CardUxSection() {
       <div>
         <Reveal direction="left">
           <SectionHeader
-            align="left"
+            align="center"
             spacingBelow="none"
             title={cardUxCopy.title}
             accent={cardUxCopy.accent}
             lead={cardUxCopy.lead}
-            className="mb-marketing-header-gap-md"
+            className="mb-marketing-header-gap-md lg:mx-0 lg:max-w-none lg:text-left"
           />
         </Reveal>
         <MarketingStaggerGrid columns={2} gap="tight">

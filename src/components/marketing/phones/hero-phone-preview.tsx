@@ -114,6 +114,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
   const containerRef = useRef<HTMLDivElement>(null);
   const fanScale = useFanScale(containerRef);
   const { prefersReducedMotion, isMobile, enterTransition } = useMotionConfig();
+  const skipInitial = prefersReducedMotion;
 
   const useMobileFan = isMobile && !prefersReducedMotion;
 
@@ -176,7 +177,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
             <motion.div
               className="absolute bottom-0 z-[1] origin-bottom"
               style={{ left: MOBILE_FAN_BLEED_X }}
-              initial={{ opacity: 0, y: 10, rotate: -14 }}
+              initial={skipInitial ? false : { opacity: 0, y: 10, rotate: -14 }}
               animate={{ opacity: 0.88, y: 0, rotate: -MOBILE_FAN_ROTATION_DEG }}
               transition={mobileTransition(0.14)}
             >
@@ -193,7 +194,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
             <motion.div
               className="absolute bottom-0 z-[1] origin-bottom"
               style={{ right: MOBILE_FAN_BLEED_X }}
-              initial={{ opacity: 0, y: 10, rotate: 14 }}
+              initial={skipInitial ? false : { opacity: 0, y: 10, rotate: 14 }}
               animate={{ opacity: 0.88, y: 0, rotate: MOBILE_FAN_ROTATION_DEG }}
               transition={mobileTransition(0.18)}
             >
@@ -209,7 +210,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
 
             <motion.div
               className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 origin-bottom"
-              initial={{ opacity: 0, y: 16, scale: 0.94 }}
+              initial={skipInitial ? false : { opacity: 0, y: 16, scale: 0.94 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={mobileTransition(0)}
             >
@@ -229,7 +230,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
             <motion.div
               className="absolute bottom-0 z-[1] origin-bottom"
               style={{ left: FAN_BLEED_X }}
-              initial={sideInitial}
+              initial={skipInitial ? false : sideInitial}
               animate={sideAnimate}
               transition={{ ...phoneTransition, delay: sideDelay }}
             >
@@ -248,7 +249,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
             <motion.div
               className="absolute bottom-0 z-[1] origin-bottom"
               style={{ right: FAN_BLEED_X }}
-              initial={sideInitialRight}
+              initial={skipInitial ? false : sideInitialRight}
               animate={sideAnimateRight}
               transition={{ ...phoneTransition, delay: sideDelayRight }}
             >
@@ -266,7 +267,7 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
 
             <motion.div
               className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 origin-bottom"
-              initial={centerInitial}
+              initial={skipInitial ? false : centerInitial}
               animate={centerAnimate}
               transition={{ ...phoneTransition, delay: centerDelay }}
             >

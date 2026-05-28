@@ -3,14 +3,16 @@
 import {
   motion,
   type HTMLMotionProps,
+  type UseInViewOptions,
   type Variants,
 } from "framer-motion";
 import { useMotionConfig } from "@/lib/motion";
 import type { RevealDirection } from "@/lib/motion";
+import { useRevealVisibility } from "@/lib/motion/use-reveal-visibility";
 
 type MotionDivProps = HTMLMotionProps<"div">;
 
-export interface RevealProps extends Omit<MotionDivProps, "initial" | "whileInView" | "viewport" | "variants" | "transition"> {
+export interface RevealProps extends Omit<MotionDivProps, "initial" | "animate" | "whileInView" | "viewport" | "variants" | "transition"> {
   direction?: RevealDirection;
   /** Mount animation (hero) vs scroll reveal (default). */
   mode?: "scroll" | "mount";
@@ -24,13 +26,17 @@ export function Reveal({
   children,
   ...props
 }: RevealProps) {
-  const { viewport, enterTransition, revealVariant } = useMotionConfig();
+  const { viewport, enterTransition, revealVariant, prefersReducedMotion } =
+    useMotionConfig();
+  const { ref, initial, animate } = useRevealVisibility(
+    viewport as UseInViewOptions
+  );
   const variants = revealVariant(direction);
 
   if (mode === "mount") {
     return (
       <motion.div
-        initial="hidden"
+        initial={prefersReducedMotion ? false : "hidden"}
         animate="visible"
         variants={variants}
         transition={enterTransition(delay)}
@@ -43,9 +49,9 @@ export function Reveal({
 
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
+      ref={ref}
+      initial={initial}
+      animate={animate}
       variants={variants}
       transition={enterTransition(delay)}
       {...props}
@@ -55,7 +61,7 @@ export function Reveal({
   );
 }
 
-export interface RevealStaggerProps extends Omit<MotionDivProps, "initial" | "whileInView" | "viewport" | "variants"> {
+export interface RevealStaggerProps extends Omit<MotionDivProps, "initial" | "animate" | "whileInView" | "viewport" | "variants"> {
   mode?: "scroll" | "mount";
   /** Override default stagger interval between children (seconds). */
   staggerChildren?: number;
@@ -67,7 +73,11 @@ export function RevealStagger({
   children,
   ...props
 }: RevealStaggerProps) {
-  const { viewport, staggerContainerVariant } = useMotionConfig();
+  const { viewport, staggerContainerVariant, prefersReducedMotion } =
+    useMotionConfig();
+  const { ref, initial, animate } = useRevealVisibility(
+    viewport as UseInViewOptions
+  );
   const container: Variants =
     staggerChildren != null
       ? {
@@ -81,7 +91,7 @@ export function RevealStagger({
   if (mode === "mount") {
     return (
       <motion.div
-        initial="hidden"
+        initial={prefersReducedMotion ? false : "hidden"}
         animate="visible"
         variants={container}
         {...props}
@@ -93,9 +103,9 @@ export function RevealStagger({
 
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
+      ref={ref}
+      initial={initial}
+      animate={animate}
       variants={container}
       {...props}
     >
@@ -109,12 +119,16 @@ export interface RevealItemProps extends Omit<MotionDivProps, "variants" | "tran
 }
 
 export function RevealItem({ delay = 0, children, ...props }: RevealItemProps) {
-  const { enterTransition, staggerItemVariant } = useMotionConfig();
+  const { enterTransition, staggerItemVariant, prefersReducedMotion } =
+    useMotionConfig();
 
   return (
     <motion.div
       variants={staggerItemVariant()}
       transition={enterTransition(delay)}
+      {...(prefersReducedMotion
+        ? { initial: false as const, animate: "visible" as const }
+        : {})}
       {...props}
     >
       {children}

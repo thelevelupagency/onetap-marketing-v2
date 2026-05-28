@@ -50,10 +50,11 @@ CSS variables live in `src/app/globals.css` (`:root` + `@theme` aliases). Primit
 
 ## Motion (homepage / marketing sections)
 
-- Tokens and hooks: `@/lib/motion` (`useMotionConfig`, `MOTION_VIEWPORT`).
+- Tokens and hooks: `@/lib/motion` (`useMotionConfig`, `useRevealVisibility`, `MOTION_VIEWPORT`).
+- Back navigation: `BackNavigationReloadScript` in `src/app/layout.tsx` (inline reload before React hydrates).
 - UI primitives: `@/components/marketing/motion` (`Reveal`, `RevealStagger`, `RevealItem`, `CardReveal`, `MarketingStaggerGrid`).
-- Card grids: `CardReveal` uses per-item `whileInView` (`MOTION_CARD_VIEWPORT`) with stronger `getCardMotionTokens()` — not the parent-grid stagger pattern (which fired too early).
-- Scroll reveals use `whileInView` with `viewport.once`; hero fold uses `mode="mount"`.
+- Card grids: `CardReveal` uses per-item `useRevealVisibility` with `MOTION_CARD_VIEWPORT` and stronger `getCardMotionTokens()` — not the parent-grid stagger pattern (which fired too early).
+- Scroll reveals use controlled `animate` (via `useInView` + in-viewport mount check), not `whileInView` in sections; hero fold uses `mode="mount"`.
 - Do not duplicate raw `initial={{ opacity: 0, y: 20 }}` in sections — see `.cursor/rules/motion-a11y.mdc`.
 
 ## Imports

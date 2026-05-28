@@ -48,22 +48,28 @@ export default async function BlogPostPage({ params }: PageProps) {
       <BlogReadingProgress />
       <PageShell>
         <MarketingContainer width="wide">
-          <Link
-            href="/blog"
-            className="mb-8 inline-flex items-center gap-2 text-sm text-brand-midnight/60 transition-colors hover:text-brand-midnight"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to Blog
-          </Link>
+          <div className="grid gap-12 xl:grid-cols-[minmax(0,48rem)_220px]">
+            <MarketingContainer width="narrow" className="mx-0 w-full max-w-3xl px-0">
+              <div className="mb-marketing-stack-gap-sm flex flex-col gap-marketing-stack-gap-sm">
+                <Link
+                  href="/blog"
+                  className={`${typography.label} flex w-fit items-center gap-2 text-brand-midnight/60 transition-colors hover:text-brand-midnight`}
+                >
+                  <ArrowLeft className="h-4 w-4" /> Back to Blog
+                </Link>
+                <MarketingBadge className="w-fit">
+                  {categoryLabels[post.category]}
+                </MarketingBadge>
+              </div>
+              <div className="mb-marketing-stack-gap flex flex-col gap-marketing-stack-gap-sm">
+                <h1 className={typography.sectionTitle}>{post.title}</h1>
+                <p className={typography.lead}>{post.excerpt}</p>
+                <p className={typography.caption}>
+                  {formatDate(post.date)} · {post.author}
+                </p>
+              </div>
 
-          <div className="grid gap-12 xl:grid-cols-[1fr_220px]">
-            <MarketingContainer width="narrow" className="px-0">
-              <MarketingBadge className="mb-4">{categoryLabels[post.category]}</MarketingBadge>
-              <h1 className={`${typography.pageTitle} mb-4`}>{post.title}</h1>
-              <p className="mb-8 text-sm text-brand-midnight/50">
-                {formatDate(post.date)} · {post.author}
-              </p>
-
-              <div className="relative mb-8 aspect-[21/9] overflow-hidden rounded-3xl border border-brand-midnight/5">
+              <div className="relative mb-marketing-stack-gap aspect-[21/9] overflow-hidden rounded-3xl border border-brand-midnight/5">
                 <Image
                   src={post.coverImage}
                   alt={post.title}
@@ -76,7 +82,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
               <BlogPostContent post={post} />
 
-              <div className="mt-10 border-t border-brand-midnight/10 py-5">
+              <div className="mt-marketing-stack-gap border-t border-brand-midnight/10 py-5">
                 <BlogShare title={post.title} slug={post.slug} label="Share this article" />
               </div>
 
