@@ -2,13 +2,11 @@
 
 import { PainPointCard } from "@/components/marketing/primitives";
 import { CardReveal, MarketingStaggerGrid } from "@/components/marketing/motion";
-import type { painPointsCopy } from "@/content/homepage";
 import { painPointIcons } from "@/lib/marketing-icons";
-
-type PainPoint = (typeof painPointsCopy.points)[number];
+import type { PainPointsCopy } from "@/content/marketing-copy-types";
 
 interface PainPointsAnimatedGridProps {
-  points: readonly PainPoint[];
+  points: PainPointsCopy["points"];
 }
 
 export function PainPointsAnimatedGrid({ points }: PainPointsAnimatedGridProps) {

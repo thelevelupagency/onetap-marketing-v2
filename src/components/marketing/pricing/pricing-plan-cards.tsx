@@ -138,9 +138,9 @@ export function PricingPlanCards({
             />
             <Link href={plan.ctaHref} className="mb-8 block">
               <MarketingPrimaryButton
-                size="default"
+                size="md"
                 className={cn(
-                  "h-12 w-full rounded-xl",
+                  "w-full rounded-xl",
                   isPopular &&
                     "bg-brand-turquoise text-brand-midnight hover:bg-white hover:text-brand-midnight"
                 )}

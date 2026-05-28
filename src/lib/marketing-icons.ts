@@ -8,11 +8,14 @@ import {
   Home,
   Image,
   Inbox,
+  Link2,
+  Lock,
   Palette,
   RefreshCw,
   Scale,
   Smartphone,
   Sparkles,
+  Upload,
   UserPlus,
   Users,
   Zap,
@@ -24,6 +27,7 @@ import type {
   PainPointIconKey,
   SolutionIconKey,
 } from "@/content/homepage";
+import type { SolutionFeatureIconKey } from "@/content/solutions";
 
 export const cardUxIcons: Record<CardUxIconKey, LucideIcon> = {
   zap: Zap,
@@ -57,4 +61,18 @@ export const painPointIcons: Record<PainPointIconKey, LucideIcon> = {
   refreshCw: RefreshCw,
   userPlus: UserPlus,
   barChart3: BarChart3,
+};
+
+export const solutionFeatureIcons: Record<SolutionFeatureIconKey, LucideIcon> = {
+  zap: Zap,
+  link2: Link2,
+  userPlus: UserPlus,
+  barChart3: BarChart3,
+  image: Image,
+  refreshCw: RefreshCw,
+  lock: Lock,
+  users: Users,
+  upload: Upload,
+  palette: Palette,
+  inbox: Inbox,
 };

@@ -10,6 +10,7 @@ import { BlogToc } from "@/components/marketing/blog/blog-toc";
 import { BlogShare } from "@/components/marketing/blog/blog-share";
 import { BlogPostContent } from "@/components/marketing/blog/blog-post-content";
 import { RelatedPosts } from "@/components/marketing/blog/related-posts";
+import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
 import {
   MarketingBadge,
   MarketingContainer,
@@ -92,6 +93,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <BlogToc headings={post.headings} />
           </div>
         </MarketingContainer>
+        <FinalCtaSection variant="blog" />
       </PageShell>
     </>
   );

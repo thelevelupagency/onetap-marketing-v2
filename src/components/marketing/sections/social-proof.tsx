@@ -11,15 +11,30 @@ import {
 } from "@/components/marketing/primitives";
 import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
 import { socialProofCopy } from "@/content/homepage";
+import type { MarketingBandBackground, SocialProofCopy } from "@/content/marketing-copy-types";
 
-export function SocialProof() {
+export type { SocialProofCopy } from "@/content/marketing-copy-types";
+
+interface SocialProofProps {
+  copy?: SocialProofCopy;
+  background?: MarketingBandBackground;
+}
+
+export function SocialProof({
+  copy = socialProofCopy,
+  background = "cream",
+}: SocialProofProps) {
   return (
-    <MarketingSection background="cream" id="social-proof" className="overflow-hidden">
+    <MarketingSection
+      background={background}
+      id="social-proof"
+      className="overflow-hidden"
+    >
       <MarketingContainer width="full">
         <Reveal>
           <SectionHeader
-            title={socialProofCopy.title}
-            accent={socialProofCopy.accent}
+            title={copy.title}
+            accent={copy.accent}
             spacingBelow="none"
             className="mb-marketing-header-gap-md"
           />
@@ -30,7 +45,7 @@ export function SocialProof() {
             className="mb-marketing-header-gap flex flex-wrap items-center justify-center gap-x-4 gap-y-3 sm:gap-x-5 sm:gap-y-3.5"
             aria-label="Product highlights"
           >
-            {socialProofCopy.stats.map((stat) => (
+            {copy.stats.map((stat) => (
               <li key={stat} className="list-none">
                 <span className="inline-flex rounded-full border border-brand-midnight/10 bg-white px-4 py-2.5 text-center text-sm font-medium leading-snug text-brand-midnight/80 sm:px-5 sm:whitespace-nowrap">
                   {stat}
@@ -41,7 +56,7 @@ export function SocialProof() {
         </Reveal>
 
         <MarketingStaggerGrid columns={3}>
-          {socialProofCopy.testimonials.map((testimonial, index) => (
+          {copy.testimonials.map((testimonial, index) => (
             <CardReveal key={testimonial.name} staggerIndex={index}>
               <Card
                 className={cn(

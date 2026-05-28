@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { buildCreateBasicsUrl, CARD_HOST_PREFIX } from "@/lib/constants";
 import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
-import { primaryCtaClassName } from "@/components/marketing/get-card-cta";
+import { marketingCtaSizes, primaryCtaClassName } from "@/components/marketing/get-card-cta";
 
 interface SlugClaimCtaProps {
   slug: string;
@@ -113,7 +113,8 @@ export function SlugClaimCta({
       disabled={!canSubmit}
       className={cn(
         primaryCtaClassName,
-        "h-14 shrink-0 px-8 text-lg",
+        marketingCtaSizes.lg,
+        "shrink-0",
         isStacked ? "mt-4 w-full" : "w-full sm:w-auto"
       )}
     >

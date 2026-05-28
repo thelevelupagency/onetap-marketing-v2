@@ -30,10 +30,17 @@ export function MarketingSection({
   children,
   ...props
 }: React.ComponentProps<"section"> & VariantProps<typeof sectionVariants>) {
+  const showSectionEdge =
+    spacing !== "hero" && spacing !== "none" && background !== "transparent";
+
   return (
     <section
       id={id}
-      className={cn(sectionVariants({ background, spacing }), className)}
+      className={cn(
+        sectionVariants({ background, spacing }),
+        showSectionEdge && "border-t border-brand-midnight/[0.06]",
+        className
+      )}
       {...props}
     >
       {children}

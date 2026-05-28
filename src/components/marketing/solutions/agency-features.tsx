@@ -1,4 +1,3 @@
-import { Lock, Users, BarChart3 } from "lucide-react";
 import {
   MarketingSection,
   MarketingContainer,
@@ -6,34 +5,30 @@ import {
   FeatureGrid,
   FeatureCard,
 } from "@/components/marketing/primitives";
+import type { MarketingBandBackground } from "@/content/marketing-copy-types";
+import { agenciesFeaturesCopy } from "@/content/solutions";
+import { solutionFeatureIcons } from "@/lib/marketing-icons";
 
-const features = [
-  {
-    icon: Lock,
-    title: "Brand Lock",
-    description: "Apply firm branding across every agent card simultaneously.",
-  },
-  {
-    icon: Users,
-    title: "Bulk User Import",
-    description: "Onboard 10 to 10,000 team members via CSV in minutes.",
-  },
-  {
-    icon: BarChart3,
-    title: "Team Analytics",
-    description: "Track impressions, leads, and vCard downloads per agent.",
-  },
-] as const;
+interface AgencyFeaturesProps {
+  background?: MarketingBandBackground;
+}
 
-export function AgencyFeatures() {
+export function AgencyFeatures({ background = "white" }: AgencyFeaturesProps) {
   return (
-    <MarketingSection background="white" spacing="compact">
+    <MarketingSection background={background} spacing="compact">
       <MarketingContainer width="default">
-        <SectionHeader title="Enterprise features," accent="out of the box" />
+        <SectionHeader
+          title={agenciesFeaturesCopy.title}
+          accent={agenciesFeaturesCopy.accent}
+          lead={agenciesFeaturesCopy.lead}
+        />
         <FeatureGrid>
-          {features.map((f) => (
-            <FeatureCard key={f.title} variant="elevated" {...f} />
-          ))}
+          {agenciesFeaturesCopy.features.map((f) => {
+            const Icon = solutionFeatureIcons[f.icon];
+            return (
+              <FeatureCard key={f.title} variant="elevated" icon={Icon} title={f.title} description={f.description} />
+            );
+          })}
         </FeatureGrid>
       </MarketingContainer>
     </MarketingSection>

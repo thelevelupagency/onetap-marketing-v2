@@ -16,7 +16,9 @@ export function FreelancerHero() {
         Freelancers using OneTap report 80% more inquiries. Look professional, capture leads,
         and follow up faster.
       </p>
-      <GetCardCta size="lg">Create your free card</GetCardCta>
+      <div className="flex justify-center">
+        <GetCardCta size="lg">Create your free card</GetCardCta>
+      </div>
     </MarketingPageHero>
   );
 }

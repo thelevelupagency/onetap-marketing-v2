@@ -18,8 +18,11 @@ export function AgencyHero() {
         Centralized professional identity for your entire organization. Brand Lock, bulk import,
         and CRM sync built in.
       </p>
-      <Link href={LOGIN_URL}>
-        <MarketingPrimaryButton className="bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 hover:text-brand-midnight">
+      <Link href={LOGIN_URL} className="inline-flex w-full justify-center sm:w-auto">
+        <MarketingPrimaryButton
+          size="lg"
+          className="w-full bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 hover:text-brand-midnight sm:w-auto"
+        >
           Book a demo <ArrowRight className="ml-2 h-5 w-5" />
         </MarketingPrimaryButton>
       </Link>
