@@ -47,7 +47,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <>
       <BlogReadingProgress />
-      <PageShell>
+      <PageShell pageBottom="none">
         <MarketingContainer width="wide">
           <div className="grid gap-12 xl:grid-cols-[minmax(0,48rem)_220px]">
             <MarketingContainer width="narrow" className="mx-0 w-full max-w-3xl px-0">

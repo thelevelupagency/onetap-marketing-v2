@@ -41,7 +41,7 @@ function FaqJsonLd() {
 
 export default function FaqPage() {
   return (
-    <PageShell>
+    <PageShell pageBottom="none">
       <FaqJsonLd />
       <PageHero
         title="Got"

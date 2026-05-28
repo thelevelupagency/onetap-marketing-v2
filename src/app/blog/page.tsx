@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   return (
-    <PageShell>
+    <PageShell pageBottom="none">
       <PageHero
         title="The OneTap"
         accent="Blog"

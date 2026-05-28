@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <PageShell>
+    <PageShell pageBottom="none">
       <PageHero
         title="Simple &"
         accent="transparent."
