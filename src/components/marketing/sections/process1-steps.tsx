@@ -112,15 +112,6 @@ export function Process1Steps({ steps, stepBadgeBg }: Process1StepsProps) {
                 {step.step}
               </div>
               <div className="min-w-0 flex-1">
-                <p
-                  className={cn(
-                    `${typography.eyebrow} mb-2 min-h-[1.25rem] text-brand-turquoise-dark transition-opacity duration-500`,
-                    step.highlight ? "opacity-100" : "opacity-0"
-                  )}
-                  aria-hidden={!step.highlight}
-                >
-                  {step.highlight ?? "\u00a0"}
-                </p>
                 <h3 className={`${typography.stepTitle} mb-4`}>{step.title}</h3>
                 <p className={`${typography.bodySm} max-w-2xl`}>{step.description}</p>
               </div>

@@ -1,22 +1,20 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
 import {
   MarketingSection,
   MarketingContainer,
   SectionHeader,
-  MarketingLinkCard,
+  MarketingCarousel,
+  MarketingCarouselCard,
 } from "@/components/marketing/primitives";
-import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
+import { Reveal } from "@/components/marketing/motion";
 import { solutionsCopy } from "@/content/homepage";
-import { solutionIcons } from "@/lib/marketing-icons";
-import { type as typography } from "@/lib/typography";
-import { cn } from "@/lib/utils";
+import { MARKETING_CAROUSEL_AUTOPLAY_MS } from "@/lib/use-marketing-carousel";
 
 export function SolutionsGrid() {
   return (
-    <MarketingSection background="cream" id="solutions">
-      <MarketingContainer width="wide">
+    <MarketingSection background="cream" id="solutions" className="overflow-visible">
+      <MarketingContainer width="wide" className="overflow-visible">
         <Reveal>
           <SectionHeader
             title={solutionsCopy.title}
@@ -24,50 +22,27 @@ export function SolutionsGrid() {
             lead={solutionsCopy.lead}
           />
         </Reveal>
-        <MarketingStaggerGrid columns={2} className="lg:grid-cols-3">
-          {solutionsCopy.cards.map((sol, index) => {
-            const Icon = solutionIcons[sol.icon];
-            return (
-              <CardReveal key={sol.title} staggerIndex={index}>
-                <MarketingLinkCard
-                  href={sol.href}
-                  background="white"
-                  density="compact"
-                  className="flex h-full flex-col"
-                >
-                  <div
-                    className={cn(
-                      "mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br",
-                      sol.accent
-                    )}
-                  >
-                    <Icon className="h-5 w-5 text-brand-midnight" />
-                  </div>
-                  <h3
-                    className={cn(
-                      typography.label,
-                      "mb-1.5 text-base font-semibold leading-snug transition-colors group-hover:text-brand-turquoise-dark"
-                    )}
-                  >
-                    {sol.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      typography.bodySm,
-                      "mb-4 line-clamp-2 flex-1 text-brand-midnight/65"
-                    )}
-                  >
-                    {sol.description}
-                  </p>
-                  <span className="mt-auto inline-flex items-center text-sm font-medium text-brand-midnight transition-colors group-hover:text-brand-turquoise-dark">
-                    {sol.ctaLabel}{" "}
-                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </MarketingLinkCard>
-              </CardReveal>
-            );
-          })}
-        </MarketingStaggerGrid>
+
+        <Reveal delay={0.08} className="overflow-visible">
+          <MarketingCarousel
+            items={solutionsCopy.cards}
+            getKey={(card) => card.title}
+            renderItem={(card) => (
+              <MarketingCarouselCard
+                variant="image"
+                href={card.href}
+                image={card.image}
+                imageAlt={card.imageAlt}
+                title={card.title}
+                description={card.description}
+                ctaLabel={card.ctaLabel}
+              />
+            )}
+            ariaLabel="Solution slides"
+            desktopMode="threeUp"
+            autoplayInterval={MARKETING_CAROUSEL_AUTOPLAY_MS}
+          />
+        </Reveal>
       </MarketingContainer>
     </MarketingSection>
   );

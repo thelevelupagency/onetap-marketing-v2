@@ -8,7 +8,7 @@ const featureCardVariants = cva("", {
       plain: "p-8 text-center",
       elevated: "rounded-3xl border border-brand-midnight/5 bg-brand-cream p-8",
       compact:
-        "flex h-full gap-3.5 rounded-2xl border border-brand-midnight/5 bg-brand-cream p-4 shadow-sm text-left",
+        "flex h-full gap-3.5 rounded-2xl border border-brand-midnight/5 bg-brand-cream p-4 shadow-sm text-left transition-all duration-200 hover:border-brand-turquoise/30 hover:shadow",
     },
     onDark: {
       true: "",
@@ -19,7 +19,7 @@ const featureCardVariants = cva("", {
     {
       variant: "compact",
       onDark: true,
-      className: "border-white/10 bg-white/5 shadow-none",
+      className: "border-white/10 bg-white/5 shadow-none hover:border-white/25 hover:bg-white/10",
     },
   ],
   defaultVariants: {
@@ -71,6 +71,7 @@ export function FeatureCard({
           </h3>
           <p
             className={cn(
+              "line-clamp-2",
               onDark ? "text-sm leading-relaxed text-brand-cream/75" : typography.bodySm
             )}
           >

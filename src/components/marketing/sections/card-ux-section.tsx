@@ -2,52 +2,54 @@
 
 import { CardUxPhonePreview } from "@/components/marketing/phones/card-ux-phone-preview";
 import {
-  SplitContentSection,
-  splitCopyColumnClass,
+  MarketingContainer,
+  MarketingSection,
   SectionHeader,
-  FeatureCard,
+  FeatureSpotlight,
 } from "@/components/marketing/primitives";
-import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
+import { Reveal } from "@/components/marketing/motion";
 import { cardUxCopy } from "@/content/homepage";
 import { cardUxIcons } from "@/lib/marketing-icons";
 
+const cardUxSpotlightItems = cardUxCopy.features.map((f) => ({
+  icon: cardUxIcons[f.icon],
+  title: f.label,
+  description: f.description,
+}));
+
 export function CardUxSection() {
   return (
-    <SplitContentSection id="features" background="white" width="full">
-      <div className={splitCopyColumnClass}>
-        <Reveal direction="left" className="w-full">
+    <MarketingSection id="features" background="white" className="overflow-visible">
+      <MarketingContainer width="full">
+        <Reveal>
           <SectionHeader
-            align="left"
-            spacingBelow="none"
             title={cardUxCopy.title}
             accent={cardUxCopy.accent}
             lead={cardUxCopy.lead}
-            className="mb-marketing-header-gap-md max-w-none"
           />
         </Reveal>
-        <MarketingStaggerGrid columns={2} gap="tight">
-          {cardUxCopy.features.map((f, index) => {
-            const Icon = cardUxIcons[f.icon];
-            return (
-              <CardReveal key={f.label} staggerIndex={index}>
-                <FeatureCard
-                  icon={Icon}
-                  title={f.label}
-                  description={f.description}
-                  variant="compact"
-                />
-              </CardReveal>
-            );
-          })}
-        </MarketingStaggerGrid>
-      </div>
 
-      <Reveal
-        direction="right"
-        className="flex min-w-0 justify-center overflow-visible leading-none lg:sticky lg:top-28 lg:self-start"
-      >
-        <CardUxPhonePreview />
-      </Reveal>
-    </SplitContentSection>
+        <div className="grid items-center gap-marketing-grid-gap-md lg:grid-cols-2">
+          <Reveal
+            direction="left"
+            delay={0.08}
+            className="order-1 w-full min-w-0 overflow-visible"
+          >
+            <FeatureSpotlight
+              items={cardUxSpotlightItems}
+              visibleCount={4}
+              className="w-full"
+            />
+          </Reveal>
+
+          <Reveal
+            direction="right"
+            className="order-2 flex w-full min-w-0 justify-center overflow-x-clip leading-none lg:justify-center lg:overflow-visible"
+          >
+            <CardUxPhonePreview className="max-w-full" />
+          </Reveal>
+        </div>
+      </MarketingContainer>
+    </MarketingSection>
   );
 }

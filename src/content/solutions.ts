@@ -1,5 +1,5 @@
 import type { CardUxIconKey, PainPointIconKey } from "@/content/homepage";
-import { howItWorksCopy } from "@/content/homepage";
+import { audienceMarqueeItems, howItWorksCopy } from "@/content/homepage";
 
 export type SolutionFeatureIconKey =
   | "zap"
@@ -51,7 +51,6 @@ export const freelancersHowItWorksCopy = {
     {
       step: "01",
       title: "Create",
-      highlight: "Your professional profile in 60 seconds",
       description:
         "Add your photo, services, portfolio, testimonials, contact buttons, and a lead form — no designer or developer needed.",
       image: howItWorksCopy.steps[0].image,
@@ -60,7 +59,6 @@ export const freelancersHowItWorksCopy = {
     {
       step: "02",
       title: "Share",
-      highlight: "One link for every channel",
       description:
         "Drop your OneTap URL in your email signature, LinkedIn, WhatsApp, conference badge QR, or Instagram bio — always on-brand.",
       image: howItWorksCopy.steps[1].image,
@@ -69,7 +67,6 @@ export const freelancersHowItWorksCopy = {
     {
       step: "03",
       title: "Connect",
-      highlight: "Capture leads while interest is high",
       description:
         "Prospects save your contact, book a call, or send their details from your card — so you follow up while you're still top of mind.",
       image: howItWorksCopy.steps[2].image,
@@ -159,11 +156,8 @@ export const freelancersCreatorsCopy = {
 export const freelancersSocialProofCopy = {
   title: "Trusted by freelancers",
   accent: "who network for a living.",
-  stats: [
-    "Free to start · No app required",
-    "Live in 60 seconds",
-    "Lead forms built in",
-  ],
+  lead: "From consultants to creators — solo pros worldwide trust OneTap to make every introduction count.",
+  audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "Elena Torres",
@@ -232,7 +226,6 @@ export const agenciesHowItWorksCopy = {
     {
       step: "01",
       title: "Configure",
-      highlight: "Set Brand Lock once",
       description:
         "Define firm colors, logos, required fields, and approved templates. Every new card inherits your standards.",
       image: howItWorksCopy.steps[0].image,
@@ -241,7 +234,6 @@ export const agenciesHowItWorksCopy = {
     {
       step: "02",
       title: "Onboard",
-      highlight: "Import your roster in bulk",
       description:
         "Upload a CSV with names, titles, and contact details. Agents receive ready-to-share cards without design work.",
       image: howItWorksCopy.steps[1].image,
@@ -250,7 +242,6 @@ export const agenciesHowItWorksCopy = {
     {
       step: "03",
       title: "Measure",
-      highlight: "See what drives pipeline",
       description:
         "Monitor views, lead forms, and saves per agent. Spot top performers and coach the rest with real data.",
       image: howItWorksCopy.steps[2].image,
@@ -311,11 +302,8 @@ export const agenciesTeamSplitCopy = {
 export const agenciesSocialProofCopy = {
   title: "Teams that scale",
   accent: "trust OneTap.",
-  stats: [
-    "Brand Lock on every card",
-    "Bulk CSV onboarding",
-    "Per-rep analytics",
-  ],
+  lead: "From brokerages to enterprise sales teams — organizations worldwide standardize networking with OneTap.",
+  audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "James Okonkwo",

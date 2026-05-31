@@ -221,13 +221,28 @@
   will-change: transform;
 }
 
+@keyframes audienceMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .audience-marquee-track {
+    animation: audienceMarquee 45s linear infinite;
+    will-change: transform;
+  }
+
   .animated-border-panel-ring {
     animation: borderRotate 5s linear infinite;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .audience-marquee-track,
   .hero-ambient-blob,
   .dashboard-glow-pulse {
     animation: none;
