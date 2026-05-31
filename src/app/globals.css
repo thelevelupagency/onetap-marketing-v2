@@ -230,12 +230,13 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .audience-marquee-track {
-    animation: audienceMarquee 45s linear infinite;
-    will-change: transform;
-  }
+/* Top-level rule so Tailwind v4 retains it (nested-only rules get purged). */
+.audience-marquee-track {
+  animation: audienceMarquee 45s linear infinite;
+  will-change: transform;
+}
 
+@media (prefers-reduced-motion: no-preference) {
   .animated-border-panel-ring {
     animation: borderRotate 5s linear infinite;
   }
