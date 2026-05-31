@@ -4,10 +4,12 @@ import {
   Building2,
   ContactRound,
   Edit3,
+  FilePenLine,
   Globe,
   Home,
   Image,
   Inbox,
+  LineChart,
   Link2,
   Lock,
   Palette,
@@ -58,9 +60,13 @@ export const dashboardIcons: Record<DashboardIconKey, LucideIcon> = {
 };
 
 export const painPointIcons: Record<PainPointIconKey, LucideIcon> = {
-  refreshCw: RefreshCw,
-  userPlus: UserPlus,
-  barChart3: BarChart3,
+  filePenLine: FilePenLine,
+  inbox: Inbox,
+  lineChart: LineChart,
+  contactRound: ContactRound,
+  link2: Link2,
+  palette: Palette,
+  users: Users,
 };
 
 export const solutionFeatureIcons: Record<SolutionFeatureIconKey, LucideIcon> = {

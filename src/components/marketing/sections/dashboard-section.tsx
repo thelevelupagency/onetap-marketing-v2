@@ -6,11 +6,17 @@ import {
   MarketingContainer,
   MarketingSection,
   SectionHeader,
-  FeatureCard,
+  FeatureSpotlight,
 } from "@/components/marketing/primitives";
-import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
+import { Reveal } from "@/components/marketing/motion";
 import { dashboardCopy } from "@/content/homepage";
 import { dashboardIcons } from "@/lib/marketing-icons";
+
+const dashboardSpotlightItems = dashboardCopy.features.map((f) => ({
+  icon: dashboardIcons[f.icon],
+  title: f.title,
+  description: f.description,
+}));
 
 interface DashboardSectionProps {
   /** Dark (homepage default) or light (e.g. after a dark hero on solution pages). */
@@ -25,7 +31,7 @@ export function DashboardSection({ variant = "dark" }: DashboardSectionProps) {
       id="dashboard"
       background={isLight ? "cream" : "midnight"}
       className={cn(
-        "relative overflow-hidden",
+        "relative overflow-visible",
         !isLight && "text-brand-cream"
       )}
     >
@@ -47,8 +53,8 @@ export function DashboardSection({ variant = "dark" }: DashboardSectionProps) {
           />
         </Reveal>
 
-        <div className="grid items-center gap-marketing-stack-gap lg:grid-cols-2 lg:gap-marketing-grid-gap-md">
-          <Reveal direction="left">
+        <div className="grid items-center gap-marketing-grid-gap-md lg:grid-cols-2">
+          <Reveal direction="left" className="order-2 lg:order-1">
             <div
               className={cn(
                 "relative aspect-video w-full overflow-hidden rounded-2xl shadow-2xl lg:aspect-[16/10]",
@@ -66,27 +72,17 @@ export function DashboardSection({ variant = "dark" }: DashboardSectionProps) {
             </div>
           </Reveal>
 
-          <MarketingStaggerGrid columns={2} gap="tight">
-            {dashboardCopy.features.map((f, index) => {
-              const Icon = dashboardIcons[f.icon];
-              const isLast = index === dashboardCopy.features.length - 1;
-              return (
-                <CardReveal
-                  key={f.title}
-                  staggerIndex={index}
-                  className={cn(isLast && "md:col-span-2 md:mx-auto md:max-w-md")}
-                >
-                  <FeatureCard
-                    icon={Icon}
-                    title={f.title}
-                    description={f.description}
-                    variant="compact"
-                    onDark={!isLight}
-                  />
-                </CardReveal>
-              );
-            })}
-          </MarketingStaggerGrid>
+          <Reveal
+            direction="right"
+            delay={0.08}
+            className="order-1 w-full min-w-0 overflow-visible lg:order-2"
+          >
+            <FeatureSpotlight
+              items={dashboardSpotlightItems}
+              onDark={!isLight}
+              className="w-full"
+            />
+          </Reveal>
         </div>
       </MarketingContainer>
     </MarketingSection>

@@ -28,4 +28,4 @@ export {
   isElementInViewport,
   VIEWPORT_VISIBILITY_MARGIN,
 } from "./navigation-restore";
-export { useIsMobile, useMediaQuery } from "./use-media-query";
+export { useIsDesktopLg, useIsMobile, useMediaQuery } from "./use-media-query";

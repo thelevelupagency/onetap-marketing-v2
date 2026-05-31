@@ -15,13 +15,13 @@ export function PainPointsAnimatedGrid({ points }: PainPointsAnimatedGridProps) 
       {points.map((point, index) => {
         const Icon = painPointIcons[point.icon];
         return (
-          <CardReveal key={point.title} staggerIndex={index}>
+          <CardReveal key={point.title} staggerIndex={index} className="min-h-0">
             <PainPointCard
               icon={Icon}
               title={point.title}
               description={point.description}
               accent={point.accent}
-              className="transition-transform duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
+              className="h-full transition-transform duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
             />
           </CardReveal>
         );

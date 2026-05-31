@@ -21,16 +21,27 @@ export function PainPointCard({
         className
       )}
     >
-      <div
-        className={cn(
-          "mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br",
-          accent
-        )}
-      >
-        <Icon className="h-7 w-7 text-brand-midnight" />
+      <div className="mb-marketing-stack-gap-sm flex min-h-14 items-start gap-3">
+        <div
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
+            accent
+          )}
+        >
+          <Icon className="h-5 w-5 text-brand-midnight" />
+        </div>
+        <h3
+          className={cn(
+            typography.cardTitle,
+            "min-w-0 flex-1 font-semibold leading-snug"
+          )}
+        >
+          {title}
+        </h3>
       </div>
-      <h3 className={`${typography.subsectionTitle} mb-3`}>{title}</h3>
-      <p className={`${typography.bodySm} text-brand-midnight/70`}>{description}</p>
+      <p className={cn(typography.bodySm, "flex-1 text-brand-midnight/70")}>
+        {description}
+      </p>
     </div>
   );
 }

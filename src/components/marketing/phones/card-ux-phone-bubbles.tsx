@@ -29,7 +29,8 @@ export const CARD_UX_BUBBLES: CardUxBubbleConfig[] = [
     icon: BarChart3,
     label: "Views this week",
     value: "+847",
-    positionClassName: "absolute -right-1 top-[22%] z-10 sm:-right-3",
+    positionClassName:
+      "absolute right-0 top-[20%] z-10 max-md:max-w-[9.5rem] md:-right-3",
     floatDelay: 0,
     floatDuration: 5,
     showLiveDot: true,
@@ -39,7 +40,8 @@ export const CARD_UX_BUBBLES: CardUxBubbleConfig[] = [
     icon: UserPlus,
     label: "New leads",
     value: "12",
-    positionClassName: "absolute -left-2 top-[48%] z-10 sm:-left-6",
+    positionClassName:
+      "absolute left-0 top-[46%] z-10 max-md:max-w-[9.5rem] md:-left-6",
     floatDelay: 0.4,
     floatDuration: 5.2,
   },

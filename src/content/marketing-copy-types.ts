@@ -28,7 +28,8 @@ export type PainPointsCopy = {
 export type SocialProofCopy = {
   title: string;
   accent: string;
-  stats: readonly string[];
+  lead: string;
+  audiences: readonly string[];
   testimonials: readonly MarketingTestimonial[];
 };
 

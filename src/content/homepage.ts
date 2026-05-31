@@ -1,5 +1,24 @@
 import { CREATE_BASICS_URL } from "@/lib/constants";
 
+export const audienceMarqueeItems = [
+  "Lawyer",
+  "Designer",
+  "Singer",
+  "Real Estate Agent",
+  "Consultant",
+  "Photographer",
+  "Coach",
+  "Developer",
+  "Marketer",
+  "Artist",
+  "Accountant",
+  "Creator",
+  "Sales Rep",
+  "Insurance Agent",
+  "Event Planner",
+  "Entrepreneur",
+] as const;
+
 export const heroCopy = {
   badge: "Digital business cards, reimagined",
   subheadline:
@@ -9,7 +28,14 @@ export const heroCopy = {
     "Built for freelancers, small businesses, creators, sales teams, agencies, and professionals worldwide.",
 } as const;
 
-export type PainPointIconKey = "refreshCw" | "userPlus" | "barChart3";
+export type PainPointIconKey =
+  | "filePenLine"
+  | "inbox"
+  | "lineChart"
+  | "contactRound"
+  | "link2"
+  | "palette"
+  | "users";
 
 export const painPointsCopy = {
   title: "No more",
@@ -17,21 +43,21 @@ export const painPointsCopy = {
   lead: "Stale cards, missed follow-ups, and guesswork are over. OneTap keeps your profile live, your pipeline full, and your results visible.",
   points: [
     {
-      icon: "refreshCw" as const,
+      icon: "filePenLine" as const,
       title: "No more outdated details",
       description:
         "Update your phone, links, services, or offers anytime — your card updates instantly.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "userPlus" as const,
+      icon: "inbox" as const,
       title: "No more missed follow-ups",
       description:
         "Let visitors save your contact, message you, book a meeting, or submit a lead form in one tap.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
-      icon: "barChart3" as const,
+      icon: "lineChart" as const,
       title: "No more guessing",
       description: "Track views, clicks, saves, and leads from your dashboard.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
@@ -47,7 +73,6 @@ export const howItWorksCopy = {
     {
       step: "01",
       title: "Create",
-      highlight: "Build your card in 60 seconds",
       description:
         "Build your card in 60 seconds. Add your photo, logo, bio, contact buttons, social links, services, gallery, videos, testimonials, and lead form — no coding or design skills needed.",
       image:
@@ -57,7 +82,6 @@ export const howItWorksCopy = {
     {
       step: "02",
       title: "Share",
-      highlight: "Share with one link or QR code",
       description:
         "Share with one link or QR code. Use your OneTap card in meetings, events, WhatsApp, Instagram bio, LinkedIn, email signature, NFC cards, printed materials, or anywhere your audience is.",
       image:
@@ -67,7 +91,6 @@ export const howItWorksCopy = {
     {
       step: "03",
       title: "Connect",
-      highlight: "Turn every interaction into a real opportunity",
       description:
         "Turn every interaction into a real opportunity. People can call, email, message, navigate, follow, book, save your contact, or send their details directly from your card.",
       image:
@@ -90,7 +113,7 @@ export type CardUxIconKey =
 export const cardUxCopy = {
   title: "More than a card.",
   accent: "A professional microsite.",
-  lead: "OneTap gives every professional a mobile-first profile designed to make a stronger impression and convert attention into action.",
+  lead: "A mobile-first profile built to impress visitors and turn attention into action.",
   features: [
     {
       icon: "zap" as const,
@@ -109,8 +132,8 @@ export const cardUxCopy = {
     },
     {
       icon: "barChart3" as const,
-      label: "Analytics Dashboard",
-      description: "Track views, button clicks, link performance, and form submissions.",
+      label: "Analytics & Insights",
+      description: "Track views, clicks, saves, and form submissions from your dashboard.",
     },
     {
       icon: "image" as const,
@@ -124,8 +147,8 @@ export const cardUxCopy = {
     },
     {
       icon: "smartphone" as const,
-      label: "No App Required",
-      description: "Works in the browser for you and every visitor.",
+      label: "NFC & QR Code Ready",
+      description: "Share instantly with a tap or scan — no app required on either side.",
     },
     {
       icon: "globe" as const,
@@ -156,6 +179,8 @@ export const solutionsCopy = {
       ctaLabel: "Build your personal profile",
       href: "/solutions/freelancers",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
+      image: howItWorksCopy.steps[0].image,
+      imageAlt: "Freelancer working on a digital business card",
     },
     {
       icon: "home" as const,
@@ -165,6 +190,9 @@ export const solutionsCopy = {
       ctaLabel: "Create your real estate card",
       href: CREATE_BASICS_URL,
       accent: "from-brand-turquoise/15 to-brand-navy/10",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706607/NFC/screenshots/home-interior_full_dvc_oyw2mr.png",
+      imageAlt: "Real estate agent digital card on a phone",
     },
     {
       icon: "sparkles" as const,
@@ -174,6 +202,9 @@ export const solutionsCopy = {
       ctaLabel: "Launch your creator card",
       href: "/solutions/freelancers#creators",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706588/NFC/screenshots/fitness_full_dvc_gxcheq.png",
+      imageAlt: "Creator profile card on a phone",
     },
     {
       icon: "building2" as const,
@@ -183,6 +214,9 @@ export const solutionsCopy = {
       ctaLabel: "Build your business card",
       href: CREATE_BASICS_URL,
       accent: "from-brand-midnight/10 to-brand-navy/10",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706625/NFC/screenshots/barber_full_dvc_e9fmqv.png",
+      imageAlt: "Small business digital card on a phone",
     },
     {
       icon: "users" as const,
@@ -192,6 +226,8 @@ export const solutionsCopy = {
       ctaLabel: "Explore team cards",
       href: "/solutions/agencies",
       accent: "from-brand-navy/15 to-brand-midnight/10",
+      image: howItWorksCopy.steps[2].image,
+      imageAlt: "Team collaborating with digital business cards",
     },
     {
       icon: "scale" as const,
@@ -201,6 +237,8 @@ export const solutionsCopy = {
       ctaLabel: "Create a trusted profile",
       href: CREATE_BASICS_URL,
       accent: "from-brand-midnight/5 to-brand-turquoise/15",
+      image: howItWorksCopy.steps[1].image,
+      imageAlt: "Professional sharing contact details from a digital card",
     },
   ],
 } as const;
@@ -249,11 +287,8 @@ export const dashboardCopy = {
 export const socialProofCopy = {
   title: "Join thousands of professionals",
   accent: "growing with OneTap.",
-  stats: [
-    "Web-first · No app required",
-    "Live in 60 seconds",
-    "Built for teams & solo pros",
-  ],
+  lead: "Trusted by freelancers, creators, and agencies worldwide.",
+  audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "Elena Torres",
@@ -275,6 +310,27 @@ export const socialProofCopy = {
       content:
         "Our team shares one brand system across 40 cards. Onboarding a new hire is now a link and a tap.",
       avatar: "https://randomuser.me/api/portraits/men/62.jpg",
+    },
+    {
+      name: "Priya Shah",
+      role: "Marketing Consultant",
+      content:
+        "I replaced three link-in-bio tools with one card. New leads hit my inbox the same day I meet someone at an event.",
+      avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+    },
+    {
+      name: "Sarah Kim",
+      role: "VP Sales, Brightpath",
+      content:
+        "Lead forms and analytics finally show which events actually convert. My reps stopped guessing what works.",
+      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    },
+    {
+      name: "David Ortiz",
+      role: "Managing Partner, Park & Associates",
+      content:
+        "We rolled out 120 cards in a week. Legal approved the templates once, and every rep stayed on brand from day one.",
+      avatar: "https://randomuser.me/api/portraits/men/71.jpg",
     },
   ],
 } as const;

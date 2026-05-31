@@ -10,7 +10,6 @@ import { CREATE_BASICS_URL } from "@/lib/constants";
 export interface ProcessStep {
   step: string;
   title: string;
-  highlight?: string;
   description: string;
   image: string;
   imageAlt: string;
