@@ -20,21 +20,21 @@ export const freelancersPainPointsCopy = {
   lead: "Freelancers juggle events, DMs, and link-in-bio tools — but still lose leads when follow-up is slow or your presence looks scattered.",
   points: [
     {
-      icon: "userPlus" as PainPointIconKey,
+      icon: "contactRound" as PainPointIconKey,
       title: "No more lost contacts after events",
       description:
         "Hand someone one link. They save your details, message you, or submit a lead form before you leave the room.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "refreshCw" as PainPointIconKey,
+      icon: "link2" as PainPointIconKey,
       title: "No more scattered link-in-bio",
       description:
         "Portfolio, services, socials, and booking live in one polished profile — not five different tools.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
-      icon: "barChart3" as PainPointIconKey,
+      icon: "lineChart" as PainPointIconKey,
       title: "No more guessing what works",
       description:
         "See which meetings, posts, and events actually drive views, clicks, and inquiries.",
@@ -201,21 +201,21 @@ export const agenciesPainPointsCopy = {
   lead: "Growing teams can't afford off-brand cards, manual onboarding, or zero visibility into how reps actually network.",
   points: [
     {
-      icon: "refreshCw" as PainPointIconKey,
+      icon: "palette" as PainPointIconKey,
       title: "No more inconsistent agent cards",
       description:
         "Brand Lock keeps logos, colors, and compliance fields aligned across every teammate — automatically.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "userPlus" as PainPointIconKey,
+      icon: "users" as PainPointIconKey,
       title: "No more painful onboarding",
       description:
         "Import hundreds of users from CSV and issue on-brand cards in minutes, not weeks.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
-      icon: "barChart3" as PainPointIconKey,
+      icon: "lineChart" as PainPointIconKey,
       title: "No more blind spots",
       description:
         "Track impressions, leads, and vCard downloads per rep from one team dashboard.",

@@ -9,7 +9,14 @@ export const heroCopy = {
     "Built for freelancers, small businesses, creators, sales teams, agencies, and professionals worldwide.",
 } as const;
 
-export type PainPointIconKey = "refreshCw" | "userPlus" | "barChart3";
+export type PainPointIconKey =
+  | "filePenLine"
+  | "inbox"
+  | "lineChart"
+  | "contactRound"
+  | "link2"
+  | "palette"
+  | "users";
 
 export const painPointsCopy = {
   title: "No more",
@@ -17,21 +24,21 @@ export const painPointsCopy = {
   lead: "Stale cards, missed follow-ups, and guesswork are over. OneTap keeps your profile live, your pipeline full, and your results visible.",
   points: [
     {
-      icon: "refreshCw" as const,
+      icon: "filePenLine" as const,
       title: "No more outdated details",
       description:
         "Update your phone, links, services, or offers anytime — your card updates instantly.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "userPlus" as const,
+      icon: "inbox" as const,
       title: "No more missed follow-ups",
       description:
         "Let visitors save your contact, message you, book a meeting, or submit a lead form in one tap.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
-      icon: "barChart3" as const,
+      icon: "lineChart" as const,
       title: "No more guessing",
       description: "Track views, clicks, saves, and leads from your dashboard.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
