@@ -1,5 +1,5 @@
 import type { CardUxIconKey, PainPointIconKey } from "@/content/homepage";
-import { howItWorksCopy } from "@/content/homepage";
+import { audienceMarqueeItems, howItWorksCopy } from "@/content/homepage";
 
 export type SolutionFeatureIconKey =
   | "zap"
@@ -20,21 +20,21 @@ export const freelancersPainPointsCopy = {
   lead: "Freelancers juggle events, DMs, and link-in-bio tools — but still lose leads when follow-up is slow or your presence looks scattered.",
   points: [
     {
-      icon: "userPlus" as PainPointIconKey,
+      icon: "contactRound" as PainPointIconKey,
       title: "No more lost contacts after events",
       description:
         "Hand someone one link. They save your details, message you, or submit a lead form before you leave the room.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "refreshCw" as PainPointIconKey,
+      icon: "link2" as PainPointIconKey,
       title: "No more scattered link-in-bio",
       description:
         "Portfolio, services, socials, and booking live in one polished profile — not five different tools.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
-      icon: "barChart3" as PainPointIconKey,
+      icon: "lineChart" as PainPointIconKey,
       title: "No more guessing what works",
       description:
         "See which meetings, posts, and events actually drive views, clicks, and inquiries.",
@@ -51,7 +51,6 @@ export const freelancersHowItWorksCopy = {
     {
       step: "01",
       title: "Create",
-      highlight: "Your professional profile in 60 seconds",
       description:
         "Add your photo, services, portfolio, testimonials, contact buttons, and a lead form — no designer or developer needed.",
       image: howItWorksCopy.steps[0].image,
@@ -60,7 +59,6 @@ export const freelancersHowItWorksCopy = {
     {
       step: "02",
       title: "Share",
-      highlight: "One link for every channel",
       description:
         "Drop your OneTap URL in your email signature, LinkedIn, WhatsApp, conference badge QR, or Instagram bio — always on-brand.",
       image: howItWorksCopy.steps[1].image,
@@ -69,7 +67,6 @@ export const freelancersHowItWorksCopy = {
     {
       step: "03",
       title: "Connect",
-      highlight: "Capture leads while interest is high",
       description:
         "Prospects save your contact, book a call, or send their details from your card — so you follow up while you're still top of mind.",
       image: howItWorksCopy.steps[2].image,
@@ -159,11 +156,8 @@ export const freelancersCreatorsCopy = {
 export const freelancersSocialProofCopy = {
   title: "Trusted by freelancers",
   accent: "who network for a living.",
-  stats: [
-    "Free to start · No app required",
-    "Live in 60 seconds",
-    "Lead forms built in",
-  ],
+  lead: "From consultants to creators — solo pros worldwide trust OneTap to make every introduction count.",
+  audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "Elena Torres",
@@ -201,21 +195,21 @@ export const agenciesPainPointsCopy = {
   lead: "Growing teams can't afford off-brand cards, manual onboarding, or zero visibility into how reps actually network.",
   points: [
     {
-      icon: "refreshCw" as PainPointIconKey,
+      icon: "palette" as PainPointIconKey,
       title: "No more inconsistent agent cards",
       description:
         "Brand Lock keeps logos, colors, and compliance fields aligned across every teammate — automatically.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "userPlus" as PainPointIconKey,
+      icon: "users" as PainPointIconKey,
       title: "No more painful onboarding",
       description:
         "Import hundreds of users from CSV and issue on-brand cards in minutes, not weeks.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
-      icon: "barChart3" as PainPointIconKey,
+      icon: "lineChart" as PainPointIconKey,
       title: "No more blind spots",
       description:
         "Track impressions, leads, and vCard downloads per rep from one team dashboard.",
@@ -232,7 +226,6 @@ export const agenciesHowItWorksCopy = {
     {
       step: "01",
       title: "Configure",
-      highlight: "Set Brand Lock once",
       description:
         "Define firm colors, logos, required fields, and approved templates. Every new card inherits your standards.",
       image: howItWorksCopy.steps[0].image,
@@ -241,7 +234,6 @@ export const agenciesHowItWorksCopy = {
     {
       step: "02",
       title: "Onboard",
-      highlight: "Import your roster in bulk",
       description:
         "Upload a CSV with names, titles, and contact details. Agents receive ready-to-share cards without design work.",
       image: howItWorksCopy.steps[1].image,
@@ -250,7 +242,6 @@ export const agenciesHowItWorksCopy = {
     {
       step: "03",
       title: "Measure",
-      highlight: "See what drives pipeline",
       description:
         "Monitor views, lead forms, and saves per agent. Spot top performers and coach the rest with real data.",
       image: howItWorksCopy.steps[2].image,
@@ -311,11 +302,8 @@ export const agenciesTeamSplitCopy = {
 export const agenciesSocialProofCopy = {
   title: "Teams that scale",
   accent: "trust OneTap.",
-  stats: [
-    "Brand Lock on every card",
-    "Bulk CSV onboarding",
-    "Per-rep analytics",
-  ],
+  lead: "From brokerages to enterprise sales teams — organizations worldwide standardize networking with OneTap.",
+  audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "James Okonkwo",

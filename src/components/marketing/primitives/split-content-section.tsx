@@ -9,6 +9,7 @@ export function SplitContentSection({
   background = "cream",
   width = "default",
   reverseOnMobile = false,
+  align = "start",
   id,
   className,
   children,
@@ -16,6 +17,8 @@ export function SplitContentSection({
   background?: "cream" | "white";
   width?: "default" | "full";
   reverseOnMobile?: boolean;
+  /** Vertical alignment of split columns from `lg` up. */
+  align?: "start" | "center";
   id?: string;
   className?: string;
   children: React.ReactNode;
@@ -25,7 +28,8 @@ export function SplitContentSection({
       <MarketingContainer width={width}>
         <div
           className={cn(
-            "grid items-start gap-marketing-stack-gap lg:grid-cols-2 lg:gap-marketing-grid-gap-md",
+            "grid gap-marketing-stack-gap lg:grid-cols-2 lg:gap-marketing-grid-gap-md",
+            align === "center" ? "items-start lg:items-center" : "items-start",
             reverseOnMobile && "[&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2"
           )}
         >
