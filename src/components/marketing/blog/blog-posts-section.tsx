@@ -2,14 +2,14 @@
 
 import { type as typography } from "@/lib/typography";
 import {
-  BLOG_LIST_PAGE_SIZE,
   buildBlogPageHref,
   formatDate,
   formatReadingTime,
+  getBlogListEmptyMessage,
   getPostReadingMinutes,
 } from "@/lib/blog";
 import type { BlogCategory, BlogPost } from "@/content/blog/posts";
-import { paginateItems, getPaginationPageNumbers } from "@/lib/pagination";
+import { getPaginationPageNumbers } from "@/lib/pagination";
 import { cn } from "@/lib/utils";
 import { MarketingLinkCard } from "@/components/marketing/primitives";
 import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
@@ -26,10 +26,12 @@ import {
 
 interface BlogPostsSectionProps {
   sectionId: string;
-  posts: BlogPost[];
+  pageItems: BlogPost[];
+  totalCount: number;
+  totalPages: number;
+  safePage: number;
   activeCategory: BlogCategory | null;
-  currentPage: number;
-  isSearchActive: boolean;
+  hasSearchQuery: boolean;
   isPending: boolean;
   prefersReducedMotion: boolean;
   onPageNavigate: (page: number) => void;
@@ -37,27 +39,28 @@ interface BlogPostsSectionProps {
 
 export function BlogPostsSection({
   sectionId,
-  posts,
+  pageItems,
+  totalCount,
+  totalPages,
+  safePage,
   activeCategory,
-  currentPage,
-  isSearchActive,
+  hasSearchQuery,
   isPending,
   prefersReducedMotion,
   onPageNavigate,
 }: BlogPostsSectionProps) {
-  const { pageItems, totalPages, safePage } = paginateItems(posts, BLOG_LIST_PAGE_SIZE, currentPage);
-  const displayItems = isSearchActive ? posts : pageItems;
-  const showPagination = !isSearchActive && totalPages > 1;
+  const showPagination = totalPages > 1;
+  const emptyMessage = getBlogListEmptyMessage(hasSearchQuery, activeCategory != null);
 
   const sectionClassName = cn(
     "relative scroll-mt-24",
     !prefersReducedMotion && "transition-opacity duration-200",
   );
 
-  if (posts.length === 0) {
+  if (totalCount === 0) {
     return (
       <section id={sectionId} aria-live="polite" className={sectionClassName}>
-        <p className="py-12 text-center text-brand-midnight/50">No posts match your search.</p>
+        <p className="py-12 text-center text-brand-midnight/50">{emptyMessage}</p>
       </section>
     );
   }
@@ -71,7 +74,7 @@ export function BlogPostsSection({
     >
       <div className={cn(isPending && "pointer-events-none opacity-50")}>
         <div className="grid auto-rows-fr gap-marketing-grid-gap pb-marketing-header-gap-md md:grid-cols-2 md:gap-marketing-grid-gap-md lg:grid-cols-3">
-          {displayItems.map((post) => (
+          {pageItems.map((post) => (
             <MarketingLinkCard
               key={post.slug}
               href={`/blog/${post.slug}`}

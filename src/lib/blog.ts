@@ -36,6 +36,21 @@ export function filterBlogPostsBySearch(entries: BlogPost[], query: string): Blo
   );
 }
 
+/** DOM id for the blog index posts region (scroll target after pagination). */
+export const BLOG_POSTS_SECTION_ID = "blog-posts";
+
+export function getBlogListEmptyMessage(
+  hasSearchQuery: boolean,
+  hasCategoryFilter: boolean,
+): string {
+  if (hasSearchQuery && hasCategoryFilter) {
+    return "No posts match your search or category.";
+  }
+  if (hasSearchQuery) return "No posts match your search.";
+  if (hasCategoryFilter) return "No posts in this category.";
+  return "No posts available.";
+}
+
 export { BLOG_READING_REGION_ID } from "@/lib/blog-reading";
 
 /** Section headings only — `###` subheads stay in prose, not the TOC. */

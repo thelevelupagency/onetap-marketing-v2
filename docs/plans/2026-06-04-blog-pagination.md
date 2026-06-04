@@ -25,7 +25,7 @@ Added a reusable pagination foundation and wired it into the blog listing page s
 
 - **Page size 6**: fits the 2- and 3-column grid evenly; produces 3 pages for current 18-post corpus.
 - **URL-based pagination**: `?page=N` — shareable, bookmarkable, consistent with `?category=x`.
-- **Search bypasses pagination**: when the search field is non-empty, all filtered results render without page controls to avoid jarring URL jumps that would clear the search term.
+- **Search uses pagination**: filtered results paginate like the default list; changing the search query resets to page 1 (search stays client-side).
 - **Ellipsis logic**: `getPageNumbers` in `blog-list.tsx` handles ranges > 7 pages with leading/trailing ellipsis — future-proofed for a growing blog.
 - **Blog list UX**: client-side filter state with URL sync; posts-only pending state; scroll-to-posts on page/category change (`prefers-reduced-motion` uses instant scroll).
 - **Shared helpers** in `src/lib/blog.ts` (URL params, `BLOG_LIST_PAGE_SIZE`, search filter) and `src/lib/pagination.ts` (`getPaginationPageNumbers`).

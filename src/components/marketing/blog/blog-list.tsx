@@ -4,18 +4,19 @@ import { useMemo, useState, useTransition } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
+  BLOG_LIST_PAGE_SIZE,
+  BLOG_POSTS_SECTION_ID,
   buildBlogPageHref,
   filterBlogPostsBySearch,
   getPosts,
   parseBlogCategoryParam,
   parseBlogPageParam,
 } from "@/lib/blog";
+import { paginateItems } from "@/lib/pagination";
 import { categoryLabels, type BlogCategory } from "@/content/blog/posts";
 import { ContentSearch } from "@/components/marketing/content-search";
 import { CategoryFilterPills, type CategoryFilterPill } from "@/components/marketing/primitives";
 import { BlogPostsSection } from "@/components/marketing/blog/blog-posts-section";
-
-const BLOG_POSTS_SECTION_ID = "blog-posts";
 
 const categories: (BlogCategory | "all")[] = [
   "all",
@@ -51,6 +52,8 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
     page: initialPage,
   });
 
+  const hasSearchQuery = query.trim().length > 0;
+
   // Sync when searchParams change from browser back/forward (React recommended prop-to-state pattern).
   if (
     initialCategory !== urlSnapshot.category ||
@@ -66,11 +69,17 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
     [activeCategory, query],
   );
 
-  const isSearchActive = query.trim().length > 0;
+  const { pageItems, totalPages, safePage } = useMemo(
+    () => paginateItems(filtered, BLOG_LIST_PAGE_SIZE, currentPage),
+    [filtered, currentPage],
+  );
 
-  const navigate = (category: BlogCategory | null, page: number, options?: { scrollToPosts?: boolean }) => {
-    setActiveCategory(category);
-    setCurrentPage(page);
+  // Keep page in range when filters/search reduce the result set (e.g. page 3 → 1 page of matches).
+  if (currentPage !== safePage) {
+    setCurrentPage(safePage);
+  }
+
+  const syncPageToUrl = (page: number, category: BlogCategory | null) => {
     setUrlSnapshot({
       category: category ?? undefined,
       page: page > 1 ? String(page) : undefined,
@@ -78,6 +87,12 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
     startTransition(() => {
       router.replace(buildBlogPageHref(page, category), { scroll: false });
     });
+  };
+
+  const navigate = (category: BlogCategory | null, page: number, options?: { scrollToPosts?: boolean }) => {
+    setActiveCategory(category);
+    setCurrentPage(page);
+    syncPageToUrl(page, category);
     if (options?.scrollToPosts) {
       scrollToBlogPosts(prefersReducedMotion);
     }
@@ -100,6 +115,9 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
         onChange={(value) => {
           setQuery(value);
           setCurrentPage(1);
+          if (urlSnapshot.page != null) {
+            syncPageToUrl(1, activeCategory);
+          }
         }}
         placeholder="Search posts..."
         className="relative mx-auto mb-marketing-stack-gap w-full max-w-md"
@@ -113,10 +131,12 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
 
       <BlogPostsSection
         sectionId={BLOG_POSTS_SECTION_ID}
-        posts={filtered}
+        pageItems={pageItems}
+        totalCount={filtered.length}
+        totalPages={totalPages}
+        safePage={safePage}
         activeCategory={activeCategory}
-        currentPage={currentPage}
-        isSearchActive={isSearchActive}
+        hasSearchQuery={hasSearchQuery}
         isPending={isPending}
         prefersReducedMotion={prefersReducedMotion}
         onPageNavigate={(page) => navigate(activeCategory, page, { scrollToPosts: true })}
