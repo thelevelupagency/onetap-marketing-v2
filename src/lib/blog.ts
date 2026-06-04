@@ -1,5 +1,40 @@
-import { posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
+import { categoryLabels, posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
 import { countBlogWords } from "@/lib/blog-markdown";
+import { textIncludes } from "@/lib/search";
+
+export const BLOG_LIST_PAGE_SIZE = 6;
+
+const validBlogCategories = new Set(Object.keys(categoryLabels) as BlogCategory[]);
+
+export function parseBlogCategoryParam(value: string | null | undefined): BlogCategory | null {
+  if (!value || !validBlogCategories.has(value as BlogCategory)) return null;
+  return value as BlogCategory;
+}
+
+export function parseBlogPageParam(value: string | null | undefined): number {
+  const n = parseInt(value ?? "1", 10);
+  return Number.isNaN(n) || n < 1 ? 1 : n;
+}
+
+/** Shareable blog index URL with optional category and page. */
+export function buildBlogPageHref(page: number, category: BlogCategory | null): string {
+  const params = new URLSearchParams();
+  if (category) params.set("category", category);
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return `/blog${qs ? `?${qs}` : ""}`;
+}
+
+export function filterBlogPostsBySearch(entries: BlogPost[], query: string): BlogPost[] {
+  if (!query.trim()) return entries;
+  return entries.filter(
+    (post) =>
+      textIncludes(post.title, query) ||
+      textIncludes(post.excerpt, query) ||
+      textIncludes(post.author, query) ||
+      post.categories.some((cat) => textIncludes(categoryLabels[cat], query)),
+  );
+}
 
 export { BLOG_READING_REGION_ID } from "@/lib/blog-reading";
 

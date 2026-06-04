@@ -1,19 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { textIncludes } from "@/lib/search";
-import { type as typography } from "@/lib/typography";
-import { formatDate, formatReadingTime, getPostReadingMinutes } from "@/lib/blog";
-import { posts, categoryLabels, type BlogCategory } from "@/content/blog/posts";
-import { ContentSearch } from "@/components/marketing/content-search";
+import { useMemo, useState, useTransition } from "react";
+import { useReducedMotion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
-  CategoryFilterPills,
-  MarketingLinkCard,
-  type CategoryFilterPill,
-} from "@/components/marketing/primitives";
-import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
-import { BlogImage } from "@/components/marketing/blog/blog-image";
+  buildBlogPageHref,
+  filterBlogPostsBySearch,
+  getPosts,
+  parseBlogCategoryParam,
+  parseBlogPageParam,
+} from "@/lib/blog";
+import { categoryLabels, type BlogCategory } from "@/content/blog/posts";
+import { ContentSearch } from "@/components/marketing/content-search";
+import { CategoryFilterPills, type CategoryFilterPill } from "@/components/marketing/primitives";
+import { BlogPostsSection } from "@/components/marketing/blog/blog-posts-section";
+
+const BLOG_POSTS_SECTION_ID = "blog-posts";
 
 const categories: (BlogCategory | "all")[] = [
   "all",
@@ -23,43 +25,71 @@ const categories: (BlogCategory | "all")[] = [
   "news",
 ];
 
-function postMatchesQuery(post: (typeof posts)[number], query: string) {
-  if (!query.trim()) return true;
-  return (
-    textIncludes(post.title, query) ||
-    textIncludes(post.excerpt, query) ||
-    textIncludes(post.author, query) ||
-    post.categories.some((cat) => textIncludes(categoryLabels[cat], query))
-  );
+function scrollToBlogPosts(reducedMotion: boolean) {
+  document.getElementById(BLOG_POSTS_SECTION_ID)?.scrollIntoView({
+    behavior: reducedMotion ? "instant" : "smooth",
+    block: "start",
+  });
 }
 
-const validCategories = new Set(Object.keys(categoryLabels) as BlogCategory[]);
-
-function parseCategoryParam(value: string | null): BlogCategory | null {
-  if (!value || !validCategories.has(value as BlogCategory)) return null;
-  return value as BlogCategory;
+interface BlogListProps {
+  initialCategory?: string | null;
+  initialPage?: string | null;
 }
 
-export function BlogList() {
-  const searchParams = useSearchParams();
-  const activeCategory = parseCategoryParam(searchParams.get("category"));
+export function BlogList({ initialCategory, initialPage }: BlogListProps) {
+  const router = useRouter();
+  const prefersReducedMotion = useReducedMotion() ?? false;
+  const [isPending, startTransition] = useTransition();
   const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState(() =>
+    parseBlogCategoryParam(initialCategory),
+  );
+  const [currentPage, setCurrentPage] = useState(() => parseBlogPageParam(initialPage));
+  const [urlSnapshot, setUrlSnapshot] = useState({
+    category: initialCategory,
+    page: initialPage,
+  });
 
-  const filtered = useMemo(() => {
-    const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
-    return sorted
-      .filter((p) => !activeCategory || p.categories.includes(activeCategory))
-      .filter((p) => postMatchesQuery(p, query));
-  }, [activeCategory, query]);
+  // Sync when searchParams change from browser back/forward (React recommended prop-to-state pattern).
+  if (
+    initialCategory !== urlSnapshot.category ||
+    initialPage !== urlSnapshot.page
+  ) {
+    setUrlSnapshot({ category: initialCategory, page: initialPage });
+    setActiveCategory(parseBlogCategoryParam(initialCategory));
+    setCurrentPage(parseBlogPageParam(initialPage));
+  }
+
+  const filtered = useMemo(
+    () => filterBlogPostsBySearch(getPosts(activeCategory), query),
+    [activeCategory, query],
+  );
+
+  const isSearchActive = query.trim().length > 0;
+
+  const navigate = (category: BlogCategory | null, page: number, options?: { scrollToPosts?: boolean }) => {
+    setActiveCategory(category);
+    setCurrentPage(page);
+    setUrlSnapshot({
+      category: category ?? undefined,
+      page: page > 1 ? String(page) : undefined,
+    });
+    startTransition(() => {
+      router.replace(buildBlogPageHref(page, category), { scroll: false });
+    });
+    if (options?.scrollToPosts) {
+      scrollToBlogPosts(prefersReducedMotion);
+    }
+  };
 
   const filterPills: CategoryFilterPill[] = categories.map((cat) => {
-    const href = cat === "all" ? "/blog" : `/blog?category=${cat}`;
     const isActive = cat === "all" ? !activeCategory : activeCategory === cat;
     return {
       id: cat,
       label: cat === "all" ? "All" : categoryLabels[cat],
-      href,
       isActive,
+      onSelect: () => navigate(cat === "all" ? null : cat, 1, { scrollToPosts: true }),
     };
   });
 
@@ -67,7 +97,10 @@ export function BlogList() {
     <>
       <ContentSearch
         value={query}
-        onChange={setQuery}
+        onChange={(value) => {
+          setQuery(value);
+          setCurrentPage(1);
+        }}
         placeholder="Search posts..."
         className="relative mx-auto mb-marketing-stack-gap w-full max-w-md"
       />
@@ -78,41 +111,16 @@ export function BlogList() {
         className="mb-marketing-header-gap-md"
       />
 
-      {filtered.length === 0 ? (
-        <p className="py-12 text-center text-brand-midnight/50">No posts match your search.</p>
-      ) : (
-        <div className="grid auto-rows-fr gap-marketing-grid-gap pb-marketing-header-gap-md md:grid-cols-2 md:gap-marketing-grid-gap-md lg:grid-cols-3">
-          {filtered.map((post) => (
-            <MarketingLinkCard
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="flex h-full flex-col overflow-hidden"
-            >
-              <BlogImage
-                src={post.coverImage}
-                alt={post.title}
-                aspect="card"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                frameClassName="shrink-0"
-                imageClassName="transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="flex flex-1 flex-col p-marketing-card-padding">
-                <BlogPostBadges categories={post.categories} className="mb-3" />
-                <h2
-                  className={`${typography.cardTitle} mb-2 transition-colors group-hover:text-brand-turquoise-dark`}
-                >
-                  {post.title}
-                </h2>
-                <p className={`${typography.body} mb-4 line-clamp-2`}>{post.excerpt}</p>
-                <p className="mt-auto text-xs text-brand-midnight/40">
-                  {formatDate(post.date)} · {post.author} ·{" "}
-                  {formatReadingTime(getPostReadingMinutes(post))}
-                </p>
-              </div>
-            </MarketingLinkCard>
-          ))}
-        </div>
-      )}
+      <BlogPostsSection
+        sectionId={BLOG_POSTS_SECTION_ID}
+        posts={filtered}
+        activeCategory={activeCategory}
+        currentPage={currentPage}
+        isSearchActive={isSearchActive}
+        isPending={isPending}
+        prefersReducedMotion={prefersReducedMotion}
+        onPageNavigate={(page) => navigate(activeCategory, page, { scrollToPosts: true })}
+      />
     </>
   );
 }
