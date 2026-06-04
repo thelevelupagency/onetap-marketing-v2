@@ -5,6 +5,7 @@ export const type = {
   pageTitle: "type-page-title",
   sectionTitle: "type-section-title",
   subsectionTitle: "type-subsection-title",
+  proseSubheading: "type-prose-subheading",
   stepTitle: "type-step-title",
   cardTitle: "type-card-title",
   eyebrow: "type-eyebrow",

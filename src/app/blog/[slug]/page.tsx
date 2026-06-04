@@ -1,21 +1,31 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { getPostBySlug, getRelatedPosts, getAllSlugs, formatDate } from "@/lib/blog";
-import { categoryLabels } from "@/content/blog/posts";
-import { BlogReadingProgress } from "@/components/marketing/blog/blog-reading-progress";
-import { BlogToc } from "@/components/marketing/blog/blog-toc";
+import {
+  getPostBySlug,
+  getRelatedPosts,
+  getAllSlugs,
+  formatDate,
+  formatReadingTime,
+  getPostReadingMinutes,
+  BLOG_READING_REGION_ID,
+} from "@/lib/blog";
+import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
+import { BlogPostLayout } from "@/components/marketing/blog/blog-post-layout";
 import { BlogShare } from "@/components/marketing/blog/blog-share";
 import { BlogPostContent } from "@/components/marketing/blog/blog-post-content";
+import { BlogImage } from "@/components/marketing/blog/blog-image";
+import {
+  BLOG_INLINE_IMAGE_SIZES,
+  blogInlineImageFrameClass,
+} from "@/components/marketing/blog/blog-image-classes";
+import { BlogTocMobile } from "@/components/marketing/blog/blog-toc";
+import { normalizeBlogImageSrc } from "@/lib/blog-images";
+import { getSiteUrl } from "@/lib/site-url";
 import { RelatedPosts } from "@/components/marketing/blog/related-posts";
 import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
-import {
-  MarketingBadge,
-  MarketingContainer,
-  PageShell,
-} from "@/components/marketing/primitives";
+import { MarketingContainer, PageShell } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 
 interface PageProps {
@@ -30,10 +40,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return { title: "Post Not Found" };
+  const canonical = `${getSiteUrl()}/blog/${slug}`;
+  const ogImage = normalizeBlogImageSrc(post.coverImage, 1200);
   return {
-    title: `${post.title} | OneTap Blog`,
+    title: `${post.title} | OneTap-Card`,
     description: post.excerpt,
-    openGraph: { title: post.title, description: post.excerpt, images: [post.coverImage] },
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      url: canonical,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: `${post.date}T00:00:00.000Z`,
+      authors: [post.author],
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
+    },
   };
 }
 
@@ -45,56 +72,58 @@ export default async function BlogPostPage({ params }: PageProps) {
   const related = getRelatedPosts(slug);
 
   return (
-    <>
-      <BlogReadingProgress />
-      <PageShell pageBottom="none">
-        <MarketingContainer width="wide">
-          <div className="grid gap-12 xl:grid-cols-[minmax(0,48rem)_220px]">
-            <MarketingContainer width="narrow" className="mx-0 w-full max-w-3xl px-0">
-              <div className="mb-marketing-stack-gap-sm flex flex-col gap-marketing-stack-gap-sm">
-                <Link
-                  href="/blog"
-                  className={`${typography.label} flex w-fit items-center gap-2 text-brand-midnight/60 transition-colors hover:text-brand-midnight`}
-                >
-                  <ArrowLeft className="h-4 w-4" /> Back to Blog
-                </Link>
-                <MarketingBadge className="w-fit">
-                  {categoryLabels[post.category]}
-                </MarketingBadge>
-              </div>
-              <div className="mb-marketing-stack-gap flex flex-col gap-marketing-stack-gap-sm">
-                <h1 className={typography.sectionTitle}>{post.title}</h1>
+    <PageShell pageBottom="none">
+      <MarketingContainer width="wide">
+        <BlogPostLayout headings={post.headings}>
+          <MarketingContainer width="narrow" className="w-full min-w-0 px-0 lg:mx-0">
+            <div className="mb-marketing-stack-gap-sm flex flex-col gap-marketing-stack-gap-sm">
+              <Link
+                href="/blog"
+                className={`${typography.label} flex w-fit items-center gap-2 text-brand-midnight/60 transition-colors hover:text-brand-midnight`}
+              >
+                <ArrowLeft className="h-4 w-4" /> Back to Blog
+              </Link>
+              <BlogPostBadges categories={post.categories} />
+            </div>
+
+            <div
+              id={BLOG_READING_REGION_ID}
+              className="flex flex-col gap-marketing-stack-gap"
+            >
+              <div className="flex flex-col gap-marketing-stack-gap-sm md:gap-marketing-prose-gap">
+                <h1 className={`${typography.sectionTitle} text-pretty`}>
+                  {post.title}
+                </h1>
                 <p className={typography.lead}>{post.excerpt}</p>
                 <p className={typography.caption}>
-                  {formatDate(post.date)} · {post.author}
+                  {formatDate(post.date)} · {post.author} ·{" "}
+                  {formatReadingTime(getPostReadingMinutes(post))}
                 </p>
               </div>
 
-              <div className="relative mb-marketing-stack-gap aspect-[21/9] overflow-hidden rounded-3xl border border-brand-midnight/5">
-                <Image
-                  src={post.coverImage}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 768px"
-                />
-              </div>
+              <BlogTocMobile />
+
+              <BlogImage
+                src={post.coverImage}
+                alt={post.title}
+                aspect="inline"
+                priority
+                sizes={BLOG_INLINE_IMAGE_SIZES}
+                frameClassName={blogInlineImageFrameClass}
+              />
 
               <BlogPostContent post={post} />
+            </div>
 
-              <div className="mt-marketing-stack-gap border-t border-brand-midnight/10 py-5">
-                <BlogShare title={post.title} slug={post.slug} label="Share this article" />
-              </div>
+            <div className="mt-marketing-prose-section-gap border-t border-brand-midnight/10 pt-marketing-prose-section-gap">
+              <BlogShare title={post.title} slug={post.slug} label="Share this article" />
+            </div>
 
-              <RelatedPosts posts={related} />
-            </MarketingContainer>
-
-            <BlogToc headings={post.headings} />
-          </div>
-        </MarketingContainer>
-        <FinalCtaSection variant="blog" />
-      </PageShell>
-    </>
+            <RelatedPosts posts={related} />
+          </MarketingContainer>
+        </BlogPostLayout>
+      </MarketingContainer>
+      <FinalCtaSection variant="blog" />
+    </PageShell>
   );
 }

@@ -12,6 +12,7 @@ Use when adding routes, changing metadata, or shipping major content updates.
 
 - [ ] New public route added to `src/app/sitemap.ts` (if not covered by dynamic blog slugs)
 - [ ] Canonical host matches production (`getSiteUrl()` / `NEXT_PUBLIC_SITE_URL`, default `https://onetap-card.com`)
+- [x] `metadataBase` in root layout (`src/app/layout.tsx`) for absolute OG URLs
 - [ ] `/solutions` index listed in sitemap when that route is public
 - [ ] `lang="en"` on `<html>` until i18n is implemented
 
@@ -19,9 +20,9 @@ Use when adding routes, changing metadata, or shipping major content updates.
 
 - [ ] `robots.txt` route or static file
 - [ ] JSON-LD for organization / product where valuable
-- [ ] `metadataBase` in root layout for absolute OG URLs
 
 ## Blog
 
 - [ ] Slug in `src/content/blog/posts.ts` matches `generateStaticParams`
-- [ ] `headings` ids align with markdown-style `##` blocks in `content`
+- [ ] `headings[]` ids and text align with every `##` and `###` in `content` (build asserts on import)
+- [ ] Only `level: 2` headings appear in on-page TOC; `level: 3` is in-article anchors only

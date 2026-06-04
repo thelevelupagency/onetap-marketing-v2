@@ -6,12 +6,15 @@ alwaysApply: false
 
 # Content Authoring
 
-## Blog (`src/content/blog/posts.ts`)
+## Blog (`src/content/blog/copywriter-posts.ts`, `editorial-posts.ts`, merged in `posts.ts`)
 
-- `BlogPost`: `slug`, `title`, `excerpt`, `category`, `date`, `author`, `coverImage`, `content[]`, `headings[]`.
+- `BlogPost`: `slug`, `title`, `excerpt`, `categories[]`, `date`, `author`, `coverImage`, `content[]`, `headings[]`.
+- Body uses light markdown: `##` / `###`, `-` lists, `**bold**`, `![alt](url)`, `> Tip:` / `> Summary:` — see `.cursor/skills/blog-content-authoring/SKILL.md`.
 - Slugs: kebab-case, unique, stable (URLs depend on them).
-- `headings[].id` must match `##` anchor ids implied in markdown-style `content` blocks.
-- `category` must be a valid `BlogCategory` key.
+- `headings[].id` must match `##` / `###` in content for anchors and build validation.
+- On-page TOC and scroll-spy use **`level: 2` only**; `level: 3` entries sync `###` anchor ids but do not appear in TOC.
+- Build validates `headings[]` sync with every `##` / `###` in `content`, image hosts, and `/blog/slug` links.
+- `categories` is a non-empty array of valid `BlogCategory` keys (multiple badges per post).
 
 ## FAQ / pricing
 

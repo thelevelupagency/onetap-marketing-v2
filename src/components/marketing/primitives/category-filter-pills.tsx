@@ -21,14 +21,14 @@ const pillClassName =
   "inline-flex min-h-11 items-center justify-center rounded-full border px-5 py-2.5 text-sm font-medium tracking-tight transition-all duration-200 sm:min-h-12 sm:px-6 sm:py-3 sm:text-base";
 
 const pillFocusClassName =
-  "rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-navy/25 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream";
+  "rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise/30 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream";
 
 function pillStyles(isActive: boolean) {
   return cn(
     pillClassName,
     isActive
-      ? "border-brand-midnight bg-brand-midnight text-brand-cream shadow-soft-diffusion"
-      : "border-brand-midnight/12 bg-white text-brand-midnight/75 shadow-sm hover:border-brand-turquoise/35 hover:bg-brand-turquoise/15 hover:text-brand-midnight hover:shadow-md"
+      ? "border-brand-turquoise/40 bg-brand-turquoise/10 text-brand-turquoise-dark shadow-sm hover:border-brand-turquoise/50 hover:bg-brand-turquoise/15"
+      : "border-brand-midnight/12 bg-white text-brand-midnight/75 shadow-sm hover:border-brand-turquoise/35 hover:bg-brand-turquoise/15 hover:text-brand-turquoise-dark hover:shadow-md"
   );
 }
 

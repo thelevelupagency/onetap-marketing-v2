@@ -1,4 +1,77 @@
-import { posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
+import { categoryLabels, posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
+import { countBlogWords } from "@/lib/blog-markdown";
+import { textIncludes } from "@/lib/search";
+
+export const BLOG_LIST_PAGE_SIZE = 6;
+
+const validBlogCategories = new Set(Object.keys(categoryLabels) as BlogCategory[]);
+
+export function parseBlogCategoryParam(value: string | null | undefined): BlogCategory | null {
+  if (!value || !validBlogCategories.has(value as BlogCategory)) return null;
+  return value as BlogCategory;
+}
+
+export function parseBlogPageParam(value: string | null | undefined): number {
+  const n = parseInt(value ?? "1", 10);
+  return Number.isNaN(n) || n < 1 ? 1 : n;
+}
+
+/** Shareable blog index URL with optional category and page. */
+export function buildBlogPageHref(page: number, category: BlogCategory | null): string {
+  const params = new URLSearchParams();
+  if (category) params.set("category", category);
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return `/blog${qs ? `?${qs}` : ""}`;
+}
+
+export function filterBlogPostsBySearch(entries: BlogPost[], query: string): BlogPost[] {
+  if (!query.trim()) return entries;
+  return entries.filter(
+    (post) =>
+      textIncludes(post.title, query) ||
+      textIncludes(post.excerpt, query) ||
+      textIncludes(post.author, query) ||
+      post.categories.some((cat) => textIncludes(categoryLabels[cat], query)),
+  );
+}
+
+/** DOM id for the blog index posts region (scroll target after pagination). */
+export const BLOG_POSTS_SECTION_ID = "blog-posts";
+
+export function getBlogListEmptyMessage(
+  hasSearchQuery: boolean,
+  hasCategoryFilter: boolean,
+): string {
+  if (hasSearchQuery && hasCategoryFilter) {
+    return "No posts match your search or category.";
+  }
+  if (hasSearchQuery) return "No posts match your search.";
+  if (hasCategoryFilter) return "No posts in this category.";
+  return "No posts available.";
+}
+
+export { BLOG_READING_REGION_ID } from "@/lib/blog-reading";
+
+/** Section headings only — `###` subheads stay in prose, not the TOC. */
+export function getTocHeadings(headings: BlogHeading[]): BlogHeading[] {
+  return headings.filter((h) => h.level === 2);
+}
+
+/** Map any heading id (including `###`) to the TOC section id that should highlight. */
+export function resolveTocActiveId(id: string, headings: BlogHeading[]): string {
+  const tocHeadings = getTocHeadings(headings);
+  if (tocHeadings.some((h) => h.id === id)) return id;
+
+  const index = headings.findIndex((h) => h.id === id);
+  if (index === -1) return tocHeadings[0]?.id ?? id;
+
+  for (let i = index; i >= 0; i--) {
+    if (headings[i].level === 2) return headings[i].id;
+  }
+
+  return tocHeadings[0]?.id ?? id;
+}
 
 /** Resolve DOM id for a heading line — prefers explicit ids from post.headings. */
 export function getHeadingId(text: string, headings: BlogHeading[]): string {
@@ -12,13 +85,43 @@ export function getHeadingId(text: string, headings: BlogHeading[]): string {
     .trim();
 }
 
+function categoryOverlap(a: BlogCategory[], b: BlogCategory[]): number {
+  return a.filter((c) => b.includes(c)).length;
+}
+
 export function getPosts(category?: BlogCategory | null): BlogPost[] {
   if (!category) return [...posts].sort((a, b) => b.date.localeCompare(a.date));
-  return posts.filter((p) => p.category === category).sort((a, b) => b.date.localeCompare(a.date));
+  return posts
+    .filter((p) => p.categories.includes(category))
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return posts.find((p) => p.slug === slug);
+}
+
+const MAX_INLINE_LINK_LABEL = 50;
+
+/** Short, sentence-friendly label for inline `/blog/slug` links in prose. */
+export function getBlogLinkLabel(slug: string): string {
+  const post = getPostBySlug(slug);
+  if (!post) {
+    return slug.replace(/-/g, " ");
+  }
+
+  const colon = post.title.indexOf(":");
+  if (colon > 0) {
+    const beforeColon = post.title.slice(0, colon).trim();
+    if (beforeColon.length <= MAX_INLINE_LINK_LABEL) {
+      return beforeColon;
+    }
+  }
+
+  if (post.title.length <= MAX_INLINE_LINK_LABEL) {
+    return post.title;
+  }
+
+  return slug.replace(/-/g, " ");
 }
 
 export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
@@ -27,8 +130,8 @@ export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
   return posts
     .filter((p) => p.slug !== slug)
     .sort((a, b) => {
-      const aMatch = a.category === current.category ? 1 : 0;
-      const bMatch = b.category === current.category ? 1 : 0;
+      const aMatch = categoryOverlap(a.categories, current.categories);
+      const bMatch = categoryOverlap(b.categories, current.categories);
       return bMatch - aMatch || b.date.localeCompare(a.date);
     })
     .slice(0, limit);
@@ -46,24 +149,18 @@ export function formatDate(dateStr: string): string {
   });
 }
 
-export function renderContentBlock(
-  block: string,
-  headings: BlogHeading[] = []
-): { type: "heading" | "paragraph"; level?: 2 | 3; text: string; id?: string } {
-  if (block.startsWith("## ")) {
-    const text = block.slice(3).split("\n")[0];
-    return { type: "heading", level: 2, text, id: getHeadingId(text, headings) };
-  }
-  if (block.startsWith("### ")) {
-    const text = block.slice(4).split("\n")[0];
-    return { type: "heading", level: 3, text, id: getHeadingId(text, headings) };
-  }
-  const parts = block.split("\n\n");
-  const headingPart = parts.find((p) => p.startsWith("## "));
-  if (headingPart) {
-    const text = headingPart.slice(3);
-    const body = parts.filter((p) => !p.startsWith("## ")).join("\n\n");
-    return { type: "paragraph", text: body, id: getHeadingId(text, headings) };
-  }
-  return { type: "paragraph", text: block };
+const WORDS_PER_MINUTE = 220;
+
+/** Estimated reading time from post body strings. */
+export function estimateReadingMinutes(content: string[]): number {
+  const words = countBlogWords(content);
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
+
+export function formatReadingTime(minutes: number): string {
+  return `${minutes} min read`;
+}
+
+export function getPostReadingMinutes(post: Pick<BlogPost, "content">): number {
+  return estimateReadingMinutes(post.content);
 }

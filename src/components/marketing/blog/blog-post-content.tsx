@@ -1,37 +1,42 @@
 import type { BlogPost } from "@/content/blog/posts";
 import { getHeadingId } from "@/lib/blog";
+import { parseBlogBody, parseContentBlock } from "@/lib/blog-markdown";
 import { type as typography } from "@/lib/typography";
+import { BlogBlockRenderer } from "@/components/marketing/blog/blocks/blog-block-renderer";
 
-const bodyClass = `${typography.body} leading-7`;
+const articleClass =
+  "prose prose-neutral mx-auto flex w-full max-w-prose flex-col gap-marketing-prose-section-gap pt-2 normal-case prose-p:my-0 prose-headings:mt-0 prose-headings:mb-0 prose-a:text-brand-turquoise-dark prose-figure:max-w-none [&_figure]:w-full [&_figure_img]:!m-0 [&_figure_img]:!size-full [&_figure_img]:!max-w-none [&_figure_img]:!object-cover";
 
 export function BlogPostContent({ post }: { post: BlogPost }) {
   return (
-    <article className="prose prose-neutral flex max-w-none flex-col gap-marketing-stack-gap normal-case prose-a:text-brand-turquoise-dark">
+    <article className={articleClass}>
       {post.content.map((block, i) => {
-        if (block.startsWith("## ")) {
-          const lines = block.split("\n");
-          const heading = lines[0].slice(3);
-          const id = getHeadingId(heading, post.headings);
-          const body = lines.slice(1).join("\n").trim();
+        const parsed = parseContentBlock(block);
+
+        if (parsed.kind === "section") {
+          const id = getHeadingId(parsed.heading, post.headings);
+          const nodes = parseBlogBody(parsed.body);
           return (
             <section
               key={i}
-              className="flex flex-col gap-3 border-t border-brand-midnight/5 pt-marketing-stack-gap first-of-type:border-0 first-of-type:pt-0"
+              id={id}
+              className="flex scroll-mt-28 flex-col gap-marketing-prose-gap"
             >
               <h2
-                id={id}
-                className={`${typography.subsectionTitle} scroll-mt-28 normal-case`}
+                className={`${typography.subsectionTitle} text-pretty normal-case`}
               >
-                {heading}
+                {parsed.heading}
               </h2>
-              {body && <p className={bodyClass}>{body}</p>}
+              {nodes.length > 0 ? (
+                <BlogBlockRenderer nodes={nodes} headings={post.headings} />
+              ) : null}
             </section>
           );
         }
+
+        const nodes = parseBlogBody(parsed.body);
         return (
-          <p key={i} className={bodyClass}>
-            {block}
-          </p>
+          <BlogBlockRenderer key={i} nodes={nodes} headings={post.headings} />
         );
       })}
     </article>

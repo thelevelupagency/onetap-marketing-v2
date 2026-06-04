@@ -1,13 +1,13 @@
-import Image from "next/image";
-import { categoryLabels, type BlogPost } from "@/content/blog/posts";
-import { formatDate } from "@/lib/blog";
+import type { BlogPost } from "@/content/blog/posts";
+import { formatDate, formatReadingTime, getPostReadingMinutes } from "@/lib/blog";
 import { type as typography } from "@/lib/typography";
 import {
   MarketingLinkCard,
-  MarketingBadge,
   MarketingSection,
   SectionHeader,
 } from "@/components/marketing/primitives";
+import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
+import { BlogImage } from "@/components/marketing/blog/blog-image";
 
 export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
@@ -15,34 +15,32 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
   return (
     <MarketingSection background="transparent" spacing="compact" className="px-0">
       <SectionHeader title="Related" accent="posts" className="mb-marketing-header-gap-md" />
-      <div className="grid gap-8 md:grid-cols-3">
+      <div className="grid auto-rows-fr gap-marketing-grid-gap lg:grid-cols-3 lg:gap-marketing-grid-gap-md">
         {posts.map((post) => (
           <MarketingLinkCard
             key={post.slug}
             href={`/blog/${post.slug}`}
             radius="lg"
             lift={false}
-            className="overflow-hidden"
+            className="flex h-full flex-col overflow-hidden"
           >
-            <div className="relative aspect-[16/10]">
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                fill
-                className="object-cover"
-                sizes="33vw"
-              />
-            </div>
-            <div className="p-marketing-card-padding">
-              <MarketingBadge className="mb-2 text-xs">
-                {categoryLabels[post.category]}
-              </MarketingBadge>
+            <BlogImage
+              src={post.coverImage}
+              alt={post.title}
+              aspect="card"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              frameClassName="shrink-0"
+            />
+            <div className="flex flex-1 flex-col p-marketing-card-padding">
+              <BlogPostBadges categories={post.categories} className="mb-2" />
               <h3
-                className={`${typography.cardTitle} line-clamp-2 transition-colors group-hover:text-brand-turquoise-dark`}
+                className={`${typography.cardTitle} transition-colors group-hover:text-brand-turquoise-dark`}
               >
                 {post.title}
               </h3>
-              <p className={`${typography.caption} mt-2`}>{formatDate(post.date)}</p>
+              <p className={`${typography.caption} mt-auto pt-2`}>
+                {formatDate(post.date)} · {formatReadingTime(getPostReadingMinutes(post))}
+              </p>
             </div>
           </MarketingLinkCard>
         ))}
