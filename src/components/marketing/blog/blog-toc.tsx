@@ -11,13 +11,14 @@ import { useBlogScrollSpyContext } from "@/components/marketing/blog/blog-scroll
 function BlogTocLink({
   heading,
   isActive,
+  hasHydrated,
   onClick,
 }: {
   heading: BlogHeading;
   isActive: boolean;
+  hasHydrated: boolean;
   onClick: ReturnType<typeof useBlogScrollSpyContext>["handleHeadingClick"];
 }) {
-  const hasHydrated = useHasHydrated();
   const showActive = hasHydrated && isActive;
 
   return (
@@ -25,9 +26,9 @@ function BlogTocLink({
       href={`#${heading.id}`}
       onClick={(e) => onClick(e, heading.id)}
       aria-current={showActive ? "location" : undefined}
+      title={heading.text}
       className={cn(
-        "block rounded-md px-2.5 py-1.5 text-sm leading-snug transition-[color,background-color,box-shadow] duration-200",
-        heading.level === 3 && "pl-4",
+        "block min-w-0 truncate rounded-md px-2.5 py-1.5 text-sm leading-snug transition-[color,background-color,box-shadow] duration-200",
         showActive
           ? "bg-brand-turquoise/10 font-medium text-brand-turquoise-dark ring-1 ring-inset ring-brand-turquoise/25"
           : "text-brand-midnight/50 hover:bg-brand-midnight/4 hover:text-brand-midnight"
@@ -35,6 +36,75 @@ function BlogTocLink({
     >
       {heading.text}
     </a>
+  );
+}
+
+/** Horizontal scroll pills for mobile/tablet — hidden at `lg` and up. */
+export function BlogTocMobile() {
+  const { headings, activeId, handleHeadingClick } = useBlogScrollSpyContext();
+  const hasHydrated = useHasHydrated();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const pillRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
+
+  const scrollActiveIntoView = useCallback(() => {
+    if (!hasHydrated) return;
+    const container = scrollRef.current;
+    const activePill = pillRefs.current.get(activeId);
+    if (!container || !activePill) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const pillRect = activePill.getBoundingClientRect();
+    const offset =
+      pillRect.left -
+      containerRect.left -
+      containerRect.width / 2 +
+      pillRect.width / 2;
+
+    container.scrollBy({ left: offset, behavior: "smooth" });
+  }, [activeId, hasHydrated]);
+
+  useEffect(() => {
+    scrollActiveIntoView();
+  }, [scrollActiveIntoView]);
+
+  if (headings.length === 0) return null;
+
+  return (
+    <nav
+      aria-label="On this page"
+      className="lg:hidden"
+    >
+      <p className="type-eyebrow mb-2 text-brand-midnight/40">On this page</p>
+      <div
+        ref={scrollRef}
+        className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {headings.map((h) => {
+          const showActive = hasHydrated && activeId === h.id;
+          return (
+            <a
+              key={h.id}
+              ref={(el) => {
+                if (el) pillRefs.current.set(h.id, el);
+                else pillRefs.current.delete(h.id);
+              }}
+              href={`#${h.id}`}
+              onClick={(e) => handleHeadingClick(e, h.id)}
+              aria-current={showActive ? "location" : undefined}
+              title={h.text}
+              className={cn(
+                "max-w-48 shrink-0 truncate rounded-full px-3 py-1.5 text-sm leading-snug transition-[color,background-color,box-shadow] duration-200 sm:max-w-56",
+                showActive
+                  ? "bg-brand-turquoise/10 font-medium text-brand-turquoise-dark ring-1 ring-inset ring-brand-turquoise/25"
+                  : "bg-brand-midnight/5 text-brand-midnight/60 hover:bg-brand-midnight/8 hover:text-brand-midnight"
+              )}
+            >
+              {h.text}
+            </a>
+          );
+        })}
+      </div>
+    </nav>
   );
 }
 
@@ -106,6 +176,7 @@ export function BlogToc() {
           {headings.map((h) => (
             <li
               key={h.id}
+              className="min-w-0"
               ref={(el) => {
                 if (el) itemRefs.current.set(h.id, el);
                 else itemRefs.current.delete(h.id);
@@ -114,6 +185,7 @@ export function BlogToc() {
               <BlogTocLink
                 heading={h}
                 isActive={activeId === h.id}
+                hasHydrated={hasHydrated}
                 onClick={handleHeadingClick}
               />
             </li>

@@ -3,6 +3,7 @@ import { Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
 import { BackNavigationReloadScript } from "@/components/providers/back-navigation-reload-script";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -24,6 +25,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: "OneTap-Card | Your professional identity, one tap away",
   description: "A premium, web-first digital business card platform.",
   icons: {

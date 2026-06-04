@@ -10,6 +10,7 @@ import {
   type MouseEvent,
 } from "react";
 import type { BlogHeading } from "@/content/blog/posts";
+import { getTocHeadings, resolveTocActiveId } from "@/lib/blog";
 import {
   blogScrollStorageKey,
   isNavigationTargetSettled,
@@ -24,7 +25,8 @@ const SCROLL_SAVE_MS = 150;
 export function useBlogScrollSpy(headings: BlogHeading[]) {
   const pathname = usePathname();
   const storageKey = blogScrollStorageKey(pathname);
-  const fallbackId = headings[0]?.id ?? "";
+  const tocHeadings = getTocHeadings(headings);
+  const fallbackId = tocHeadings[0]?.id ?? "";
   const [activeId, setActiveId] = useState(fallbackId);
   const [isNavigating, setIsNavigating] = useState(false);
   const navigationLockRef = useRef<string | null>(null);
@@ -33,13 +35,13 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
   const restoredPathRef = useRef<string | null>(null);
 
   const syncActiveFromScroll = useCallback(() => {
-    if (headings.length === 0 || navigationLockRef.current || restorePendingRef.current) {
+    if (tocHeadings.length === 0 || navigationLockRef.current || restorePendingRef.current) {
       return;
     }
-    const next = resolveActiveHeadingId(headings);
+    const next = resolveActiveHeadingId(tocHeadings);
     if (!next) return;
     setActiveId((current) => (current === next ? current : next));
-  }, [headings]);
+  }, [tocHeadings]);
 
   const saveScrollPosition = useCallback(() => {
     if (navigationLockRef.current || restorePendingRef.current) return;
@@ -53,9 +55,9 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
     navigationLockRef.current = null;
     navigationStartedAtRef.current = 0;
     setIsNavigating(false);
-    setActiveId(targetId);
+    setActiveId(resolveTocActiveId(targetId, headings));
     saveScrollPosition();
-  }, [saveScrollPosition]);
+  }, [headings, saveScrollPosition]);
 
   const tryFinishNavigation = useCallback(() => {
     const targetId = navigationLockRef.current;
@@ -70,12 +72,15 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
     }
   }, [finishNavigation]);
 
-  const beginNavigation = useCallback((id: string) => {
-    navigationLockRef.current = id;
-    navigationStartedAtRef.current = performance.now();
-    setIsNavigating(true);
-    setActiveId(id);
-  }, []);
+  const beginNavigation = useCallback(
+    (id: string) => {
+      navigationLockRef.current = id;
+      navigationStartedAtRef.current = performance.now();
+      setIsNavigating(true);
+      setActiveId(resolveTocActiveId(id, headings));
+    },
+    [headings]
+  );
 
   const restoreScrollPosition = useCallback(
     (y: number) => {
@@ -104,7 +109,7 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
 
       const startStateAndRetry = () => {
         setIsNavigating(true);
-        setActiveId(hash);
+        setActiveId(resolveTocActiveId(hash, headings));
 
         let attempts = 0;
         const retry = () => {
@@ -142,7 +147,7 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
       window.addEventListener("load", onLoad, { once: true });
       return () => window.removeEventListener("load", onLoad);
     },
-    [finishNavigation, saveScrollPosition, tryFinishNavigation]
+    [finishNavigation, headings, saveScrollPosition, tryFinishNavigation]
   );
 
   const handleHeadingClick = useCallback(
@@ -170,7 +175,7 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
   }, [headings, pathname, restoreFromHash, restoreScrollPosition, storageKey]);
 
   useEffect(() => {
-    if (headings.length === 0) return;
+    if (tocHeadings.length === 0) return;
 
     let scrollFrame = 0;
     let saveTimer = 0;
@@ -207,7 +212,7 @@ export function useBlogScrollSpy(headings: BlogHeading[]) {
       window.removeEventListener("resize", onScroll);
       window.removeEventListener("scrollend", tryFinishNavigation);
     };
-  }, [headings, saveScrollPosition, syncActiveFromScroll, tryFinishNavigation]);
+  }, [tocHeadings, saveScrollPosition, syncActiveFromScroll, tryFinishNavigation]);
 
   useEffect(() => {
     if (!isNavigating) return;

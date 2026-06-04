@@ -1,6 +1,27 @@
 import { posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
+import { countBlogWords } from "@/lib/blog-markdown";
 
 export { BLOG_READING_REGION_ID } from "@/lib/blog-reading";
+
+/** Section headings only — `###` subheads stay in prose, not the TOC. */
+export function getTocHeadings(headings: BlogHeading[]): BlogHeading[] {
+  return headings.filter((h) => h.level === 2);
+}
+
+/** Map any heading id (including `###`) to the TOC section id that should highlight. */
+export function resolveTocActiveId(id: string, headings: BlogHeading[]): string {
+  const tocHeadings = getTocHeadings(headings);
+  if (tocHeadings.some((h) => h.id === id)) return id;
+
+  const index = headings.findIndex((h) => h.id === id);
+  if (index === -1) return tocHeadings[0]?.id ?? id;
+
+  for (let i = index; i >= 0; i--) {
+    if (headings[i].level === 2) return headings[i].id;
+  }
+
+  return tocHeadings[0]?.id ?? id;
+}
 
 /** Resolve DOM id for a heading line — prefers explicit ids from post.headings. */
 export function getHeadingId(text: string, headings: BlogHeading[]): string {
@@ -29,6 +50,30 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
   return posts.find((p) => p.slug === slug);
 }
 
+const MAX_INLINE_LINK_LABEL = 50;
+
+/** Short, sentence-friendly label for inline `/blog/slug` links in prose. */
+export function getBlogLinkLabel(slug: string): string {
+  const post = getPostBySlug(slug);
+  if (!post) {
+    return slug.replace(/-/g, " ");
+  }
+
+  const colon = post.title.indexOf(":");
+  if (colon > 0) {
+    const beforeColon = post.title.slice(0, colon).trim();
+    if (beforeColon.length <= MAX_INLINE_LINK_LABEL) {
+      return beforeColon;
+    }
+  }
+
+  if (post.title.length <= MAX_INLINE_LINK_LABEL) {
+    return post.title;
+  }
+
+  return slug.replace(/-/g, " ");
+}
+
 export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
   const current = getPostBySlug(slug);
   if (!current) return [];
@@ -54,24 +99,18 @@ export function formatDate(dateStr: string): string {
   });
 }
 
-export function renderContentBlock(
-  block: string,
-  headings: BlogHeading[] = []
-): { type: "heading" | "paragraph"; level?: 2 | 3; text: string; id?: string } {
-  if (block.startsWith("## ")) {
-    const text = block.slice(3).split("\n")[0];
-    return { type: "heading", level: 2, text, id: getHeadingId(text, headings) };
-  }
-  if (block.startsWith("### ")) {
-    const text = block.slice(4).split("\n")[0];
-    return { type: "heading", level: 3, text, id: getHeadingId(text, headings) };
-  }
-  const parts = block.split("\n\n");
-  const headingPart = parts.find((p) => p.startsWith("## "));
-  if (headingPart) {
-    const text = headingPart.slice(3);
-    const body = parts.filter((p) => !p.startsWith("## ")).join("\n\n");
-    return { type: "paragraph", text: body, id: getHeadingId(text, headings) };
-  }
-  return { type: "paragraph", text: block };
+const WORDS_PER_MINUTE = 220;
+
+/** Estimated reading time from post body strings. */
+export function estimateReadingMinutes(content: string[]): number {
+  const words = countBlogWords(content);
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
+
+export function formatReadingTime(minutes: number): string {
+  return `${minutes} min read`;
+}
+
+export function getPostReadingMinutes(post: Pick<BlogPost, "content">): number {
+  return estimateReadingMinutes(post.content);
 }

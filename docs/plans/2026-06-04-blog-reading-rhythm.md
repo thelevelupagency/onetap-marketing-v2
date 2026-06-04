@@ -28,7 +28,7 @@ Documented in `docs/component-system.md`.
 
 - Article: `gap-marketing-prose-section-gap`, `prose-p:my-0`, `prose-headings:mt-0 prose-headings:mb-0`.
 - Paragraph groups: wrapper with `gap-marketing-prose-gap`.
-- Sections: removed `pt-marketing-stack-gap`; border-top only (no double padding); `gap-2` between `h2` and body.
+- Sections: removed `pt-marketing-stack-gap` and section `border-t`; `gap-2` between `h2` and body.
 - Body: `typography.body` only (removed `leading-7`).
 
 ### `blog/[slug]/page.tsx`

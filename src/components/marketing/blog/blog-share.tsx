@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Link2, Check } from "lucide-react";
 import { IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { getSiteUrl } from "@/lib/site-url";
 
 export function BlogShare({
@@ -19,9 +20,13 @@ export function BlogShare({
   const url = `${getSiteUrl()}/blog/${slug}`;
 
   async function copyLink() {
-    await navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
   }
 
   const shareLinks = [
@@ -55,12 +60,13 @@ export function BlogShare({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Share on ${s.label}`}
-          className="inline-flex shrink-0"
+          className={cn(
+            buttonVariants({ variant: "outline", size: "sm" }),
+            buttonClass
+          )}
         >
-          <Button variant="outline" size="sm" className={buttonClass}>
-            {s.icon ? <s.icon className="w-4 h-4" /> : <span className="text-xs font-bold">WA</span>}
-            <span className="text-xs hidden sm:inline">{s.label}</span>
-          </Button>
+          {s.icon ? <s.icon className="w-4 h-4" /> : <span className="text-xs font-bold">WA</span>}
+          <span className="text-xs hidden sm:inline">{s.label}</span>
         </a>
       ))}
       <Button variant="outline" size="sm" className={buttonClass} onClick={copyLink}>

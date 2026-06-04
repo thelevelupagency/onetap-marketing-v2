@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, type MouseEvent, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type MouseEvent, type ReactNode } from "react";
 import type { BlogHeading } from "@/content/blog/posts";
+import { getTocHeadings } from "@/lib/blog";
 import { useBlogScrollSpy } from "@/components/marketing/blog/use-blog-scroll-spy";
 
 interface BlogScrollSpyContextValue {
@@ -16,8 +17,6 @@ interface BlogScrollSpyContextValue {
 
 const BlogScrollSpyContext = createContext<BlogScrollSpyContextValue | null>(null);
 
-export { BlogScrollSpyContext };
-
 export function BlogScrollSpyProvider({
   headings,
   children,
@@ -25,12 +24,13 @@ export function BlogScrollSpyProvider({
   headings: BlogHeading[];
   children: ReactNode;
 }) {
+  const tocHeadings = useMemo(() => getTocHeadings(headings), [headings]);
   const spy = useBlogScrollSpy(headings);
 
   return (
     <BlogScrollSpyContext.Provider
       value={{
-        headings,
+        headings: tocHeadings,
         activeId: spy.activeId,
         isNavigating: spy.isNavigating,
         handleHeadingClick: spy.handleHeadingClick,

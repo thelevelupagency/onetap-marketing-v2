@@ -1,12 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { textIncludes } from "@/lib/search";
 import { type as typography } from "@/lib/typography";
+import { formatDate, formatReadingTime, getPostReadingMinutes } from "@/lib/blog";
 import { posts, categoryLabels, type BlogCategory } from "@/content/blog/posts";
-import { formatDate } from "@/lib/blog";
 import { ContentSearch } from "@/components/marketing/content-search";
 import {
   CategoryFilterPills,
@@ -14,6 +13,7 @@ import {
   type CategoryFilterPill,
 } from "@/components/marketing/primitives";
 import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
+import { BlogImage } from "@/components/marketing/blog/blog-image";
 
 const categories: (BlogCategory | "all")[] = [
   "all",
@@ -33,9 +33,16 @@ function postMatchesQuery(post: (typeof posts)[number], query: string) {
   );
 }
 
+const validCategories = new Set(Object.keys(categoryLabels) as BlogCategory[]);
+
+function parseCategoryParam(value: string | null): BlogCategory | null {
+  if (!value || !validCategories.has(value as BlogCategory)) return null;
+  return value as BlogCategory;
+}
+
 export function BlogList() {
   const searchParams = useSearchParams();
-  const activeCategory = (searchParams.get("category") as BlogCategory) || null;
+  const activeCategory = parseCategoryParam(searchParams.get("category"));
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -74,22 +81,21 @@ export function BlogList() {
       {filtered.length === 0 ? (
         <p className="py-12 text-center text-brand-midnight/50">No posts match your search.</p>
       ) : (
-        <div className="grid auto-rows-fr gap-8 pb-marketing-header-gap-md md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-marketing-grid-gap pb-marketing-header-gap-md md:grid-cols-2 md:gap-marketing-grid-gap-md lg:grid-cols-3">
           {filtered.map((post) => (
             <MarketingLinkCard
               key={post.slug}
               href={`/blog/${post.slug}`}
               className="flex h-full flex-col overflow-hidden"
             >
-              <div className="relative aspect-[16/10] shrink-0 overflow-hidden">
-                <Image
-                  src={post.coverImage}
-                  alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
+              <BlogImage
+                src={post.coverImage}
+                alt={post.title}
+                aspect="card"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                frameClassName="shrink-0"
+                imageClassName="transition-transform duration-500 group-hover:scale-105"
+              />
               <div className="flex flex-1 flex-col p-marketing-card-padding">
                 <BlogPostBadges categories={post.categories} className="mb-3" />
                 <h2
@@ -99,7 +105,8 @@ export function BlogList() {
                 </h2>
                 <p className={`${typography.body} mb-4 line-clamp-2`}>{post.excerpt}</p>
                 <p className="mt-auto text-xs text-brand-midnight/40">
-                  {formatDate(post.date)} · {post.author}
+                  {formatDate(post.date)} · {post.author} ·{" "}
+                  {formatReadingTime(getPostReadingMinutes(post))}
                 </p>
               </div>
             </MarketingLinkCard>

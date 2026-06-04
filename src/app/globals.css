@@ -77,6 +77,7 @@
   --spacing-marketing-stack-gap-sm: var(--marketing-stack-gap-sm);
   --spacing-marketing-prose-gap: var(--marketing-prose-gap);
   --spacing-marketing-prose-section-gap: var(--marketing-prose-section-gap);
+  --spacing-marketing-prose-list-gap: var(--marketing-prose-list-gap);
 }
 
 /* Marketing type scale — sizes/colors; base h1–h6 set family, weight, uppercase, tracking */
@@ -130,6 +131,10 @@
 
 @utility type-section-lead {
   @apply font-sans text-lg leading-relaxed text-brand-midnight/70;
+}
+
+@utility type-prose-subheading {
+  @apply font-sans text-base font-semibold leading-snug text-brand-midnight md:text-lg;
 }
 
 @utility type-body {
@@ -327,8 +332,9 @@
     --marketing-grid-gap-md: calc(var(--spacing) * 8);
     --marketing-stack-gap: calc(var(--spacing) * 6);
     --marketing-stack-gap-sm: calc(var(--spacing) * 4);
-    --marketing-prose-gap: calc(var(--spacing) * 3);
-    --marketing-prose-section-gap: calc(var(--spacing) * 7);
+    --marketing-prose-gap: calc(var(--spacing) * 4);
+    --marketing-prose-section-gap: calc(var(--spacing) * 10);
+    --marketing-prose-list-gap: calc(var(--spacing) * 1);
   }
 
   html,

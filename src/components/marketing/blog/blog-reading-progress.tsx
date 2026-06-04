@@ -76,11 +76,9 @@ export function BlogReadingProgress() {
     };
   }, [isDesktopLg, prefersReducedMotion]);
 
-  if (isDesktopLg) return null;
-
   return (
     <div
-      className="pointer-events-none fixed top-[72px] right-0 left-0 z-[99] h-1 bg-brand-midnight/5"
+      className="pointer-events-none fixed top-[72px] right-0 left-0 z-[99] h-1 bg-brand-midnight/5 lg:hidden"
       aria-hidden
     >
       <div
