@@ -12,9 +12,15 @@ export function getHeadingId(text: string, headings: BlogHeading[]): string {
     .trim();
 }
 
+function categoryOverlap(a: BlogCategory[], b: BlogCategory[]): number {
+  return a.filter((c) => b.includes(c)).length;
+}
+
 export function getPosts(category?: BlogCategory | null): BlogPost[] {
   if (!category) return [...posts].sort((a, b) => b.date.localeCompare(a.date));
-  return posts.filter((p) => p.category === category).sort((a, b) => b.date.localeCompare(a.date));
+  return posts
+    .filter((p) => p.categories.includes(category))
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
@@ -27,8 +33,8 @@ export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
   return posts
     .filter((p) => p.slug !== slug)
     .sort((a, b) => {
-      const aMatch = a.category === current.category ? 1 : 0;
-      const bMatch = b.category === current.category ? 1 : 0;
+      const aMatch = categoryOverlap(a.categories, current.categories);
+      const bMatch = categoryOverlap(b.categories, current.categories);
       return bMatch - aMatch || b.date.localeCompare(a.date);
     })
     .slice(0, limit);

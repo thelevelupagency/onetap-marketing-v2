@@ -4,18 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getPostBySlug, getRelatedPosts, getAllSlugs, formatDate } from "@/lib/blog";
-import { categoryLabels } from "@/content/blog/posts";
+import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
 import { BlogReadingProgress } from "@/components/marketing/blog/blog-reading-progress";
 import { BlogToc } from "@/components/marketing/blog/blog-toc";
 import { BlogShare } from "@/components/marketing/blog/blog-share";
 import { BlogPostContent } from "@/components/marketing/blog/blog-post-content";
 import { RelatedPosts } from "@/components/marketing/blog/related-posts";
 import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
-import {
-  MarketingBadge,
-  MarketingContainer,
-  PageShell,
-} from "@/components/marketing/primitives";
+import { MarketingContainer, PageShell } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 
 interface PageProps {
@@ -58,9 +54,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 >
                   <ArrowLeft className="h-4 w-4" /> Back to Blog
                 </Link>
-                <MarketingBadge className="w-fit">
-                  {categoryLabels[post.category]}
-                </MarketingBadge>
+                <BlogPostBadges categories={post.categories} />
               </div>
               <div className="mb-marketing-stack-gap flex flex-col gap-marketing-stack-gap-sm">
                 <h1 className={typography.sectionTitle}>{post.title}</h1>

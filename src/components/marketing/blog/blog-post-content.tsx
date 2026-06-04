@@ -1,8 +1,23 @@
 import type { BlogPost } from "@/content/blog/posts";
 import { getHeadingId } from "@/lib/blog";
 import { type as typography } from "@/lib/typography";
+import { BlogInlineText } from "@/components/marketing/blog/blog-inline-text";
 
 const bodyClass = `${typography.body} leading-7`;
+
+function BlogParagraphs({ text }: { text: string }) {
+  const paragraphs = text.split("\n\n").filter((p) => p.trim().length > 0);
+
+  return (
+    <>
+      {paragraphs.map((paragraph, i) => (
+        <p key={i} className={bodyClass}>
+          <BlogInlineText text={paragraph} />
+        </p>
+      ))}
+    </>
+  );
+}
 
 export function BlogPostContent({ post }: { post: BlogPost }) {
   return (
@@ -24,15 +39,11 @@ export function BlogPostContent({ post }: { post: BlogPost }) {
               >
                 {heading}
               </h2>
-              {body && <p className={bodyClass}>{body}</p>}
+              {body && <BlogParagraphs text={body} />}
             </section>
           );
         }
-        return (
-          <p key={i} className={bodyClass}>
-            {block}
-          </p>
-        );
+        return <BlogParagraphs key={i} text={block} />;
       })}
     </article>
   );

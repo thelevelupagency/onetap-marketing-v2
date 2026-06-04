@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
-import { getAllSlugs } from "@/lib/blog";
+import { posts } from "@/content/blog/posts";
 import { getSiteUrl } from "@/lib/site-url";
 
 const BASE_URL = getSiteUrl();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const blogPosts = getAllSlugs().map((slug) => ({
-    url: `${BASE_URL}/blog/${slug}`,
-    lastModified: new Date(),
+  const blogPosts = posts.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));

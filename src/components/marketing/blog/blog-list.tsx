@@ -11,9 +11,9 @@ import { ContentSearch } from "@/components/marketing/content-search";
 import {
   CategoryFilterPills,
   MarketingLinkCard,
-  MarketingBadge,
   type CategoryFilterPill,
 } from "@/components/marketing/primitives";
+import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
 
 const categories: (BlogCategory | "all")[] = [
   "all",
@@ -29,7 +29,7 @@ function postMatchesQuery(post: (typeof posts)[number], query: string) {
     textIncludes(post.title, query) ||
     textIncludes(post.excerpt, query) ||
     textIncludes(post.author, query) ||
-    textIncludes(categoryLabels[post.category], query)
+    post.categories.some((cat) => textIncludes(categoryLabels[cat], query))
   );
 }
 
@@ -41,7 +41,7 @@ export function BlogList() {
   const filtered = useMemo(() => {
     const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
     return sorted
-      .filter((p) => !activeCategory || p.category === activeCategory)
+      .filter((p) => !activeCategory || p.categories.includes(activeCategory))
       .filter((p) => postMatchesQuery(p, query));
   }, [activeCategory, query]);
 
@@ -74,14 +74,14 @@ export function BlogList() {
       {filtered.length === 0 ? (
         <p className="py-12 text-center text-brand-midnight/50">No posts match your search.</p>
       ) : (
-        <div className="grid gap-8 pb-marketing-header-gap-md md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-8 pb-marketing-header-gap-md md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((post) => (
             <MarketingLinkCard
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="overflow-hidden"
+              className="flex h-full flex-col overflow-hidden"
             >
-              <div className="relative aspect-[16/10] overflow-hidden">
+              <div className="relative aspect-[16/10] shrink-0 overflow-hidden">
                 <Image
                   src={post.coverImage}
                   alt={post.title}
@@ -90,17 +90,15 @@ export function BlogList() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
-              <div className="p-marketing-card-padding">
-                <MarketingBadge className="mb-3 text-xs">
-                  {categoryLabels[post.category]}
-                </MarketingBadge>
+              <div className="flex flex-1 flex-col p-marketing-card-padding">
+                <BlogPostBadges categories={post.categories} className="mb-3" />
                 <h2
-                  className={`${typography.cardTitle} mb-2 line-clamp-2 transition-colors group-hover:text-brand-turquoise-dark`}
+                  className={`${typography.cardTitle} mb-2 transition-colors group-hover:text-brand-turquoise-dark`}
                 >
                   {post.title}
                 </h2>
                 <p className={`${typography.body} mb-4 line-clamp-2`}>{post.excerpt}</p>
-                <p className="text-xs text-brand-midnight/40">
+                <p className="mt-auto text-xs text-brand-midnight/40">
                   {formatDate(post.date)} · {post.author}
                 </p>
               </div>

@@ -6,12 +6,12 @@ alwaysApply: false
 
 # Content Authoring
 
-## Blog (`src/content/blog/posts.ts`)
+## Blog (`src/content/blog/posts.ts`, `copywriter-posts.ts`, `editorial-posts.ts`)
 
 - `BlogPost`: `slug`, `title`, `excerpt`, `category`, `date`, `author`, `coverImage`, `content[]`, `headings[]`.
 - Slugs: kebab-case, unique, stable (URLs depend on them).
 - `headings[].id` must match `##` anchor ids implied in markdown-style `content` blocks.
-- `category` must be a valid `BlogCategory` key.
+- `categories` is a non-empty array of valid `BlogCategory` keys (multiple badges per post).
 
 ## FAQ / pricing
 
