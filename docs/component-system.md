@@ -14,7 +14,7 @@ Reusable layout and brand primitives live in `src/components/marketing/primitive
 6. **Final CTA** — `FinalCtaSection` with `variant` from `@/content/final-cta.ts` on every page above the footer. Use `PageShell pageBottom="none"` when the final CTA is the last block (avoids a cream gap above the footer).
 7. **Pricing page bands** — Hero + plan cards: `MarketingSection` `transparent` / `spacing="none"` on cream `PageShell` (no top border). Then white (comparison) → cream (billing FAQ) → white (final CTA).
 8. **Solution pages** — Copy in `src/content/solutions.ts`; compose via `*-solution-sections.tsx` under `solutions/`; thin `src/app/solutions/*/page.tsx` with `metadata` + `PageShell` only. Alternate `MarketingSection` backgrounds (`cream` / `white`) between bands; optional `background` prop on shared sections defaults to homepage behavior.
-9. **Typography** — `import { type } from "@/lib/typography"` in TSX (kept in sync with `@utility` in `globals.css`).
+9. **Typography** — `import { type } from "@/lib/typography"` in TSX (kept in sync with `@utility` in `globals.css`). Blog in-article `###` subheads use `type.proseSubheading` (sans, subordinate to section `h2`); they are not listed in the on-page TOC.
 10. **Split sections** — `SplitContentSection` + `splitCopyColumnClass` (centers copy/CTAs on mobile, left-aligns at `lg+`). `SectionHeader align="left"` is centered on mobile automatically.
 
 ## Spacing contract
@@ -36,6 +36,9 @@ CSS variables live in `src/app/globals.css` (`:root` + `@theme` aliases). Primit
 | `--marketing-grid-gap-md` | `md:gap-marketing-grid-gap-md` | Card grids at `md+` |
 | `--marketing-stack-gap` | `gap-marketing-stack-gap`, `space-y-marketing-stack-gap` | Split sections, vertical stacks |
 | `--marketing-stack-gap-sm` | `gap-marketing-stack-gap-sm`, `space-y-marketing-stack-gap-sm` | Dense rows (FAQ accordion, compact features) |
+| `--marketing-prose-gap` | `gap-marketing-prose-gap` | Blog article paragraphs within a block (~16px) |
+| `--marketing-prose-section-gap` | `gap-marketing-prose-section-gap`, `pt-marketing-prose-section-gap` | Blog article sections / share footer (~40px) |
+| `--marketing-prose-list-gap` | `space-y-marketing-prose-list-gap` | Tight spacing between list items in blog prose |
 
 | `MarketingSection` spacing | When |
 |----------------------------|------|
