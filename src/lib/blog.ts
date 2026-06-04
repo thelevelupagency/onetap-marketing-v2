@@ -1,5 +1,7 @@
 import { posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
 
+export { BLOG_READING_REGION_ID } from "@/lib/blog-reading";
+
 /** Resolve DOM id for a heading line — prefers explicit ids from post.headings. */
 export function getHeadingId(text: string, headings: BlogHeading[]): string {
   const match = headings.find((h) => h.text === text);

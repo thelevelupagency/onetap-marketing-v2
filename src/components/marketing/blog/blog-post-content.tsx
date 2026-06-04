@@ -3,25 +3,28 @@ import { getHeadingId } from "@/lib/blog";
 import { type as typography } from "@/lib/typography";
 import { BlogInlineText } from "@/components/marketing/blog/blog-inline-text";
 
-const bodyClass = `${typography.body} leading-7`;
+const bodyClass = typography.body;
+
+const articleClass =
+  "prose prose-neutral flex max-w-none flex-col gap-marketing-prose-section-gap normal-case prose-p:my-0 prose-headings:mt-0 prose-headings:mb-0 prose-a:text-brand-turquoise-dark";
 
 function BlogParagraphs({ text }: { text: string }) {
   const paragraphs = text.split("\n\n").filter((p) => p.trim().length > 0);
 
   return (
-    <>
+    <div className="flex flex-col gap-marketing-prose-gap">
       {paragraphs.map((paragraph, i) => (
         <p key={i} className={bodyClass}>
           <BlogInlineText text={paragraph} />
         </p>
       ))}
-    </>
+    </div>
   );
 }
 
 export function BlogPostContent({ post }: { post: BlogPost }) {
   return (
-    <article className="prose prose-neutral flex max-w-none flex-col gap-marketing-stack-gap normal-case prose-a:text-brand-turquoise-dark">
+    <article className={articleClass}>
       {post.content.map((block, i) => {
         if (block.startsWith("## ")) {
           const lines = block.split("\n");
@@ -31,12 +34,10 @@ export function BlogPostContent({ post }: { post: BlogPost }) {
           return (
             <section
               key={i}
-              className="flex flex-col gap-3 border-t border-brand-midnight/5 pt-marketing-stack-gap first-of-type:border-0 first-of-type:pt-0"
+              id={id}
+              className="flex scroll-mt-28 flex-col gap-2"
             >
-              <h2
-                id={id}
-                className={`${typography.subsectionTitle} scroll-mt-28 normal-case`}
-              >
+              <h2 className={`${typography.subsectionTitle} normal-case`}>
                 {heading}
               </h2>
               {body && <BlogParagraphs text={body} />}

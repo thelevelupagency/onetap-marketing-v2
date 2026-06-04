@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link2, Check } from "lucide-react";
 import { IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { getSiteUrl } from "@/lib/site-url";
 
 export function BlogShare({
   title,
@@ -15,7 +16,7 @@ export function BlogShare({
   label?: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const url = typeof window !== "undefined" ? `${window.location.origin}/blog/${slug}` : `https://onetap-card.com/blog/${slug}`;
+  const url = `${getSiteUrl()}/blog/${slug}`;
 
   async function copyLink() {
     await navigator.clipboard.writeText(url);

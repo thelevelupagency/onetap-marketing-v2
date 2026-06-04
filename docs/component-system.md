@@ -36,6 +36,8 @@ CSS variables live in `src/app/globals.css` (`:root` + `@theme` aliases). Primit
 | `--marketing-grid-gap-md` | `md:gap-marketing-grid-gap-md` | Card grids at `md+` |
 | `--marketing-stack-gap` | `gap-marketing-stack-gap`, `space-y-marketing-stack-gap` | Split sections, vertical stacks |
 | `--marketing-stack-gap-sm` | `gap-marketing-stack-gap-sm`, `space-y-marketing-stack-gap-sm` | Dense rows (FAQ accordion, compact features) |
+| `--marketing-prose-gap` | `gap-marketing-prose-gap` | Blog article paragraphs within a block |
+| `--marketing-prose-section-gap` | `gap-marketing-prose-section-gap`, `pt-marketing-prose-section-gap` | Blog article sections / share footer |
 
 | `MarketingSection` spacing | When |
 |----------------------------|------|
