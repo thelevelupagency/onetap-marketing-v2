@@ -34,7 +34,9 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
   const [activeNicheId, setActiveNicheId] = useState<string>(
     freelancersNicheManifest.defaultNicheId
   );
-  const pillRefs = useRef(new Map<string, HTMLButtonElement>());
+  const mobilePillRefs = useRef(new Map<string, HTMLButtonElement>());
+  const mobilePillScrollRef = useRef<HTMLElement>(null);
+  const skipInitialPillScroll = useRef(true);
 
   const activeNiche =
     freelancersNicheManifest.niches.find((niche) => niche.id === activeNicheId) ??
@@ -46,12 +48,31 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
     setActiveNicheId(nicheId);
   }, []);
 
-  useEffect(() => {
-    const el = pillRefs.current.get(activeNicheId);
-    el?.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+  const scrollActivePillHorizontally = useCallback(() => {
+    const container = mobilePillScrollRef.current;
+    const activePill = mobilePillRefs.current.get(activeNicheId);
+    if (!container || !activePill) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const pillRect = activePill.getBoundingClientRect();
+    const offset =
+      pillRect.left -
+      containerRect.left -
+      containerRect.width / 2 +
+      pillRect.width / 2;
+
+    container.scrollBy({ left: offset, behavior: "smooth" });
   }, [activeNicheId]);
 
-  const filterPills: CategoryFilterPill[] = useMemo(
+  useEffect(() => {
+    if (skipInitialPillScroll.current) {
+      skipInitialPillScroll.current = false;
+      return;
+    }
+    scrollActivePillHorizontally();
+  }, [activeNicheId, scrollActivePillHorizontally]);
+
+  const mobileFilterPills: CategoryFilterPill[] = useMemo(
     () =>
       freelancersNicheManifest.niches.map((niche) => ({
         id: niche.id,
@@ -59,9 +80,20 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
         isActive: niche.id === activeNicheId,
         onSelect: () => selectNiche(niche.id),
         pillRef: (el) => {
-          if (el) pillRefs.current.set(niche.id, el);
-          else pillRefs.current.delete(niche.id);
+          if (el) mobilePillRefs.current.set(niche.id, el);
+          else mobilePillRefs.current.delete(niche.id);
         },
+      })),
+    [activeNicheId, selectNiche]
+  );
+
+  const desktopFilterPills: CategoryFilterPill[] = useMemo(
+    () =>
+      freelancersNicheManifest.niches.map((niche) => ({
+        id: niche.id,
+        label: niche.label,
+        isActive: niche.id === activeNicheId,
+        onSelect: () => selectNiche(niche.id),
       })),
     [activeNicheId, selectNiche]
   );
@@ -72,7 +104,6 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
         <div className="flex w-full flex-col items-center gap-marketing-stack-gap-sm">
           <MarketingPhonePreview
             scale={PHONE_CAROUSEL_SCALE}
-            url={card.slug}
             imageSrc={card.imageSrc}
             alt={card.alt}
             priority={isDefaultNiche && index === 0}
@@ -103,7 +134,8 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
               ariaLabel="Freelancer niches"
               layout="row-scroll"
               density="compact"
-              items={filterPills}
+              items={mobileFilterPills}
+              containerRef={mobilePillScrollRef}
             />
           </div>
 
@@ -114,7 +146,7 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
             align="center"
             density="compact"
             className="mx-0 hidden max-w-none lg:flex"
-            items={filterPills}
+            items={desktopFilterPills}
           />
 
           <Reveal direction="up" className="overflow-visible">

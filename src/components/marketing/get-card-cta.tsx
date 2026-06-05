@@ -17,10 +17,25 @@ export const marketingCtaSizes = {
 
 export const marketingCtaWidths = "w-full sm:w-auto";
 
-export const marketingOutlineCtaClassName = cn(
+/** Shared hero / final CTA shell — height, padding, radius, width. */
+export const marketingCtaShellClassName = cn(
   primaryCtaClassName,
   marketingCtaSizes.lg,
-  marketingCtaWidths
+  marketingCtaWidths,
+  "inline-flex items-center justify-center gap-2 font-medium"
+);
+
+export const marketingOutlineCtaClassName = marketingCtaShellClassName;
+
+/** Midnight hero dual CTAs — same shell; primary fills, secondary stays outline. */
+export const marketingHeroPrimaryOnDarkClassName = cn(
+  marketingCtaShellClassName,
+  "border-transparent bg-brand-turquoise text-brand-midnight shadow-none hover:bg-brand-turquoise/90 hover:text-brand-midnight"
+);
+
+export const marketingHeroSecondaryOnDarkClassName = cn(
+  marketingCtaShellClassName,
+  "border-white/20 bg-transparent text-brand-cream shadow-none hover:bg-white/10 hover:text-brand-cream"
 );
 
 interface MarketingPrimaryButtonProps
@@ -59,6 +74,8 @@ interface GetCardCtaProps {
   children?: React.ReactNode;
   /** lg = hero & final CTA; md = in-section; nav = navbar; sm = dense UI; mobileNav = sheet footer */
   size?: "lg" | "md" | "nav" | "sm" | "mobileNav";
+  /** Defaults to true; set false when paired with {@link MarketingHeroSecondaryCta}. */
+  showArrow?: boolean;
   className?: string;
   onClick?: () => void;
 }
@@ -92,18 +109,19 @@ export function GetCardCta({
   href = CREATE_BASICS_URL,
   children = "Get your card free",
   size = "lg",
+  showArrow = true,
   className,
   onClick,
 }: GetCardCtaProps) {
-  const showArrow = size !== "nav";
+  const showArrowIcon = showArrow && size !== "nav";
 
   return (
     <Button
       variant="brandPrimary"
       size={size === "nav" ? "default" : size === "sm" ? "sm" : "lg"}
       className={cn(
-        primaryCtaClassName,
-        size === "lg" && cn(marketingCtaSizes.lg, marketingCtaWidths),
+        size === "lg" && marketingCtaShellClassName,
+        size !== "lg" && primaryCtaClassName,
         size === "md" && cn(marketingCtaSizes.md, marketingCtaWidths),
         size === "nav" && "h-8 px-6 text-sm w-auto",
         size === "sm" && cn(marketingCtaSizes.sm, marketingCtaWidths),
@@ -114,7 +132,32 @@ export function GetCardCta({
       nativeButton={false}
     >
       {children}
-      {showArrow ? <ArrowRight className="ml-2 h-5 w-5 shrink-0" /> : null}
+      {showArrowIcon ? <ArrowRight className="ml-2 h-5 w-5 shrink-0" /> : null}
+    </Button>
+  );
+}
+
+/** Outline partner for {@link GetCardCta} on midnight heroes — identical shell, no arrow. */
+export function MarketingHeroSecondaryCta({
+  href,
+  children,
+  className,
+  onClick,
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Button
+      variant="brandOutline"
+      size="lg"
+      className={cn(marketingHeroSecondaryOnDarkClassName, className)}
+      render={<CtaAnchor href={href} onClick={onClick} />}
+      nativeButton={false}
+    >
+      {children}
     </Button>
   );
 }

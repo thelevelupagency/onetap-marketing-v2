@@ -26,7 +26,7 @@ import { MarketingCarouselDots } from "./marketing-carousel-dots";
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
 const arrowLight =
-  "border-brand-midnight/15 bg-white text-brand-midnight shadow-sm hover:bg-brand-cream disabled:opacity-30";
+  "border-brand-midnight/15 bg-white text-brand-midnight shadow-sm hover:border-brand-turquoise/25 hover:bg-white disabled:opacity-30";
 const arrowDark =
   "border-white/15 bg-white/10 text-brand-cream shadow-sm hover:bg-white/15 disabled:opacity-30";
 

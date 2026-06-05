@@ -8,7 +8,10 @@ const featureCardVariants = cva("", {
       plain: "p-8 text-center",
       elevated: "rounded-3xl border border-brand-midnight/5 bg-brand-cream p-8",
       compact:
-        "flex h-full gap-3.5 rounded-2xl border border-brand-midnight/5 bg-brand-cream p-4 shadow-sm text-left transition-all duration-200 hover:border-brand-turquoise/30 hover:shadow",
+        "flex h-full gap-3.5 rounded-2xl border border-brand-midnight/5 bg-brand-cream p-4 shadow-sm text-left transition-all duration-200 hover:border-brand-turquoise/30 hover:shadow-md",
+      /** White cards on cream/light section backgrounds — no cream bleed on hover. */
+      compactOnLight:
+        "flex h-full gap-3.5 rounded-2xl border border-brand-midnight/10 bg-white p-4 shadow-sm text-left transition-all duration-200 hover:border-brand-turquoise/30 hover:bg-white hover:shadow-md",
     },
     onDark: {
       true: "",
@@ -41,7 +44,7 @@ export function FeatureCard({
   description: string;
   className?: string;
 } & VariantProps<typeof featureCardVariants>) {
-  const isCompact = variant === "compact";
+  const isCompact = variant === "compact" || variant === "compactOnLight";
 
   if (isCompact) {
     return (

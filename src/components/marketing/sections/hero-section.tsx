@@ -22,10 +22,9 @@ const HERO_INTRO_STAGGER = HERO_MOBILE_MOUNT_TOKENS.staggerChildren;
 
 export function HeroSection() {
   const [slug, setSlug] = useState("");
-  const centerPhoneSlug = slug.trim() || "your-name";
   const { isMobile } = useMotionConfig();
 
-  const phonePreview = <HeroPhonePreview centerSlug={centerPhoneSlug} />;
+  const phonePreview = <HeroPhonePreview />;
 
   const ctaBlock = (
     <div className="flex w-full flex-col items-center justify-center gap-4 lg:items-stretch lg:justify-start">

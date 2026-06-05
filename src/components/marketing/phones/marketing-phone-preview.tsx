@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { IPhoneMockup } from "@/components/marketing/phones/iphone-mockup";
-import { phoneLayoutDimensions } from "@/lib/phone-mockup";
+import { IPhone13ProMaxMockup } from "@/components/marketing/phones/iphone-13-pro-max-mockup";
+import { phoneLayoutDimensions, PHONE_CAROUSEL_SCALE } from "@/lib/phone-mockup";
 import { CARD_SCREENSHOT } from "@/lib/phone-screenshots";
 
 export { phoneLayoutDimensions, PHONE_OUTER_HEIGHT } from "@/lib/phone-mockup";
@@ -14,17 +14,15 @@ export {
 
 export interface MarketingPhonePreviewProps {
   scale?: number;
-  url?: string;
   imageSrc?: string;
   alt?: string;
   className?: string;
   priority?: boolean;
 }
 
-/** Single iPhone preview — same shell + screenshot as the hero center phone. */
+/** Single iPhone preview — Figma Product Bezels frame + screenshot. */
 export function MarketingPhonePreview({
-  scale = 0.52,
-  url = "almog-menashe",
+  scale = PHONE_CAROUSEL_SCALE,
   imageSrc = CARD_SCREENSHOT,
   alt = "OneTap digital business card example",
   className,
@@ -38,22 +36,19 @@ export function MarketingPhonePreview({
       style={{
         width: layout.width,
         height: layout.height,
-        borderRadius: layout.outerRadius,
       }}
     >
-      <IPhoneMockup scale={scale} url={url}>
-        <div className="relative h-full w-full">
-          <Image
-            src={imageSrc}
-            alt={alt}
-            fill
-            sizes={`${layout.width}px`}
-            className="pointer-events-none select-none object-cover object-top"
-            priority={priority}
-            draggable={false}
-          />
-        </div>
-      </IPhoneMockup>
+      <IPhone13ProMaxMockup scale={scale}>
+        <Image
+          src={imageSrc}
+          alt={alt}
+          fill
+          sizes={`${layout.width}px`}
+          className="pointer-events-none select-none object-cover object-top scale-[1.02] origin-top"
+          priority={priority}
+          draggable={false}
+        />
+      </IPhone13ProMaxMockup>
     </div>
   );
 }

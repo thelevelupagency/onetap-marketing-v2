@@ -23,6 +23,8 @@ interface CategoryFilterPillsProps {
   layout?: PillLayout;
   align?: "center" | "start";
   density?: PillDensity;
+  /** Attach to the scrollable `<nav>` (e.g. horizontal pill strip). */
+  containerRef?: React.Ref<HTMLElement>;
 }
 
 function pillSizeClass(density: PillDensity) {
@@ -73,9 +75,14 @@ export function CategoryFilterPills({
   layout = "row",
   align = "center",
   density = "default",
+  containerRef,
 }: CategoryFilterPillsProps) {
   return (
-    <nav aria-label={ariaLabel} className={navClassName(layout, align, className)}>
+    <nav
+      ref={containerRef}
+      aria-label={ariaLabel}
+      className={navClassName(layout, align, className)}
+    >
       {items.map(({ id, label, href, onSelect, isActive, pillRef }) => {
         if (href != null && onSelect == null) {
           return (

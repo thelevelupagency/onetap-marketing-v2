@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { FeatureCard } from "./feature-card";
 import { MarketingCarousel } from "./marketing-carousel";
 import { MarketingCarouselContentSlide } from "./marketing-carousel-frame";
@@ -22,6 +23,8 @@ export function FeatureSpotlight({
   interval = MARKETING_CAROUSEL_AUTOPLAY_MS,
   onDark = false,
   visibleCount,
+  cardVariant = "compact",
+  cardClassName,
   className,
 }: {
   items: FeatureSpotlightItem[];
@@ -29,6 +32,9 @@ export function FeatureSpotlight({
   onDark?: boolean;
   /** How many cards to show at once in the desktop vertical carousel. Defaults to 3. */
   visibleCount?: number;
+  /** `compactOnLight` — white cards for cream section backgrounds. */
+  cardVariant?: "compact" | "compactOnLight";
+  cardClassName?: string;
   className?: string;
 }) {
   return (
@@ -43,9 +49,9 @@ export function FeatureSpotlight({
               icon={Icon}
               title={item.title}
               description={item.description}
-              variant="compact"
+              variant={cardVariant}
               onDark={onDark}
-              className="h-full"
+              className={cn("h-full", cardClassName)}
             />
           </MarketingCarouselContentSlide>
         );
