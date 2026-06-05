@@ -1,31 +1,39 @@
-import Link from "next/link";
-import { Building2, ArrowRight } from "lucide-react";
-import { LOGIN_URL } from "@/lib/constants";
+import { Building2 } from "lucide-react";
+import {
+  GetCardCta,
+  MarketingHeroSecondaryCta,
+  marketingHeroPrimaryOnDarkClassName,
+} from "@/components/marketing/get-card-cta";
 import { MarketingPageHero, MarketingBadge, BrandAccent } from "@/components/marketing/primitives";
-import { MarketingPrimaryButton } from "@/components/marketing/get-card-cta";
+import { agenciesHeroCopy } from "@/content/solutions";
+import { LOGIN_URL, SIGNUP_URL } from "@/lib/constants";
 import { type as typography } from "@/lib/typography";
 
 export function AgencyHero() {
+  const copy = agenciesHeroCopy;
+
   return (
     <MarketingPageHero background="midnight">
       <MarketingBadge tone="onDark" icon={Building2} className="mb-6">
-        For Agencies
+        {copy.badge}
       </MarketingBadge>
       <h1 className={`${typography.pageTitle} mb-6 text-brand-cream`}>
-        Scale your team&apos;s identity. <BrandAccent>Save 50+ hours.</BrandAccent>
+        {copy.title} <BrandAccent>{copy.accent}</BrandAccent>
       </h1>
-      <p className={`${typography.lead} mx-auto mb-10 text-brand-cream/70`}>
-        Centralized professional identity for your entire organization. Brand Lock, bulk import,
-        and CRM sync built in.
-      </p>
-      <Link href={LOGIN_URL} className="inline-flex w-full justify-center sm:w-auto">
-        <MarketingPrimaryButton
+      <p className={`${typography.lead} mx-auto mb-10 text-brand-cream/70`}>{copy.lead}</p>
+      <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
+        <GetCardCta
+          href={SIGNUP_URL}
           size="lg"
-          className="w-full bg-brand-turquoise text-brand-midnight hover:bg-brand-turquoise/90 hover:text-brand-midnight sm:w-auto"
+          showArrow={false}
+          className={marketingHeroPrimaryOnDarkClassName}
         >
-          Book a demo <ArrowRight className="ml-2 h-5 w-5" />
-        </MarketingPrimaryButton>
-      </Link>
+          {copy.primaryCta}
+        </GetCardCta>
+        <MarketingHeroSecondaryCta href={LOGIN_URL}>
+          {copy.secondaryCta}
+        </MarketingHeroSecondaryCta>
+      </div>
     </MarketingPageHero>
   );
 }

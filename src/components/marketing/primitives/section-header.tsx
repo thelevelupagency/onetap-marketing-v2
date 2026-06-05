@@ -7,6 +7,8 @@ interface SectionHeaderProps {
   accent?: React.ReactNode;
   lead?: React.ReactNode;
   align?: "center" | "left";
+  /** Section band title (h2) or nested story title (h3) — defaults to section. */
+  size?: "section" | "subsection";
   /** Gap below header block before section content. */
   spacingBelow?: "default" | "none";
   /** Light sections (default) or dark/midnight backgrounds. */
@@ -20,12 +22,15 @@ export function SectionHeader({
   accent,
   lead,
   align = "center",
+  size = "section",
   spacingBelow = "default",
   variant = "default",
   className,
   titleClassName,
 }: SectionHeaderProps) {
   const isDark = variant === "onDark";
+  const isSubsection = size === "subsection";
+  const Heading = isSubsection ? "h3" : "h2";
 
   return (
     <div
@@ -37,10 +42,10 @@ export function SectionHeader({
         className
       )}
     >
-      <h2
+      <Heading
         className={cn(
-          typography.sectionTitle,
-          "mb-4",
+          isSubsection ? typography.subsectionTitle : typography.sectionTitle,
+          isSubsection ? "mb-3" : "mb-4",
           isDark && "text-brand-cream",
           titleClassName
         )}
@@ -52,9 +57,14 @@ export function SectionHeader({
             <BrandAccent>{accent}</BrandAccent>
           </>
         ) : null}
-      </h2>
+      </Heading>
       {lead ? (
-        <p className={cn(typography.sectionLead, isDark && "text-brand-cream/70")}>
+        <p
+          className={cn(
+            isSubsection ? typography.bodySm : typography.sectionLead,
+            isDark && "text-brand-cream/70"
+          )}
+        >
           {lead}
         </p>
       ) : null}

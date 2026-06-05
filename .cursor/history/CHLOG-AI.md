@@ -13,3 +13,6 @@ src/lib/motion/, src/components/marketing/motion/, homepage sections
 
 2026-05-27 — Card grid motion (CardReveal per-item viewport), marketing spacing tokens, Process1 layout/CLS fixes, CTA motion-a11y pass.
 globals.css, motion/, process1-*, hero/faq/pricing sections
+
+2026-06-05 — Freelancers PRD page, unified content-sized marketing carousel, phone screenshot constants in lib.
+solutions/, marketing-carousel*, freelancer-niche-selector, phone-screenshots.ts

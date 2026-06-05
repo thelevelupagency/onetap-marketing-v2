@@ -1,7 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { FeatureCard } from "./feature-card";
 import { MarketingCarousel } from "./marketing-carousel";
+import { MarketingCarouselContentSlide } from "./marketing-carousel-frame";
 import { MARKETING_CAROUSEL_AUTOPLAY_MS } from "@/lib/use-marketing-carousel";
 
 export type FeatureSpotlightItem = {
@@ -21,6 +23,8 @@ export function FeatureSpotlight({
   interval = MARKETING_CAROUSEL_AUTOPLAY_MS,
   onDark = false,
   visibleCount,
+  cardVariant = "compact",
+  cardClassName,
   className,
 }: {
   items: FeatureSpotlightItem[];
@@ -28,6 +32,9 @@ export function FeatureSpotlight({
   onDark?: boolean;
   /** How many cards to show at once in the desktop vertical carousel. Defaults to 3. */
   visibleCount?: number;
+  /** `compactOnLight` — white cards for cream section backgrounds. */
+  cardVariant?: "compact" | "compactOnLight";
+  cardClassName?: string;
   className?: string;
 }) {
   return (
@@ -37,14 +44,16 @@ export function FeatureSpotlight({
       renderItem={(item) => {
         const Icon = item.icon;
         return (
-          <FeatureCard
-            icon={Icon}
-            title={item.title}
-            description={item.description}
-            variant="compact"
-            onDark={onDark}
-            className="h-full"
-          />
+          <MarketingCarouselContentSlide>
+            <FeatureCard
+              icon={Icon}
+              title={item.title}
+              description={item.description}
+              variant={cardVariant}
+              onDark={onDark}
+              className={cn("h-full", cardClassName)}
+            />
+          </MarketingCarouselContentSlide>
         );
       }}
       ariaLabel="Feature highlights"

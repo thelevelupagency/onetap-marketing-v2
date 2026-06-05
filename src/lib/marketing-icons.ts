@@ -81,4 +81,5 @@ export const solutionFeatureIcons: Record<SolutionFeatureIconKey, LucideIcon> = 
   upload: Upload,
   palette: Palette,
   inbox: Inbox,
+  contactRound: ContactRound,
 };
