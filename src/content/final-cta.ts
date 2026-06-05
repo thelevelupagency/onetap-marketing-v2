@@ -48,20 +48,20 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
   },
   freelancers: {
-    title: "Ready to win",
-    accent: "more clients?",
+    title: "Ready to digitize",
+    accent: "your identity?",
     subheadline:
-      "Freelancers use OneTap to share one professional link, capture leads, and follow up faster — without juggling apps or outdated PDFs.",
+      "Build a fully branded digital card in 60 seconds — portfolio, socials, and contact details in one link you can share anywhere.",
     cta: "Create Your Card For FREE",
-    microcopyItems: ["Built for freelancers", "Free to start", "Lead capture included"],
+    microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
   },
   agencies: {
-    title: "Ready to scale",
+    title: "Ready to unify",
     accent: "your team's brand?",
     subheadline:
-      "Give every rep an on-brand digital card, team analytics, and centralized lead capture — with guardrails admins control.",
-    cta: "Create Your Card For FREE",
-    microcopyItems: ["Brand Lock for teams", "Bulk import", "Team analytics"],
+      "Start a free trial — issue on-brand cards for every rep, lock templates, and centralize leads from one admin workspace.",
+    cta: "Start Free Trial",
+    microcopyItems: ["Team workspace", "Brand Lock included", "Leads Center + export"],
   },
 };
 

@@ -2,19 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { MarketingPhonePreview } from "@/components/marketing/phones/marketing-phone-preview";
 import {
-  MarketingPhonePreview,
+  CARD_SCREENSHOT_BARBER,
   CARD_SCREENSHOT_FITNESS,
   CARD_SCREENSHOT_INTERIOR,
-  CARD_SCREENSHOT_BARBER,
-} from "@/components/marketing/phones/marketing-phone-preview";
+} from "@/lib/phone-screenshots";
 import { FloatWrap } from "@/components/marketing/phones/float-wrap";
 import { EASE_OUT, useMotionConfig } from "@/lib/motion";
-import { PHONE_OUTER_HEIGHT, phoneLayoutDimensions } from "@/lib/phone-mockup";
+import {
+  PHONE_HERO_CENTER_SCALE,
+  PHONE_HERO_SIDE_SCALE,
+  PHONE_OUTER_HEIGHT,
+  phoneLayoutDimensions,
+} from "@/lib/phone-mockup";
 
 const FAN_WIDTH = 460;
-const CENTER_SCALE = 0.65;
-const SIDE_SCALE = 0.56;
+const CENTER_SCALE = PHONE_HERO_CENTER_SCALE;
+const SIDE_SCALE = PHONE_HERO_SIDE_SCALE;
 const FAN_ROTATION_DEG = 12;
 const MOBILE_FAN_ROTATION_DEG = 8;
 const FAN_CANVAS_H = Math.round(PHONE_OUTER_HEIGHT * CENTER_SCALE);
@@ -93,7 +98,6 @@ function PhoneClipShell({
       style={{
         width: layout.width,
         height: layout.height,
-        borderRadius: layout.outerRadius,
       }}
     >
       {children}
@@ -105,12 +109,7 @@ function PhoneClipShell({
  * Hero fan: canvas includes bleed for rotated side phones; scales to column
  * width via ResizeObserver and clips each phone so screenshots stay in frame.
  */
-interface HeroPhonePreviewProps {
-  /** Live slug for the center phone Safari bar (defaults to demo slug). */
-  centerSlug?: string;
-}
-
-export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePreviewProps) {
+export function HeroPhonePreview() {
   const containerRef = useRef<HTMLDivElement>(null);
   const fanScale = useFanScale(containerRef);
   const { prefersReducedMotion, isMobile, enterTransition } = useMotionConfig();
@@ -184,7 +183,6 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
               <PhoneClipShell scale={SIDE_SCALE}>
                 <MarketingPhonePreview
                   scale={SIDE_SCALE}
-                  url="sofi-schwartz"
                   imageSrc={CARD_SCREENSHOT_INTERIOR}
                   alt="Interior designer OneTap digital business card"
                 />
@@ -201,7 +199,6 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
               <PhoneClipShell scale={SIDE_SCALE}>
                 <MarketingPhonePreview
                   scale={SIDE_SCALE}
-                  url="franklin-barbershop"
                   imageSrc={CARD_SCREENSHOT_BARBER}
                   alt="Barbershop OneTap digital business card"
                 />
@@ -217,7 +214,6 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
               <PhoneClipShell scale={CENTER_SCALE}>
                 <MarketingPhonePreview
                   scale={CENTER_SCALE}
-                  url={centerSlug}
                   imageSrc={CARD_SCREENSHOT_FITNESS}
                   alt="Fitness professional OneTap digital business card"
                   priority
@@ -238,7 +234,6 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
                 <PhoneClipShell scale={SIDE_SCALE}>
                   <MarketingPhonePreview
                     scale={SIDE_SCALE}
-                    url="sofi-schwartz"
                     imageSrc={CARD_SCREENSHOT_INTERIOR}
                     alt="Interior designer OneTap digital business card"
                   />
@@ -257,7 +252,6 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
                 <PhoneClipShell scale={SIDE_SCALE}>
                   <MarketingPhonePreview
                     scale={SIDE_SCALE}
-                    url="franklin-barbershop"
                     imageSrc={CARD_SCREENSHOT_BARBER}
                     alt="Barbershop OneTap digital business card"
                   />
@@ -275,7 +269,6 @@ export function HeroPhonePreview({ centerSlug = "almog-menashe" }: HeroPhonePrev
                 <PhoneClipShell scale={CENTER_SCALE}>
                   <MarketingPhonePreview
                     scale={CENTER_SCALE}
-                    url={centerSlug}
                     imageSrc={CARD_SCREENSHOT_FITNESS}
                     alt="Fitness professional OneTap digital business card"
                     priority

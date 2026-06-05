@@ -1,5 +1,11 @@
-import type { CardUxIconKey, PainPointIconKey } from "@/content/homepage";
+import type { PainPointIconKey } from "@/content/homepage";
 import { audienceMarqueeItems, howItWorksCopy } from "@/content/homepage";
+import {
+  CARD_SCREENSHOT_BARBER,
+  CARD_SCREENSHOT_FITNESS,
+  CARD_SCREENSHOT_INTERIOR,
+} from "@/lib/phone-screenshots";
+import { CARD_HOST_PREFIX } from "@/lib/constants";
 
 export type SolutionFeatureIconKey =
   | "zap"
@@ -12,7 +18,187 @@ export type SolutionFeatureIconKey =
   | "users"
   | "upload"
   | "palette"
-  | "inbox";
+  | "inbox"
+  | "contactRound";
+
+export type FreelancerNicheCard = {
+  id: string;
+  personaName: string;
+  styleLabel: string;
+  imageSrc: string;
+  slug: string;
+  alt: string;
+};
+
+export type FreelancerNiche = {
+  id: string;
+  label: string;
+  cards: readonly FreelancerNicheCard[];
+};
+
+const freelancerCardInterior: FreelancerNicheCard = {
+  id: "interior",
+  personaName: "Katy Delma",
+  styleLabel: "Portfolio",
+  imageSrc: CARD_SCREENSHOT_INTERIOR,
+  slug: "sofi-schwartz",
+  alt: "Interior designer OneTap digital business card",
+};
+
+const freelancerCardBarber: FreelancerNicheCard = {
+  id: "barber",
+  personaName: "Frame Studio",
+  styleLabel: "Clean",
+  imageSrc: CARD_SCREENSHOT_BARBER,
+  slug: "franklin-barbershop",
+  alt: "Barbershop OneTap digital business card",
+};
+
+const freelancerCardFitness: FreelancerNicheCard = {
+  id: "fitness",
+  personaName: "Urban Lens",
+  styleLabel: "Bold",
+  imageSrc: CARD_SCREENSHOT_FITNESS,
+  slug: "almog-menashe",
+  alt: "Fitness professional OneTap digital business card",
+};
+
+const freelancerCardEditorial: FreelancerNicheCard = {
+  id: "editorial",
+  personaName: "Lena Voss",
+  styleLabel: "Editorial",
+  imageSrc: CARD_SCREENSHOT_FITNESS,
+  slug: "almog-menashe",
+  alt: "Creative professional OneTap digital business card",
+};
+
+export const freelancersHeroCopy = {
+  badge: "For Freelancers & Creators",
+  title: "Your Identity, Digitized in",
+  accent: "60 Seconds.",
+  lead: "Unify your portfolio, social links, and contact details into one contactless card. Share with NFC, QR, or a single link — no app download required.",
+  cta: "Create your free card",
+} as const;
+
+export const freelancersNicheSelectorCopy = {
+  title: "Preview cards",
+  accent: "for your niche",
+  lead: "Choose your field to see four starter styles you can launch in minutes.",
+} as const;
+
+export const freelancersNicheManifest = {
+  defaultNicheId: "photography",
+  niches: [
+    {
+      id: "photography",
+      label: "Photography",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardBarber,
+        freelancerCardFitness,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "design",
+      label: "Design",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "fitness",
+      label: "Fitness & Coaching",
+      cards: [
+        freelancerCardFitness,
+        freelancerCardInterior,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "consulting",
+      label: "Consulting",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "real-estate",
+      label: "Real Estate",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "creator",
+      label: "Creators",
+      cards: [
+        freelancerCardFitness,
+        freelancerCardInterior,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "marketing",
+      label: "Marketing",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "freelance",
+      label: "Freelance Services",
+      cards: [
+        freelancerCardBarber,
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardEditorial,
+      ],
+    },
+  ] as const satisfies readonly FreelancerNiche[],
+} as const;
+
+export const freelancersCardIncludesCopy = {
+  title: "Every card",
+  accent: "includes the essentials.",
+  lead: "Build once in 60 seconds — then share, save contacts, and stay on-brand from one link or tap.",
+  points: [
+    {
+      icon: "zap" as SolutionFeatureIconKey,
+      title: "One-Tap Sharing",
+      description: `Share via NFC, QR code, or your permalink (${CARD_HOST_PREFIX}username). One link works everywhere you network.`,
+      accent: "from-brand-navy/10 to-brand-turquoise/10",
+    },
+    {
+      icon: "contactRound" as SolutionFeatureIconKey,
+      title: "Instant Contact Resolution",
+      description:
+        "Visitors save your details to their phone contacts with native vCard — no app download, no friction.",
+      accent: "from-brand-turquoise-light to-brand-turquoise/20",
+    },
+    {
+      icon: "palette" as SolutionFeatureIconKey,
+      title: "Custom Structural Branding",
+      description:
+        "Control colors, typography, and layout so your card looks unmistakably yours — not a generic template.",
+      accent: "from-brand-midnight/10 to-brand-navy/10",
+    },
+  ],
+} as const;
 
 export const freelancersPainPointsCopy = {
   title: "No more",
@@ -115,41 +301,12 @@ export const freelancersFeaturesCopy = {
   ],
 } as const;
 
-export const freelancersProductSplitCopy = {
-  title: "More than a card.",
-  accent: "Your client-winning microsite.",
-  lead: "Give prospects one mobile-first place to understand your work, trust your expertise, and take the next step.",
-  features: [
-    {
-      icon: "userPlus" as CardUxIconKey,
-      label: "Lead Capture Form",
-      description: "Collect names, emails, and project details while interest is still warm.",
-    },
-    {
-      icon: "contactRound" as CardUxIconKey,
-      label: "Save to Contacts",
-      description: "Let visitors keep your details on their phone in one tap.",
-    },
-    {
-      icon: "zap" as CardUxIconKey,
-      label: "One-Tap Contact Actions",
-      description: "Call, email, WhatsApp, or book a discovery call without friction.",
-    },
-    {
-      icon: "barChart3" as CardUxIconKey,
-      label: "Analytics Dashboard",
-      description: "See which links and offers drive the most inquiries.",
-    },
-  ],
-} as const;
-
 export const freelancersCreatorsCopy = {
   badge: "For Creators",
   title: "5x faster",
   accent: "exposure",
   lead: "Showcase your gallery, embed videos, and link every platform from one stunning mobile profile. Your audience saves your contact in one tap.",
   cta: "Start creating",
-  phoneUrl: "almog-menashe",
   phoneAlt: "Creator OneTap card preview",
 } as const;
 
@@ -180,6 +337,13 @@ export const freelancersSocialProofCopy = {
         "I replaced three link-in-bio tools with one card. New leads hit my inbox the same day I meet someone at an event.",
       avatar: "https://randomuser.me/api/portraits/women/32.jpg",
     },
+    {
+      name: "Diego Ramos",
+      role: "Freelance Photographer",
+      content:
+        "At every shoot I share one QR code. Models and clients save my contact and browse my portfolio before they leave the set.",
+      avatar: "https://randomuser.me/api/portraits/men/46.jpg",
+    },
   ],
 } as const;
 
@@ -189,114 +353,123 @@ export const freelancersPricingHeader = {
   lead: "Launch your professional card at no cost. Add analytics, custom branding, and more when your business scales.",
 } as const;
 
-export const agenciesPainPointsCopy = {
-  title: "No more",
-  accent: "brand chaos.",
-  lead: "Growing teams can't afford off-brand cards, manual onboarding, or zero visibility into how reps actually network.",
-  points: [
+export const agenciesHeroCopy = {
+  badge: "For Agencies & Teams",
+  title: "Unified Branding.",
+  accent: "Centralized Control.",
+  lead: "Empower your team with branded digital cards, manage users and roles, lock brand templates, and own every lead from one admin dashboard.",
+  primaryCta: "Start Free Trial",
+  secondaryCta: "Talk to Sales",
+} as const;
+
+export const agenciesWorkspaceCopy = {
+  title: "Manage Your Entire",
+  accent: "Team",
+  lead: "Add team members, assign roles, and track performance from a single workspace dashboard.",
+  cta: "Start Free Trial",
+} as const;
+
+export const agenciesGovernanceCopy = {
+  title: "Govern your brand.",
+  accent: "Own every lead.",
+  lead: "Brand Lock and Leads Center give admins control over how reps present the firm — and where every capture lands.",
+  brandLock: {
+    badge: "Brand Lock",
+    title: "Enforce",
+    accent: "brand consistency",
+    lead: "Lock logos, colors, and required fields so every rep card stays on-brand — without manual QA.",
+    capabilities: [
+      {
+        icon: "lock" as SolutionFeatureIconKey,
+        title: "Lock firm branding",
+        description:
+          "Enforce logos, colors, and required fields across every teammate — reps can't accidentally go off-brand.",
+      },
+      {
+        icon: "palette" as SolutionFeatureIconKey,
+        title: "Template library",
+        description: "Deploy approved layouts so new cards inherit your standards from day one.",
+      },
+      {
+        icon: "users" as SolutionFeatureIconKey,
+        title: "Role-based control",
+        description: "Admins set the frame; reps edit only their personal fields within your guardrails.",
+      },
+      {
+        icon: "refreshCw" as SolutionFeatureIconKey,
+        title: "Global enforcement",
+        description:
+          "Changes apply instantly across every live card — no redeploy or rep action required.",
+      },
+    ],
+    imageAlt: "OneTap Brand Lock settings enforcing firm logos and colors across team cards",
+  },
+  leads: {
+    badge: "Leads Center",
+    title: "Centralized",
+    accent: "lead capture",
+    lead: "Every capture from every rep flows into one admin view — filter, assign, and export when you need it.",
+    capabilities: [
+      {
+        icon: "inbox" as SolutionFeatureIconKey,
+        title: "One inbox for the team",
+        description: "NFC taps, QR scans, and form fills from every rep land in a single Leads Center.",
+      },
+      {
+        icon: "users" as SolutionFeatureIconKey,
+        title: "Rep attribution",
+        description: "See who captured each lead and which channel drove the interaction.",
+      },
+      {
+        icon: "upload" as SolutionFeatureIconKey,
+        title: "Export on demand",
+        description: "Download CSV backups or hand off to CRM without manual forwarding.",
+      },
+      {
+        icon: "barChart3" as SolutionFeatureIconKey,
+        title: "Filter and assign",
+        description:
+          "Slice leads by rep, channel, or date and route follow-ups without leaving the dashboard.",
+      },
+    ],
+    imageAlt: "OneTap Leads Center showing team captures with rep attribution and channels",
+  },
+} as const;
+
+export const agenciesEnterpriseCopy = {
+  title: "Built for",
+  accent: "teams at scale",
+  lead: "Everything your organization needs to protect brand integrity, onboard fast, and prove ROI from networking.",
+  pillars: [
     {
-      icon: "palette" as PainPointIconKey,
-      title: "No more inconsistent agent cards",
+      icon: "lock" as SolutionFeatureIconKey,
+      title: "Data Ownership",
       description:
-        "Brand Lock keeps logos, colors, and compliance fields aligned across every teammate — automatically.",
+        "Admins own every interaction log. Review captures in Leads Center and export to CSV whenever you need a backup or handoff.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
-      icon: "users" as PainPointIconKey,
-      title: "No more painful onboarding",
-      description:
-        "Import hundreds of users from CSV and issue on-brand cards in minutes, not weeks.",
-      accent: "from-brand-turquoise-light to-brand-turquoise/20",
-    },
-    {
-      icon: "lineChart" as PainPointIconKey,
-      title: "No more blind spots",
-      description:
-        "Track impressions, leads, and vCard downloads per rep from one team dashboard.",
-      accent: "from-brand-midnight/10 to-brand-navy/10",
-    },
-  ],
-} as const;
-
-export const agenciesHowItWorksCopy = {
-  title: "Roll out your",
-  accent: "team in days",
-  description: "Standardize branding, onboard at scale, and measure networking performance — without IT overhead.",
-  steps: [
-    {
-      step: "01",
-      title: "Configure",
-      description:
-        "Define firm colors, logos, required fields, and approved templates. Every new card inherits your standards.",
-      image: howItWorksCopy.steps[0].image,
-      imageAlt: "Team configuring brand settings on a laptop",
-    },
-    {
-      step: "02",
-      title: "Onboard",
-      description:
-        "Upload a CSV with names, titles, and contact details. Agents receive ready-to-share cards without design work.",
-      image: howItWorksCopy.steps[1].image,
-      imageAlt: "Team members receiving digital business cards on their phones",
-    },
-    {
-      step: "03",
-      title: "Measure",
-      description:
-        "Monitor views, lead forms, and saves per agent. Spot top performers and coach the rest with real data.",
-      image: howItWorksCopy.steps[2].image,
-      imageAlt: "Team reviewing analytics and engagement metrics",
-    },
-  ],
-} as const;
-
-export const agenciesFeaturesCopy = {
-  title: "Enterprise features,",
-  accent: "out of the box",
-  lead: "Everything agencies need to protect brand integrity, onboard fast, and prove ROI from networking.",
-  features: [
-    {
-      icon: "lock" as SolutionFeatureIconKey,
-      title: "Brand Lock",
-      description: "Apply firm branding across every agent card simultaneously.",
-    },
-    {
       icon: "upload" as SolutionFeatureIconKey,
-      title: "Bulk User Import",
-      description: "Onboard 10 to 10,000 team members via CSV in minutes.",
+      title: "Instant Onboarding",
+      description:
+        "Add team members, assign roles, and deploy shared brand templates so new reps launch on-brand cards in minutes.",
+      accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
       icon: "barChart3" as SolutionFeatureIconKey,
       title: "Team Analytics",
-      description: "Track impressions, leads, and vCard downloads per agent.",
-    },
-    {
-      icon: "users" as SolutionFeatureIconKey,
-      title: "Role-Based Access",
-      description: "Give admins control while reps manage only their own profiles.",
-    },
-    {
-      icon: "palette" as SolutionFeatureIconKey,
-      title: "Template Library",
-      description: "Deploy approved layouts so every card looks on-brand from day one.",
+      description:
+        "Track views, leads, and vCard saves per rep from the admin dashboard — spot top performers and coach with real data.",
+      accent: "from-brand-midnight/10 to-brand-navy/10",
     },
     {
       icon: "inbox" as SolutionFeatureIconKey,
-      title: "Centralized Leads",
-      description: "Route inquiries to the right rep or CRM without manual forwarding.",
+      title: "Lead Routing",
+      description:
+        "Assign inquiries to the right rep and keep follow-ups moving — no scattered inboxes or lost handoffs.",
+      accent: "from-brand-turquoise/10 to-brand-navy/10",
     },
   ],
-} as const;
-
-export const agenciesTeamSplitCopy = {
-  badge: "At scale",
-  title: "One brand.",
-  accent: "Every rep.",
-  lead: "Whether you manage 20 agents or 2,000, OneTap keeps every card consistent, compliant, and ready to share — while giving each teammate a profile that still feels personal.",
-  cta: "Book a demo",
-  imageUrl:
-    "https://res.cloudinary.com/dudwjf2pu/image/upload/v1779393898/onetap/static/marketing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2026-05-13_%D7%91-20.56.31_gtx3y5.png",
-  imageAlt: "OneTap team dashboard with branded cards for multiple agents",
 } as const;
 
 export const agenciesSocialProofCopy = {

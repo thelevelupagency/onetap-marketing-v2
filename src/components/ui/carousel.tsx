@@ -182,7 +182,8 @@ function CarouselPrevious({
   size = "icon-sm",
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  const { orientation, scrollPrev, canScrollPrev, opts } = useCarousel();
+  const isLooping = opts?.loop === true;
 
   return (
     <Button
@@ -196,7 +197,7 @@ function CarouselPrevious({
           : "top-0 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
-      disabled={!canScrollPrev}
+      disabled={!isLooping && !canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
@@ -212,7 +213,8 @@ function CarouselNext({
   size = "icon-sm",
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
+  const { orientation, scrollNext, canScrollNext, opts } = useCarousel();
+  const isLooping = opts?.loop === true;
 
   return (
     <Button
@@ -226,7 +228,7 @@ function CarouselNext({
           : "bottom-0 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
-      disabled={!canScrollNext}
+      disabled={!isLooping && !canScrollNext}
       onClick={scrollNext}
       {...props}
     >

@@ -43,14 +43,14 @@ export function MarketingCarouselCard(props: MarketingCarouselCardProps) {
   if (props.variant === "image") {
     const { image, imageAlt, href, ctaLabel, title, description } = props;
     return (
-      <Link href={href} className={cn(cardShellLight, "group")}>
+      <Link href={href} className={cn(cardShellLight, "group w-full")}>
         <div className="relative aspect-5/3 w-full shrink-0 overflow-hidden rounded-t-2xl bg-brand-cream">
           <Image
             src={image}
             alt={imageAlt}
             fill
             className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
-            sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 1024px) 280px, 33vw"
           />
         </div>
         <div className="flex flex-1 flex-col p-marketing-card-padding">

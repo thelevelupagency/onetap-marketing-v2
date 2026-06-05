@@ -8,6 +8,7 @@ import {
 } from "@/components/marketing/primitives";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
 import { freelancersCreatorsCopy } from "@/content/solutions";
+import { PHONE_CREATORS_SCALE } from "@/lib/phone-mockup";
 
 interface FreelancerCreatorsProps {
   background?: MarketingBandBackground;
@@ -34,8 +35,7 @@ export function FreelancerCreators({ background = "white" }: FreelancerCreatorsP
       </div>
       <div className="flex justify-center leading-none lg:justify-end">
         <MarketingPhonePreview
-          scale={0.48}
-          url={freelancersCreatorsCopy.phoneUrl}
+          scale={PHONE_CREATORS_SCALE}
           alt={freelancersCreatorsCopy.phoneAlt}
         />
       </div>
