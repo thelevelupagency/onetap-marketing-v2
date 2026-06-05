@@ -17,7 +17,16 @@ export {
   MarketingCarousel,
   type MarketingCarouselProps,
   type CarouselDesktopMode,
+  type CarouselDesktopSlideSize,
 } from "./marketing-carousel";
+export {
+  MarketingCarouselBleedTrack,
+  MarketingCarouselContentSlide,
+  marketingCarouselBleedClass,
+  marketingCarouselBleedPaddingClass,
+  marketingCarouselDotsInsetClass,
+  MOBILE_CAROUSEL_CARD_WIDTH,
+} from "./marketing-carousel-frame";
 export { PainPointCard } from "./pain-point-card";
 export { TextLink } from "./text-link";
 export {

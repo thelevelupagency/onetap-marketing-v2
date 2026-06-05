@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { MarketingPhonePreview } from "@/components/marketing/phones/marketing-phone-preview";
 import {
-  MarketingPhonePreview,
+  CARD_SCREENSHOT_BARBER,
   CARD_SCREENSHOT_FITNESS,
   CARD_SCREENSHOT_INTERIOR,
-  CARD_SCREENSHOT_BARBER,
-} from "@/components/marketing/phones/marketing-phone-preview";
+} from "@/lib/phone-screenshots";
 import { FloatWrap } from "@/components/marketing/phones/float-wrap";
 import { EASE_OUT, useMotionConfig } from "@/lib/motion";
 import { PHONE_OUTER_HEIGHT, phoneLayoutDimensions } from "@/lib/phone-mockup";

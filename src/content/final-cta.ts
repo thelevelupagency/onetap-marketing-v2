@@ -48,12 +48,12 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
   },
   freelancers: {
-    title: "Ready to win",
-    accent: "more clients?",
+    title: "Ready to digitize",
+    accent: "your identity?",
     subheadline:
-      "Freelancers use OneTap to share one professional link, capture leads, and follow up faster — without juggling apps or outdated PDFs.",
+      "Build a fully branded digital card in 60 seconds — portfolio, socials, and contact details in one link you can share anywhere.",
     cta: "Create Your Card For FREE",
-    microcopyItems: ["Built for freelancers", "Free to start", "Lead capture included"],
+    microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
   },
   agencies: {
     title: "Ready to scale",

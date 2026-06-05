@@ -6,6 +6,7 @@ import {
   SectionHeader,
   MarketingCarousel,
   MarketingCarouselCard,
+  MarketingCarouselContentSlide,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
 import { solutionsCopy } from "@/content/homepage";
@@ -28,15 +29,17 @@ export function SolutionsGrid() {
             items={solutionsCopy.cards}
             getKey={(card) => card.title}
             renderItem={(card) => (
-              <MarketingCarouselCard
-                variant="image"
-                href={card.href}
-                image={card.image}
-                imageAlt={card.imageAlt}
-                title={card.title}
-                description={card.description}
-                ctaLabel={card.ctaLabel}
-              />
+              <MarketingCarouselContentSlide>
+                <MarketingCarouselCard
+                  variant="image"
+                  href={card.href}
+                  image={card.image}
+                  imageAlt={card.imageAlt}
+                  title={card.title}
+                  description={card.description}
+                  ctaLabel={card.ctaLabel}
+                />
+              </MarketingCarouselContentSlide>
             )}
             ariaLabel="Solution slides"
             desktopMode="threeUp"

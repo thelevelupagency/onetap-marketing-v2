@@ -9,6 +9,7 @@ import {
   MarketingContainer,
   SectionHeader,
   MarketingCarousel,
+  MarketingCarouselContentSlide,
   AudienceMarquee,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
@@ -31,7 +32,7 @@ function TestimonialCard({
   return (
     <Card
       className={cn(
-        "flex h-full flex-col gap-0 bg-white p-6 shadow-sm",
+        "flex h-full w-full flex-col gap-0 bg-white p-6 shadow-sm",
         "transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
       )}
     >
@@ -80,7 +81,11 @@ export function SocialProof({
           <MarketingCarousel
             items={copy.testimonials}
             getKey={(t) => t.name}
-            renderItem={(t) => <TestimonialCard testimonial={t} />}
+            renderItem={(t) => (
+              <MarketingCarouselContentSlide>
+                <TestimonialCard testimonial={t} />
+              </MarketingCarouselContentSlide>
+            )}
             ariaLabel="Testimonial slides"
             desktopMode="threeUp"
             autoplayInterval={MARKETING_CAROUSEL_AUTOPLAY_MS}

@@ -1,5 +1,11 @@
-import type { CardUxIconKey, PainPointIconKey } from "@/content/homepage";
+import type { PainPointIconKey } from "@/content/homepage";
 import { audienceMarqueeItems, howItWorksCopy } from "@/content/homepage";
+import {
+  CARD_SCREENSHOT_BARBER,
+  CARD_SCREENSHOT_FITNESS,
+  CARD_SCREENSHOT_INTERIOR,
+} from "@/lib/phone-screenshots";
+import { CARD_HOST_PREFIX } from "@/lib/constants";
 
 export type SolutionFeatureIconKey =
   | "zap"
@@ -12,7 +18,187 @@ export type SolutionFeatureIconKey =
   | "users"
   | "upload"
   | "palette"
-  | "inbox";
+  | "inbox"
+  | "contactRound";
+
+export type FreelancerNicheCard = {
+  id: string;
+  personaName: string;
+  styleLabel: string;
+  imageSrc: string;
+  slug: string;
+  alt: string;
+};
+
+export type FreelancerNiche = {
+  id: string;
+  label: string;
+  cards: readonly FreelancerNicheCard[];
+};
+
+const freelancerCardInterior: FreelancerNicheCard = {
+  id: "interior",
+  personaName: "Katy Delma",
+  styleLabel: "Portfolio",
+  imageSrc: CARD_SCREENSHOT_INTERIOR,
+  slug: "sofi-schwartz",
+  alt: "Interior designer OneTap digital business card",
+};
+
+const freelancerCardBarber: FreelancerNicheCard = {
+  id: "barber",
+  personaName: "Frame Studio",
+  styleLabel: "Clean",
+  imageSrc: CARD_SCREENSHOT_BARBER,
+  slug: "franklin-barbershop",
+  alt: "Barbershop OneTap digital business card",
+};
+
+const freelancerCardFitness: FreelancerNicheCard = {
+  id: "fitness",
+  personaName: "Urban Lens",
+  styleLabel: "Bold",
+  imageSrc: CARD_SCREENSHOT_FITNESS,
+  slug: "almog-menashe",
+  alt: "Fitness professional OneTap digital business card",
+};
+
+const freelancerCardEditorial: FreelancerNicheCard = {
+  id: "editorial",
+  personaName: "Lena Voss",
+  styleLabel: "Editorial",
+  imageSrc: CARD_SCREENSHOT_FITNESS,
+  slug: "almog-menashe",
+  alt: "Creative professional OneTap digital business card",
+};
+
+export const freelancersHeroCopy = {
+  badge: "For Freelancers & Creators",
+  title: "Your Identity, Digitized in",
+  accent: "60 Seconds.",
+  lead: "Unify your portfolio, social links, and contact details into one contactless card. Share with NFC, QR, or a single link — no app download required.",
+  cta: "Create your free card",
+} as const;
+
+export const freelancersNicheSelectorCopy = {
+  title: "Preview cards",
+  accent: "for your niche",
+  lead: "Choose your field to see four starter styles you can launch in minutes.",
+} as const;
+
+export const freelancersNicheManifest = {
+  defaultNicheId: "photography",
+  niches: [
+    {
+      id: "photography",
+      label: "Photography",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardBarber,
+        freelancerCardFitness,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "design",
+      label: "Design",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "fitness",
+      label: "Fitness & Coaching",
+      cards: [
+        freelancerCardFitness,
+        freelancerCardInterior,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "consulting",
+      label: "Consulting",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "real-estate",
+      label: "Real Estate",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "creator",
+      label: "Creators",
+      cards: [
+        freelancerCardFitness,
+        freelancerCardInterior,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "marketing",
+      label: "Marketing",
+      cards: [
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardBarber,
+        freelancerCardEditorial,
+      ],
+    },
+    {
+      id: "freelance",
+      label: "Freelance Services",
+      cards: [
+        freelancerCardBarber,
+        freelancerCardInterior,
+        freelancerCardFitness,
+        freelancerCardEditorial,
+      ],
+    },
+  ] as const satisfies readonly FreelancerNiche[],
+} as const;
+
+export const freelancersCardIncludesCopy = {
+  title: "Every card",
+  accent: "includes the essentials.",
+  lead: "Build once in 60 seconds — then share, save contacts, and stay on-brand from one link or tap.",
+  points: [
+    {
+      icon: "zap" as SolutionFeatureIconKey,
+      title: "One-Tap Sharing",
+      description: `Share via NFC, QR code, or your permalink (${CARD_HOST_PREFIX}username). One link works everywhere you network.`,
+      accent: "from-brand-navy/10 to-brand-turquoise/10",
+    },
+    {
+      icon: "contactRound" as SolutionFeatureIconKey,
+      title: "Instant Contact Resolution",
+      description:
+        "Visitors save your details to their phone contacts with native vCard — no app download, no friction.",
+      accent: "from-brand-turquoise-light to-brand-turquoise/20",
+    },
+    {
+      icon: "palette" as SolutionFeatureIconKey,
+      title: "Custom Structural Branding",
+      description:
+        "Control colors, typography, and layout so your card looks unmistakably yours — not a generic template.",
+      accent: "from-brand-midnight/10 to-brand-navy/10",
+    },
+  ],
+} as const;
 
 export const freelancersPainPointsCopy = {
   title: "No more",
@@ -115,34 +301,6 @@ export const freelancersFeaturesCopy = {
   ],
 } as const;
 
-export const freelancersProductSplitCopy = {
-  title: "More than a card.",
-  accent: "Your client-winning microsite.",
-  lead: "Give prospects one mobile-first place to understand your work, trust your expertise, and take the next step.",
-  features: [
-    {
-      icon: "userPlus" as CardUxIconKey,
-      label: "Lead Capture Form",
-      description: "Collect names, emails, and project details while interest is still warm.",
-    },
-    {
-      icon: "contactRound" as CardUxIconKey,
-      label: "Save to Contacts",
-      description: "Let visitors keep your details on their phone in one tap.",
-    },
-    {
-      icon: "zap" as CardUxIconKey,
-      label: "One-Tap Contact Actions",
-      description: "Call, email, WhatsApp, or book a discovery call without friction.",
-    },
-    {
-      icon: "barChart3" as CardUxIconKey,
-      label: "Analytics Dashboard",
-      description: "See which links and offers drive the most inquiries.",
-    },
-  ],
-} as const;
-
 export const freelancersCreatorsCopy = {
   badge: "For Creators",
   title: "5x faster",
@@ -179,6 +337,13 @@ export const freelancersSocialProofCopy = {
       content:
         "I replaced three link-in-bio tools with one card. New leads hit my inbox the same day I meet someone at an event.",
       avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+    },
+    {
+      name: "Diego Ramos",
+      role: "Freelance Photographer",
+      content:
+        "At every shoot I share one QR code. Models and clients save my contact and browse my portfolio before they leave the set.",
+      avatar: "https://randomuser.me/api/portraits/men/46.jpg",
     },
   ],
 } as const;

@@ -17,3 +17,9 @@ export function phoneLayoutDimensions(scale: number) {
     screenRadius: Math.round(PHONE_SCREEN_RADIUS * scale),
   };
 }
+
+/** Shared scale for phone mocks in marketing carousels (mobile + desktop). */
+export const PHONE_CAROUSEL_SCALE = 0.52;
+
+/** Layout width at {@link PHONE_CAROUSEL_SCALE} — used for desktop column caps. */
+export const PHONE_CAROUSEL_WIDTH = phoneLayoutDimensions(PHONE_CAROUSEL_SCALE).width;

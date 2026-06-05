@@ -2,6 +2,7 @@
 
 import { FeatureCard } from "./feature-card";
 import { MarketingCarousel } from "./marketing-carousel";
+import { MarketingCarouselContentSlide } from "./marketing-carousel-frame";
 import { MARKETING_CAROUSEL_AUTOPLAY_MS } from "@/lib/use-marketing-carousel";
 
 export type FeatureSpotlightItem = {
@@ -37,14 +38,16 @@ export function FeatureSpotlight({
       renderItem={(item) => {
         const Icon = item.icon;
         return (
-          <FeatureCard
-            icon={Icon}
-            title={item.title}
-            description={item.description}
-            variant="compact"
-            onDark={onDark}
-            className="h-full"
-          />
+          <MarketingCarouselContentSlide>
+            <FeatureCard
+              icon={Icon}
+              title={item.title}
+              description={item.description}
+              variant="compact"
+              onDark={onDark}
+              className="h-full"
+            />
+          </MarketingCarouselContentSlide>
         );
       }}
       ariaLabel="Feature highlights"
