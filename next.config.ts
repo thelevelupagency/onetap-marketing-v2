@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/gal-medic1",
+        destination: "https://nfc.thelevelupagency.com/gal-medic1",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
