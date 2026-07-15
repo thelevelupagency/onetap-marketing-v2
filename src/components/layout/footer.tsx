@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { IconBrandLinkedin, IconBrandInstagram, IconBrandTwitter } from "@tabler/icons-react";
 import { Logo } from "@/components/shared/logo";
-import { Button } from "@/components/ui/button";
 import { MarketingContainer } from "@/components/marketing/primitives";
 import { footerCopy } from "@/content/site";
+import { PRIVACY_URL, TERMS_URL } from "@/lib/constants";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -26,8 +24,8 @@ export function Footer() {
     ],
     resources: [
       { name: "Help Center", href: "/faq" },
-      { name: "Terms", href: "#" },
-      { name: "Privacy", href: "#" },
+      { name: "Terms", href: TERMS_URL, external: true },
+      { name: "Privacy", href: PRIVACY_URL, external: true },
     ],
   };
 
@@ -45,17 +43,6 @@ export function Footer() {
             <p className="text-brand-cream/60 max-w-sm mb-8 text-lg leading-relaxed">
               {footerCopy.blurb}
             </p>
-            <div className="flex gap-5">
-              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors" aria-label="Twitter">
-                <IconBrandTwitter size={20} />
-              </Link>
-              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors" aria-label="LinkedIn">
-                <IconBrandLinkedin size={20} />
-              </Link>
-              <Link href="#" className="text-brand-cream/40 hover:text-brand-turquoise transition-colors" aria-label="Instagram">
-                <IconBrandInstagram size={20} />
-              </Link>
-            </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:col-span-3 gap-8">
@@ -65,9 +52,20 @@ export function Footer() {
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
-                      <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base">
-                        {link.name}
-                      </Link>
+                      {"external" in link && link.external ? (
+                        <a
+                          href={link.href}
+                          className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {link.name}
+                        </a>
+                      ) : (
+                        <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base">
+                          {link.name}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -83,24 +81,20 @@ export function Footer() {
             </h3>
             <p className="text-brand-cream/60">{footerCopy.newsletter.body}</p>
           </div>
-          <form className="w-full max-w-md flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder={footerCopy.newsletter.emailPlaceholder}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-brand-cream/30 focus:outline-none focus:ring-2 focus:ring-brand-turquoise/50 text-sm"
-            />
-            <Button type="submit" className="bg-brand-turquoise text-brand-midnight hover:bg-white rounded-xl h-12 px-6 font-medium">
-              {footerCopy.newsletter.cta}
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-          </form>
+          <p className="text-brand-cream/50 text-sm text-center lg:text-right max-w-md">
+            {footerCopy.newsletter.comingSoon}
+          </p>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-cream/40">
           <span>© {currentYear} OneTap Card. All rights reserved.</span>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-brand-turquoise transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-brand-turquoise transition-colors">Terms</Link>
+            <a href={PRIVACY_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
+              Privacy
+            </a>
+            <a href={TERMS_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
+              Terms
+            </a>
           </div>
         </div>
       </MarketingContainer>

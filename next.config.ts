@@ -1,4 +1,11 @@
 import type { NextConfig } from "next";
+import { buildContentSecurityPolicy } from "./src/lib/security/contentSecurityPolicy";
+import { getRequiredSecurityHeaderEntries } from "./src/lib/security/requiredSecurityHeaders";
+
+const securityHeaders = [
+  ...getRequiredSecurityHeaderEntries(),
+  { key: "Content-Security-Policy", value: buildContentSecurityPolicy() },
+];
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,6 +19,14 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
   },
   async redirects() {
     return [

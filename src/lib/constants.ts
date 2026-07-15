@@ -22,6 +22,8 @@ function getCardBaseUrl(): string {
 export const APP_ORIGIN = getAppOrigin();
 export const LOGIN_URL = `${APP_ORIGIN}/login`;
 export const SIGNUP_URL = `${APP_ORIGIN}/register`;
+export const PRIVACY_URL = `${APP_ORIGIN}/privacy`;
+export const TERMS_URL = `${APP_ORIGIN}/terms`;
 
 /** Host + trailing slash for inline slug inputs (e.g. `card.onetap-card.com/`). */
 export function getCardHostPrefix(): string {
