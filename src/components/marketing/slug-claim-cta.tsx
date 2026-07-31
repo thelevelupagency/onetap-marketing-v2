@@ -115,7 +115,7 @@ export function SlugClaimCta({
         primaryCtaClassName,
         marketingCtaSizes.lg,
         "shrink-0",
-        isStacked ? "mt-4 w-full" : "w-full sm:w-auto"
+        isStacked ? "mt-4 w-full" : "w-full lg:w-auto"
       )}
     >
       {submitLabel}
@@ -140,7 +140,7 @@ export function SlugClaimCta({
           {submitButton}
         </>
       ) : (
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
           {slugField}
           {submitButton}
         </div>
