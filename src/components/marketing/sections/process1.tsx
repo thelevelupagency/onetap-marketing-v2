@@ -1,11 +1,7 @@
-import {
-  MarketingContainer,
-  MarketingSection,
-} from "@/components/marketing/primitives";
-import { Process1CtaRow } from "@/components/marketing/sections/process1-cta-row";
-import { Process1Intro } from "@/components/marketing/sections/process1-intro";
-import { Process1Steps } from "@/components/marketing/sections/process1-steps";
+import { MarketingSection } from "@/components/marketing/primitives";
+import { ProcessGraphTimeline } from "@/components/marketing/sections/process-graph-timeline";
 import { CREATE_BASICS_URL } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 export interface ProcessStep {
   step: string;
@@ -32,19 +28,23 @@ export function Process1({
   title,
   accent,
   description,
-  ctaLabel = "Get your card",
+  ctaLabel = "Get your card free",
   ctaHref = CREATE_BASICS_URL,
   steps,
 }: Process1Props) {
   const stepBadgeBg = background === "cream" ? "bg-white" : "bg-brand-cream";
 
   return (
-    <MarketingSection background={background} spacing="default" className={className}>
-      <MarketingContainer width="wide">
-        <Process1Intro title={title} accent={accent} description={description} />
-        <Process1CtaRow ctaLabel={ctaLabel} ctaHref={ctaHref} />
-        <Process1Steps steps={steps} stepBadgeBg={stepBadgeBg} />
-      </MarketingContainer>
+    <MarketingSection background={background} spacing="default" className={cn("overflow-hidden relative", className)}>
+      <ProcessGraphTimeline
+        title={title}
+        accent={accent}
+        description={description}
+        ctaLabel={ctaLabel}
+        ctaHref={ctaHref}
+        steps={steps}
+        stepBadgeBg={stepBadgeBg}
+      />
     </MarketingSection>
   );
 }
