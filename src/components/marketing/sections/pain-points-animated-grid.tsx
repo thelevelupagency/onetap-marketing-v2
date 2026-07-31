@@ -11,7 +11,7 @@ interface PainPointsAnimatedGridProps {
 
 export function PainPointsAnimatedGrid({ points }: PainPointsAnimatedGridProps) {
   return (
-    <MarketingStaggerGrid columns={3}>
+    <MarketingStaggerGrid columns={3} className="pt-10 gap-y-12 md:gap-y-marketing-grid-gap-md">
       {points.map((point, index) => {
         const Icon = painPointIcons[point.icon];
         return (

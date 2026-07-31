@@ -27,7 +27,7 @@ export {
   marketingCarouselDotsInsetClass,
   MOBILE_CAROUSEL_CARD_WIDTH,
 } from "./marketing-carousel-frame";
-export { PainPointCard } from "./pain-point-card";
+export { PainPointCard, type PainPointCardProps } from "./pain-point-card";
 export { TextLink } from "./text-link";
 export {
   CategoryFilterPills,

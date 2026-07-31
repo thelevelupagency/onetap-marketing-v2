@@ -24,7 +24,7 @@ export function FreelancerCardIncludes({ background = "cream" }: FreelancerCardI
         <Reveal>
           <SectionHeader title={copy.title} accent={copy.accent} lead={copy.lead} />
         </Reveal>
-        <MarketingStaggerGrid columns={3}>
+        <MarketingStaggerGrid columns={3} className="pt-10 gap-y-12 md:gap-y-marketing-grid-gap-md">
           {copy.points.map((point, index) => {
             const Icon = solutionFeatureIcons[point.icon];
             return (
@@ -34,7 +34,7 @@ export function FreelancerCardIncludes({ background = "cream" }: FreelancerCardI
                   title={point.title}
                   description={point.description}
                   accent={point.accent}
-                  className="h-full border-brand-midnight/8 bg-white transition-transform duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
+                  className="h-full border-2 border-brand-navy bg-white transition-transform duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
                 />
               </CardReveal>
             );
