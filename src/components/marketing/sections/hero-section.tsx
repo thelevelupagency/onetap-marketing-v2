@@ -70,7 +70,7 @@ export function HeroSection() {
         <MarketingContainer width="full" className="relative z-10 text-center">
           <div className="mx-auto max-w-5xl lg:max-w-6xl flex flex-col items-center">
             <RevealItem>
-              <MarketingBadge icon={Sparkles} className="mb-6 hover:bg-brand-turquoise/30">
+              <MarketingBadge icon={Sparkles} className="mb-6">
                 {heroCopy.badge}
               </MarketingBadge>
             </RevealItem>
