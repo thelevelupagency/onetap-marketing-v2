@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { type as typography } from "@/lib/typography";
@@ -21,26 +22,45 @@ export function FaqAccordion({
   className,
 }: FaqAccordionProps) {
   return (
-    <Accordion className={cn("space-y-marketing-stack-gap-sm", className)}>
+    <Accordion className={cn("space-y-4", className)}>
       {items.map((faq, index) => (
         <AccordionItem
           key={getValue(faq, index)}
           value={getValue(faq, index)}
           className={cn(
-            "rounded-2xl border border-brand-midnight/5 bg-white",
-            compact ? "px-4" : "px-6 shadow-sm"
+            "group/faq-item relative overflow-hidden rounded-2xl border border-brand-midnight/10 bg-white transition-all duration-300 hover:border-brand-turquoise/40 hover:bg-white hover:shadow-xl hover:shadow-brand-navy/10 data-[open]:border-2 data-[open]:border-brand-turquoise data-[open]:bg-white data-[open]:shadow-xl data-[open]:shadow-brand-turquoise/15 data-[state=open]:border-2 data-[state=open]:border-brand-turquoise data-[state=open]:bg-white data-[state=open]:shadow-xl data-[state=open]:shadow-brand-turquoise/15 data-[open]:hover:shadow-2xl data-[open]:hover:shadow-brand-navy/15 data-[state=open]:hover:shadow-2xl data-[state=open]:hover:shadow-brand-navy/15",
+            compact ? "px-4" : "px-6"
           )}
         >
+          {/* Active Left Vertical Accent Bar */}
+          <span className="pointer-events-none absolute bottom-0 left-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
+
           <AccordionTrigger
+            hideChevron
             className={cn(
-              typography.accordionQuestion,
-              "text-left hover:no-underline",
-              compact ? "py-4 font-medium text-brand-midnight" : "py-5"
+              "flex w-full items-center justify-between text-left hover:no-underline focus-visible:outline-none",
+              compact ? "py-4" : "py-5"
             )}
           >
-            {faq.q}
+            <span
+              className={cn(
+                typography.accordionQuestion,
+                "pr-4 text-left transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
+              )}
+            >
+              {faq.q}
+            </span>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-turquoise bg-brand-turquoise text-white shadow-2xs transition-all duration-300 group-hover/accordion-trigger:border-brand-turquoise-dark group-hover/accordion-trigger:bg-brand-turquoise-dark group-hover/accordion-trigger:text-white group-data-[open]/faq-item:border-brand-turquoise group-data-[open]/faq-item:bg-brand-turquoise group-data-[open]/faq-item:text-white group-data-[state=open]/faq-item:border-brand-turquoise group-data-[state=open]/faq-item:bg-brand-turquoise group-data-[state=open]/faq-item:text-white">
+              <Plus className="h-4 w-4 text-white transition-transform duration-300 group-data-[open]/faq-item:rotate-135 group-data-[state=open]/faq-item:rotate-135 group-aria-expanded/accordion-trigger:rotate-135" />
+            </span>
           </AccordionTrigger>
-          <AccordionContent className={cn(typography.bodySm, compact ? "pb-4" : "pb-5")}>
+          <AccordionContent
+            className={cn(
+              typography.bodySm,
+              "text-brand-midnight/85 leading-relaxed",
+              compact ? "pb-4 pt-1" : "pb-6 pt-1"
+            )}
+          >
             {faq.a}
           </AccordionContent>
         </AccordionItem>
@@ -66,19 +86,30 @@ export function FaqAccordionComparisonItem({
     <AccordionItem
       value={value}
       className={cn(
-        "rounded-2xl border border-brand-midnight/10 bg-brand-cream px-4 shadow-sm",
+        "group/faq-item relative overflow-hidden rounded-2xl border border-brand-midnight/10 bg-white px-4 transition-all duration-300 hover:border-brand-turquoise/40 hover:bg-white hover:shadow-xl hover:shadow-brand-navy/10 data-[open]:border-2 data-[open]:border-brand-turquoise data-[open]:bg-white data-[open]:shadow-xl data-[open]:shadow-brand-turquoise/15 data-[state=open]:border-2 data-[state=open]:border-brand-turquoise data-[state=open]:bg-white data-[state=open]:shadow-xl data-[state=open]:shadow-brand-turquoise/15 data-[open]:hover:shadow-2xl data-[open]:hover:shadow-brand-navy/15 data-[state=open]:hover:shadow-2xl data-[state=open]:hover:shadow-brand-navy/15",
         className
       )}
     >
+      {/* Active Left Vertical Accent Bar */}
+      <span className="pointer-events-none absolute bottom-0 left-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
+
       <AccordionTrigger
-        className={cn(
-          typography.accordionQuestion,
-          "py-4 text-left font-medium text-brand-midnight hover:no-underline"
-        )}
+        hideChevron
+        className="flex w-full items-center justify-between py-4 text-left hover:no-underline focus-visible:outline-none"
       >
-        {title}
+        <span
+          className={cn(
+            typography.accordionQuestion,
+            "pr-3 text-left font-medium text-brand-midnight transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
+          )}
+        >
+          {title}
+        </span>
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand-turquoise bg-brand-turquoise text-white shadow-2xs transition-all duration-300 group-hover/accordion-trigger:border-brand-turquoise-dark group-hover/accordion-trigger:bg-brand-turquoise-dark group-hover/accordion-trigger:text-white group-data-[open]/faq-item:border-brand-turquoise group-data-[open]/faq-item:bg-brand-turquoise group-data-[open]/faq-item:text-white group-data-[state=open]/faq-item:border-brand-turquoise group-data-[state=open]/faq-item:bg-brand-turquoise group-data-[state=open]/faq-item:text-white">
+          <Plus className="h-3.5 w-3.5 text-white transition-transform duration-300 group-data-[open]/faq-item:rotate-135 group-data-[state=open]/faq-item:rotate-135 group-aria-expanded/accordion-trigger:rotate-135" />
+        </span>
       </AccordionTrigger>
-      <AccordionContent className="space-y-2 pb-4">{children}</AccordionContent>
+      <AccordionContent className="space-y-2 pb-4 pt-1">{children}</AccordionContent>
     </AccordionItem>
   );
 }
