@@ -57,7 +57,6 @@ export function SocialProof({
           <InfiniteTestimonialTrack
             direction="right"
             speed={1.0}
-            background={background}
             ariaLabel="Testimonials row 1"
           >
             {row1.map((item, index) => (
@@ -69,7 +68,6 @@ export function SocialProof({
           <InfiniteTestimonialTrack
             direction="left"
             speed={1.0}
-            background={background}
             ariaLabel="Testimonials row 2"
           >
             {row2.map((item, index) => (

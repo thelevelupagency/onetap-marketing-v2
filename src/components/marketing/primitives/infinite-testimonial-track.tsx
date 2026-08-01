@@ -3,13 +3,11 @@
 import React, { useRef, useState, useEffect, ReactNode } from "react";
 import { useMotionConfig } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import type { MarketingBandBackground } from "@/content/marketing-copy-types";
 
 export interface InfiniteTestimonialTrackProps {
   children: ReactNode;
   direction?: "left" | "right";
   speed?: number;
-  background?: MarketingBandBackground;
   className?: string;
   ariaLabel?: string;
 }
@@ -18,7 +16,6 @@ export function InfiniteTestimonialTrack({
   children,
   direction = "right",
   speed = 1.0,
-  background = "cream",
   className,
   ariaLabel = "Testimonials carousel",
 }: InfiniteTestimonialTrackProps) {
@@ -27,8 +24,6 @@ export function InfiniteTestimonialTrack({
   const [isPaused, setIsPaused] = useState(false);
   const animationRef = useRef<number>(0);
   const { prefersReducedMotion } = useMotionConfig();
-
-  const fadeFrom = background === "cream" ? "from-brand-cream" : "from-white";
 
   useEffect(() => {
     const container = containerRef.current;
@@ -86,22 +81,6 @@ export function InfiniteTestimonialTrack({
       )}
       aria-label={ariaLabel}
     >
-      {/* Left and Right Fade Overlays for Edge Diffusion */}
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-y-0 left-0 z-20 w-16 bg-gradient-to-r to-transparent sm:w-28 md:w-36",
-          fadeFrom
-        )}
-        aria-hidden
-      />
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-y-0 right-0 z-20 w-16 bg-gradient-to-l to-transparent sm:w-28 md:w-36",
-          fadeFrom
-        )}
-        aria-hidden
-      />
-
       <div
         ref={containerRef}
         className="hide-scrollbar flex items-center overflow-x-scroll pt-4 pb-2 sm:pt-5 sm:pb-3 select-none cursor-grab active:cursor-grabbing"

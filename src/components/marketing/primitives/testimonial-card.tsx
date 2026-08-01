@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { type as typography } from "@/lib/typography";
+import { LOGO_ICON } from "@/lib/logos";
 import type { MarketingTestimonial } from "@/content/marketing-copy-types";
 
 export interface TestimonialCardProps {
@@ -14,6 +15,7 @@ export interface TestimonialCardProps {
 
 export function TestimonialCard({ testimonial, className }: TestimonialCardProps) {
   const ratingCount = testimonial.rating ?? 5;
+  const avatarSrc = testimonial.avatar || LOGO_ICON;
 
   return (
     <div
@@ -26,7 +28,7 @@ export function TestimonialCard({ testimonial, className }: TestimonialCardProps
       {/* Floating Top-Center Avatar Logo Placeholder (Figma UI Card 9 Signature) */}
       <div className="absolute top-0 z-10 flex size-12 items-center justify-center overflow-hidden rounded-full bg-white ring-4 ring-white shadow-md transition-transform duration-300 group-hover:scale-105 sm:size-14">
         <Image
-          src={testimonial.avatar}
+          src={avatarSrc}
           alt={testimonial.name}
           fill
           sizes="(max-width: 640px) 48px, 56px"
