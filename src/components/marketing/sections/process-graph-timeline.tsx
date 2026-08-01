@@ -351,10 +351,10 @@ export function ProcessGraphTimeline({
 
         {/* MOBILE TIMELINE (< lg screen) */}
         <MarketingContainer width="wide" className="block lg:hidden">
-          <div className="relative w-full pt-2">
-            {/* Continuous Vertical Full-Bleed Line extending top-to-bottom across section height */}
+          <div className="relative w-full pt-2 pb-4">
+            {/* Continuous Vertical Timeline Line: Begins below header (top-6) and extends cleanly down to bottom of Step 3 card (bottom-2) */}
             <div
-              className="absolute left-6 -top-40 -bottom-16 w-1 pointer-events-none z-0"
+              className="absolute left-6 top-6 bottom-2 w-1 pointer-events-none z-0"
               aria-hidden
             >
               {/* Base Guide Glow Line */}
@@ -369,13 +369,13 @@ export function ProcessGraphTimeline({
                 transition={enterTransition(0)}
               />
 
-              {/* Infinite Travelling Light / Glow Beam Pulse Top-to-Bottom */}
+              {/* Infinite Travelling Light / Glow Beam Pulse along the vertical line */}
               <motion.div
-                className="absolute left-0 w-full h-28 bg-gradient-to-b from-transparent via-[#00F2FE] to-transparent rounded-full shadow-[0_0_20px_#00F2FE]"
-                initial={{ top: "-15%" }}
-                animate={{ top: "115%" }}
+                className="absolute left-0 w-full h-24 bg-gradient-to-b from-transparent via-[#00F2FE] to-transparent rounded-full shadow-[0_0_20px_#00F2FE]"
+                initial={{ top: "-5%" }}
+                animate={{ top: "105%" }}
                 transition={{
-                  duration: 3.5,
+                  duration: 3,
                   repeat: Infinity,
                   ease: "linear",
                 }}
