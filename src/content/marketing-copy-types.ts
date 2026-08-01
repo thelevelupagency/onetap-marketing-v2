@@ -11,6 +11,8 @@ export type MarketingTestimonial = {
   role: string;
   content: string;
   avatar: string;
+  headline?: string;
+  rating?: number;
 };
 
 export type PainPointsCopy = {

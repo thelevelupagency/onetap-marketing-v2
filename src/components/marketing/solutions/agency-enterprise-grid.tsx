@@ -24,7 +24,7 @@ export function AgencyEnterpriseGrid({ background = "white" }: AgencyEnterpriseG
         <Reveal>
           <SectionHeader title={copy.title} accent={copy.accent} lead={copy.lead} />
         </Reveal>
-        <MarketingStaggerGrid columns={2}>
+        <MarketingStaggerGrid columns={2} className="pt-10 gap-y-12 md:gap-y-marketing-grid-gap-md">
           {copy.pillars.map((pillar, index) => {
             const Icon = solutionFeatureIcons[pillar.icon];
             return (
@@ -34,7 +34,7 @@ export function AgencyEnterpriseGrid({ background = "white" }: AgencyEnterpriseG
                   title={pillar.title}
                   description={pillar.description}
                   accent={pillar.accent}
-                  className="h-full border-brand-midnight/8 transition-transform duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
+                  className="h-full border-2 border-brand-navy transition-transform duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
                 />
               </CardReveal>
             );

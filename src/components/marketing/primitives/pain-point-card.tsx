@@ -1,47 +1,46 @@
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 
+export interface PainPointCardProps {
+  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>;
+  title: string;
+  description: string;
+  accent?: string;
+  className?: string;
+}
+
 export function PainPointCard({
   icon: Icon,
   title,
   description,
-  accent,
   className,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
-  accent: string;
-  className?: string;
-}) {
+}: PainPointCardProps) {
   return (
-    <div
+    <article
       className={cn(
-        "flex h-full flex-col rounded-3xl border border-brand-midnight/5 bg-brand-cream p-marketing-card-padding shadow-sm",
+        "relative flex h-full flex-col items-center text-center rounded-3xl border-2 border-brand-navy bg-brand-cream p-marketing-card-padding pt-12 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft-diffusion",
         className
       )}
     >
-      <div className="mb-marketing-stack-gap-sm flex min-h-14 items-start gap-3">
-        <div
-          className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br",
-            accent
-          )}
-        >
-          <Icon className="h-5 w-5 text-brand-midnight" />
-        </div>
-        <h3
-          className={cn(
-            typography.cardTitle,
-            "min-w-0 flex-1 font-semibold leading-snug"
-          )}
-        >
-          {title}
-        </h3>
+      <div className="absolute -top-7 left-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-turquoise text-white shadow-md ring-4 ring-white">
+        <Icon className="h-7 w-7 text-white" aria-hidden="true" />
       </div>
-      <p className={cn(typography.bodySm, "flex-1 text-brand-midnight/70")}>
+      <h3
+        className={cn(
+          typography.cardTitle,
+          "mt-2 font-semibold leading-snug text-brand-midnight"
+        )}
+      >
+        {title}
+      </h3>
+      <p
+        className={cn(
+          typography.bodySm,
+          "mt-3 flex-1 text-brand-midnight/70 leading-relaxed"
+        )}
+      >
         {description}
       </p>
-    </div>
+    </article>
   );
 }

@@ -27,7 +27,7 @@ export {
   marketingCarouselDotsInsetClass,
   MOBILE_CAROUSEL_CARD_WIDTH,
 } from "./marketing-carousel-frame";
-export { PainPointCard } from "./pain-point-card";
+export { PainPointCard, type PainPointCardProps } from "./pain-point-card";
 export { TextLink } from "./text-link";
 export {
   CategoryFilterPills,
@@ -46,3 +46,9 @@ export {
   type MarketingCarouselCardProps,
 } from "./marketing-carousel-card";
 export { AudienceMarquee } from "./audience-marquee";
+export { TestimonialCard, type TestimonialCardProps } from "./testimonial-card";
+export {
+  InfiniteTestimonialTrack,
+  type InfiniteTestimonialTrackProps,
+} from "./infinite-testimonial-track";
+

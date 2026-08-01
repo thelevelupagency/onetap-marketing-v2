@@ -1,4 +1,5 @@
 import { CREATE_BASICS_URL } from "@/lib/constants";
+import { LOGO_ICON } from "@/lib/logos";
 
 export const audienceMarqueeItems = [
   "Lawyer",
@@ -293,44 +294,92 @@ export const socialProofCopy = {
     {
       name: "Elena Torres",
       role: "Freelance Brand Strategist",
+      headline: "Set up in under a minute",
       content:
-        "I set up my card in under a minute. Clients save my contact before I finish my elevator pitch.",
-      avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+        "Clients save my contact before I finish my elevator pitch. It has completely transformed my client onboarding.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Marcus Chen",
       role: "Real Estate Agent",
+      headline: "Essential tool for open houses",
       content:
-        "One link for listings, tours, and WhatsApp. Prospects reach me faster after every open house.",
-      avatar: "https://randomuser.me/api/portraits/men/52.jpg",
+        "One link for listings, virtual tours, and direct WhatsApp chat. Prospects reach out immediately after tours.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "James Okonkwo",
       role: "Founder, Nova Labs",
+      headline: "Unified team brand system",
       content:
-        "Our team shares one brand system across 40 cards. Onboarding a new hire is now a link and a tap.",
-      avatar: "https://randomuser.me/api/portraits/men/62.jpg",
+        "Our agency manages 40+ member cards. Onboarding a new hire now takes one simple link and a single tap.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Priya Shah",
       role: "Marketing Consultant",
+      headline: "Replaced 3 link tools at once",
       content:
-        "I replaced three link-in-bio tools with one card. New leads hit my inbox the same day I meet someone at an event.",
-      avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+        "New leads land straight in my inbox the exact same day I meet someone at industry networking conferences.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Sarah Kim",
       role: "VP Sales, Brightpath",
+      headline: "Analytics show real ROI",
       content:
-        "Lead forms and analytics finally show which events actually convert. My reps stopped guessing what works.",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+        "Lead capture and click insights show which events convert. Our sales reps stopped guessing what actually works.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "David Ortiz",
-      role: "Managing Partner, Park & Associates",
+      role: "Managing Partner, Park & Co",
+      headline: "On-brand for 120+ team members",
       content:
-        "We rolled out 120 cards in a week. Legal approved the templates once, and every rep stayed on brand from day one.",
-      avatar: "https://randomuser.me/api/portraits/men/71.jpg",
+        "We deployed 120 digital cards in under a week. One approval from legal and every rep stayed 100% on brand.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Sophia Martinez",
+      role: "Interior Designer",
+      headline: "Stunning mobile portfolio",
+      content:
+        "Sharing my high-res portfolio via NFC card blows clients away. Booking consultations has never been smoother.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Liam O'Connor",
+      role: "Fitness & Wellness Coach",
+      headline: "Instant client bookings",
+      content:
+        "Clients tap my card to save my contact info, view weekly schedules, and book direct training sessions.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Amara Patel",
+      role: "Portrait & Wedding Photographer",
+      headline: "Seamless lead generation",
+      content:
+        "My inquiry form on OneTap captures photo package preferences instantly right when I meet couples at bridal expos.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Alexandre Dubois",
+      role: "Barber & Studio Owner",
+      headline: "Never lose a recurring client",
+      content:
+        "I hand out OneTap NFC tap cards to walk-ins. They save my number and book their next haircut before leaving.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
   ],
 } as const;
