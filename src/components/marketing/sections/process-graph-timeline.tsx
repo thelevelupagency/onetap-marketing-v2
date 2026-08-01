@@ -56,7 +56,23 @@ export function ProcessGraphTimeline({
     if (maxRatio > 0) setActiveIndex(best);
   }, []);
 
+  const handleStepClick = useCallback((index: number) => {
+    setActiveIndex(index);
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      const el = stepRefs.current[index];
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, []);
+
   useEffect(() => {
+    // Disable scroll-based step switching on desktop viewports (lg: 1024px+)
+    // Desktop active step is controlled exclusively by click and hover for optimal desktop UI/UX
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      return;
+    }
+
     const observers: IntersectionObserver[] = [];
     const ratios = ratiosRef.current;
 
@@ -285,27 +301,7 @@ export function ProcessGraphTimeline({
               />
             </svg>
 
-            {/* Gliding Active Focus Dot directly over the Graph Curve Nodes */}
-            <motion.div
-              className="pointer-events-none absolute z-20 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
-              initial={false}
-              animate={{
-                left: `${(DESKTOP_NODES[activeIndex].x / 1200) * 100}%`,
-                top: `${(DESKTOP_NODES[activeIndex].y / 680) * 100}%`,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 180,
-                damping: 24,
-              }}
-            >
-              <div className="absolute -inset-3 rounded-full bg-brand-turquoise/40 blur-md animate-pulse" />
-              <div className="size-9 rounded-full border-2 border-brand-turquoise bg-white shadow-[0_0_24px_#00F2FE] ring-4 ring-brand-turquoise/30 flex items-center justify-center">
-                <div className="size-3.5 rounded-full bg-brand-turquoise" />
-              </div>
-            </motion.div>
-
-            {/* Nodes directly ON the curve and Section-2 Style Cards below */}
+            {/* Nodes directly ON the curve with click selection & hover emphasis (no scroll-intersection tracking on desktop) */}
             <div className="relative size-full overflow-visible">
               {steps.map((step, index) => {
                 const isActive = index === activeIndex;
@@ -317,7 +313,7 @@ export function ProcessGraphTimeline({
                     ref={(el) => {
                       stepRefs.current[index] = el;
                     }}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => handleStepClick(index)}
                     className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10"
                     style={{
                       left: `${(pos.x / 1200) * 100}%`,
@@ -328,32 +324,39 @@ export function ProcessGraphTimeline({
                     viewport={{ once: true, margin: "-50px" }}
                     transition={enterTransition(index * 0.15)}
                   >
-                    {/* Passive Node Dot Marker - Centered EXACTLY on the Graph Curve */}
+                    {/* Node Dot Marker - Selected on click & highlighted on hover */}
                     <div className="relative flex items-center justify-center">
-                      <div className="absolute -inset-4 rounded-full bg-brand-turquoise/25 blur-md" />
+                      <div
+                        className={cn(
+                          "absolute -inset-3 rounded-full blur-md transition-all duration-300",
+                          isActive ? "bg-brand-turquoise/40 animate-pulse" : "bg-brand-turquoise/25 opacity-0 group-hover:opacity-100"
+                        )}
+                      />
 
                       <div
                         className={cn(
-                          "relative size-8 rounded-full border-2 bg-white transition-all duration-300 flex items-center justify-center shadow-lg",
+                          "relative size-9 rounded-full border-2 bg-white transition-all duration-300 flex items-center justify-center shadow-lg",
                           isActive
-                            ? "border-brand-turquoise opacity-0"
-                            : "border-brand-turquoise/60 hover:border-brand-turquoise hover:scale-110"
+                            ? "border-brand-navy ring-4 ring-brand-turquoise/30 scale-110 shadow-soft-diffusion"
+                            : "border-brand-navy/80 group-hover:border-brand-navy group-hover:scale-110"
                         )}
                       >
-                        <div className="size-3 rounded-full bg-brand-midnight/40" />
+                        <div
+                          className={cn(
+                            "size-3.5 rounded-full transition-colors duration-300",
+                            isActive ? "bg-brand-turquoise" : "bg-brand-midnight/40 group-hover:bg-brand-turquoise/80"
+                          )}
+                        />
                       </div>
                     </div>
 
-                    {/* Step Card - Section 2 Style (rounded-3xl border-2 border-brand-navy) */}
-                    <motion.div
-                      whileHover={{ y: -6, scale: 1.03 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
+                    {/* Step Card - Solid White Background (bg-white) with Pure CSS Hover & Click Selection */}
+                    <div
                       className={cn(
                         "absolute left-1/2 w-64 xl:w-72 -translate-x-1/2 top-8 mt-2 rounded-3xl border-2 bg-white p-6 shadow-sm transition-all duration-300 opacity-100",
                         isActive
-                          ? "border-brand-turquoise shadow-soft-diffusion ring-2 ring-brand-turquoise/20 z-30 scale-105"
-                          : "border-brand-navy/80 shadow-sm z-20 hover:border-brand-turquoise/60 scale-100"
+                          ? "border-brand-navy shadow-soft-diffusion ring-2 ring-brand-navy/20 z-30 scale-105 -translate-y-1.5"
+                          : "border-brand-navy shadow-sm z-20 hover:-translate-y-1.5 hover:shadow-soft-diffusion scale-100"
                       )}
                     >
                       <h3 className={cn(typography.cardTitle, "font-semibold leading-snug text-brand-midnight mb-2")}>
@@ -362,7 +365,7 @@ export function ProcessGraphTimeline({
                       <p className={cn(typography.bodySm, "text-brand-midnight/70 leading-relaxed")}>
                         {step.description}
                       </p>
-                    </motion.div>
+                    </div>
                   </motion.div>
                 );
               })}
@@ -403,7 +406,7 @@ export function ProcessGraphTimeline({
               />
             </div>
 
-            {/* Vertical Stacked Mobile Step Cards with Staggered Motion Reveal */}
+            {/* Vertical Stacked Mobile Step Cards with Auto Scroll-Focus and Smooth Scroll-To-Click Behavior */}
             <div className="flex flex-col gap-8">
               {steps.map((step, index) => {
                 const isActive = index === activeIndex;
@@ -414,41 +417,45 @@ export function ProcessGraphTimeline({
                     ref={(el) => {
                       stepRefs.current[index] = el;
                     }}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => handleStepClick(index)}
                     initial={prefersReducedMotion ? false : { opacity: 0, x: -16 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-30px" }}
                     transition={enterTransition(index * 0.12)}
-                    className="relative flex items-start gap-4 pl-2"
+                    className="relative flex items-start gap-4 pl-2 cursor-pointer"
                   >
-                    {/* Node Dot Marker */}
+                    {/* Node Dot Marker - Active focus matching desktop */}
                     <div className="relative z-10 mt-2 flex shrink-0 items-center justify-center">
-                      <div className="absolute -inset-2 rounded-full bg-brand-turquoise/30 blur-sm" />
+                      <div
+                        className={cn(
+                          "absolute -inset-2.5 rounded-full blur-md transition-all duration-300",
+                          isActive ? "bg-brand-turquoise/40 animate-pulse" : "bg-brand-turquoise/25 opacity-0"
+                        )}
+                      />
                       <div
                         className={cn(
                           "relative size-8 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-300 shadow-md",
                           isActive
-                            ? "border-brand-turquoise ring-4 ring-brand-turquoise/25 scale-110 shadow-[0_0_16px_#00F2FE]"
-                            : "border-brand-turquoise/50"
+                            ? "border-brand-navy ring-4 ring-brand-turquoise/30 scale-110 shadow-soft-diffusion"
+                            : "border-brand-navy/80 scale-100"
                         )}
                       >
                         <div
                           className={cn(
-                            "size-3 rounded-full",
+                            "size-3 rounded-full transition-colors duration-300",
                             isActive ? "bg-brand-turquoise" : "bg-brand-midnight/40"
                           )}
                         />
                       </div>
                     </div>
 
-                    {/* Section 2 Style Mobile Card (rounded-3xl border-2 border-brand-navy) with Touch Micro-Animation */}
-                    <motion.div
-                      whileTap={{ scale: 0.98 }}
+                    {/* Mobile Card - Focus elevation & ring animation on scroll matching desktop click/active state */}
+                    <div
                       className={cn(
-                        "relative flex-1 rounded-3xl border-2 bg-white p-5 shadow-sm transition-all duration-300 overflow-hidden opacity-100",
+                        "relative flex-1 rounded-3xl border-2 bg-white p-5 transition-all duration-300 overflow-hidden opacity-100",
                         isActive
-                          ? "border-brand-turquoise ring-2 ring-brand-turquoise/20 shadow-soft-diffusion"
-                          : "border-brand-navy/80 shadow-sm"
+                          ? "border-brand-navy ring-2 ring-brand-navy/20 shadow-soft-diffusion scale-105 -translate-y-1 z-20"
+                          : "border-brand-navy shadow-sm scale-100 translate-y-0 z-10"
                       )}
                     >
                       <span
@@ -469,7 +476,7 @@ export function ProcessGraphTimeline({
                           {step.description}
                         </p>
                       </div>
-                    </motion.div>
+                    </div>
                   </motion.div>
                 );
               })}
