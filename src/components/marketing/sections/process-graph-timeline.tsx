@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { MarketingBadge, MarketingContainer } from "@/components/marketing/primitives";
+import { RevealStagger, RevealItem } from "@/components/marketing/motion/reveal";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { useMotionConfig } from "@/lib/motion";
 import { type as typography } from "@/lib/typography";
@@ -41,7 +42,7 @@ export function ProcessGraphTimeline({
   const [activeIndex, setActiveIndex] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const ratiosRef = useRef<Map<number, number>>(new Map());
-  const { enterTransition } = useMotionConfig();
+  const { enterTransition, prefersReducedMotion } = useMotionConfig();
 
   const updateActiveFromRatios = useCallback(() => {
     let best = 0;
@@ -96,48 +97,61 @@ export function ProcessGraphTimeline({
 
   return (
     <div className="relative w-full overflow-visible">
-      {/* Container-Aligned Header Layer */}
+      {/* Container-Aligned Header Layer with Staggered Scroll Reveal */}
       <MarketingContainer width="wide" className="relative z-30 pointer-events-none">
         {/* MOBILE HEADER (< lg screen) */}
-        <div className="mb-8 flex flex-col items-start lg:hidden pointer-events-auto">
-          <MarketingBadge className="mb-3">The Process</MarketingBadge>
-          <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
-            {title}{" "}
-            {accent ? (
-              <span className="bg-gradient-to-r from-brand-turquoise to-cyan-500 bg-clip-text text-transparent">
-                {accent}
-              </span>
-            ) : null}
-          </h2>
-          <p className={cn(typography.bodySm, "mb-6 text-brand-midnight/70 max-w-xl")}>
-            {description}
-          </p>
-          <GetCardCta href={ctaHref} size="md">
-            {ctaLabel}
-          </GetCardCta>
-        </div>
+        <RevealStagger className="mb-8 flex flex-col items-start lg:hidden pointer-events-auto">
+          <RevealItem>
+            <MarketingBadge className="mb-3">The Process</MarketingBadge>
+          </RevealItem>
+          <RevealItem delay={0.1}>
+            <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
+              {title}{" "}
+              {accent ? (
+                <span className="bg-gradient-to-r from-brand-turquoise to-cyan-500 bg-clip-text text-transparent">
+                  {accent}
+                </span>
+              ) : null}
+            </h2>
+          </RevealItem>
+          <RevealItem delay={0.2}>
+            <p className={cn(typography.bodySm, "mb-6 text-brand-midnight/70 max-w-xl")}>
+              {description}
+            </p>
+          </RevealItem>
+          <RevealItem delay={0.3}>
+            <GetCardCta href={ctaHref} size="md">
+              {ctaLabel}
+            </GetCardCta>
+          </RevealItem>
+        </RevealStagger>
 
         {/* DESKTOP HEADER (lg+ screen: absolute overlay aligned with site grid) */}
-        <div className="hidden lg:flex flex-col items-start max-w-md pointer-events-auto">
-          <MarketingBadge className="mb-3">The Process</MarketingBadge>
-
-          <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
-            {title}{" "}
-            {accent ? (
-              <span className="bg-gradient-to-r from-brand-turquoise to-cyan-500 bg-clip-text text-transparent">
-                {accent}
-              </span>
-            ) : null}
-          </h2>
-
-          <p className={cn(typography.bodySm, "mb-6 text-brand-midnight/75 max-w-sm leading-relaxed")}>
-            {description}
-          </p>
-
-          <GetCardCta href={ctaHref} size="md">
-            {ctaLabel}
-          </GetCardCta>
-        </div>
+        <RevealStagger className="hidden lg:flex flex-col items-start max-w-md pointer-events-auto">
+          <RevealItem>
+            <MarketingBadge className="mb-3">The Process</MarketingBadge>
+          </RevealItem>
+          <RevealItem delay={0.1}>
+            <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
+              {title}{" "}
+              {accent ? (
+                <span className="bg-gradient-to-r from-brand-turquoise to-cyan-500 bg-clip-text text-transparent">
+                  {accent}
+                </span>
+              ) : null}
+            </h2>
+          </RevealItem>
+          <RevealItem delay={0.2}>
+            <p className={cn(typography.bodySm, "mb-6 text-brand-midnight/75 max-w-sm leading-relaxed")}>
+              {description}
+            </p>
+          </RevealItem>
+          <RevealItem delay={0.3}>
+            <GetCardCta href={ctaHref} size="md">
+              {ctaLabel}
+            </GetCardCta>
+          </RevealItem>
+        </RevealStagger>
       </MarketingContainer>
 
       {/* FULL-SECTION FULL-BLEED GRAPH TIMELINE CANVAS */}
@@ -291,14 +305,14 @@ export function ProcessGraphTimeline({
               </div>
             </motion.div>
 
-            {/* Nodes and Cards positioned BELOW the line without clipping */}
+            {/* Nodes directly ON the curve and Section-2 Style Cards below */}
             <div className="relative size-full overflow-visible">
               {steps.map((step, index) => {
                 const isActive = index === activeIndex;
                 const pos = DESKTOP_NODES[index] || DESKTOP_NODES[0];
 
                 return (
-                  <div
+                  <motion.div
                     key={step.step}
                     ref={(el) => {
                       stepRefs.current[index] = el;
@@ -309,8 +323,12 @@ export function ProcessGraphTimeline({
                       left: `${(pos.x / 1200) * 100}%`,
                       top: `${(pos.y / 680) * 100}%`,
                     }}
+                    initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={enterTransition(index * 0.15)}
                   >
-                    {/* Passive Node Dot Marker */}
+                    {/* Passive Node Dot Marker - Centered EXACTLY on the Graph Curve */}
                     <div className="relative flex items-center justify-center">
                       <div className="absolute -inset-4 rounded-full bg-brand-turquoise/25 blur-md" />
 
@@ -326,23 +344,26 @@ export function ProcessGraphTimeline({
                       </div>
                     </div>
 
-                    {/* Step Card - Positioned ALWAYS BELOW the graph line */}
-                    <div
+                    {/* Step Card - Section 2 Style (rounded-3xl border-2 border-brand-navy) */}
+                    <motion.div
+                      whileHover={{ y: -6, scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
                       className={cn(
-                        "absolute left-1/2 w-64 xl:w-72 -translate-x-1/2 top-8 mt-2 rounded-2xl border bg-white p-5 shadow-lg transition-all duration-300 opacity-100",
+                        "absolute left-1/2 w-64 xl:w-72 -translate-x-1/2 top-8 mt-2 rounded-3xl border-2 bg-white p-6 shadow-sm transition-all duration-300 opacity-100",
                         isActive
-                          ? "border-brand-turquoise/50 shadow-brand-turquoise/15 ring-2 ring-brand-turquoise/20 z-30 scale-105"
-                          : "border-brand-midnight/10 shadow-sm z-20 hover:border-brand-turquoise/40 scale-100"
+                          ? "border-brand-turquoise shadow-soft-diffusion ring-2 ring-brand-turquoise/20 z-30 scale-105"
+                          : "border-brand-navy/80 shadow-sm z-20 hover:border-brand-turquoise/60 scale-100"
                       )}
                     >
-                      <h3 className="font-display text-base xl:text-lg font-bold text-brand-midnight mb-2">
+                      <h3 className={cn(typography.cardTitle, "font-semibold leading-snug text-brand-midnight mb-2")}>
                         {step.title}
                       </h3>
-                      <p className="text-xs xl:text-sm text-brand-midnight/75 leading-relaxed">
+                      <p className={cn(typography.bodySm, "text-brand-midnight/70 leading-relaxed")}>
                         {step.description}
                       </p>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -351,10 +372,10 @@ export function ProcessGraphTimeline({
 
         {/* MOBILE TIMELINE (< lg screen) */}
         <MarketingContainer width="wide" className="block lg:hidden">
-          <div className="relative w-full pt-2 pb-4">
-            {/* Continuous Vertical Timeline Line: Begins below header (top-6) and extends cleanly down to bottom of Step 3 card (bottom-2) */}
+          <div className="relative w-full pt-2 pb-0">
+            {/* Continuous Vertical Timeline Line: Starts below mobile header (top-6) and extends 100% to exact section bottom edge (-bottom-24) */}
             <div
-              className="absolute left-6 top-6 bottom-2 w-1 pointer-events-none z-0"
+              className="absolute left-6 top-6 -bottom-24 w-1 pointer-events-none z-0"
               aria-hidden
             >
               {/* Base Guide Glow Line */}
@@ -369,31 +390,35 @@ export function ProcessGraphTimeline({
                 transition={enterTransition(0)}
               />
 
-              {/* Infinite Travelling Light / Glow Beam Pulse along the vertical line */}
+              {/* Infinite Travelling Light / Glow Beam Pulse along full vertical section line */}
               <motion.div
                 className="absolute left-0 w-full h-24 bg-gradient-to-b from-transparent via-[#00F2FE] to-transparent rounded-full shadow-[0_0_20px_#00F2FE]"
-                initial={{ top: "-5%" }}
-                animate={{ top: "105%" }}
+                initial={{ top: "-10%" }}
+                animate={{ top: "110%" }}
                 transition={{
-                  duration: 3,
+                  duration: 3.5,
                   repeat: Infinity,
                   ease: "linear",
                 }}
               />
             </div>
 
-            {/* Vertical Stacked Mobile Step Cards */}
+            {/* Vertical Stacked Mobile Step Cards with Staggered Motion Reveal */}
             <div className="flex flex-col gap-8">
               {steps.map((step, index) => {
                 const isActive = index === activeIndex;
 
                 return (
-                  <div
+                  <motion.div
                     key={step.step}
                     ref={(el) => {
                       stepRefs.current[index] = el;
                     }}
                     onClick={() => setActiveIndex(index)}
+                    initial={prefersReducedMotion ? false : { opacity: 0, x: -16 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    transition={enterTransition(index * 0.12)}
                     className="relative flex items-start gap-4 pl-2"
                   >
                     {/* Node Dot Marker */}
@@ -416,18 +441,19 @@ export function ProcessGraphTimeline({
                       </div>
                     </div>
 
-                    {/* Clean 100% Visible Mobile Step Card */}
-                    <div
+                    {/* Section 2 Style Mobile Card (rounded-3xl border-2 border-brand-navy) with Touch Micro-Animation */}
+                    <motion.div
+                      whileTap={{ scale: 0.98 }}
                       className={cn(
-                        "relative flex-1 rounded-2xl border bg-white p-5 shadow-md transition-all duration-300 overflow-hidden opacity-100",
+                        "relative flex-1 rounded-3xl border-2 bg-white p-5 shadow-sm transition-all duration-300 overflow-hidden opacity-100",
                         isActive
-                          ? "border-brand-turquoise/50 ring-2 ring-brand-turquoise/20 shadow-soft-diffusion"
-                          : "border-brand-midnight/10 shadow-sm"
+                          ? "border-brand-turquoise ring-2 ring-brand-turquoise/20 shadow-soft-diffusion"
+                          : "border-brand-navy/80 shadow-sm"
                       )}
                     >
                       <span
                         className={cn(
-                          "absolute right-3 top-1 select-none font-display font-black text-6xl leading-none transition-colors duration-300 pointer-events-none",
+                          "absolute right-4 top-2 select-none font-display font-black text-6xl leading-none transition-colors duration-300 pointer-events-none",
                           isActive ? "text-brand-turquoise/20" : "text-brand-midnight/5"
                         )}
                         aria-hidden
@@ -436,15 +462,15 @@ export function ProcessGraphTimeline({
                       </span>
 
                       <div className="relative z-10">
-                        <h3 className="font-display text-lg font-bold text-brand-midnight mb-2">
+                        <h3 className={cn(typography.cardTitle, "font-semibold leading-snug text-brand-midnight mb-2")}>
                           {step.title}
                         </h3>
-                        <p className={cn(typography.bodySm, "text-brand-midnight/75 leading-relaxed")}>
+                        <p className={cn(typography.bodySm, "text-brand-midnight/70 leading-relaxed")}>
                           {step.description}
                         </p>
                       </div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 );
               })}
             </div>

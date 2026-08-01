@@ -35,7 +35,7 @@ export function Process1({
   const stepBadgeBg = background === "cream" ? "bg-white" : "bg-brand-cream";
 
   return (
-    <MarketingSection background={background} spacing="default" className={cn("overflow-hidden relative", className)}>
+    <MarketingSection background={background} spacing="default" className={cn("overflow-hidden relative pb-0 md:pb-0 lg:pb-24", className)}>
       <ProcessGraphTimeline
         title={title}
         accent={accent}
