@@ -352,19 +352,33 @@ export function ProcessGraphTimeline({
         {/* MOBILE TIMELINE (< lg screen) */}
         <MarketingContainer width="wide" className="block lg:hidden">
           <div className="relative w-full pt-2">
-            {/* Continuous Vertical Wavy Line */}
+            {/* Continuous Vertical Full-Bleed Line extending top-to-bottom across section height */}
             <div
-              className="absolute left-6 top-0 bottom-0 w-1 pointer-events-none"
+              className="absolute left-6 -top-40 -bottom-16 w-1 pointer-events-none z-0"
               aria-hidden
             >
+              {/* Base Guide Glow Line */}
               <div className="size-full bg-gradient-to-b from-brand-turquoise via-cyan-400 to-brand-turquoise opacity-40 rounded-full blur-[1px]" />
-              <div className="absolute inset-0 size-full bg-gradient-to-b from-brand-turquoise via-cyan-400 to-brand-turquoise opacity-70 rounded-full" />
+              <div className="absolute inset-0 size-full bg-gradient-to-b from-brand-turquoise via-cyan-400 to-brand-turquoise opacity-70 rounded-full shadow-[0_0_12px_#00F2FE]" />
               
+              {/* Dynamic Active Progress Height */}
               <motion.div
-                className="w-full bg-brand-turquoise rounded-full origin-top shadow-[0_0_12px_#00F2FE]"
+                className="w-full bg-brand-turquoise rounded-full origin-top shadow-[0_0_16px_#00F2FE]"
                 initial={{ scaleY: 0.33 }}
                 animate={{ scaleY: (activeIndex + 1) / steps.length }}
                 transition={enterTransition(0)}
+              />
+
+              {/* Infinite Travelling Light / Glow Beam Pulse Top-to-Bottom */}
+              <motion.div
+                className="absolute left-0 w-full h-28 bg-gradient-to-b from-transparent via-[#00F2FE] to-transparent rounded-full shadow-[0_0_20px_#00F2FE]"
+                initial={{ top: "-15%" }}
+                animate={{ top: "115%" }}
+                transition={{
+                  duration: 3.5,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               />
             </div>
 
@@ -389,7 +403,7 @@ export function ProcessGraphTimeline({
                         className={cn(
                           "relative size-8 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-300 shadow-md",
                           isActive
-                            ? "border-brand-turquoise ring-4 ring-brand-turquoise/25 scale-110"
+                            ? "border-brand-turquoise ring-4 ring-brand-turquoise/25 scale-110 shadow-[0_0_16px_#00F2FE]"
                             : "border-brand-turquoise/50"
                         )}
                       >
