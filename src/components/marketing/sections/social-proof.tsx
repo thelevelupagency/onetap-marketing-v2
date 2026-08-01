@@ -1,20 +1,15 @@
 "use client";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { type as typography } from "@/lib/typography";
 import {
   MarketingSection,
   MarketingContainer,
   SectionHeader,
-  MarketingCarousel,
-  MarketingCarouselContentSlide,
   AudienceMarquee,
+  TestimonialCard,
+  InfiniteTestimonialTrack,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
 import { socialProofCopy } from "@/content/homepage";
-import { MARKETING_CAROUSEL_AUTOPLAY_MS } from "@/lib/use-marketing-carousel";
 import type { MarketingBandBackground, SocialProofCopy } from "@/content/marketing-copy-types";
 
 export type { SocialProofCopy } from "@/content/marketing-copy-types";
@@ -24,40 +19,17 @@ interface SocialProofProps {
   background?: MarketingBandBackground;
 }
 
-function TestimonialCard({
-  testimonial,
-}: {
-  testimonial: SocialProofCopy["testimonials"][number];
-}) {
-  return (
-    <Card
-      className={cn(
-        "flex h-full w-full flex-col gap-0 bg-white p-6 shadow-sm",
-        "transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-diffusion"
-      )}
-    >
-      <div className="mb-4 flex gap-4">
-        <Avatar className="size-10 rounded-full ring-1 ring-input">
-          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-        </Avatar>
-        <div>
-          <p className={typography.label}>{testimonial.name}</p>
-          <p className={typography.caption}>{testimonial.role}</p>
-        </div>
-      </div>
-      <p className={cn(typography.bodySm, "flex-1 text-brand-midnight/80")}>
-        <q>{testimonial.content}</q>
-      </p>
-    </Card>
-  );
-}
-
 export function SocialProof({
   copy = socialProofCopy,
   background = "cream",
 }: SocialProofProps) {
+  const testimonials = copy.testimonials;
+  const halfCount = Math.ceil(testimonials.length / 2);
+  const row1 = testimonials.slice(0, halfCount);
+  const row2 = testimonials.slice(halfCount);
+
   return (
-    <MarketingSection background={background} id="social-proof" className="overflow-visible">
+    <MarketingSection background={background} id="social-proof" className="overflow-hidden">
       <MarketingContainer width="wide" className="overflow-visible">
         <Reveal>
           <SectionHeader
@@ -65,7 +37,7 @@ export function SocialProof({
             accent={copy.accent}
             lead={copy.lead}
             spacingBelow="none"
-            className="mb-marketing-header-gap-md"
+            className="mb-6 sm:mb-8"
           />
         </Reveal>
 
@@ -73,25 +45,39 @@ export function SocialProof({
           <AudienceMarquee
             audiences={copy.audiences}
             background={background}
-            className="mb-marketing-header-gap"
-          />
-        </Reveal>
-
-        <Reveal delay={0.08} className="overflow-visible">
-          <MarketingCarousel
-            items={copy.testimonials}
-            getKey={(t) => t.name}
-            renderItem={(t) => (
-              <MarketingCarouselContentSlide>
-                <TestimonialCard testimonial={t} />
-              </MarketingCarouselContentSlide>
-            )}
-            ariaLabel="Testimonial slides"
-            desktopMode="threeUp"
-            autoplayInterval={MARKETING_CAROUSEL_AUTOPLAY_MS}
+            className="mb-6 sm:mb-8"
           />
         </Reveal>
       </MarketingContainer>
+
+      {/* Dual Row Bi-Directional Infinite Scrolling Tracks */}
+      <Reveal delay={0.08} className="overflow-visible">
+        <div className="flex flex-col gap-0 sm:gap-1">
+          {/* Row 1: Right Moving */}
+          <InfiniteTestimonialTrack
+            direction="right"
+            speed={1.0}
+            background={background}
+            ariaLabel="Testimonials row 1"
+          >
+            {row1.map((item, index) => (
+              <TestimonialCard key={`row1-${item.name}-${index}`} testimonial={item} />
+            ))}
+          </InfiniteTestimonialTrack>
+
+          {/* Row 2: Left Moving */}
+          <InfiniteTestimonialTrack
+            direction="left"
+            speed={1.0}
+            background={background}
+            ariaLabel="Testimonials row 2"
+          >
+            {row2.map((item, index) => (
+              <TestimonialCard key={`row2-${item.name}-${index}`} testimonial={item} />
+            ))}
+          </InfiniteTestimonialTrack>
+        </div>
+      </Reveal>
     </MarketingSection>
   );
 }
