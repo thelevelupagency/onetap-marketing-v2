@@ -46,3 +46,9 @@ export {
   type MarketingCarouselCardProps,
 } from "./marketing-carousel-card";
 export { AudienceMarquee } from "./audience-marquee";
+export { TestimonialCard, type TestimonialCardProps } from "./testimonial-card";
+export {
+  InfiniteTestimonialTrack,
+  type InfiniteTestimonialTrackProps,
+} from "./infinite-testimonial-track";
+

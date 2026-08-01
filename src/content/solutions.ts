@@ -6,6 +6,7 @@ import {
   CARD_SCREENSHOT_INTERIOR,
 } from "@/lib/phone-screenshots";
 import { CARD_HOST_PREFIX } from "@/lib/constants";
+import { LOGO_ICON } from "@/lib/logos";
 
 export type SolutionFeatureIconKey =
   | "zap"
@@ -319,30 +320,56 @@ export const freelancersSocialProofCopy = {
     {
       name: "Elena Torres",
       role: "Freelance Brand Strategist",
+      headline: "Set up in under a minute",
       content:
         "I set up my card in under a minute. Clients save my contact before I finish my elevator pitch.",
-      avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Marcus Chen",
       role: "Independent Consultant",
+      headline: "Faster prospect connections",
       content:
         "One link for my calendar, portfolio, and WhatsApp. Prospects reach me faster after every intro call.",
-      avatar: "https://randomuser.me/api/portraits/men/52.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Priya Shah",
       role: "Marketing Consultant",
+      headline: "Replaced 3 link tools at once",
       content:
         "I replaced three link-in-bio tools with one card. New leads hit my inbox the same day I meet someone at an event.",
-      avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Diego Ramos",
       role: "Freelance Photographer",
+      headline: "Seamless shoot onboarding",
       content:
         "At every shoot I share one QR code. Models and clients save my contact and browse my portfolio before they leave the set.",
-      avatar: "https://randomuser.me/api/portraits/men/46.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Sophia Martinez",
+      role: "Interior Designer",
+      headline: "Stunning mobile portfolio",
+      content:
+        "Sharing my high-res portfolio via NFC card blows clients away. Booking consultations has never been smoother.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Liam O'Connor",
+      role: "Fitness & Wellness Coach",
+      headline: "Instant client bookings",
+      content:
+        "Clients tap my card to save my contact info, view weekly schedules, and book direct training sessions.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
   ],
 } as const;
@@ -481,23 +508,56 @@ export const agenciesSocialProofCopy = {
     {
       name: "James Okonkwo",
       role: "Founder, Nova Labs",
+      headline: "Unified team brand system",
       content:
         "Our team shares one brand system across 40 cards. Onboarding a new hire is now a link and a tap.",
-      avatar: "https://randomuser.me/api/portraits/men/62.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "Sarah Kim",
       role: "Operations Director, Meridian Group",
+      headline: "Saved weeks of legal compliance",
       content:
         "Brand Lock alone saved our legal team weeks of compliance headaches. Every agent card looks exactly how we need it.",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
     {
       name: "David Ortiz",
       role: "Managing Partner, Park & Associates",
+      headline: "100% on-brand rollout for 120+ reps",
       content:
         "We rolled out 120 cards in a week. Legal approved the templates once, and every rep stayed on brand from day one.",
-      avatar: "https://randomuser.me/api/portraits/men/71.jpg",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Amara Patel",
+      role: "Portrait & Wedding Photographer",
+      headline: "Seamless lead generation",
+      content:
+        "My inquiry form on OneTap captures photo package preferences instantly right when I meet couples at bridal expos.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Alexandre Dubois",
+      role: "Barber & Studio Owner",
+      headline: "Never lose a recurring client",
+      content:
+        "I hand out OneTap NFC tap cards to walk-ins. They save my number and book their next haircut before leaving.",
+      avatar: LOGO_ICON,
+      rating: 5,
+    },
+    {
+      name: "Marcus Chen",
+      role: "Real Estate Agent",
+      headline: "Essential tool for open houses",
+      content:
+        "One link for listings, virtual tours, and direct WhatsApp chat. Prospects reach out immediately after tours.",
+      avatar: LOGO_ICON,
+      rating: 5,
     },
   ],
 } as const;
