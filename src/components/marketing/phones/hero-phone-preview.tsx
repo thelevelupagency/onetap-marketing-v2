@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { MarketingPhonePreview } from "@/components/marketing/phones/marketing-phone-preview";
 import {
-  CARD_SCREENSHOT_BARBER,
-  CARD_SCREENSHOT_FITNESS,
-  CARD_SCREENSHOT_INTERIOR,
+  CARD_SCREENSHOT_JESSICA_WALSH,
+  CARD_SCREENSHOT_KIM_YOGA,
+  CARD_SCREENSHOT_ROB_HART,
 } from "@/lib/phone-screenshots";
 import { FloatWrap } from "@/components/marketing/phones/float-wrap";
 import { EASE_OUT, useMotionConfig } from "@/lib/motion";
@@ -183,8 +183,8 @@ export function HeroPhonePreview() {
               <PhoneClipShell scale={SIDE_SCALE}>
                 <MarketingPhonePreview
                   scale={SIDE_SCALE}
-                  imageSrc={CARD_SCREENSHOT_INTERIOR}
-                  alt="Interior designer OneTap digital business card"
+                  imageSrc={CARD_SCREENSHOT_KIM_YOGA}
+                  alt="Kim Yoga instructor OneTap digital business card"
                 />
               </PhoneClipShell>
             </motion.div>
@@ -199,8 +199,8 @@ export function HeroPhonePreview() {
               <PhoneClipShell scale={SIDE_SCALE}>
                 <MarketingPhonePreview
                   scale={SIDE_SCALE}
-                  imageSrc={CARD_SCREENSHOT_BARBER}
-                  alt="Barbershop OneTap digital business card"
+                  imageSrc={CARD_SCREENSHOT_ROB_HART}
+                  alt="Rob Hart photography OneTap digital business card"
                 />
               </PhoneClipShell>
             </motion.div>
@@ -214,8 +214,8 @@ export function HeroPhonePreview() {
               <PhoneClipShell scale={CENTER_SCALE}>
                 <MarketingPhonePreview
                   scale={CENTER_SCALE}
-                  imageSrc={CARD_SCREENSHOT_FITNESS}
-                  alt="Fitness professional OneTap digital business card"
+                  imageSrc={CARD_SCREENSHOT_JESSICA_WALSH}
+                  alt="Jessica Walsh realtor OneTap digital business card"
                   priority
                 />
               </PhoneClipShell>
@@ -234,8 +234,8 @@ export function HeroPhonePreview() {
                 <PhoneClipShell scale={SIDE_SCALE}>
                   <MarketingPhonePreview
                     scale={SIDE_SCALE}
-                    imageSrc={CARD_SCREENSHOT_INTERIOR}
-                    alt="Interior designer OneTap digital business card"
+                    imageSrc={CARD_SCREENSHOT_KIM_YOGA}
+                    alt="Kim Yoga instructor OneTap digital business card"
                   />
                 </PhoneClipShell>
               </FloatWrap>
@@ -252,8 +252,8 @@ export function HeroPhonePreview() {
                 <PhoneClipShell scale={SIDE_SCALE}>
                   <MarketingPhonePreview
                     scale={SIDE_SCALE}
-                    imageSrc={CARD_SCREENSHOT_BARBER}
-                    alt="Barbershop OneTap digital business card"
+                    imageSrc={CARD_SCREENSHOT_ROB_HART}
+                    alt="Rob Hart photography OneTap digital business card"
                   />
                 </PhoneClipShell>
               </FloatWrap>
@@ -269,8 +269,8 @@ export function HeroPhonePreview() {
                 <PhoneClipShell scale={CENTER_SCALE}>
                   <MarketingPhonePreview
                     scale={CENTER_SCALE}
-                    imageSrc={CARD_SCREENSHOT_FITNESS}
-                    alt="Fitness professional OneTap digital business card"
+                    imageSrc={CARD_SCREENSHOT_JESSICA_WALSH}
+                    alt="Jessica Walsh realtor OneTap digital business card"
                     priority
                   />
                 </PhoneClipShell>

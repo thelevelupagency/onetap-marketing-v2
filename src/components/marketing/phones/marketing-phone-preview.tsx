@@ -7,9 +7,7 @@ import { CARD_SCREENSHOT } from "@/lib/phone-screenshots";
 export { phoneLayoutDimensions, PHONE_OUTER_HEIGHT } from "@/lib/phone-mockup";
 export {
   CARD_SCREENSHOT,
-  CARD_SCREENSHOT_BARBER,
-  CARD_SCREENSHOT_FITNESS,
-  CARD_SCREENSHOT_INTERIOR,
+  CARD_SCREENSHOTS,
 } from "@/lib/phone-screenshots";
 
 export interface MarketingPhonePreviewProps {
