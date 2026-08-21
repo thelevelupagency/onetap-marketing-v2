@@ -9,6 +9,7 @@ NEXT_PUBLIC_SITE_URL=https://onetap-card.com
 NEXT_PUBLIC_CARD_BASE_URL=https://card-dev.onetap-card.com
 NEXT_PUBLIC_MAIN_APP_URL=https://app-dev.onetap-card.com
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dudwjf2pu
+NEXT_PUBLIC_META_PIXEL_ID=28011734695135178
 ```
 
 For local `next dev` overrides:
@@ -25,11 +26,16 @@ NEXT_PUBLIC_SITE_URL=https://onetap-card.com
 NEXT_PUBLIC_CARD_BASE_URL=https://card.onetap-card.com
 NEXT_PUBLIC_MAIN_APP_URL=https://app.onetap-card.com
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dudwjf2pu
+NEXT_PUBLIC_META_PIXEL_ID=28011734695135178
 ```
+
+Local `next dev` / `next start` also read gitignored `.env.development` and `.env.production` for the pixel ID. Quality gates do not set this variable. Add `NEXT_PUBLIC_META_PIXEL_ID` in the Vercel dashboard (it is not committed). Rebuild after changing it — `NEXT_PUBLIC_*` is inlined at build time.
+
+The pixel ID is public (it ships in the browser snippet). Do not put Conversion API tokens or app secrets in `NEXT_PUBLIC_*`.
 
 ## CI
 
-GitHub Actions sets the same public values in `.github/workflows/quality-gates.yml`. Vercel project env should mirror production for the production deployment.
+GitHub Actions sets the same public values in `.github/workflows/quality-gates.yml` (except Meta Pixel). Vercel project env should mirror production for the production deployment, including `NEXT_PUBLIC_META_PIXEL_ID` when ads tracking is enabled.
 
 ## Future API routes
 
