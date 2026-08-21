@@ -1,9 +1,13 @@
 import type { PainPointIconKey } from "@/content/homepage";
 import { audienceMarqueeItems, howItWorksCopy } from "@/content/homepage";
 import {
-  CARD_SCREENSHOT_BARBER,
-  CARD_SCREENSHOT_FITNESS,
-  CARD_SCREENSHOT_INTERIOR,
+  CARD_SCREENSHOT_AMIRI_REAL_ESTATE,
+  CARD_SCREENSHOT_DAVE_UFC,
+  CARD_SCREENSHOT_JESSICA_WALSH,
+  CARD_SCREENSHOT_KIM_YOGA,
+  CARD_SCREENSHOT_KND_LAWYER,
+  CARD_SCREENSHOT_ROB_HART,
+  CARD_SCREENSHOT_TORRES_BUILDS,
 } from "@/lib/phone-screenshots";
 import { CARD_HOST_PREFIX } from "@/lib/constants";
 import { LOGO_ICON } from "@/lib/logos";
@@ -37,40 +41,67 @@ export type FreelancerNiche = {
   cards: readonly FreelancerNicheCard[];
 };
 
-const freelancerCardInterior: FreelancerNicheCard = {
-  id: "interior",
-  personaName: "Katy Delma",
-  styleLabel: "Portfolio",
-  imageSrc: CARD_SCREENSHOT_INTERIOR,
+const freelancerCardJessicaWalsh: FreelancerNicheCard = {
+  id: "jessica-walsh",
+  personaName: "Jessica Walsh",
+  styleLabel: "Realtor",
+  imageSrc: CARD_SCREENSHOT_JESSICA_WALSH,
   slug: "sofi-schwartz",
-  alt: "Interior designer OneTap digital business card",
+  alt: "Jessica Walsh realtor OneTap digital business card",
 };
 
-const freelancerCardBarber: FreelancerNicheCard = {
-  id: "barber",
-  personaName: "Frame Studio",
-  styleLabel: "Clean",
-  imageSrc: CARD_SCREENSHOT_BARBER,
+const freelancerCardTorresBuilds: FreelancerNicheCard = {
+  id: "torres-builds",
+  personaName: "Mike Torres",
+  styleLabel: "Remodels",
+  imageSrc: CARD_SCREENSHOT_TORRES_BUILDS,
   slug: "franklin-barbershop",
-  alt: "Barbershop OneTap digital business card",
+  alt: "Mike Torres remodeling OneTap digital business card",
 };
 
-const freelancerCardFitness: FreelancerNicheCard = {
-  id: "fitness",
-  personaName: "Urban Lens",
-  styleLabel: "Bold",
-  imageSrc: CARD_SCREENSHOT_FITNESS,
+const freelancerCardRobHart: FreelancerNicheCard = {
+  id: "rob-hart",
+  personaName: "Rob Hart",
+  styleLabel: "Photography",
+  imageSrc: CARD_SCREENSHOT_ROB_HART,
   slug: "almog-menashe",
-  alt: "Fitness professional OneTap digital business card",
+  alt: "Rob Hart photography OneTap digital business card",
 };
 
-const freelancerCardEditorial: FreelancerNicheCard = {
-  id: "editorial",
-  personaName: "Lena Voss",
-  styleLabel: "Editorial",
-  imageSrc: CARD_SCREENSHOT_FITNESS,
+const freelancerCardKimYoga: FreelancerNicheCard = {
+  id: "kim-yoga",
+  personaName: "Kim Yoga",
+  styleLabel: "Wellness",
+  imageSrc: CARD_SCREENSHOT_KIM_YOGA,
   slug: "almog-menashe",
-  alt: "Creative professional OneTap digital business card",
+  alt: "Kim Yoga instructor OneTap digital business card",
+};
+
+const freelancerCardKndLawyer: FreelancerNicheCard = {
+  id: "knd-lawyer",
+  personaName: "K&D Lawyers",
+  styleLabel: "Counsel",
+  imageSrc: CARD_SCREENSHOT_KND_LAWYER,
+  slug: "sofi-schwartz",
+  alt: "K&D Lawyers OneTap digital business card",
+};
+
+const freelancerCardDaveUfc: FreelancerNicheCard = {
+  id: "dave-ufc",
+  personaName: "Dave",
+  styleLabel: "Coaching",
+  imageSrc: CARD_SCREENSHOT_DAVE_UFC,
+  slug: "almog-menashe",
+  alt: "Dave UFC coach OneTap digital business card",
+};
+
+const freelancerCardAmiriRealEstate: FreelancerNicheCard = {
+  id: "amiri-real-estate",
+  personaName: "Amiri Real Estate",
+  styleLabel: "Luxury",
+  imageSrc: CARD_SCREENSHOT_AMIRI_REAL_ESTATE,
+  slug: "sofi-schwartz",
+  alt: "Amiri Real Estate OneTap digital business card",
 };
 
 export const freelancersHeroCopy = {
@@ -94,80 +125,80 @@ export const freelancersNicheManifest = {
       id: "photography",
       label: "Photography",
       cards: [
-        freelancerCardInterior,
-        freelancerCardBarber,
-        freelancerCardFitness,
-        freelancerCardEditorial,
+        freelancerCardRobHart,
+        freelancerCardKimYoga,
+        freelancerCardJessicaWalsh,
+        freelancerCardDaveUfc,
       ],
     },
     {
       id: "design",
       label: "Design",
       cards: [
-        freelancerCardInterior,
-        freelancerCardFitness,
-        freelancerCardBarber,
-        freelancerCardEditorial,
+        freelancerCardTorresBuilds,
+        freelancerCardRobHart,
+        freelancerCardKimYoga,
+        freelancerCardAmiriRealEstate,
       ],
     },
     {
       id: "fitness",
       label: "Fitness & Coaching",
       cards: [
-        freelancerCardFitness,
-        freelancerCardInterior,
-        freelancerCardBarber,
-        freelancerCardEditorial,
+        freelancerCardDaveUfc,
+        freelancerCardKimYoga,
+        freelancerCardRobHart,
+        freelancerCardTorresBuilds,
       ],
     },
     {
       id: "consulting",
       label: "Consulting",
       cards: [
-        freelancerCardInterior,
-        freelancerCardFitness,
-        freelancerCardBarber,
-        freelancerCardEditorial,
+        freelancerCardKndLawyer,
+        freelancerCardAmiriRealEstate,
+        freelancerCardJessicaWalsh,
+        freelancerCardTorresBuilds,
       ],
     },
     {
       id: "real-estate",
       label: "Real Estate",
       cards: [
-        freelancerCardInterior,
-        freelancerCardFitness,
-        freelancerCardBarber,
-        freelancerCardEditorial,
+        freelancerCardJessicaWalsh,
+        freelancerCardAmiriRealEstate,
+        freelancerCardTorresBuilds,
+        freelancerCardKndLawyer,
       ],
     },
     {
       id: "creator",
       label: "Creators",
       cards: [
-        freelancerCardFitness,
-        freelancerCardInterior,
-        freelancerCardBarber,
-        freelancerCardEditorial,
+        freelancerCardRobHart,
+        freelancerCardKimYoga,
+        freelancerCardDaveUfc,
+        freelancerCardJessicaWalsh,
       ],
     },
     {
       id: "marketing",
       label: "Marketing",
       cards: [
-        freelancerCardInterior,
-        freelancerCardFitness,
-        freelancerCardBarber,
-        freelancerCardEditorial,
+        freelancerCardAmiriRealEstate,
+        freelancerCardJessicaWalsh,
+        freelancerCardRobHart,
+        freelancerCardKndLawyer,
       ],
     },
     {
       id: "freelance",
       label: "Freelance Services",
       cards: [
-        freelancerCardBarber,
-        freelancerCardInterior,
-        freelancerCardFitness,
-        freelancerCardEditorial,
+        freelancerCardTorresBuilds,
+        freelancerCardRobHart,
+        freelancerCardDaveUfc,
+        freelancerCardKimYoga,
       ],
     },
   ] as const satisfies readonly FreelancerNiche[],

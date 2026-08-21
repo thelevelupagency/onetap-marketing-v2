@@ -3,11 +3,7 @@
 import React, { useRef, useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
 import { IPhone13ProMaxMockup } from "./iphone-13-pro-max-mockup";
-import {
-  CARD_SCREENSHOT_BARBER,
-  CARD_SCREENSHOT_FITNESS,
-  CARD_SCREENSHOT_INTERIOR,
-} from "@/lib/phone-screenshots";
+import { CARD_SCREENSHOTS } from "@/lib/phone-screenshots";
 import { useMotionConfig } from "@/lib/motion";
 
 interface InfiniteTrackProps {
@@ -102,11 +98,7 @@ function InfiniteTrack({
   );
 }
 
-const realMockScreenshots = [
-  { src: CARD_SCREENSHOT_FITNESS, alt: "Fitness Trainer Card Preview" },
-  { src: CARD_SCREENSHOT_INTERIOR, alt: "Interior Designer Card Preview" },
-  { src: CARD_SCREENSHOT_BARBER, alt: "Barber Card Preview" },
-];
+const realMockScreenshots = CARD_SCREENSHOTS;
 
 export function AnimatedPhoneGrid() {
   const renderPhone = (item: { src: string; alt: string }, idx: number) => (
