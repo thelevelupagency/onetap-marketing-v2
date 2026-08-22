@@ -46,7 +46,7 @@ export function AgencyWorkspaceSimulator({
         </Reveal>
 
         <div className="flex justify-center pt-marketing-stack-gap">
-          <GetCardCta href={SIGNUP_URL} size="md">
+          <GetCardCta href={SIGNUP_URL} size="md" placement="agency_workspace">
             {copy.cta}
           </GetCardCta>
         </div>

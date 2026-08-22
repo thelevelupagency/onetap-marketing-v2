@@ -26,6 +26,7 @@ export function AgencyHero() {
           href={SIGNUP_URL}
           size="lg"
           showArrow={false}
+          placement="agency_hero"
           className={marketingHeroPrimaryOnDarkClassName}
         >
           {copy.primaryCta}

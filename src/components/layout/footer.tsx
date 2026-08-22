@@ -5,9 +5,13 @@ import { Logo } from "@/components/shared/logo";
 import { MarketingContainer } from "@/components/marketing/primitives";
 import { footerCopy } from "@/content/site";
 import { PRIVACY_URL, TERMS_URL } from "@/lib/constants";
+import { getMetaPixelId } from "@/lib/meta-pixel";
+import { useMarketingConsent } from "@/components/providers/consent-provider";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const pixelId = getMetaPixelId();
+  const { reopenPreferences } = useMarketingConsent();
 
   const footerLinks = {
     product: [
@@ -95,6 +99,15 @@ export function Footer() {
             <a href={TERMS_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
               Terms
             </a>
+            {pixelId ? (
+              <button
+                type="button"
+                onClick={reopenPreferences}
+                className="hover:text-brand-turquoise transition-colors"
+              >
+                Cookie settings
+              </button>
+            ) : null}
           </div>
         </div>
       </MarketingContainer>

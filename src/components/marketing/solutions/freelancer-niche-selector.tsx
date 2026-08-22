@@ -164,7 +164,7 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
           </Reveal>
 
           <div className="flex justify-center pt-2">
-            <GetCardCta size="md">Create Your {activeNiche.label} Card</GetCardCta>
+            <GetCardCta size="md" placement="freelancer_niche">Create Your {activeNiche.label} Card</GetCardCta>
           </div>
         </div>
       </MarketingContainer>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { BookOpen, Briefcase, Building2, HelpCircle, Menu, Trophy } from "lucide-react";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
+import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 
 import {
   Accordion,
@@ -79,9 +80,9 @@ function NavAnchor({
   const isExternal = href.startsWith("http");
   if (isExternal) {
     return (
-      <a href={href} className={className} onClick={onClick}>
+      <AppOutboundLink href={href} className={className} placement={null} onClick={onClick}>
         {children}
-      </a>
+      </AppOutboundLink>
     );
   }
   return (
@@ -220,6 +221,7 @@ const Navbar1 = ({
               <GetCardCta
                 href={auth.signup.url}
                 size="nav"
+                placement="nav"
                 className={cn("shrink-0", auth.signup.className)}
               >
                 {auth.signup.title}
@@ -282,6 +284,7 @@ const Navbar1 = ({
                       <GetCardCta
                         href={auth.signup.url}
                         size="mobileNav"
+                        placement="nav"
                         onClick={() => setMobileOpen(false)}
                         className={auth.signup.className}
                       >
