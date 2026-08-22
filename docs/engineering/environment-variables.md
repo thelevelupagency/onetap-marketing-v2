@@ -33,6 +33,8 @@ Local `next dev` / `next start` also read gitignored `.env.development` and `.en
 
 The pixel ID is public (it ships in the browser snippet). Do not put Conversion API tokens or app secrets in `NEXT_PUBLIC_*`.
 
+Partner-facing loop: [meta-conversion-loop.md](../guides/meta-conversion-loop.md). Short marketing brief: [meta-conversion-loop-for-amit.md](../guides/meta-conversion-loop-for-amit.md).
+
 ## CI
 
 GitHub Actions sets the same public values in `.github/workflows/quality-gates.yml` (except Meta Pixel). Vercel project env should mirror production for the production deployment, including `NEXT_PUBLIC_META_PIXEL_ID` when ads tracking is enabled.
