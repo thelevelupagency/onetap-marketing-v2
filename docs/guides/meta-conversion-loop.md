@@ -94,8 +94,9 @@ If the CAPI token is missing or wrong, **signup, billing, and the website still 
 | Key | Required? | Why |
 |-----|-----------|-----|
 | `NEXT_PUBLIC_META_PIXEL_ID` | **Yes for ads** (same value: `28011734695135178`) | Public pixel ID. Ships in the browser. Set on **Vercel Production only**. Omit on Preview so test deploys do not pollute Ads Manager. |
-| `NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD` | **Local only** | Pixel is ignored unless this is `true` **or** `VERCEL_ENV=production`. Use `true` in local `.env.development`. Use `false` / omit on Vercel Production and Preview. |
-| `VERCEL_ENV` | Automatic | Vercel sets this. Do not add it by hand. Production is what turns the pixel on in the real world. |
+| `NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD` | **Local only** | Pixel is ignored unless this is `true` **or** production. Use `true` in local `.env.development`. Use `false` / omit on Vercel Production and Preview. |
+| `NEXT_PUBLIC_VERCEL_ENV` | Automatic | Vercel injects this into the **browser** bundle. The pixel and cookie banner read this (`production`), not server-only `VERCEL_ENV`. Do not add it by hand. |
+| `VERCEL_ENV` | Automatic | Vercel sets this on the **server**. Used by CAPI on the app. Do not add it by hand. |
 
 ### App only (`onetap-app`)
 
