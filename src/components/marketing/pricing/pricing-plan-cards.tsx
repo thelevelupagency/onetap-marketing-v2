@@ -199,7 +199,8 @@ export function PricingPlanCards({
 
 function planPlacement(planId: string): MetaCtaPlacement | null {
   if (planId === "free") return "pricing_free";
-  if (planId === "premium") return "pricing_pro";
+  if (planId === "pro") return "pricing_pro";
+  if (planId === "team") return "pricing_team";
   return null;
 }
 

@@ -31,6 +31,7 @@ export type MetaCtaPlacement =
   | "agency_workspace"
   | "pricing_free"
   | "pricing_pro"
+  | "pricing_team"
   | "solutions_carousel";
 
 export type MetaEventParams = {
