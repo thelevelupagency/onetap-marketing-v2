@@ -12,7 +12,7 @@ import {
   FaqAccordionComparisonItem,
 } from "@/components/marketing/primitives";
 
-type ComparisonPlanKey = "free" | "premium" | "agency";
+type ComparisonPlanKey = "free" | "pro" | "team";
 
 type ComparisonPlanColumn = {
   key: ComparisonPlanKey;
@@ -22,8 +22,8 @@ type ComparisonPlanColumn = {
 
 const planColumns: ComparisonPlanColumn[] = [
   { key: "free", label: "Free" },
-  { key: "premium", label: "Pro", highlight: true },
-  { key: "agency", label: "Agencies & Teams" },
+  { key: "pro", label: "Pro", highlight: true },
+  { key: "team", label: "Team" },
 ];
 
 function CellValue({

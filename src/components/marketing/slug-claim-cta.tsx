@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { buildCreateBasicsUrl, CARD_HOST_PREFIX } from "@/lib/constants";
 import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
 import { marketingCtaSizes, primaryCtaClassName } from "@/components/marketing/get-card-cta";
+import { navigateToApp } from "@/lib/meta-pixel";
 
 interface SlugClaimCtaProps {
   slug: string;
@@ -54,7 +55,7 @@ export function SlugClaimCta({
       setTouched(true);
       return;
     }
-    window.location.href = buildCreateBasicsUrl(slug);
+    window.location.href = navigateToApp(buildCreateBasicsUrl(slug), "hero_slug");
   }, [canSubmit, slug]);
 
   const handleSubmit = (e: React.FormEvent) => {

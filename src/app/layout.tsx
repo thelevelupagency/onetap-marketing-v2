@@ -3,6 +3,8 @@ import { Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
 import { BackNavigationReloadScript } from "@/components/providers/back-navigation-reload-script";
+import { MarketingConsentProvider } from "@/components/providers/consent-provider";
+import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
 import { MetaPixel } from "@/components/providers/meta-pixel";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
@@ -48,11 +50,14 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} antialiased`}
     >
       <body className="min-h-svh flex flex-col font-sans bg-brand-cream overflow-x-clip">
-        <BackNavigationReloadScript />
-        <MetaPixel />
-        <Navigation />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <MarketingConsentProvider>
+          <BackNavigationReloadScript />
+          <MetaPixel />
+          <Navigation />
+          <div className="flex-1">{children}</div>
+          <Footer />
+          <CookieConsentBanner />
+        </MarketingConsentProvider>
       </body>
     </html>
   );

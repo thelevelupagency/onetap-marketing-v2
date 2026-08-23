@@ -286,9 +286,9 @@ export const dashboardCopy = {
 } as const;
 
 export const socialProofCopy = {
-  title: "Join thousands of professionals",
-  accent: "growing with OneTap.",
-  lead: "Trusted by freelancers, creators, and agencies worldwide.",
+  title: "Professionals who share OneTap",
+  accent: "and get remembered.",
+  lead: "Freelancers, creators, and teams use OneTap to share one live card.",
   audiences: audienceMarqueeItems,
   testimonials: [
     {
@@ -312,9 +312,9 @@ export const socialProofCopy = {
     {
       name: "James Okonkwo",
       role: "Founder, Nova Labs",
-      headline: "Unified team brand system",
+      headline: "Shared team branding",
       content:
-        "Our agency manages 40+ member cards. Onboarding a new hire now takes one simple link and a single tap.",
+        "New hires get an on-brand card from our shared kit. Setup is a link and a tap instead of another design request.",
       avatar: LOGO_ICON,
       rating: 5,
     },
@@ -330,18 +330,18 @@ export const socialProofCopy = {
     {
       name: "Sarah Kim",
       role: "VP Sales, Brightpath",
-      headline: "Analytics show real ROI",
+      headline: "We finally see what gets tapped",
       content:
-        "Lead capture and click insights show which events convert. Our sales reps stopped guessing what actually works.",
+        "Insights show which events drive views and form fills. Our reps follow up on what people actually used.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "David Ortiz",
       role: "Managing Partner, Park & Co",
-      headline: "On-brand for 120+ team members",
+      headline: "On-brand without chasing files",
       content:
-        "We deployed 120 digital cards in under a week. One approval from legal and every rep stayed 100% on brand.",
+        "Legal approved the shared kit once. Every new teammate card starts from that kit instead of a one-off design.",
       avatar: LOGO_ICON,
       rating: 5,
     },

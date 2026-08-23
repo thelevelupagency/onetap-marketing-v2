@@ -29,9 +29,11 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dudwjf2pu
 NEXT_PUBLIC_META_PIXEL_ID=28011734695135178
 ```
 
-Local `next dev` / `next start` also read gitignored `.env.development` and `.env.production` for the pixel ID. Quality gates do not set this variable. Add `NEXT_PUBLIC_META_PIXEL_ID` in the Vercel dashboard (it is not committed). Rebuild after changing it — `NEXT_PUBLIC_*` is inlined at build time.
+Local `next dev` / `next start` also read gitignored `.env.development` and `.env.production` for the pixel ID. Quality gates do not set this variable. Add `NEXT_PUBLIC_META_PIXEL_ID` in the Vercel dashboard **for Production only** (it is not committed). Preview deploys must omit it (or the pixel is ignored unless `NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD=true`). Rebuild after changing it — `NEXT_PUBLIC_*` is inlined at build time.
 
 The pixel ID is public (it ships in the browser snippet). Do not put Conversion API tokens or app secrets in `NEXT_PUBLIC_*`.
+
+Partner-facing loop: [meta-conversion-loop.md](../guides/meta-conversion-loop.md). Short marketing brief: [meta-conversion-loop-for-amit.md](../guides/meta-conversion-loop-for-amit.md).
 
 ## CI
 

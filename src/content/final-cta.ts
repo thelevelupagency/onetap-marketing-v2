@@ -27,7 +27,7 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to",
     accent: "get started?",
     subheadline:
-      "Launch your card on the Free plan in minutes — or choose Pro or Agencies & Teams when you need more power, branding, and team control.",
+      "Launch your card on the Free plan in minutes — or choose Pro or Team when you need more power, branding, and shared workspace control.",
     cta: "Create Your Card For FREE",
     microcopyItems: ["Free plan available", "No app required", "Upgrade anytime"],
   },
@@ -59,9 +59,9 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to unify",
     accent: "your team's brand?",
     subheadline:
-      "Start a free trial — issue on-brand cards for every rep, lock templates, and centralize leads from one admin workspace.",
-    cta: "Start Free Trial",
-    microcopyItems: ["Team workspace", "Brand Lock included", "Leads Center + export"],
+      "Start Team — issue on-brand cards for every teammate, share a brand kit, and centralize leads from one admin workspace.",
+    cta: "Start Team",
+    microcopyItems: ["Team workspace", "Shared brand kit", "Leads center + export"],
   },
 };
 

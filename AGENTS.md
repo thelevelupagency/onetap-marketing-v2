@@ -141,10 +141,12 @@ Do not introduce API routes or Supabase dependencies until explicitly requested.
 
 ## Legal & Privacy Defaults (marketing)
 
-- Do **not** add third-party analytics SDKs (GA4, Meta Pixel, Vercel Analytics, Segment, etc.) unless explicitly approved by the team.
+- Meta Pixel is approved for ads measurement. Load `fbevents.js` only after marketing-cookie consent (`onetap-consent-marketing`). Production pixel only unless `NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD=true`.
+- Do **not** add GA4, Vercel Analytics, Segment, or extra ad SDKs unless explicitly approved.
+- Do **not** send email, phone, name, or typed card slugs in Meta event parameters.
 - If adding public forms that collect personal data: visible Privacy Policy link before/at submit; no extra tracking fields without stated legal basis.
 - Avoid logging emails, phone numbers, or names in server logs.
-- CTA or copy changes that affect signup/login flows may need coordination with `onetap-app` — call this out in PRs.
+- CTA or copy changes that affect signup/login flows may need coordination with `onetap-app` — call this out in PRs. Outbound app URLs must forward `fbclid` and UTM query params via `appendAttributionParams` / `navigateToApp`.
 
 ## Phase 1 Principles
 

@@ -136,7 +136,7 @@ export function ProcessGraphTimeline({
             </p>
           </RevealItem>
           <RevealItem delay={0.3}>
-            <GetCardCta href={ctaHref} size="md">
+            <GetCardCta href={ctaHref} size="md" placement="process">
               {ctaLabel}
             </GetCardCta>
           </RevealItem>
@@ -163,7 +163,7 @@ export function ProcessGraphTimeline({
             </p>
           </RevealItem>
           <RevealItem delay={0.3}>
-            <GetCardCta href={ctaHref} size="md">
+            <GetCardCta href={ctaHref} size="md" placement="process">
               {ctaLabel}
             </GetCardCta>
           </RevealItem>
