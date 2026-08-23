@@ -5,11 +5,11 @@ export const AGENCIES_DASHBOARD_IMAGE_URL =
 export const AGENCIES_DASHBOARD_IMAGE_ALT =
   "OneTap team dashboard with branded cards for multiple agents";
 
-/** Brand Lock admin settings — replace with dedicated screenshot when available. */
+/** Shared brand kit admin settings — replace with dedicated screenshot when available. */
 export const AGENCIES_BRAND_LOCK_IMAGE_URL = AGENCIES_DASHBOARD_IMAGE_URL;
 
 export const AGENCIES_BRAND_LOCK_IMAGE_ALT =
-  "OneTap Brand Lock settings enforcing firm logos and colors across team cards";
+  "OneTap shared brand kit settings for team colors and logos";
 
 /** Leads Center admin table — replace with dedicated screenshot when available. */
 export const AGENCIES_LEADS_CENTER_IMAGE_URL = AGENCIES_DASHBOARD_IMAGE_URL;

@@ -1,14 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { Check } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getPlanPriceDisplay, plans } from "@/content/pricing";
 import { MarketingPrimaryButton } from "@/components/marketing/get-card-cta";
+import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 import { CardReveal, MarketingStaggerGrid } from "@/components/marketing/motion";
 import { microTransition, useMotionConfig, type MotionTokenSet } from "@/lib/motion";
 import { type as typography } from "@/lib/typography";
+import type { MetaCtaPlacement } from "@/lib/meta-pixel";
 
 type PricingSurface = "on-white" | "on-cream";
 
@@ -144,7 +145,7 @@ export function PricingPlanCards({
                 </li>
               ))}
             </ul>
-            <Link href={plan.ctaHref} className="mt-marketing-stack-gap block shrink-0">
+            <PlanCtaLink href={plan.ctaHref} planId={plan.id}>
               <MarketingPrimaryButton
                 size="md"
                 className={cn(
@@ -155,7 +156,7 @@ export function PricingPlanCards({
               >
                 {plan.cta}
               </MarketingPrimaryButton>
-            </Link>
+            </PlanCtaLink>
           </div>
         );
 
@@ -194,4 +195,34 @@ export function PricingPlanCards({
       {grid}
     </div>
   );
+}
+
+function planPlacement(planId: string): MetaCtaPlacement | null {
+  if (planId === "free") return "pricing_free";
+  if (planId === "pro") return "pricing_pro";
+  if (planId === "team") return "pricing_team";
+  return null;
+}
+
+function PlanCtaLink({
+  href,
+  planId,
+  children,
+}: {
+  href: string;
+  planId: string;
+  children: React.ReactNode;
+}) {
+  if (href.startsWith("http")) {
+    return (
+      <AppOutboundLink
+        href={href}
+        placement={planPlacement(planId)}
+        className="mt-marketing-stack-gap block shrink-0"
+      >
+        {children}
+      </AppOutboundLink>
+    );
+  }
+  return <div className="mt-marketing-stack-gap block shrink-0">{children}</div>;
 }

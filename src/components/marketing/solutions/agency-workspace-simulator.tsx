@@ -8,7 +8,7 @@ import {
 import { Reveal } from "@/components/marketing/motion";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
 import { agenciesWorkspaceCopy } from "@/content/solutions";
-import { SIGNUP_URL } from "@/lib/constants";
+import { CREATE_BASICS_URL } from "@/lib/constants";
 
 interface AgencyWorkspaceSimulatorProps {
   background?: MarketingBandBackground;
@@ -46,7 +46,7 @@ export function AgencyWorkspaceSimulator({
         </Reveal>
 
         <div className="flex justify-center pt-marketing-stack-gap">
-          <GetCardCta href={SIGNUP_URL} size="md">
+          <GetCardCta href={CREATE_BASICS_URL} size="md" placement="agency_workspace">
             {copy.cta}
           </GetCardCta>
         </div>

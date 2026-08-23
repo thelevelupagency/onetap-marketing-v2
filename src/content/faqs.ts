@@ -19,7 +19,7 @@ export const homeFaqs = [
   },
   {
     q: "Can I collect leads from my card?",
-    a: "Yes. You can add a lead capture form so visitors can send their name, phone, email, and message directly from your card.",
+    a: "Yes — on Pro and Team. Add a lead capture form so visitors can send their name, phone, email, and message directly from your card. Free can show every other section type, with a 4-section cap.",
   },
   {
     q: "Is OneTap only for digital business cards?",
@@ -62,8 +62,8 @@ export const faqPageEntries: FaqEntry[] = [
   { ...homeFaqs[3], category: "business" },
   { ...homeFaqs[4], category: "business" },
   {
-    q: "Can I use my own domain?",
-    a: "Pro and Agencies & Teams plans support custom URLs and deeper branding options. Contact sales for white-label domain setup.",
+    q: "What can I add on the Free plan?",
+    a: "Free includes one card, One-Tap buttons, a QR code and link, and up to four sections — About, gallery, video, highlights, FAQ, or testimonials. The lead form is a Pro feature.",
     category: "plans-billing",
   },
   ...pricingFaqs.map((faq) => ({ ...faq, category: "plans-billing" as const })),
@@ -100,7 +100,7 @@ export const freelancersFaqs = [
   },
   {
     q: "Can I collect leads from my card?",
-    a: "Yes. You can add a lead capture form so visitors can send their name, phone, email, and message directly from your card.",
+    a: "Yes — on Pro and Team. Add a lead capture form so visitors can send their name, phone, email, and message directly from your card.",
   },
   {
     q: "Is OneTap only for digital business cards?",
@@ -108,22 +108,22 @@ export const freelancersFaqs = [
   },
   {
     q: "Is there a free plan for freelancers?",
-    a: "Yes. You can create and share your card for free. Upgrade when you need advanced analytics, custom branding, or more sections.",
+    a: "Yes. You can create and share your card for free. Upgrade to Pro when you need a lead form, custom branding, or insights.",
   },
 ];
 
 export const agenciesFaqs = [
   {
-    q: "What is Brand Lock?",
-    a: "Brand Lock lets admins enforce firm colors, logos, and required fields across every team card — so reps can't accidentally go off-brand.",
+    q: "How do shared brand kits work?",
+    a: "Team workspaces share colors, logos, and templates so every card starts on-brand. Each member can still update their own bio, links, and contact options.",
   },
   {
-    q: "Can we import users in bulk?",
-    a: "Yes. Upload a CSV with names, titles, emails, and other fields to create or update hundreds of cards in one operation.",
+    q: "How do we add team members?",
+    a: "Invite teammates from your workspace. Team includes up to 10 members and 10 cards — no CSV import or sales call required.",
   },
   {
     q: "How does team analytics work?",
-    a: "Admins see aggregate and per-rep metrics — views, clicks, lead form submissions, and contact saves — to understand networking performance.",
+    a: "Admins see workspace and per-card insights — views, clicks, lead form submissions, and contact saves — with one-year retention on Team.",
   },
   {
     q: "Can I use OneTap for my business, not just myself?",
@@ -131,10 +131,10 @@ export const agenciesFaqs = [
   },
   {
     q: "Do we need a demo to get started?",
-    a: "Larger teams often book a demo to configure Brand Lock and onboarding. Smaller teams can start on the Agencies & Teams plan from the pricing page.",
+    a: "No. Start Team from the pricing page and invite your roster. The agencies page is a walkthrough of how teams use OneTap — not a separate plan name.",
   },
   {
     q: "Can agents edit their own cards?",
-    a: "Yes. Admins control brand guardrails while each rep can update their bio, links, and contact options within approved templates.",
+    a: "Yes. Admins manage the workspace and shared brand kit; each teammate can update their bio, links, and contact options.",
   },
 ];

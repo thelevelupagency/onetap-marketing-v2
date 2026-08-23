@@ -6,13 +6,14 @@ Canonical compliance checklist: **`onetap-app`** → [`docs/compliance-and-secur
 
 | Area | Status |
 |------|--------|
-| Third-party trackers | None (no PostHog, GA4, Meta Pixel, Vercel Analytics) |
-| Cookies | None; `sessionStorage` only for blog scroll-spy and back-navigation UX |
-| Cookie banner | Not required while no non-essential trackers are present |
+| Third-party trackers | Meta Pixel when `NEXT_PUBLIC_META_PIXEL_ID` is set **and** the visitor accepts marketing cookies. No PostHog, GA4, or Vercel Analytics. |
+| Cookies | First-party `localStorage` key `onetap-consent-marketing`; Meta `_fbp` / `_fbc` only after accept. `sessionStorage` for blog scroll-spy and back-navigation UX. |
+| Cookie banner | Required before `fbevents.js`. Reject keeps the site usable with no Facebook script. |
 | Privacy / Terms | Footer links to app canonical pages via `NEXT_PUBLIC_MAIN_APP_URL` |
 | Newsletter | Disabled until a real subscribe API exists |
 | Security headers | `next.config.ts` `headers()` + `src/lib/security/*` |
 | Public APIs | None (`src/app/api/**` dormant) |
+| Ads measurement | Marketing owns `PageView`, `ViewContent`, `InitiateCheckout` (create-card CTAs), and `Lead` (register CTAs). Account and purchase events live on `onetap-app`. Outbound app URLs forward `fbclid` and UTM params. |
 
 ## When adding APIs or trackers
 
@@ -22,4 +23,4 @@ Canonical compliance checklist: **`onetap-app`** → [`docs/compliance-and-secur
 
 ## Environment
 
-See [environment-variables.md](./environment-variables.md). Only `NEXT_PUBLIC_*` origins ship to the browser until server APIs exist.
+See [environment-variables.md](./environment-variables.md). Only `NEXT_PUBLIC_*` origins ship to the browser until server APIs exist. Production pixel only unless `NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD=true`.

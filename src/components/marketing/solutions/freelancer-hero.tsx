@@ -15,7 +15,7 @@ export function FreelancerHero() {
       </h1>
       <p className={`${typography.lead} mx-auto mb-10`}>{freelancersHeroCopy.lead}</p>
       <div className="flex justify-center">
-        <GetCardCta size="lg">{freelancersHeroCopy.cta}</GetCardCta>
+        <GetCardCta size="lg" placement="freelancer_hero">{freelancersHeroCopy.cta}</GetCardCta>
       </div>
     </MarketingPageHero>
   );

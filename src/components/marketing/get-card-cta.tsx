@@ -4,7 +4,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 import { CREATE_BASICS_URL } from "@/lib/constants";
+import type { MetaCtaPlacement } from "@/lib/meta-pixel";
 
 export const primaryCtaClassName = "rounded-full";
 
@@ -78,6 +80,7 @@ interface GetCardCtaProps {
   showArrow?: boolean;
   className?: string;
   onClick?: () => void;
+  placement?: MetaCtaPlacement | null;
 }
 
 function CtaAnchor({
@@ -85,17 +88,19 @@ function CtaAnchor({
   className,
   children,
   onClick,
+  placement,
 }: {
   href: string;
   className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
+  placement?: MetaCtaPlacement | null;
 }) {
   if (href.startsWith("http")) {
     return (
-      <a href={href} className={className} onClick={onClick}>
+      <AppOutboundLink href={href} className={className} placement={placement} onClick={onClick}>
         {children}
-      </a>
+      </AppOutboundLink>
     );
   }
   return (
@@ -112,6 +117,7 @@ export function GetCardCta({
   showArrow = true,
   className,
   onClick,
+  placement = "get_card",
 }: GetCardCtaProps) {
   const showArrowIcon = showArrow && size !== "nav";
 
@@ -128,7 +134,7 @@ export function GetCardCta({
         size === "mobileNav" && "h-12 w-full px-6 text-base",
         className
       )}
-      render={<CtaAnchor href={href} onClick={onClick} />}
+      render={<CtaAnchor href={href} onClick={onClick} placement={placement} />}
       nativeButton={false}
     >
       {children}
@@ -154,7 +160,7 @@ export function MarketingHeroSecondaryCta({
       variant="brandOutline"
       size="lg"
       className={cn(marketingHeroSecondaryOnDarkClassName, className)}
-      render={<CtaAnchor href={href} onClick={onClick} />}
+      render={<CtaAnchor href={href} onClick={onClick} placement={null} />}
       nativeButton={false}
     >
       {children}

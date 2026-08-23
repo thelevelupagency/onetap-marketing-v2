@@ -47,7 +47,7 @@ export function FinalCtaSection({ variant = "default" }: FinalCtaSectionProps) {
           </p>
 
           <div className="flex justify-center">
-            <GetCardCta size="lg">{copy.cta}</GetCardCta>
+            <GetCardCta size="lg" placement="final_cta">{copy.cta}</GetCardCta>
           </div>
 
           <ul

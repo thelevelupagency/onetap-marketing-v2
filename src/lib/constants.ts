@@ -48,3 +48,37 @@ export function buildCreateBasicsUrl(slug?: string): string {
 }
 
 export const CREATE_BASICS_URL = buildCreateBasicsUrl();
+
+/** Query keys copied from the marketing landing URL onto app CTAs. Never overwrite `slug`. */
+export const ATTRIBUTION_QUERY_KEYS = [
+  "fbclid",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+] as const;
+
+export function appendAttributionParams(url: string, source: URLSearchParams): string {
+  const base =
+    typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";
+  let target: URL;
+  try {
+    target = new URL(url, base);
+  } catch {
+    return url;
+  }
+
+  for (const key of ATTRIBUTION_QUERY_KEYS) {
+    const value = source.get(key)?.trim();
+    if (!value || target.searchParams.has(key)) {
+      continue;
+    }
+    target.searchParams.set(key, value);
+  }
+
+  if (!/^https?:\/\//i.test(url)) {
+    return `${target.pathname}${target.search}${target.hash}`;
+  }
+  return target.toString();
+}

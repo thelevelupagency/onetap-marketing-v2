@@ -17,5 +17,6 @@ globals.css, motion/, process1-*, hero/faq/pricing sections
 2026-06-05 — Freelancers PRD page, unified content-sized marketing carousel, phone screenshot constants in lib.
 solutions/, marketing-carousel*, freelancer-niche-selector, phone-screenshots.ts
 
-2026-08-21 — Env-gated Meta Pixel (PageView + SPA), CSP allowlist for Facebook hosts.
-src/lib/meta-pixel.ts, meta-pixel provider, contentSecurityPolicy.ts
+2026-08-22 — Consent-gated Meta Pixel, CTA conversions, and fbclid/UTM handoff to the app.
+src/lib/meta-pixel.ts, marketing-consent, GetCardCta / outbound app links
+

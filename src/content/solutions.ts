@@ -415,33 +415,33 @@ export const agenciesHeroCopy = {
   badge: "For Agencies & Teams",
   title: "Unified Branding.",
   accent: "Centralized Control.",
-  lead: "Empower your team with branded digital cards, manage users and roles, lock brand templates, and own every lead from one admin dashboard.",
-  primaryCta: "Start Free Trial",
-  secondaryCta: "Talk to Sales",
+  lead: "Give every teammate an on-brand digital card, manage members from one workspace, share a brand kit, and collect leads in one inbox.",
+  primaryCta: "Start Team",
+  secondaryCta: "Sign in",
 } as const;
 
 export const agenciesWorkspaceCopy = {
   title: "Manage Your Entire",
   accent: "Team",
   lead: "Add team members, assign roles, and track performance from a single workspace dashboard.",
-  cta: "Start Free Trial",
+  cta: "Start Team",
 } as const;
 
 export const agenciesGovernanceCopy = {
-  title: "Govern your brand.",
+  title: "Share your brand.",
   accent: "Own every lead.",
-  lead: "Brand Lock and Leads Center give admins control over how reps present the firm — and where every capture lands.",
+  lead: "A shared brand kit and Leads Center give admins one place to keep cards consistent — and see where every capture lands.",
   brandLock: {
-    badge: "Brand Lock",
-    title: "Enforce",
+    badge: "Shared brand kit",
+    title: "Keep",
     accent: "brand consistency",
-    lead: "Lock logos, colors, and required fields so every rep card stays on-brand — without manual QA.",
+    lead: "Share logos, colors, and templates so every teammate card starts on-brand.",
     capabilities: [
       {
         icon: "lock" as SolutionFeatureIconKey,
-        title: "Lock firm branding",
+        title: "Share firm branding",
         description:
-          "Enforce logos, colors, and required fields across every teammate — reps can't accidentally go off-brand.",
+          "Put logos, colors, and approved templates in one kit so new cards start on-brand.",
       },
       {
         icon: "palette" as SolutionFeatureIconKey,
@@ -451,16 +451,16 @@ export const agenciesGovernanceCopy = {
       {
         icon: "users" as SolutionFeatureIconKey,
         title: "Role-based control",
-        description: "Admins set the frame; reps edit only their personal fields within your guardrails.",
+        description: "Admins manage the workspace; teammates update their own bio, links, and contact options.",
       },
       {
         icon: "refreshCw" as SolutionFeatureIconKey,
-        title: "Global enforcement",
+        title: "Shared kit updates",
         description:
-          "Changes apply instantly across every live card — no redeploy or rep action required.",
+          "Update the kit once — new cards pick up the latest colors and templates.",
       },
     ],
-    imageAlt: "OneTap Brand Lock settings enforcing firm logos and colors across team cards",
+    imageAlt: "OneTap shared brand kit settings for team colors and logos",
   },
   leads: {
     badge: "Leads Center",
@@ -531,9 +531,9 @@ export const agenciesEnterpriseCopy = {
 } as const;
 
 export const agenciesSocialProofCopy = {
-  title: "Teams that scale",
-  accent: "trust OneTap.",
-  lead: "From brokerages to enterprise sales teams — organizations worldwide standardize networking with OneTap.",
+  title: "Teams that stay",
+  accent: "on-brand together.",
+  lead: "Agencies and sales teams use OneTap to share cards, a brand kit, and one leads inbox.",
   audiences: audienceMarqueeItems,
   testimonials: [
     {
@@ -541,25 +541,25 @@ export const agenciesSocialProofCopy = {
       role: "Founder, Nova Labs",
       headline: "Unified team brand system",
       content:
-        "Our team shares one brand system across 40 cards. Onboarding a new hire is now a link and a tap.",
+        "Our team shares one brand kit. Onboarding a new hire is now a link and a tap.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Sarah Kim",
       role: "Operations Director, Meridian Group",
-      headline: "Saved weeks of legal compliance",
+      headline: "Legal approved the kit once",
       content:
-        "Brand Lock alone saved our legal team weeks of compliance headaches. Every agent card looks exactly how we need it.",
+        "The shared brand kit stopped one-off card designs. Every agent card starts from the colors and logo we already approved.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "David Ortiz",
       role: "Managing Partner, Park & Associates",
-      headline: "100% on-brand rollout for 120+ reps",
+      headline: "On-brand rollout without a fire drill",
       content:
-        "We rolled out 120 cards in a week. Legal approved the templates once, and every rep stayed on brand from day one.",
+        "We invited the roster, shared the kit, and every new card started on brand from day one.",
       avatar: LOGO_ICON,
       rating: 5,
     },
@@ -596,5 +596,5 @@ export const agenciesSocialProofCopy = {
 export const agenciesPricingHeader = {
   title: "Plans for teams",
   accent: "that scale.",
-  lead: "Compare team seats, Brand Lock, and analytics. Start with a plan that fits your roster — upgrade as you grow.",
+  lead: "Compare Team seats, a shared brand kit, and analytics. Start with a plan that fits your roster — upgrade as you grow.",
 } as const;

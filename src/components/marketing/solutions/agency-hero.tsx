@@ -6,7 +6,7 @@ import {
 } from "@/components/marketing/get-card-cta";
 import { MarketingPageHero, MarketingBadge, BrandAccent } from "@/components/marketing/primitives";
 import { agenciesHeroCopy } from "@/content/solutions";
-import { LOGIN_URL, SIGNUP_URL } from "@/lib/constants";
+import { CREATE_BASICS_URL, LOGIN_URL } from "@/lib/constants";
 import { type as typography } from "@/lib/typography";
 
 export function AgencyHero() {
@@ -23,9 +23,10 @@ export function AgencyHero() {
       <p className={`${typography.lead} mx-auto mb-10 text-brand-cream/70`}>{copy.lead}</p>
       <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
         <GetCardCta
-          href={SIGNUP_URL}
+          href={CREATE_BASICS_URL}
           size="lg"
           showArrow={false}
+          placement="agency_hero"
           className={marketingHeroPrimaryOnDarkClassName}
         >
           {copy.primaryCta}

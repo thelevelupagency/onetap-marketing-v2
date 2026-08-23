@@ -5,9 +5,13 @@ import { Logo } from "@/components/shared/logo";
 import { MarketingContainer } from "@/components/marketing/primitives";
 import { footerCopy } from "@/content/site";
 import { PRIVACY_URL, TERMS_URL } from "@/lib/constants";
+import { getMetaPixelId } from "@/lib/meta-pixel";
+import { useMarketingConsent } from "@/components/providers/consent-provider";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const pixelId = getMetaPixelId();
+  const { reopenPreferences } = useMarketingConsent();
 
   const footerLinks = {
     product: [
@@ -19,8 +23,6 @@ export function Footer() {
     ],
     company: [
       { name: "Blog", href: "/blog" },
-      { name: "About", href: "#" },
-      { name: "Contact", href: "#" },
     ],
     resources: [
       { name: "Help Center", href: "/faq" },
@@ -74,19 +76,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-y border-white/10 py-10 mb-10 flex flex-col lg:flex-row justify-between items-center gap-6">
-          <div className="max-w-md text-center lg:text-left">
-            <h3 className="type-subsection-title mb-2 text-white uppercase tracking-wide">
-              {footerCopy.newsletter.headline}
-            </h3>
-            <p className="text-brand-cream/60">{footerCopy.newsletter.body}</p>
-          </div>
-          <p className="text-brand-cream/50 text-sm text-center lg:text-right max-w-md">
-            {footerCopy.newsletter.comingSoon}
-          </p>
-        </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-cream/40">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-cream/40 border-t border-white/10 pt-8">
           <span>© {currentYear} OneTap Card. All rights reserved.</span>
           <div className="flex gap-6">
             <a href={PRIVACY_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
@@ -95,6 +85,15 @@ export function Footer() {
             <a href={TERMS_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
               Terms
             </a>
+            {pixelId ? (
+              <button
+                type="button"
+                onClick={reopenPreferences}
+                className="hover:text-brand-turquoise transition-colors"
+              >
+                Cookie settings
+              </button>
+            ) : null}
           </div>
         </div>
       </MarketingContainer>
