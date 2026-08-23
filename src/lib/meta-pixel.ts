@@ -44,7 +44,12 @@ function isMetaPixelAllowedInThisEnv(): boolean {
   if (process.env.NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD === "true") {
     return true;
   }
-  return process.env.VERCEL_ENV === "production";
+  // VERCEL_ENV is server-only. Client bundles must use NEXT_PUBLIC_VERCEL_ENV
+  // (Vercel injects it) or the banner and pixel never load in production.
+  return (
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
+    process.env.VERCEL_ENV === "production"
+  );
 }
 
 /** Pixel IDs are public (browser snippet). Digits-only avoids injecting untrusted strings. */
