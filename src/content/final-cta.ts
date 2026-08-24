@@ -27,7 +27,7 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to",
     accent: "get started?",
     subheadline:
-      "Launch your card on the Free plan in minutes — or choose Pro or Team when you need more power, branding, and shared workspace control.",
+      "Launch your card on the Free plan in minutes - or choose Pro or Team when you need more power, branding, and shared workspace control.",
     cta: "Create Your Card For FREE",
     microcopyItems: ["Free plan available", "No app required", "Upgrade anytime"],
   },
@@ -35,7 +35,7 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to put",
     accent: "it into practice?",
     subheadline:
-      "Turn what you read into a card people can save, contact, and remember — one link or QR code, no app required.",
+      "Turn what you read into a card people can save, contact, and remember - one link or QR code, no app required.",
     cta: "Create Your Card For FREE",
     microcopyItems: ["No app required", "Free to start", "Share in minutes"],
   },
@@ -43,7 +43,7 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to see",
     accent: "it in action?",
     subheadline:
-      "The best way to answer your questions is to try it — build your free card and share it in under a minute.",
+      "The best way to answer your questions is to try it - build your free card and share it in under a minute.",
     cta: "Create Your Card For FREE",
     microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
   },
@@ -51,7 +51,7 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to digitize",
     accent: "your identity?",
     subheadline:
-      "Build a fully branded digital card in 60 seconds — portfolio, socials, and contact details in one link you can share anywhere.",
+      "Build a fully branded digital card in 60 seconds - portfolio, socials, and contact details in one link you can share anywhere.",
     cta: "Create Your Card For FREE",
     microcopyItems: ["No app required", "Free to start", "Live in 60 seconds"],
   },
@@ -59,7 +59,7 @@ export const finalCtaVariants: Record<FinalCtaVariant, FinalCtaCopy> = {
     title: "Ready to unify",
     accent: "your team's brand?",
     subheadline:
-      "Start Team — issue on-brand cards for every teammate, share a brand kit, and centralize leads from one admin workspace.",
+      "Start Team - issue on-brand cards for every teammate, share a brand kit, and centralize leads from one admin workspace.",
     cta: "Start Team",
     microcopyItems: ["Team workspace", "Shared brand kit", "Leads center + export"],
   },

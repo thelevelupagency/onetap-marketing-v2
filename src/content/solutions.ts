@@ -105,10 +105,9 @@ const freelancerCardAmiriRealEstate: FreelancerNicheCard = {
 };
 
 export const freelancersHeroCopy = {
-  badge: "For Freelancers & Creators",
   title: "Your Identity, Digitized in",
   accent: "60 Seconds.",
-  lead: "Unify your portfolio, social links, and contact details into one contactless card. Share with NFC, QR, or a single link — no app download required.",
+  lead: "Unify your portfolio, social links, and contact details into one contactless card. Share with NFC, QR, or a single link - no app download required.",
   cta: "Create your free card",
 } as const;
 
@@ -207,7 +206,7 @@ export const freelancersNicheManifest = {
 export const freelancersCardIncludesCopy = {
   title: "Every card",
   accent: "includes the essentials.",
-  lead: "Build once in 60 seconds — then share, save contacts, and stay on-brand from one link or tap.",
+  lead: "Build once in 60 seconds - then share, save contacts, and stay on-brand from one link or tap.",
   points: [
     {
       icon: "zap" as SolutionFeatureIconKey,
@@ -219,14 +218,14 @@ export const freelancersCardIncludesCopy = {
       icon: "contactRound" as SolutionFeatureIconKey,
       title: "Instant Contact Resolution",
       description:
-        "Visitors save your details to their phone contacts with native vCard — no app download, no friction.",
+        "Visitors save your details to their phone contacts with native vCard - no app download, no friction.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
       icon: "palette" as SolutionFeatureIconKey,
       title: "Custom Structural Branding",
       description:
-        "Control colors, typography, and layout so your card looks unmistakably yours — not a generic template.",
+        "Control colors, typography, and layout so your card looks unmistakably yours - not a generic template.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
     },
   ],
@@ -235,7 +234,7 @@ export const freelancersCardIncludesCopy = {
 export const freelancersPainPointsCopy = {
   title: "No more",
   accent: "lost opportunities.",
-  lead: "Freelancers juggle events, DMs, and link-in-bio tools — but still lose leads when follow-up is slow or your presence looks scattered.",
+  lead: "Freelancers juggle events, DMs, and link-in-bio tools - but still lose leads when follow-up is slow or your presence looks scattered.",
   points: [
     {
       icon: "contactRound" as PainPointIconKey,
@@ -248,7 +247,7 @@ export const freelancersPainPointsCopy = {
       icon: "link2" as PainPointIconKey,
       title: "No more scattered link-in-bio",
       description:
-        "Portfolio, services, socials, and booking live in one polished profile — not five different tools.",
+        "Portfolio, services, socials, and booking live in one polished profile - not five different tools.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
@@ -270,7 +269,7 @@ export const freelancersHowItWorksCopy = {
       step: "01",
       title: "Create",
       description:
-        "Add your photo, services, portfolio, testimonials, contact buttons, and a lead form — no designer or developer needed.",
+        "Add your photo, services, portfolio, testimonials, contact buttons, and a lead form - no designer or developer needed.",
       image: howItWorksCopy.steps[0].image,
       imageAlt: howItWorksCopy.steps[0].imageAlt,
     },
@@ -278,7 +277,7 @@ export const freelancersHowItWorksCopy = {
       step: "02",
       title: "Share",
       description:
-        "Drop your OneTap URL in your email signature, LinkedIn, WhatsApp, conference badge QR, or Instagram bio — always on-brand.",
+        "Drop your OneTap URL in your email signature, LinkedIn, WhatsApp, conference badge QR, or Instagram bio - always on-brand.",
       image: howItWorksCopy.steps[1].image,
       imageAlt: howItWorksCopy.steps[1].imageAlt,
     },
@@ -286,7 +285,7 @@ export const freelancersHowItWorksCopy = {
       step: "03",
       title: "Connect",
       description:
-        "Prospects save your contact, book a call, or send their details from your card — so you follow up while you're still top of mind.",
+        "Prospects save your contact, book a call, or send their details from your card - so you follow up while you're still top of mind.",
       image: howItWorksCopy.steps[2].image,
       imageAlt: howItWorksCopy.steps[2].imageAlt,
     },
@@ -296,7 +295,7 @@ export const freelancersHowItWorksCopy = {
 export const freelancersFeaturesCopy = {
   title: "Built for how",
   accent: "you work solo",
-  lead: "Everything you need to look credible, stay reachable, and grow your client pipeline — without juggling five tools.",
+  lead: "Everything you need to look credible, stay reachable, and grow your client pipeline - without juggling five tools.",
   features: [
     {
       icon: "zap" as SolutionFeatureIconKey,
@@ -308,7 +307,7 @@ export const freelancersFeaturesCopy = {
       icon: "link2" as SolutionFeatureIconKey,
       title: "Link-in-bio replacement",
       description:
-        "One beautiful URL for portfolio, socials, services, and contact — always up to date.",
+        "One beautiful URL for portfolio, socials, services, and contact - always up to date.",
     },
     {
       icon: "userPlus" as SolutionFeatureIconKey,
@@ -328,7 +327,7 @@ export const freelancersFeaturesCopy = {
     {
       icon: "refreshCw" as SolutionFeatureIconKey,
       title: "Always current",
-      description: "Update your offer or contact info once — every future visitor sees the latest version.",
+      description: "Update your offer or contact info once - every future visitor sees the latest version.",
     },
   ],
 } as const;
@@ -345,7 +344,7 @@ export const freelancersCreatorsCopy = {
 export const freelancersSocialProofCopy = {
   title: "Trusted by freelancers",
   accent: "who network for a living.",
-  lead: "From consultants to creators — solo pros worldwide trust OneTap to make every introduction count.",
+  lead: "From consultants to creators - solo pros worldwide trust OneTap to make every introduction count.",
   audiences: audienceMarqueeItems,
   testimonials: [
     {
@@ -412,7 +411,6 @@ export const freelancersPricingHeader = {
 } as const;
 
 export const agenciesHeroCopy = {
-  badge: "For Agencies & Teams",
   title: "Unified Branding.",
   accent: "Centralized Control.",
   lead: "Give every teammate an on-brand digital card, manage members from one workspace, share a brand kit, and collect leads in one inbox.",
@@ -430,7 +428,7 @@ export const agenciesWorkspaceCopy = {
 export const agenciesGovernanceCopy = {
   title: "Share your brand.",
   accent: "Own every lead.",
-  lead: "A shared brand kit and Leads Center give admins one place to keep cards consistent — and see where every capture lands.",
+  lead: "A shared brand kit and Leads Center give admins one place to keep cards consistent - and see where every capture lands.",
   brandLock: {
     badge: "Shared brand kit",
     title: "Keep",
@@ -457,7 +455,7 @@ export const agenciesGovernanceCopy = {
         icon: "refreshCw" as SolutionFeatureIconKey,
         title: "Shared kit updates",
         description:
-          "Update the kit once — new cards pick up the latest colors and templates.",
+          "Update the kit once - new cards pick up the latest colors and templates.",
       },
     ],
     imageAlt: "OneTap shared brand kit settings for team colors and logos",
@@ -466,7 +464,7 @@ export const agenciesGovernanceCopy = {
     badge: "Leads Center",
     title: "Centralized",
     accent: "lead capture",
-    lead: "Every capture from every rep flows into one admin view — filter, assign, and export when you need it.",
+    lead: "Every capture from every rep flows into one admin view - filter, assign, and export when you need it.",
     capabilities: [
       {
         icon: "inbox" as SolutionFeatureIconKey,
@@ -517,14 +515,14 @@ export const agenciesEnterpriseCopy = {
       icon: "barChart3" as SolutionFeatureIconKey,
       title: "Team Analytics",
       description:
-        "Track views, leads, and vCard saves per rep from the admin dashboard — spot top performers and coach with real data.",
+        "Track views, leads, and vCard saves per rep from the admin dashboard - spot top performers and coach with real data.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
     },
     {
       icon: "inbox" as SolutionFeatureIconKey,
       title: "Lead Routing",
       description:
-        "Assign inquiries to the right rep and keep follow-ups moving — no scattered inboxes or lost handoffs.",
+        "Assign inquiries to the right rep and keep follow-ups moving - no scattered inboxes or lost handoffs.",
       accent: "from-brand-turquoise/10 to-brand-navy/10",
     },
   ],
@@ -596,5 +594,5 @@ export const agenciesSocialProofCopy = {
 export const agenciesPricingHeader = {
   title: "Plans for teams",
   accent: "that scale.",
-  lead: "Compare Team seats, a shared brand kit, and analytics. Start with a plan that fits your roster — upgrade as you grow.",
+  lead: "Compare Team seats, a shared brand kit, and analytics. Start with a plan that fits your roster - upgrade as you grow.",
 } as const;

@@ -10,7 +10,7 @@ export default function NotFound() {
         <MarketingContainer width="narrow" className="text-center">
           <h1 className={`${typography.displayError} mb-4`}>404</h1>
           <p className={`${typography.lead} mx-auto mb-8 max-w-md`}>
-            This page doesn&apos;t exist — but your next great connection is one tap away.
+            This page doesn&apos;t exist - but your next great connection is one tap away.
           </p>
           <GetCardCta href="/" size="sm">
             Back to Home

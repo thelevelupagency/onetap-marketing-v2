@@ -21,9 +21,8 @@ export const audienceMarqueeItems = [
 ] as const;
 
 export const heroCopy = {
-  badge: "Digital business cards, reimagined",
   subheadline:
-    "Create a beautiful, app-free digital business card that helps people contact you, save your details, view your work, and become real leads — from one simple link or QR code.",
+    "Create a beautiful, app-free digital business card that helps people contact you, save your details, view your work, and become real leads - from one simple link or QR code.",
   microcopy: "No app required · Free to start · Share in minutes",
   trustLine:
     "Built for freelancers, small businesses, creators, sales teams, agencies, and professionals worldwide.",
@@ -47,7 +46,7 @@ export const painPointsCopy = {
       icon: "filePenLine" as const,
       title: "No more outdated details",
       description:
-        "Update your phone, links, services, or offers anytime — your card updates instantly.",
+        "Update your phone, links, services, or offers anytime - your card updates instantly.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
@@ -75,7 +74,7 @@ export const howItWorksCopy = {
       step: "01",
       title: "Create",
       description:
-        "Build your card in 60 seconds. Add your photo, logo, bio, contact buttons, social links, services, gallery, videos, testimonials, and lead form — no coding or design skills needed.",
+        "Build your card in 60 seconds. Add your photo, logo, bio, contact buttons, social links, services, gallery, videos, testimonials, and lead form - no coding or design skills needed.",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1779391976/onetap/static/marketing/202_jd25sb.jpg",
       imageAlt: "Professional building a digital business card on a laptop",
@@ -144,12 +143,12 @@ export const cardUxCopy = {
     {
       icon: "refreshCw" as const,
       label: "Always Up to Date",
-      description: "Edit once — every future visitor sees your latest version.",
+      description: "Edit once - every future visitor sees your latest version.",
     },
     {
       icon: "smartphone" as const,
       label: "NFC & QR Code Ready",
-      description: "Share instantly with a tap or scan — no app required on either side.",
+      description: "Share instantly with a tap or scan - no app required on either side.",
     },
     {
       icon: "globe" as const,
@@ -170,7 +169,7 @@ export type SolutionIconKey =
 export const solutionsCopy = {
   title: "Built for",
   accent: "every professional",
-  lead: "Whether you sell, create, consult, teach, serve, or manage a team — OneTap helps you present yourself professionally and make it easier for people to act.",
+  lead: "Whether you sell, create, consult, teach, serve, or manage a team - OneTap helps you present yourself professionally and make it easier for people to act.",
   cards: [
     {
       icon: "briefcase" as const,
