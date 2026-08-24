@@ -1,4 +1,5 @@
 export { BrandAccent } from "./brand-accent";
+export { AnimatedHeroTitle } from "./animated-hero-title";
 export { MarketingSection } from "./marketing-section";
 export { MarketingContainer } from "./marketing-container";
 export { PageShell } from "./page-shell";

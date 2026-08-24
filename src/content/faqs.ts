@@ -19,7 +19,7 @@ export const homeFaqs = [
   },
   {
     q: "Can I collect leads from my card?",
-    a: "Yes — on Pro and Team. Add a lead capture form so visitors can send their name, phone, email, and message directly from your card. Free can show every other section type, with a 4-section cap.",
+    a: "Yes - on Pro and Team. Add a lead capture form so visitors can send their name, phone, email, and message directly from your card. Free can show every other section type, with a 4-section cap.",
   },
   {
     q: "Is OneTap only for digital business cards?",
@@ -63,7 +63,7 @@ export const faqPageEntries: FaqEntry[] = [
   { ...homeFaqs[4], category: "business" },
   {
     q: "What can I add on the Free plan?",
-    a: "Free includes one card, One-Tap buttons, a QR code and link, and up to four sections — About, gallery, video, highlights, FAQ, or testimonials. The lead form is a Pro feature.",
+    a: "Free includes one card, One-Tap buttons, a QR code and link, and up to four sections - About, gallery, video, highlights, FAQ, or testimonials. The lead form is a Pro feature.",
     category: "plans-billing",
   },
   ...pricingFaqs.map((faq) => ({ ...faq, category: "plans-billing" as const })),
@@ -100,7 +100,7 @@ export const freelancersFaqs = [
   },
   {
     q: "Can I collect leads from my card?",
-    a: "Yes — on Pro and Team. Add a lead capture form so visitors can send their name, phone, email, and message directly from your card.",
+    a: "Yes - on Pro and Team. Add a lead capture form so visitors can send their name, phone, email, and message directly from your card.",
   },
   {
     q: "Is OneTap only for digital business cards?",
@@ -119,11 +119,11 @@ export const agenciesFaqs = [
   },
   {
     q: "How do we add team members?",
-    a: "Invite teammates from your workspace. Team includes up to 10 members and 10 cards — no CSV import or sales call required.",
+    a: "Invite teammates from your workspace. Team includes up to 10 members and 10 cards - no CSV import or sales call required.",
   },
   {
     q: "How does team analytics work?",
-    a: "Admins see workspace and per-card insights — views, clicks, lead form submissions, and contact saves — with one-year retention on Team.",
+    a: "Admins see workspace and per-card insights - views, clicks, lead form submissions, and contact saves - with one-year retention on Team.",
   },
   {
     q: "Can I use OneTap for my business, not just myself?",
@@ -131,7 +131,7 @@ export const agenciesFaqs = [
   },
   {
     q: "Do we need a demo to get started?",
-    a: "No. Start Team from the pricing page and invite your roster. The agencies page is a walkthrough of how teams use OneTap — not a separate plan name.",
+    a: "No. Start Team from the pricing page and invite your roster. The agencies page is a walkthrough of how teams use OneTap - not a separate plan name.",
   },
   {
     q: "Can agents edit their own cards?",
