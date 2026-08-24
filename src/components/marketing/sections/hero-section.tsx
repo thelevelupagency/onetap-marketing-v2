@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { SlugClaimCta } from "@/components/marketing/slug-claim-cta";
 import { AnimatedPhoneGrid } from "@/components/marketing/phones/animated-phone-grid";
 import {
-  MarketingBadge,
   BrandAccent,
   MarketingContainer,
   MarketingSection,
@@ -21,9 +20,36 @@ import { cn } from "@/lib/utils";
 
 const HERO_INTRO_STAGGER = HERO_MOBILE_MOUNT_TOKENS.staggerChildren;
 
+const HERO_TITLE_CLASS = `${typography.hero} mb-6 text-center max-w-5xl`;
+const HERO_TEXT_EFFECT_CLASS = "inline";
+
+function HeroTitle({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
+  if (prefersReducedMotion) {
+    return (
+      <h1 className={HERO_TITLE_CLASS}>
+        Your Digital Business Card in <BrandAccent>One Tap.</BrandAccent>{" "}
+        <br className="block sm:hidden" />
+        Appear Everywhere.
+      </h1>
+    );
+  }
+
+  return (
+    <h1 className={HERO_TITLE_CLASS}>
+      <TextGenerateEffect
+        words="Your Digital Business Card in One Tap. Appear Everywhere."
+        className={HERO_TEXT_EFFECT_CLASS}
+        accentWords="One Tap."
+        accentClassName="italic text-brand-turquoise"
+        breakBeforeWord="Appear"
+      />
+    </h1>
+  );
+}
+
 export function HeroSection() {
   const [slug, setSlug] = useState("");
-  const { isMobile } = useMotionConfig();
+  const { isMobile, prefersReducedMotion } = useMotionConfig();
 
   const ctaBlock = (
     <div className="flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:items-start max-w-4xl mx-auto">
@@ -69,19 +95,7 @@ export function HeroSection() {
       >
         <MarketingContainer width="full" className="relative z-10 text-center">
           <div className="mx-auto max-w-5xl lg:max-w-6xl flex flex-col items-center">
-            <RevealItem>
-              <MarketingBadge icon={Sparkles} className="mb-6">
-                {heroCopy.badge}
-              </MarketingBadge>
-            </RevealItem>
-
-            <RevealItem>
-              <h1 className={`${typography.hero} mb-6 text-center max-w-5xl`}>
-                Your Digital Business Card in <BrandAccent>One Tap.</BrandAccent>{" "}
-                <br className="block sm:hidden" />
-                Appear Everywhere.
-              </h1>
-            </RevealItem>
+            <HeroTitle prefersReducedMotion={prefersReducedMotion} />
 
             <RevealItem>
               <p className={`${typography.lead} mx-auto mb-8 max-w-2xl text-center`}>

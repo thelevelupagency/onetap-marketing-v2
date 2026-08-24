@@ -64,7 +64,7 @@ export const plans: Plan[] = [
       "1 digital card",
       "Profile, QR code, and shareable link",
       "One-Tap contact buttons",
-      "Up to 4 sections — About, gallery, video, highlights, FAQ, testimonials",
+      "Up to 4 sections - About, gallery, video, highlights, FAQ, testimonials",
       "Starter templates",
       "OneTap branding included",
     ],
@@ -85,7 +85,7 @@ export const plans: Plan[] = [
       "Unlimited sections, including a lead form",
       "Lead inbox with filters and CSV export",
       "90-day insights",
-      "Custom branding and brand kit — no OneTap logo",
+      "Custom branding and brand kit - no OneTap logo",
     ],
   },
   {
@@ -129,11 +129,11 @@ export const pricingFaqs = [
   },
   {
     q: "What happens when I cancel?",
-    a: "Your card stays active until the end of your billing period. After that, your account reverts to the Free plan — your data is never deleted.",
+    a: "Your card stays active until the end of your billing period. After that, your account reverts to the Free plan - your data is never deleted.",
   },
   {
     q: "Do you offer a Team plan?",
-    a: "Yes. Team includes everything in Pro, plus up to 10 cards, 10 members, an admin workspace, and a shared brand kit. Start Team from this page — no sales call required.",
+    a: "Yes. Team includes everything in Pro, plus up to 10 cards, 10 members, an admin workspace, and a shared brand kit. Start Team from this page - no sales call required.",
   },
   {
     q: "Is there a free trial for Pro?",
