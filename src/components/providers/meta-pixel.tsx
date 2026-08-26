@@ -31,24 +31,32 @@ export function MetaPixel() {
   const pixelId = getMetaPixelId();
   const pathname = usePathname();
   const { consent } = useMarketingConsent();
-  const isFirstPath = useRef(true);
+  const lastTrackedPath = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!pixelId || consent !== "granted") {
+    if (!pixelId) {
       return;
     }
+
     return whenFbqReady(() => {
-      if (isFirstPath.current) {
-        isFirstPath.current = false;
-        trackViewContentForPath(pathname);
+      if (consent === "granted") {
+        window.fbq?.("consent", "grant");
+        if (lastTrackedPath.current !== pathname) {
+          trackMetaEvent("PageView");
+          trackViewContentForPath(pathname);
+          lastTrackedPath.current = pathname;
+        }
         return;
       }
-      trackMetaEvent("PageView");
-      trackViewContentForPath(pathname);
-    });
-  }, [pathname, pixelId, consent]);
 
-  if (!pixelId || consent !== "granted") {
+      window.fbq?.("consent", "revoke");
+      if (consent === "denied") {
+        lastTrackedPath.current = null;
+      }
+    });
+  }, [consent, pathname, pixelId]);
+
+  if (!pixelId) {
     return null;
   }
 
@@ -66,9 +74,9 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
+fbq('consent', 'revoke');
 fbq('set', 'autoConfig', false, '${pixelId}');
 fbq('init', '${pixelId}');
-fbq('track', 'PageView');
 `,
       }}
     />

@@ -44,11 +44,19 @@ function isMetaPixelAllowedInThisEnv(): boolean {
   if (process.env.NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD === "true") {
     return true;
   }
-  // VERCEL_ENV is server-only. Client bundles must use NEXT_PUBLIC_VERCEL_ENV
-  // (Vercel injects it) or the banner and pixel never load in production.
-  return (
+  if (
     process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
     process.env.VERCEL_ENV === "production"
+  ) {
+    return true;
+  }
+  // When Vercel's "Automatically expose System Environment Variables" is off,
+  // NEXT_PUBLIC_VERCEL_ENV is missing from client bundles. NODE_ENV is production
+  // on Vercel builds but also on Preview — only use it when the pixel ID is set
+  // (production deploys set NEXT_PUBLIC_META_PIXEL_ID; preview should omit it).
+  return (
+    process.env.NODE_ENV === "production" &&
+    Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim())
   );
 }
 
