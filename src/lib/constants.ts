@@ -59,6 +59,74 @@ export const ATTRIBUTION_QUERY_KEYS = [
   "utm_term",
 ] as const;
 
+export const ATTRIBUTION_STORAGE_KEY = "onetap-attribution";
+
+type AttributionKey = (typeof ATTRIBUTION_QUERY_KEYS)[number];
+type AttributionRecord = Partial<Record<AttributionKey, string>>;
+
+function readStoredAttribution(): AttributionRecord {
+  if (typeof window === "undefined") {
+    return {};
+  }
+  try {
+    const raw = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    if (!raw) {
+      return {};
+    }
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== "object") {
+      return {};
+    }
+    const result: AttributionRecord = {};
+    for (const key of ATTRIBUTION_QUERY_KEYS) {
+      const value = (parsed as Record<string, unknown>)[key];
+      if (typeof value === "string" && value.trim()) {
+        result[key] = value.trim();
+      }
+    }
+    return result;
+  } catch {
+    return {};
+  }
+}
+
+/** First-touch: keep the original ad click IDs if the visitor later browses a URL without them. */
+export function captureLandingAttribution(source: URLSearchParams): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+  const next = readStoredAttribution();
+  let changed = false;
+  for (const key of ATTRIBUTION_QUERY_KEYS) {
+    const value = source.get(key)?.trim();
+    if (value && !next[key]) {
+      next[key] = value;
+      changed = true;
+    }
+  }
+  if (!changed) {
+    return;
+  }
+  try {
+    window.sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    // Ignore quota / private-mode failures; live query params still work.
+  }
+}
+
+/** Live URL wins; stored first-touch fills missing keys after in-site navigation. */
+export function getMergedAttributionParams(live: URLSearchParams): URLSearchParams {
+  const merged = new URLSearchParams();
+  const stored = readStoredAttribution();
+  for (const key of ATTRIBUTION_QUERY_KEYS) {
+    const value = live.get(key)?.trim() || stored[key];
+    if (value) {
+      merged.set(key, value);
+    }
+  }
+  return merged;
+}
+
 export function appendAttributionParams(url: string, source: URLSearchParams): string {
   const base =
     typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";

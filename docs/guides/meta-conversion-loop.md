@@ -66,7 +66,7 @@ Meta ad
 
 **Consent**
 
-- Marketing: first-party banner (Accept / Reject). Facebook’s script loads **only after Accept**. Reject = site works, no pixel.
+- Marketing: first-party banner (Accept / Reject). Pixel stub loads immediately with `fbq('consent', 'revoke')`. Tracking (`grant` + PageView) starts on **Accept**. Refresh after Accept grants again from `localStorage`. Reject = site works, no events.
 - App: **no** cookie banner. Pixel loads only for people who already have an account (Terms accepted) or at the moment of CompleteRegistration. Anonymous `/register` and `/create/basics` do **not** get a marketing PageView from the app.
 
 **Attribution**
@@ -74,6 +74,8 @@ Meta ad
 Allowlisted query params copied marketing → app (never overwrite `slug`):
 
 `fbclid`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`
+
+Marketing stores them **first-touch** in `sessionStorage` (`onetap-attribution`) so a visit to `/pricing` or `/faq` does not drop the ad click. Every app CTA (`GetCardCta`, nav register, slug claim) re-attaches those params on click.
 
 The app also stores `_fbp` / `_fbc` when the browser has them, first-touch, on the user. Purchase later uses that so Meta can match the original click even though checkout happens on Lemon (off-site).
 

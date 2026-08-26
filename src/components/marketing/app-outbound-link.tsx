@@ -1,7 +1,7 @@
 "use client";
 
-import type { MouseEvent, ReactNode } from "react";
-import { navigateToApp, type MetaCtaPlacement } from "@/lib/meta-pixel";
+import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
+import { navigateToApp, withLandingAttribution, type MetaCtaPlacement } from "@/lib/meta-pixel";
 
 interface AppOutboundLinkProps {
   href: string;
@@ -32,9 +32,15 @@ export function AppOutboundLink({
   placement = "get_card",
   onClick,
 }: AppOutboundLinkProps) {
+  const [attributedHref, setAttributedHref] = useState(href);
+
+  useEffect(() => {
+    setAttributedHref(withLandingAttribution(href));
+  }, [href]);
+
   return (
     <a
-      href={href}
+      href={attributedHref}
       className={className}
       onClick={(event) => {
         onClick?.();

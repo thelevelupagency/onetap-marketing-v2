@@ -5,6 +5,8 @@ import { Footer } from "@/components/layout/footer";
 import { BackNavigationReloadScript } from "@/components/providers/back-navigation-reload-script";
 import { MarketingConsentProvider } from "@/components/providers/consent-provider";
 import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
+import { AttributionCapture } from "@/components/providers/attribution-capture";
+import { MetaPixelBootstrap } from "@/components/providers/meta-pixel-bootstrap";
 import { MetaPixel } from "@/components/providers/meta-pixel";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
@@ -50,7 +52,9 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} antialiased`}
     >
       <body className="min-h-svh flex flex-col font-sans bg-brand-cream overflow-x-clip">
+        <MetaPixelBootstrap />
         <MarketingConsentProvider>
+          <AttributionCapture />
           <BackNavigationReloadScript />
           <MetaPixel />
           <Navigation />
