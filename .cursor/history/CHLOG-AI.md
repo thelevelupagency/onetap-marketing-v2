@@ -20,3 +20,12 @@ solutions/, marketing-carousel*, freelancer-niche-selector, phone-screenshots.ts
 2026-08-22 — Consent-gated Meta Pixel, CTA conversions, and fbclid/UTM handoff to the app.
 src/lib/meta-pixel.ts, marketing-consent, GetCardCta / outbound app links
 
+2026-08-26 — Meta Pixel consent mode: load base snippet with revoke; grant only after banner accept.
+src/components/providers/meta-pixel.tsx, src/lib/meta-pixel.ts
+
+2026-08-26 — Fire Meta Pixel on Accept click via server-rendered stub + syncMetaPixelConsent.
+src/components/providers/meta-pixel-bootstrap.tsx, cookie-consent-banner.tsx
+
+2026-08-26 — Persist first-touch fbclid/UTMs in sessionStorage for app CTA handoff.
+src/lib/constants.ts, AttributionCapture, AppOutboundLink
+

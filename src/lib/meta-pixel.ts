@@ -1,4 +1,5 @@
-import { appendAttributionParams } from "@/lib/constants";
+import { appendAttributionParams, captureLandingAttribution, getMergedAttributionParams } from "@/lib/constants";
+import type { MarketingConsent } from "@/lib/marketing-consent";
 
 const PIXEL_ID_PATTERN = /^\d+$/;
 
@@ -44,11 +45,19 @@ function isMetaPixelAllowedInThisEnv(): boolean {
   if (process.env.NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD === "true") {
     return true;
   }
-  // VERCEL_ENV is server-only. Client bundles must use NEXT_PUBLIC_VERCEL_ENV
-  // (Vercel injects it) or the banner and pixel never load in production.
-  return (
+  if (
     process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
     process.env.VERCEL_ENV === "production"
+  ) {
+    return true;
+  }
+  // When Vercel's "Automatically expose System Environment Variables" is off,
+  // NEXT_PUBLIC_VERCEL_ENV is missing from client bundles. NODE_ENV is production
+  // on Vercel builds but also on Preview — only use it when the pixel ID is set
+  // (production deploys set NEXT_PUBLIC_META_PIXEL_ID; preview should omit it).
+  return (
+    process.env.NODE_ENV === "production" &&
+    Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim())
   );
 }
 
@@ -105,7 +114,9 @@ export function withLandingAttribution(url: string): string {
   if (typeof window === "undefined") {
     return url;
   }
-  return appendAttributionParams(url, new URLSearchParams(window.location.search));
+  const live = new URLSearchParams(window.location.search);
+  captureLandingAttribution(live);
+  return appendAttributionParams(url, getMergedAttributionParams(live));
 }
 
 /** Copy landing `fbclid`/UTMs onto the app URL and fire the matching conversion, if any. */
@@ -164,4 +175,51 @@ export function trackViewContentForPath(pathname: string): void {
     return;
   }
   trackMetaEvent("ViewContent", params);
+}
+
+/** Inline stub + init. Digits-only `pixelId` is required (see getMetaPixelId). */
+export function getMetaPixelBootstrapScript(pixelId: string): string {
+  return `
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('consent', 'revoke');
+fbq('set', 'autoConfig', false, '${pixelId}');
+fbq('init', '${pixelId}');
+`;
+}
+
+let lastTrackedPath: string | null = null;
+
+/**
+ * Apply consent and fire landing events. Safe to call from the Accept click
+ * handler — `fbq` is a stub that queues until fbevents.js loads.
+ */
+export function syncMetaPixelConsent(
+  consent: MarketingConsent | null,
+  pathname: string,
+): void {
+  if (typeof window === "undefined" || typeof window.fbq !== "function") {
+    return;
+  }
+
+  if (consent === "granted") {
+    window.fbq("consent", "grant");
+    if (lastTrackedPath !== pathname) {
+      trackMetaEvent("PageView");
+      trackViewContentForPath(pathname);
+      lastTrackedPath = pathname;
+    }
+    return;
+  }
+
+  window.fbq("consent", "revoke");
+  if (consent === "denied") {
+    lastTrackedPath = null;
+  }
 }

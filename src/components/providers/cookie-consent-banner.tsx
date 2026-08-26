@@ -1,10 +1,12 @@
 "use client";
 
-import { getMetaPixelId } from "@/lib/meta-pixel";
+import { usePathname } from "next/navigation";
+import { getMetaPixelId, syncMetaPixelConsent } from "@/lib/meta-pixel";
 import { useMarketingConsent } from "@/components/providers/consent-provider";
 
 export function CookieConsentBanner() {
   const pixelId = getMetaPixelId();
+  const pathname = usePathname();
   const { consent, hydrated, setConsent } = useMarketingConsent();
 
   if (!pixelId || !hydrated || consent) {
@@ -31,14 +33,20 @@ export function CookieConsentBanner() {
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <button
             type="button"
-            onClick={() => setConsent("denied")}
+            onClick={() => {
+              setConsent("denied");
+              syncMetaPixelConsent("denied", pathname);
+            }}
             className="h-11 rounded-full border border-brand-midnight/20 px-5 text-sm font-medium text-brand-midnight transition-colors hover:bg-brand-midnight/5"
           >
             Reject
           </button>
           <button
             type="button"
-            onClick={() => setConsent("granted")}
+            onClick={() => {
+              setConsent("granted");
+              syncMetaPixelConsent("granted", pathname);
+            }}
             className="h-11 rounded-full bg-brand-navy px-5 text-sm font-medium text-white transition-colors hover:bg-brand-midnight"
           >
             Accept
