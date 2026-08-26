@@ -2,29 +2,29 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState, type MutableRefObject } from "react";
 import { useMarketingConsent } from "@/components/providers/consent-provider";
 import { getMetaPixelId, trackMetaEvent, trackViewContentForPath } from "@/lib/meta-pixel";
 
-function whenFbqReady(callback: () => void): () => void {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-  if (window.fbq) {
-    callback();
-    return () => {};
-  }
-  const intervalId = window.setInterval(() => {
-    if (window.fbq) {
-      window.clearInterval(intervalId);
-      callback();
+function syncConsentAndTrack(
+  consent: "granted" | "denied" | null,
+  pathname: string,
+  lastTrackedPath: MutableRefObject<string | null>,
+): void {
+  if (consent === "granted") {
+    window.fbq?.("consent", "grant");
+    if (lastTrackedPath.current !== pathname) {
+      trackMetaEvent("PageView");
+      trackViewContentForPath(pathname);
+      lastTrackedPath.current = pathname;
     }
-  }, 50);
-  const timeoutId = window.setTimeout(() => window.clearInterval(intervalId), 4000);
-  return () => {
-    window.clearInterval(intervalId);
-    window.clearTimeout(timeoutId);
-  };
+    return;
+  }
+
+  window.fbq?.("consent", "revoke");
+  if (consent === "denied") {
+    lastTrackedPath.current = null;
+  }
 }
 
 export function MetaPixel() {
@@ -32,29 +32,18 @@ export function MetaPixel() {
   const pathname = usePathname();
   const { consent } = useMarketingConsent();
   const lastTrackedPath = useRef<string | null>(null);
+  const [scriptReady, setScriptReady] = useState(false);
+
+  const handleScriptReady = useCallback(() => {
+    setScriptReady(true);
+  }, []);
 
   useEffect(() => {
-    if (!pixelId) {
+    if (!pixelId || !scriptReady || typeof window.fbq !== "function") {
       return;
     }
-
-    return whenFbqReady(() => {
-      if (consent === "granted") {
-        window.fbq?.("consent", "grant");
-        if (lastTrackedPath.current !== pathname) {
-          trackMetaEvent("PageView");
-          trackViewContentForPath(pathname);
-          lastTrackedPath.current = pathname;
-        }
-        return;
-      }
-
-      window.fbq?.("consent", "revoke");
-      if (consent === "denied") {
-        lastTrackedPath.current = null;
-      }
-    });
-  }, [consent, pathname, pixelId]);
+    syncConsentAndTrack(consent, pathname, lastTrackedPath);
+  }, [consent, pathname, pixelId, scriptReady]);
 
   if (!pixelId) {
     return null;
@@ -64,6 +53,7 @@ export function MetaPixel() {
     <Script
       id="meta-pixel"
       strategy="afterInteractive"
+      onReady={handleScriptReady}
       dangerouslySetInnerHTML={{
         __html: `
 !function(f,b,e,v,n,t,s)
