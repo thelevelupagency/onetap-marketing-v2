@@ -26,3 +26,6 @@ src/components/providers/meta-pixel.tsx, src/lib/meta-pixel.ts
 2026-08-26 — Fire Meta Pixel on Accept click via server-rendered stub + syncMetaPixelConsent.
 src/components/providers/meta-pixel-bootstrap.tsx, cookie-consent-banner.tsx
 
+2026-08-26 — Persist first-touch fbclid/UTMs in sessionStorage for app CTA handoff.
+src/lib/constants.ts, AttributionCapture, AppOutboundLink
+

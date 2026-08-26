@@ -1,4 +1,4 @@
-import { appendAttributionParams } from "@/lib/constants";
+import { appendAttributionParams, captureLandingAttribution, getMergedAttributionParams } from "@/lib/constants";
 import type { MarketingConsent } from "@/lib/marketing-consent";
 
 const PIXEL_ID_PATTERN = /^\d+$/;
@@ -114,7 +114,9 @@ export function withLandingAttribution(url: string): string {
   if (typeof window === "undefined") {
     return url;
   }
-  return appendAttributionParams(url, new URLSearchParams(window.location.search));
+  const live = new URLSearchParams(window.location.search);
+  captureLandingAttribution(live);
+  return appendAttributionParams(url, getMergedAttributionParams(live));
 }
 
 /** Copy landing `fbclid`/UTMs onto the app URL and fire the matching conversion, if any. */
