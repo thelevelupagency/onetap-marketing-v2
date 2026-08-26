@@ -23,3 +23,6 @@ src/lib/meta-pixel.ts, marketing-consent, GetCardCta / outbound app links
 2026-08-26 — Meta Pixel consent mode: load base snippet with revoke; grant only after banner accept.
 src/components/providers/meta-pixel.tsx, src/lib/meta-pixel.ts
 
+2026-08-26 — Fire Meta Pixel on Accept click via server-rendered stub + syncMetaPixelConsent.
+src/components/providers/meta-pixel-bootstrap.tsx, cookie-consent-banner.tsx
+

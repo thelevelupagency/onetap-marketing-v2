@@ -1,4 +1,5 @@
 import { appendAttributionParams } from "@/lib/constants";
+import type { MarketingConsent } from "@/lib/marketing-consent";
 
 const PIXEL_ID_PATTERN = /^\d+$/;
 
@@ -172,4 +173,51 @@ export function trackViewContentForPath(pathname: string): void {
     return;
   }
   trackMetaEvent("ViewContent", params);
+}
+
+/** Inline stub + init. Digits-only `pixelId` is required (see getMetaPixelId). */
+export function getMetaPixelBootstrapScript(pixelId: string): string {
+  return `
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('consent', 'revoke');
+fbq('set', 'autoConfig', false, '${pixelId}');
+fbq('init', '${pixelId}');
+`;
+}
+
+let lastTrackedPath: string | null = null;
+
+/**
+ * Apply consent and fire landing events. Safe to call from the Accept click
+ * handler — `fbq` is a stub that queues until fbevents.js loads.
+ */
+export function syncMetaPixelConsent(
+  consent: MarketingConsent | null,
+  pathname: string,
+): void {
+  if (typeof window === "undefined" || typeof window.fbq !== "function") {
+    return;
+  }
+
+  if (consent === "granted") {
+    window.fbq("consent", "grant");
+    if (lastTrackedPath !== pathname) {
+      trackMetaEvent("PageView");
+      trackViewContentForPath(pathname);
+      lastTrackedPath = pathname;
+    }
+    return;
+  }
+
+  window.fbq("consent", "revoke");
+  if (consent === "denied") {
+    lastTrackedPath = null;
+  }
 }
