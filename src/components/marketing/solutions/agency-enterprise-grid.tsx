@@ -8,15 +8,17 @@ import {
 } from "@/components/marketing/primitives";
 import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
-import { agenciesEnterpriseCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { solutionFeatureIcons } from "@/lib/marketing-icons";
 
 interface AgencyEnterpriseGridProps {
+  locale: Locale;
   background?: MarketingBandBackground;
 }
 
-export function AgencyEnterpriseGrid({ background = "white" }: AgencyEnterpriseGridProps) {
-  const copy = agenciesEnterpriseCopy;
+export function AgencyEnterpriseGrid({ locale, background = "white" }: AgencyEnterpriseGridProps) {
+  const copy = getSolutions(locale).agenciesEnterpriseCopy;
 
   return (
     <MarketingSection background={background} spacing="compact" id="enterprise">

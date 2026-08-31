@@ -52,6 +52,7 @@ interface Navbar1Props {
     className?: string;
   };
   menu?: MenuItem[];
+  languageSwitcher?: React.ReactNode;
   auth?: {
     login?: {
       title: string;
@@ -163,6 +164,7 @@ const Navbar1 = ({
     { title: "Pricing", url: "/pricing" },
   ],
   auth,
+  languageSwitcher,
   className,
 }: Navbar1Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -208,6 +210,7 @@ const Navbar1 = ({
             </NavigationMenu>
           </div>
           <div className="flex shrink-0 items-center justify-end gap-2">
+            {languageSwitcher}
             {auth?.login?.title ? (
               <Button
                 variant="brandOutline"
@@ -233,7 +236,9 @@ const Navbar1 = ({
         <div className="block h-full lg:hidden">
           <div className="flex h-full items-center justify-between gap-4">
             <LogoMark logo={logo} />
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <div className="flex items-center gap-2">
+              {languageSwitcher}
+              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger
                 render={
                   <Button
@@ -295,6 +300,7 @@ const Navbar1 = ({
                 ) : null}
               </SheetContent>
             </Sheet>
+            </div>
           </div>
         </div>
       </MarketingContainer>

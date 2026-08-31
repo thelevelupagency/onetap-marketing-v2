@@ -1,4 +1,5 @@
-import { pricingFaqs } from "@/content/pricing";
+import { getPricing } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import {
   MarketingSection,
   MarketingContainer,
@@ -6,7 +7,8 @@ import {
   FaqAccordion,
 } from "@/components/marketing/primitives";
 
-export function PricingFaq() {
+export function PricingFaq({ locale }: { locale: Locale }) {
+  const { pricingFaqs } = getPricing(locale);
   return (
     <MarketingSection background="cream" spacing="compact" id="billing-faq">
       <MarketingContainer width="narrow">

@@ -138,7 +138,7 @@ export function GetCardCta({
       nativeButton={false}
     >
       {children}
-      {showArrowIcon ? <ArrowRight className="ml-2 h-5 w-5 shrink-0" /> : null}
+      {showArrowIcon ? <ArrowRight className="ms-2 h-5 w-5 shrink-0 rtl:rotate-180" /> : null}
     </Button>
   );
 }

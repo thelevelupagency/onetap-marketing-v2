@@ -6,18 +6,20 @@ import {
   MarketingContainer,
   MarketingSection,
 } from "@/components/marketing/primitives";
-import { getFinalCtaCopy, type FinalCtaVariant } from "@/content/final-cta";
+import { getFinalCta, type FinalCtaVariant } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 
 export type { FinalCtaVariant };
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 
 interface FinalCtaSectionProps {
+  locale: Locale;
   variant?: FinalCtaVariant;
 }
 
-export function FinalCtaSection({ variant = "default" }: FinalCtaSectionProps) {
-  const copy = getFinalCtaCopy(variant);
+export function FinalCtaSection({ locale, variant = "default" }: FinalCtaSectionProps) {
+  const copy = getFinalCta(locale, variant);
 
   return (
     <MarketingSection background="white" spacing="compact">

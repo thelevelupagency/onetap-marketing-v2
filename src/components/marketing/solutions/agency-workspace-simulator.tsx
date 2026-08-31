@@ -7,17 +7,20 @@ import {
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
-import { agenciesWorkspaceCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { CREATE_BASICS_URL } from "@/lib/constants";
 
 interface AgencyWorkspaceSimulatorProps {
+  locale: Locale;
   background?: MarketingBandBackground;
 }
 
 export function AgencyWorkspaceSimulator({
+  locale,
   background = "white",
 }: AgencyWorkspaceSimulatorProps) {
-  const copy = agenciesWorkspaceCopy;
+  const copy = getSolutions(locale).agenciesWorkspaceCopy;
 
   return (
     <MarketingSection

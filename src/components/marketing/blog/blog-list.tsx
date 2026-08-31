@@ -13,7 +13,9 @@ import {
   parseBlogPageParam,
 } from "@/lib/blog";
 import { paginateItems } from "@/lib/pagination";
-import { categoryLabels, type BlogCategory } from "@/content/blog/posts";
+import { getBlogCategoryLabels } from "@/content/get-content";
+import type { BlogCategory } from "@/content/blog/types";
+import type { Locale } from "@/lib/i18n/config";
 import { ContentSearch } from "@/components/marketing/content-search";
 import { CategoryFilterPills, type CategoryFilterPill } from "@/components/marketing/primitives";
 import { BlogPostsSection } from "@/components/marketing/blog/blog-posts-section";
@@ -34,11 +36,12 @@ function scrollToBlogPosts(reducedMotion: boolean) {
 }
 
 interface BlogListProps {
+  locale: Locale;
   initialCategory?: string | null;
   initialPage?: string | null;
 }
 
-export function BlogList({ initialCategory, initialPage }: BlogListProps) {
+export function BlogList({ locale, initialCategory, initialPage }: BlogListProps) {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion() ?? false;
   const [isPending, startTransition] = useTransition();
@@ -65,8 +68,8 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
   }
 
   const filtered = useMemo(
-    () => filterBlogPostsBySearch(getPosts(activeCategory), query),
-    [activeCategory, query],
+    () => filterBlogPostsBySearch(getPosts(activeCategory, locale), query, locale),
+    [activeCategory, query, locale],
   );
 
   const { pageItems, totalPages, safePage } = useMemo(
@@ -85,7 +88,7 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
       page: page > 1 ? String(page) : undefined,
     });
     startTransition(() => {
-      router.replace(buildBlogPageHref(page, category), { scroll: false });
+      router.replace(buildBlogPageHref(page, category, locale), { scroll: false });
     });
   };
 
@@ -100,6 +103,7 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
 
   const filterPills: CategoryFilterPill[] = categories.map((cat) => {
     const isActive = cat === "all" ? !activeCategory : activeCategory === cat;
+    const categoryLabels = getBlogCategoryLabels(locale);
     return {
       id: cat,
       label: cat === "all" ? "All" : categoryLabels[cat],
@@ -139,6 +143,7 @@ export function BlogList({ initialCategory, initialPage }: BlogListProps) {
         hasSearchQuery={hasSearchQuery}
         isPending={isPending}
         prefersReducedMotion={prefersReducedMotion}
+        locale={locale}
         onPageNavigate={(page) => navigate(activeCategory, page, { scrollToPosts: true })}
       />
     </>

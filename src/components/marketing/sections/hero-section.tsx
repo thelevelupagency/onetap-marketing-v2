@@ -14,7 +14,8 @@ import {
 import { RevealItem, RevealStagger } from "@/components/marketing/motion";
 import { HERO_MOBILE_MOUNT_TOKENS, useMotionConfig } from "@/lib/motion";
 import { marketingOutlineCtaClassName } from "@/components/marketing/get-card-cta";
-import { heroCopy } from "@/content/homepage";
+import { getChrome, getHomepage } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 
@@ -23,13 +24,17 @@ const HERO_INTRO_STAGGER = HERO_MOBILE_MOUNT_TOKENS.staggerChildren;
 const HERO_TITLE_CLASS = `${typography.hero} mb-6 text-center max-w-5xl`;
 const HERO_TEXT_EFFECT_CLASS = "inline";
 
-function HeroTitle({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
+function HeroTitle({ prefersReducedMotion, locale }: { prefersReducedMotion: boolean; locale: Locale }) {
+  const chrome = getChrome(locale);
+  const { title, titleAccent, titleRest } = chrome.hero;
+  const fullTitle = `${title} ${titleAccent} ${titleRest}`;
+
   if (prefersReducedMotion) {
     return (
       <h1 className={HERO_TITLE_CLASS}>
-        Your Digital Business Card in <BrandAccent>One Tap.</BrandAccent>{" "}
+        {title} <BrandAccent>{titleAccent}</BrandAccent>{" "}
         <br className="block sm:hidden" />
-        Appear Everywhere.
+        {titleRest}
       </h1>
     );
   }
@@ -37,26 +42,32 @@ function HeroTitle({ prefersReducedMotion }: { prefersReducedMotion: boolean }) 
   return (
     <h1 className={HERO_TITLE_CLASS}>
       <TextGenerateEffect
-        words="Your Digital Business Card in One Tap. Appear Everywhere."
+        words={fullTitle}
         className={HERO_TEXT_EFFECT_CLASS}
-        accentWords="One Tap."
+        accentWords={titleAccent}
         accentClassName="italic text-brand-turquoise"
-        breakBeforeWord="Appear"
+        breakBeforeWord={titleRest.split(" ")[0]}
       />
     </h1>
   );
 }
 
-export function HeroSection() {
+interface HeroSectionProps {
+  locale: Locale;
+}
+
+export function HeroSection({ locale }: HeroSectionProps) {
   const [slug, setSlug] = useState("");
   const { isMobile, prefersReducedMotion } = useMotionConfig();
+  const chrome = getChrome(locale);
+  const homepage = getHomepage(locale);
 
   const ctaBlock = (
     <div className="flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:items-start max-w-4xl mx-auto">
-      <SlugClaimCta slug={slug} onSlugChange={setSlug} size="wide" className="w-full lg:flex-1" />
+      <SlugClaimCta slug={slug} onSlugChange={setSlug} size="wide" locale={locale} className="w-full lg:flex-1" />
       <Link href="#how-it-works" className="w-full max-w-2xl lg:max-w-none lg:w-auto shrink-0 flex justify-center">
         <Button size="lg" variant="brandOutline" className={cn(marketingOutlineCtaClassName, "h-14 px-8 rounded-full text-base !w-full lg:!w-auto")}>
-          See how it works
+          {chrome.hero.seeHowItWorks}
         </Button>
       </Link>
     </div>
@@ -64,8 +75,8 @@ export function HeroSection() {
 
   const microcopyBlock = (
     <div className="text-center">
-      <p className="mt-3 text-sm text-brand-midnight/50">{heroCopy.microcopy}</p>
-      <p className="mt-1 text-sm text-brand-midnight/60">{heroCopy.trustLine}</p>
+      <p className="mt-3 text-sm text-brand-midnight/50">{homepage.heroCopy.microcopy}</p>
+      <p className="mt-1 text-sm text-brand-midnight/60">{homepage.heroCopy.trustLine}</p>
     </div>
   );
 
@@ -95,11 +106,11 @@ export function HeroSection() {
       >
         <MarketingContainer width="full" className="relative z-10 text-center">
           <div className="mx-auto max-w-5xl lg:max-w-6xl flex flex-col items-center">
-            <HeroTitle prefersReducedMotion={prefersReducedMotion} />
+            <HeroTitle prefersReducedMotion={prefersReducedMotion} locale={locale} />
 
             <RevealItem>
               <p className={`${typography.lead} mx-auto mb-8 max-w-2xl text-center`}>
-                {heroCopy.subheadline}
+                {homepage.heroCopy.subheadline}
               </p>
             </RevealItem>
 

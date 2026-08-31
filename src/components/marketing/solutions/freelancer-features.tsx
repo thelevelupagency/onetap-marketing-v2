@@ -6,14 +6,17 @@ import {
   FeatureCard,
 } from "@/components/marketing/primitives";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
-import { freelancersFeaturesCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { solutionFeatureIcons } from "@/lib/marketing-icons";
 
 interface FreelancerFeaturesProps {
+  locale: Locale;
   background?: MarketingBandBackground;
 }
 
-export function FreelancerFeatures({ background = "white" }: FreelancerFeaturesProps) {
+export function FreelancerFeatures({ locale, background = "white" }: FreelancerFeaturesProps) {
+  const { freelancersFeaturesCopy } = getSolutions(locale);
   return (
     <MarketingSection background={background} spacing="compact">
       <MarketingContainer width="default">

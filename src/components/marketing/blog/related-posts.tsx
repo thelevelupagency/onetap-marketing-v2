@@ -1,4 +1,6 @@
-import type { BlogPost } from "@/content/blog/posts";
+import type { BlogPost } from "@/content/blog/types";
+import type { Locale } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
 import { formatDate, formatReadingTime, getPostReadingMinutes } from "@/lib/blog";
 import { type as typography } from "@/lib/typography";
 import {
@@ -9,7 +11,7 @@ import {
 import { BlogPostBadges } from "@/components/marketing/blog/blog-post-badges";
 import { BlogImage } from "@/components/marketing/blog/blog-image";
 
-export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
+export function RelatedPosts({ posts, locale = DEFAULT_LOCALE }: { posts: BlogPost[]; locale?: Locale }) {
   if (posts.length === 0) return null;
 
   return (
@@ -19,7 +21,7 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
         {posts.map((post) => (
           <MarketingLinkCard
             key={post.slug}
-            href={`/blog/${post.slug}`}
+            href={localizePath(`/blog/${post.slug}`, locale)}
             radius="lg"
             lift={false}
             className="flex h-full flex-col overflow-hidden"
@@ -32,14 +34,14 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
               frameClassName="shrink-0"
             />
             <div className="flex flex-1 flex-col p-marketing-card-padding">
-              <BlogPostBadges categories={post.categories} className="mb-2" />
+              <BlogPostBadges categories={post.categories} locale={locale} className="mb-2" />
               <h3
                 className={`${typography.cardTitle} transition-colors group-hover:text-brand-turquoise-dark`}
               >
                 {post.title}
               </h3>
               <p className={`${typography.caption} mt-auto pt-2`}>
-                {formatDate(post.date)} · {formatReadingTime(getPostReadingMinutes(post))}
+                {formatDate(post.date, locale)} · {formatReadingTime(getPostReadingMinutes(post), locale)}
               </p>
             </div>
           </MarketingLinkCard>

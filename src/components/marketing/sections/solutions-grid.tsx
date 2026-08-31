@@ -9,10 +9,17 @@ import {
   MarketingCarouselContentSlide,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
-import { solutionsCopy } from "@/content/homepage";
+import { getHomepage } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
+import { localizePath } from "@/lib/i18n/config";
 import { MARKETING_CAROUSEL_AUTOPLAY_MS } from "@/lib/use-marketing-carousel";
 
-export function SolutionsGrid() {
+export function SolutionsGrid({ locale }: { locale: Locale }) {
+  const { solutionsCopy } = getHomepage(locale);
+  const localizedCards = solutionsCopy.cards.map((card) => ({
+    ...card,
+    href: localizePath(card.href, locale),
+  }));
   return (
     <MarketingSection background="cream" id="solutions" className="overflow-visible">
       <MarketingContainer width="wide" className="overflow-visible">
@@ -26,7 +33,7 @@ export function SolutionsGrid() {
 
         <Reveal delay={0.08} className="overflow-visible">
           <MarketingCarousel
-            items={solutionsCopy.cards}
+            items={localizedCards}
             getKey={(card) => card.title}
             renderItem={(card) => (
               <MarketingCarouselContentSlide>

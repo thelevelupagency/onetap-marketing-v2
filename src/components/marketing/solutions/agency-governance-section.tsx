@@ -12,7 +12,8 @@ import {
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
-import { agenciesGovernanceCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import {
   AGENCIES_BRAND_LOCK_IMAGE_URL,
   AGENCIES_BRAND_LOCK_IMAGE_ALT,
@@ -26,13 +27,15 @@ import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 
 interface AgencyGovernanceSectionProps {
+  locale: Locale;
   background?: MarketingBandBackground;
 }
 
 export function AgencyGovernanceSection({
+  locale,
   background = "cream",
 }: AgencyGovernanceSectionProps) {
-  const copy = agenciesGovernanceCopy;
+  const copy = getSolutions(locale).agenciesGovernanceCopy;
   const { brandLock, leads } = copy;
 
   const brandLockSpotlightItems = brandLock.capabilities.map((capability) => ({

@@ -3,7 +3,8 @@
 import { Check } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { getPlanPriceDisplay, plans } from "@/content/pricing";
+import { getPricing } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { MarketingPrimaryButton } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 import { CardReveal, MarketingStaggerGrid } from "@/components/marketing/motion";
@@ -17,7 +18,7 @@ interface PricingPlanCardsProps {
   isAnnual: boolean;
   surface: PricingSurface;
   className?: string;
-  /** Stagger scroll reveal for each plan card (homepage). */
+  locale: Locale;
   withStagger?: boolean;
 }
 
@@ -26,15 +27,18 @@ function PlanPriceBlock({
   isPopular,
   planId,
   tokens,
+  locale,
 }: {
   isAnnual: boolean;
   isPopular: boolean;
   planId: string;
   tokens: MotionTokenSet;
+  locale: Locale;
 }) {
+  const pricing = getPricing(locale);
   const period = isAnnual ? "annual" : "monthly";
-  const plan = plans.find((p) => p.id === planId)!;
-  const { current, previous, billedNote } = getPlanPriceDisplay(plan, period);
+  const plan = pricing.plans.find((p) => p.id === planId)!;
+  const { current, previous, billedNote } = pricing.getPlanPriceDisplay(plan, period);
 
   return (
     <AnimatePresence mode="wait">
@@ -87,9 +91,11 @@ export function PricingPlanCards({
   isAnnual,
   surface,
   className,
+  locale,
   withStagger = false,
 }: PricingPlanCardsProps) {
   const { tokens } = useMotionConfig();
+  const pricing = getPricing(locale);
   const nonPopularCardBg =
     surface === "on-white"
       ? "bg-brand-cream border border-brand-midnight/10"
@@ -97,7 +103,7 @@ export function PricingPlanCards({
 
   const grid = (
     <>
-      {plans.map((plan, index) => {
+      {pricing.plans.map((plan, index) => {
         const isPopular = plan.popular;
 
         const card = (
@@ -136,6 +142,7 @@ export function PricingPlanCards({
               isPopular={!!isPopular}
               planId={plan.id}
               tokens={tokens}
+              locale={locale}
             />
             <ul className="mb-0 flex-1 space-y-3">
               {plan.features.map((f) => (

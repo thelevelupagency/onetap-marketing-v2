@@ -9,7 +9,7 @@ import {
   useState,
   type MouseEvent,
 } from "react";
-import type { BlogHeading } from "@/content/blog/posts";
+import type { BlogHeading } from "@/content/blog/types";
 import { getTocHeadings, resolveTocActiveId } from "@/lib/blog";
 import {
   blogScrollStorageKey,

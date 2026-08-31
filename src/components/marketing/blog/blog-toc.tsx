@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useHasHydrated } from "@/lib/use-has-hydrated";
 import { useMotionConfig } from "@/lib/motion";
-import type { BlogHeading } from "@/content/blog/posts";
+import type { BlogHeading } from "@/content/blog/types";
 import { useBlogScrollSpyContext } from "@/components/marketing/blog/blog-scroll-spy-context";
 
 function BlogTocLink({

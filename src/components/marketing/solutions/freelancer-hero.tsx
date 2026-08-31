@@ -1,9 +1,11 @@
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { AnimatedHeroTitle, MarketingPageHero } from "@/components/marketing/primitives";
-import { freelancersHeroCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { type as typography } from "@/lib/typography";
 
-export function FreelancerHero() {
+export function FreelancerHero({ locale }: { locale: Locale }) {
+  const { freelancersHeroCopy } = getSolutions(locale);
   return (
     <MarketingPageHero background="cream">
       <AnimatedHeroTitle

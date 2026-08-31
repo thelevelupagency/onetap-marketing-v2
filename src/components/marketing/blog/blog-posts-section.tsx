@@ -8,7 +8,9 @@ import {
   getBlogListEmptyMessage,
   getPostReadingMinutes,
 } from "@/lib/blog";
-import type { BlogCategory, BlogPost } from "@/content/blog/posts";
+import type { BlogCategory, BlogPost } from "@/content/blog/types";
+import type { Locale } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
 import { getPaginationPageNumbers } from "@/lib/pagination";
 import { cn } from "@/lib/utils";
 import { MarketingLinkCard } from "@/components/marketing/primitives";
@@ -34,6 +36,7 @@ interface BlogPostsSectionProps {
   hasSearchQuery: boolean;
   isPending: boolean;
   prefersReducedMotion: boolean;
+  locale?: Locale;
   onPageNavigate: (page: number) => void;
 }
 
@@ -47,10 +50,11 @@ export function BlogPostsSection({
   hasSearchQuery,
   isPending,
   prefersReducedMotion,
+  locale = DEFAULT_LOCALE,
   onPageNavigate,
 }: BlogPostsSectionProps) {
   const showPagination = totalPages > 1;
-  const emptyMessage = getBlogListEmptyMessage(hasSearchQuery, activeCategory != null);
+  const emptyMessage = getBlogListEmptyMessage(hasSearchQuery, activeCategory != null, locale);
 
   const sectionClassName = cn(
     "relative scroll-mt-24",
@@ -77,7 +81,7 @@ export function BlogPostsSection({
           {pageItems.map((post) => (
             <MarketingLinkCard
               key={post.slug}
-              href={`/blog/${post.slug}`}
+              href={localizePath(`/blog/${post.slug}`, locale)}
               className="flex h-full flex-col overflow-hidden"
             >
               <BlogImage
@@ -89,7 +93,7 @@ export function BlogPostsSection({
                 imageClassName="transition-transform duration-500 group-hover:scale-105"
               />
               <div className="flex flex-1 flex-col p-marketing-card-padding">
-                <BlogPostBadges categories={post.categories} className="mb-3" />
+                <BlogPostBadges categories={post.categories} locale={locale} className="mb-3" />
                 <h2
                   className={`${typography.cardTitle} mb-2 transition-colors group-hover:text-brand-turquoise-dark`}
                 >
@@ -97,8 +101,8 @@ export function BlogPostsSection({
                 </h2>
                 <p className={`${typography.body} mb-4 line-clamp-2`}>{post.excerpt}</p>
                 <p className="mt-auto text-xs text-brand-midnight/40">
-                  {formatDate(post.date)} · {post.author} ·{" "}
-                  {formatReadingTime(getPostReadingMinutes(post))}
+                  {formatDate(post.date, locale)} · {post.author} ·{" "}
+                  {formatReadingTime(getPostReadingMinutes(post), locale)}
                 </p>
               </div>
             </MarketingLinkCard>
@@ -110,7 +114,7 @@ export function BlogPostsSection({
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
-                  href={buildBlogPageHref(safePage - 1, activeCategory)}
+                  href={buildBlogPageHref(safePage - 1, activeCategory, locale)}
                   aria-disabled={safePage <= 1}
                   tabIndex={safePage <= 1 ? -1 : undefined}
                   className={safePage <= 1 ? "pointer-events-none opacity-50" : undefined}
@@ -130,7 +134,7 @@ export function BlogPostsSection({
                 ) : (
                   <PaginationItem key={item}>
                     <PaginationLink
-                      href={buildBlogPageHref(item, activeCategory)}
+                      href={buildBlogPageHref(item, activeCategory, locale)}
                       isActive={item === safePage}
                       onClick={(e) => {
                         if (item === safePage) return;
@@ -146,7 +150,7 @@ export function BlogPostsSection({
 
               <PaginationItem>
                 <PaginationNext
-                  href={buildBlogPageHref(safePage + 1, activeCategory)}
+                  href={buildBlogPageHref(safePage + 1, activeCategory, locale)}
                   aria-disabled={safePage >= totalPages}
                   tabIndex={safePage >= totalPages ? -1 : undefined}
                   className={safePage >= totalPages ? "pointer-events-none opacity-50" : undefined}

@@ -23,7 +23,9 @@ alwaysApply: false
 
 ## Dates and locale
 
-- ISO dates in content (`YYYY-MM-DD`); display formatting via `src/lib/blog.ts` / `toLocaleDateString("en-US")` until i18n exists.
+- ISO dates in content (`YYYY-MM-DD`); display formatting via `src/lib/blog.ts` / `formatDate(date, locale)` (`en-US` / `he-IL`).
+- User-facing copy lives under `src/content/en/**` and `src/content/he/**`; access via `src/content/get-content.ts`.
+- Public Hebrew URLs use `/he` prefix; English stays unprefixed.
 
 ## After adding blog posts
 
