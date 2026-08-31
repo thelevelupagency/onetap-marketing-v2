@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useHasHydrated } from "@/lib/use-has-hydrated";
 import { useMotionConfig } from "@/lib/motion";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome } from "@/content/get-content";
 import type { BlogHeading } from "@/content/blog/types";
 import { useBlogScrollSpyContext } from "@/components/marketing/blog/blog-scroll-spy-context";
 
@@ -42,6 +44,8 @@ function BlogTocLink({
 /** Horizontal scroll pills for mobile/tablet — hidden at `lg` and up. */
 export function BlogTocMobile() {
   const { headings, activeId, handleHeadingClick } = useBlogScrollSpyContext();
+  const locale = useLocale();
+  const chrome = getChrome(locale);
   const hasHydrated = useHasHydrated();
   const scrollRef = useRef<HTMLDivElement>(null);
   const pillRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
@@ -71,10 +75,10 @@ export function BlogTocMobile() {
 
   return (
     <nav
-      aria-label="On this page"
+      aria-label={chrome.blogUi.onThisPage}
       className="lg:hidden"
     >
-      <p className="type-eyebrow mb-2 text-brand-midnight/40">On this page</p>
+      <p className="type-eyebrow mb-2 text-brand-midnight/40">{chrome.blogUi.onThisPage}</p>
       <div
         ref={scrollRef}
         className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -111,6 +115,8 @@ export function BlogTocMobile() {
 export function BlogToc() {
   const { headings, activeId, isNavigating, handleHeadingClick } =
     useBlogScrollSpyContext();
+  const locale = useLocale();
+  const chrome = getChrome(locale);
 
   const listRef = useRef<HTMLUListElement>(null);
   const itemRefs = useRef<Map<string, HTMLLIElement>>(new Map());
@@ -153,10 +159,10 @@ export function BlogToc() {
 
   return (
     <nav
-      aria-label="On this page"
+      aria-label={chrome.blogUi.onThisPage}
       className="sticky top-28 max-h-[calc(100vh-8rem)] w-full min-w-0 overflow-y-auto pb-marketing-stack-gap"
     >
-      <p className="type-eyebrow mb-4 text-brand-midnight/40">On this page</p>
+      <p className="type-eyebrow mb-4 text-brand-midnight/40">{chrome.blogUi.onThisPage}</p>
       <div className="relative ps-4">
         <div
           className="pointer-events-none absolute inset-y-0 start-0 w-px bg-brand-midnight/10"

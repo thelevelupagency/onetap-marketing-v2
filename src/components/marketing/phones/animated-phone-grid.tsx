@@ -1,110 +1,22 @@
 "use client";
 
-import React, { useRef, useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
 import { IPhone13ProMaxMockup } from "./iphone-13-pro-max-mockup";
+import { InfiniteScrollTrack } from "@/components/marketing/primitives/infinite-scroll-track";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome } from "@/content/get-content";
 import { CARD_SCREENSHOTS } from "@/lib/phone-screenshots";
-import { useMotionConfig } from "@/lib/motion";
-
-interface InfiniteTrackProps {
-  children: ReactNode;
-  direction?: "left" | "right";
-  speed?: number;
-  className?: string;
-}
-
-function InfiniteTrack({
-  children,
-  direction = "right",
-  speed = 1,
-  className = "",
-}: InfiniteTrackProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const animationRef = useRef<number>(0);
-  const { prefersReducedMotion } = useMotionConfig();
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const content = contentRef.current;
-    if (!container || !content) return;
-
-    // Initial positioning in the middle duplicated set
-    const singleSetWidth = content.scrollWidth / 4;
-    if (container.scrollLeft === 0 && singleSetWidth > 0) {
-      container.scrollLeft = singleSetWidth;
-    }
-
-    let pos = container.scrollLeft;
-
-    const handleScroll = () => {
-      if (!container || !content) return;
-      const setWidth = content.scrollWidth / 4;
-      if (setWidth <= 0) return;
-
-      // Keep scroll position seamlessly within middle buffer sets
-      if (container.scrollLeft < setWidth * 0.5) {
-        container.scrollLeft += setWidth;
-      } else if (container.scrollLeft > setWidth * 2.5) {
-        container.scrollLeft -= setWidth;
-      }
-      pos = container.scrollLeft;
-    };
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-
-    const animate = () => {
-      if (!isPaused && !prefersReducedMotion && container && content) {
-        pos += direction === "right" ? speed : -speed;
-        container.scrollLeft = pos;
-      } else if (container) {
-        pos = container.scrollLeft;
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      container.removeEventListener("scroll", handleScroll);
-    };
-  }, [direction, speed, isPaused, prefersReducedMotion]);
-
-  return (
-    <div
-      ref={containerRef}
-      className={`hide-scrollbar overflow-x-scroll flex items-center ${className}`}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={() => setIsPaused(true)}
-      onTouchEnd={() => setIsPaused(false)}
-      style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
-      aria-label="Digital card examples carousel"
-    >
-      <div ref={contentRef} className="flex flex-row gap-6 items-center w-max">
-        {/* Quadruplicated Content for 100% Seamless Infinite Manual & Auto Scrolling */}
-        {children}
-        {children}
-        {children}
-        {children}
-      </div>
-    </div>
-  );
-}
 
 const realMockScreenshots = CARD_SCREENSHOTS;
 
 export function AnimatedPhoneGrid() {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
+
   const renderPhone = (item: { src: string; alt: string }, idx: number) => (
-    <div key={idx} className="shrink-0 pointer-events-none">
+    <div key={idx} className="pointer-events-none shrink-0">
       <IPhone13ProMaxMockup scale={0.16}>
-        <div className="w-full h-full bg-brand-navy flex items-center justify-center relative overflow-hidden">
+        <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-brand-navy">
           <Image
             src={item.src}
             alt={item.alt}
@@ -119,10 +31,17 @@ export function AnimatedPhoneGrid() {
   );
 
   return (
-    <div className="w-full h-[480px] relative flex justify-center items-center overflow-hidden">
-      <InfiniteTrack direction="right" speed={1.2} className="w-full h-full">
+    <div className="relative flex h-[480px] w-full items-center justify-center overflow-hidden">
+      <InfiniteScrollTrack
+        direction="right"
+        speed={1.2}
+        ariaLabel={chrome.aria.digitalCardCarousel}
+        className="h-full w-full"
+        scrollClassName="h-full w-full items-center"
+        contentClassName="items-center gap-6"
+      >
         {realMockScreenshots.map((item, i) => renderPhone(item, i))}
-      </InfiniteTrack>
+      </InfiniteScrollTrack>
     </div>
   );
 }

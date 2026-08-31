@@ -75,7 +75,7 @@ export function FaqPageContent({ locale }: { locale: Locale }) {
 
       <CategoryFilterPills
         items={filterPills}
-        ariaLabel="FAQ categories"
+        ariaLabel={chrome.aria.faqCategories}
         className="mb-marketing-header-gap-md"
       />
 
@@ -97,7 +97,7 @@ export function FaqPageContent({ locale }: { locale: Locale }) {
               />
               {section.category === "plans-billing" ? (
                 <nav
-                  aria-label="Pricing help"
+                  aria-label={chrome.aria.pricingHelp}
                   className="mt-marketing-stack-gap-sm flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2"
                 >
                   <TextLink href={localizePath("/pricing", locale)} showArrow={false}>

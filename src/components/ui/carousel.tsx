@@ -140,17 +140,26 @@ function CarouselContent({
   /** Extra classes on the Embla viewport (overflow container). Use padding so hover shadows are not clipped. */
   viewportClassName?: string;
 }) {
-  const { carouselRef, orientation } = useCarousel();
+  const { carouselRef, orientation, opts } = useCarousel();
+  const dir =
+    orientation === "horizontal"
+      ? opts?.direction === "rtl"
+        ? "rtl"
+        : "ltr"
+      : undefined;
 
   return (
     <div
       ref={carouselRef}
       className={cn("overflow-hidden", viewportClassName)}
+      dir={dir}
     >
       <div
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ms-4" : "-mt-4 flex-col",
+          // Horizontal gap is owned by MarketingCarousel (logical -ms / ps tokens).
+          // Vertical keeps the shadcn default stack gap.
+          orientation === "vertical" && "-mt-4 flex-col",
           className
         )}
         {...props}
@@ -168,7 +177,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       aria-roledescription="slide"
       className={cn(
         "flex min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "ps-4" : "pt-4",
+        orientation === "vertical" && "pt-4",
         className
       )}
       {...props}
@@ -201,7 +210,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="size-4 rtl:-scale-x-100" />
+      <ArrowLeft className="size-4 rtl:rotate-180" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -232,7 +241,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="size-4 rtl:-scale-x-100" />
+      <ArrowRight className="size-4 rtl:rotate-180" />
       <span className="sr-only">Next slide</span>
     </Button>
   );

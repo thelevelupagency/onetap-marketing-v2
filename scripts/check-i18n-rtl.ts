@@ -103,6 +103,22 @@ function main(): void {
     errors.push("SlugClaimCta must pin dir=ltr on the URL field island");
   }
 
+  const heroSection = readFileSync(
+    join(ROOT, "src/components/marketing/sections/hero-section.tsx"),
+    "utf8",
+  );
+  if (!heroSection.includes('dir="ltr"')) {
+    errors.push("HeroSection must pin dir=ltr on the full CTA row");
+  }
+
+  const infiniteScrollTrack = readFileSync(
+    join(ROOT, "src/components/marketing/primitives/infinite-scroll-track.tsx"),
+    "utf8",
+  );
+  if (!infiniteScrollTrack.includes('dir="ltr"')) {
+    errors.push("InfiniteScrollTrack must pin dir=ltr on scroll container");
+  }
+
   const files: string[] = [];
   for (const dir of SCAN_DIRS) {
     const full = join(ROOT, dir);

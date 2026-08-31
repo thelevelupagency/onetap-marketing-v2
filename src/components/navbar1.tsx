@@ -126,7 +126,9 @@ const Navbar1 = ({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const locale = useLocale();
-  const sheetSide = isRtlLocale(locale) ? "left" : "right";
+  const isRtl = isRtlLocale(locale);
+  const sheetSide = isRtl ? "left" : "right";
+  const menuDir = isRtl ? "rtl" : "ltr";
 
   const blurMenuFocus = () => {
     requestAnimationFrame(() => {
@@ -159,11 +161,12 @@ const Navbar1 = ({
           <div className="flex items-center justify-center overflow-visible">
             <NavigationMenu
               className="flex-none max-w-none overflow-visible"
+              dir={menuDir}
               value={openMenu}
               onValueChange={handleMenuValueChange}
             >
               <NavigationMenuList>
-                {menu.map((item) => renderMenuItem(item, closeDesktopMenu))}
+                {menu.map((item) => renderMenuItem(item, closeDesktopMenu, isRtl))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
@@ -211,6 +214,7 @@ const Navbar1 = ({
               </SheetTrigger>
               <SheetContent
                 side={sheetSide}
+                dir={menuDir}
                 closeLabel={closeMenuLabel}
                 showCloseButton
                 className="z-110 flex h-full w-full max-w-none flex-col gap-0 overflow-hidden border-brand-midnight/10 bg-brand-cream p-0 sm:max-w-sm"
@@ -225,7 +229,7 @@ const Navbar1 = ({
                   <nav className="flex flex-col gap-4">
                     {menu.map((item) =>
                       item.items
-                        ? renderMobileMenuItem(item, () => setMobileOpen(false))
+                        ? renderMobileMenuItem(item, () => setMobileOpen(false), isRtl)
                         : renderMobileNavLink(item, () => setMobileOpen(false))
                     )}
                   </nav>
@@ -268,7 +272,7 @@ const Navbar1 = ({
   );
 };
 
-const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void) => {
+const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void, isRtl: boolean) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title} value={item.title}>
@@ -283,7 +287,10 @@ const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void) => {
         >
           {item.title}
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-white text-brand-midnight border border-brand-midnight/10">
+        <NavigationMenuContent
+          dir={isRtl ? "rtl" : "ltr"}
+          className="bg-white text-start text-brand-midnight border border-brand-midnight/10"
+        >
           {item.items.map((subItem) => (
             <NavigationMenuLink
               key={subItem.title}
@@ -331,16 +338,16 @@ const renderMobileNavLink = (item: MenuItem, onNavigate: () => void) => (
   />
 );
 
-const renderMobileMenuItem = (item: MenuItem, onNavigate: () => void) => {
+const renderMobileMenuItem = (item: MenuItem, onNavigate: () => void, isRtl: boolean) => {
   if (!item.items) return null;
 
   return (
-    <Accordion key={item.title} className="w-full">
+    <Accordion key={item.title} dir={isRtl ? "rtl" : "ltr"} className="w-full">
       <AccordionItem value={item.title} className="border-b-0">
         <AccordionTrigger className="py-0 text-base font-semibold text-brand-midnight hover:no-underline">
           {item.title}
         </AccordionTrigger>
-        <AccordionContent className="mt-2 flex flex-col gap-1">
+        <AccordionContent className="mt-2 flex flex-col gap-1 text-start">
           {item.items.map((subItem) => (
             <SheetClose
               key={subItem.title}
@@ -373,12 +380,12 @@ const SubMenuLink = ({
       href={item.url}
       onClick={onClick}
       className={cn(
-        "flex min-w-0 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-brand-cream hover:text-brand-midnight",
+        "flex min-w-0 flex-row items-start gap-4 rounded-md p-3 text-start leading-none no-underline transition-colors outline-none select-none hover:bg-brand-cream hover:text-brand-midnight",
         className
       )}
     >
-      <div>{item.icon}</div>
-      <div>
+      <div className="shrink-0">{item.icon}</div>
+      <div className="min-w-0 flex-1">
         <div className="text-sm font-semibold text-brand-midnight">{item.title}</div>
         {item.description && (
           <p className="text-sm leading-snug text-brand-midnight/60">

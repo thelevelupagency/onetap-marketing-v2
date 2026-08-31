@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "check:i18n-rtl": "npx tsx scripts/check-i18n-rtl.ts"
+    "check:i18n-rtl": "npx tsx scripts/check-i18n-rtl.ts",
+    "check:i18n-copy": "npx tsx scripts/check-i18n-copy.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

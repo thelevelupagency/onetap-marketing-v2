@@ -5,6 +5,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsDesktopLg } from "@/lib/motion";
+import { useLocale } from "@/components/providers/locale-provider";
+import { isRtlLocale } from "@/lib/i18n/config";
+import { getChrome } from "@/content/get-content";
 import {
   PAUSE_AFTER_INTERACTION_MS,
   useMarketingCarousel,
@@ -38,8 +41,7 @@ const CAROUSEL_VIEWPORT_PADDING = "pt-4 pb-8";
 
 /**
  * Inter-slide gap used on every carousel track (mobile + desktop).
- * Matches `pl-4` / `-ml-4` — the shadcn default — so mobile and desktop
- * are visually identical at 16px between slides.
+ * Logical -ms / ps so the Embla gap technique mirrors correctly under RTL.
  */
 const SLIDE_GAP = "ps-marketing-stack-gap-sm";
 const SLIDE_GAP_NEGATIVE = "-ms-marketing-stack-gap-sm";
@@ -47,10 +49,13 @@ const SLIDE_GAP_NEGATIVE = "-ms-marketing-stack-gap-sm";
 /** Embla disables loop when there are too few slides — duplicate until this minimum. */
 const LOOP_MIN_SLIDES = 6;
 
-const loopCarouselOpts = {
-  loop: true,
-  containScroll: false,
-} as const;
+function loopCarouselOpts(direction: "ltr" | "rtl") {
+  return {
+    loop: true,
+    containScroll: false,
+    direction,
+  } as const;
+}
 
 function expandItemsForLoop<T>(items: readonly T[]): { items: T[]; sourceLength: number } {
   if (items.length === 0) return { items: [], sourceLength: 0 };
@@ -82,7 +87,7 @@ export interface MarketingCarouselProps<T> {
   verticalVisibleCount?: number;
   /** Center each slide's content within its column (desktop only; e.g. phone mocks). */
   centerSlideItems?: boolean;
-  /** Symmetric slide gutters on desktop — removes default left-only pl-4 offset. */
+  /** Symmetric slide gutters on desktop — removes default start-only gap offset. */
   balancedSlides?: boolean;
   className?: string;
 }
@@ -94,6 +99,8 @@ type TrackProps<T> = Omit<
 > & {
   /** Original item count before loop duplication (for dot indicators). */
   loopSourceLength: number;
+  /** Embla + CSS direction for horizontal tracks. */
+  direction: "ltr" | "rtl";
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -112,9 +119,8 @@ function desktopSlideClass(
 ) {
   return cn(
     basisClass,
-    // balancedSlides: equal gutters (px-3 each side, ml-0 on content)
-    // default: standard left-only gap (pl-4 from CarouselItem, -ml-4 on content)
-    balancedSlides ? "px-3 ps-0" : undefined,
+    // balancedSlides: equal gutters; default: start-only gap via SLIDE_GAP
+    balancedSlides ? "px-3" : SLIDE_GAP,
     centerSlideItems && slideItemCenterClass
   );
 }
@@ -134,23 +140,25 @@ function MobileTrack<T,>({
   autoplayInterval = 0,
   centerSlideItems = false,
   loopSourceLength,
+  direction,
 }: TrackProps<T>) {
   const { setApi, selectedIndex, scrollTo, pausedUntilRef, api } =
     useMarketingCarousel();
   useMarketingCarouselAutoplay(api, autoplayInterval, pausedUntilRef);
 
   return (
-    <div className="relative w-full min-w-0">
+    <div className="relative w-full min-w-0 max-lg:overflow-visible">
       <MarketingCarouselBleedTrack>
         <Carousel
+          key={direction}
           setApi={setApi}
-          opts={{ ...loopCarouselOpts, align: "start" }}
+          opts={{ ...loopCarouselOpts(direction), align: "start" }}
           className="w-full"
         >
           {/*
            * SLIDE_GAP_NEGATIVE + SLIDE_GAP per item = consistent 16px inter-slide gap
-           * on both mobile and desktop (matches --marketing-stack-gap-sm / pl-4 token).
-           * items-stretch ensures all slides in a row reach the same height.
+           * on both mobile and desktop (matches --marketing-stack-gap-sm).
+           * Logical props mirror correctly when Embla direction matches page dir.
            */}
           <CarouselContent
             className={cn(SLIDE_GAP_NEGATIVE, "items-stretch")}
@@ -199,6 +207,7 @@ function DesktopTwoUpTrack<T,>({
   centerSlideItems = false,
   balancedSlides = false,
   loopSourceLength,
+  direction,
 }: TrackProps<T>) {
   const { setApi, selectedIndex, scrollTo, api, pausedUntilRef } =
     useMarketingCarousel();
@@ -206,13 +215,14 @@ function DesktopTwoUpTrack<T,>({
 
   return (
     /*
-     * px-14 = 56px — clears the md:-left-12 / md:-right-12 (48px) arrow
+     * px-14 = 56px — clears the md:-start-12 / md:-end-12 (48px) arrow
      * positioning with 8px breathing room on both sides.
      */
     <div className="relative min-w-0 overflow-visible px-14">
       <Carousel
+        key={direction}
         setApi={setApi}
-        opts={{ ...loopCarouselOpts, align: "start" }}
+        opts={{ ...loopCarouselOpts(direction), align: "start" }}
         className="w-full"
       >
         <CarouselContent
@@ -260,6 +270,7 @@ function DesktopThreeUpTrack<T,>({
   centerSlideItems = false,
   balancedSlides = false,
   loopSourceLength,
+  direction,
 }: TrackProps<T>) {
   const { setApi, selectedIndex, scrollTo, api, pausedUntilRef } =
     useMarketingCarousel();
@@ -268,8 +279,9 @@ function DesktopThreeUpTrack<T,>({
   return (
     <div className="relative min-w-0 overflow-visible px-14">
       <Carousel
+        key={direction}
         setApi={setApi}
-        opts={{ ...loopCarouselOpts, align: "start" }}
+        opts={{ ...loopCarouselOpts(direction), align: "start" }}
         className="w-full"
       >
         <CarouselContent
@@ -328,6 +340,8 @@ function DesktopVerticalTrack<T,>({
   visibleCount = VERTICAL_VISIBLE,
   loopSourceLength,
 }: TrackProps<T> & { visibleCount?: number }) {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
   const slidesPerView =
     items.length > 0 && items.length <= visibleCount ? 1 : visibleCount;
   const maxIndex = Math.max(0, items.length - slidesPerView);
@@ -430,7 +444,7 @@ function DesktopVerticalTrack<T,>({
       }}
     >
       <div className="flex justify-center pb-3">
-        <button type="button" onClick={prev} className={btnClass} aria-label="Previous feature">
+        <button type="button" onClick={prev} className={btnClass} aria-label={chrome.aria.featurePrevious}>
           <ChevronUp className="size-4" />
         </button>
       </div>
@@ -439,10 +453,8 @@ function DesktopVerticalTrack<T,>({
         className={cn("overflow-hidden", isDragging ? "cursor-grabbing select-none" : "cursor-grab")}
         style={{
           height: viewportH,
-          marginLeft: -VERTICAL_PAD_X,
-          marginRight: -VERTICAL_PAD_X,
-          paddingLeft: VERTICAL_PAD_X,
-          paddingRight: VERTICAL_PAD_X,
+          marginInline: -VERTICAL_PAD_X,
+          paddingInline: VERTICAL_PAD_X,
           paddingTop: VERTICAL_PAD_Y,
           paddingBottom: VERTICAL_PAD_Y,
         }}
@@ -476,7 +488,7 @@ function DesktopVerticalTrack<T,>({
       </div>
 
       <div className="flex justify-center pt-3">
-        <button type="button" onClick={next} className={btnClass} aria-label="Next feature">
+        <button type="button" onClick={next} className={btnClass} aria-label={chrome.aria.featureNext}>
           <ChevronDown className="size-4" />
         </button>
       </div>
@@ -521,6 +533,8 @@ export function MarketingCarousel<T,>({
   renderItem,
   ...trackProps
 }: MarketingCarouselProps<T>) {
+  const locale = useLocale();
+  const direction: "ltr" | "rtl" = isRtlLocale(locale) ? "rtl" : "ltr";
   const isDesktopLg = useIsDesktopLg();
   const mobileAutoplay = isDesktopLg ? 0 : autoplayInterval;
   const desktopAutoplay = isDesktopLg ? autoplayInterval : 0;
@@ -547,6 +561,7 @@ export function MarketingCarousel<T,>({
     getKey: loopGetKey,
     renderItem: loopRenderItem,
     loopSourceLength,
+    direction,
   };
 
   return (
@@ -565,6 +580,7 @@ export function MarketingCarousel<T,>({
             getKey={getKey}
             renderItem={renderItem}
             loopSourceLength={items.length}
+            direction={direction}
             autoplayInterval={desktopAutoplay}
             visibleCount={verticalVisibleCount}
           />

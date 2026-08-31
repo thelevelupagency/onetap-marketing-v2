@@ -8,6 +8,6 @@ export function BrandAccent({
   className?: string;
 }) {
   return (
-    <span className={cn("italic text-brand-turquoise", className)}>{children}</span>
+    <span className={cn("text-brand-turquoise", className)}>{children}</span>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { getChrome } from "@/content/get-content";
+import { useLocale } from "@/components/providers/locale-provider";
 
 interface PricingBillingToggleProps {
   isAnnual: boolean;
@@ -13,6 +15,10 @@ export function PricingBillingToggle({
   onChange,
   className,
 }: PricingBillingToggleProps) {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
+  const { pricingUi } = chrome;
+
   return (
     <div className={cn("flex flex-col items-center", className)}>
       <div className="bg-brand-midnight/5 p-1 rounded-full inline-flex border border-brand-midnight/10">
@@ -25,7 +31,7 @@ export function PricingBillingToggle({
             !isAnnual ? "bg-white text-brand-midnight shadow-sm" : "text-brand-midnight/60",
           )}
         >
-          Monthly
+          {pricingUi.monthly}
         </button>
         <button
           type="button"
@@ -36,9 +42,9 @@ export function PricingBillingToggle({
             isAnnual ? "bg-white text-brand-midnight shadow-sm" : "text-brand-midnight/60",
           )}
         >
-          Annually
+          {pricingUi.annually}
           <span className="bg-brand-turquoise/20 text-brand-turquoise-dark text-xs font-bold px-2 py-0.5 rounded-full">
-            2 Months Free
+            {pricingUi.twoMonthsFree}
           </span>
         </button>
       </div>

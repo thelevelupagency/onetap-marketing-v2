@@ -45,7 +45,7 @@ function HeroTitle({ prefersReducedMotion, locale }: { prefersReducedMotion: boo
         words={fullTitle}
         className={HERO_TEXT_EFFECT_CLASS}
         accentWords={titleAccent}
-        accentClassName="italic text-brand-turquoise"
+        accentClassName="text-brand-turquoise"
         breakBeforeWord={titleRest.split(" ")[0]}
       />
     </h1>
@@ -63,10 +63,10 @@ export function HeroSection({ locale }: HeroSectionProps) {
   const homepage = getHomepage(locale);
 
   const ctaBlock = (
-    <div className="flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:items-start max-w-4xl mx-auto">
+    <div dir="ltr" className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center gap-3 lg:flex-row lg:items-start">
       <SlugClaimCta slug={slug} onSlugChange={setSlug} size="wide" locale={locale} className="w-full lg:flex-1" />
-      <Link href="#how-it-works" className="w-full max-w-2xl lg:max-w-none lg:w-auto shrink-0 flex justify-center">
-        <Button size="lg" variant="brandOutline" className={cn(marketingOutlineCtaClassName, "h-14 px-8 rounded-full text-base !w-full lg:!w-auto")}>
+      <Link href="#how-it-works" className="flex w-full max-w-2xl shrink-0 justify-center lg:w-auto lg:max-w-none">
+        <Button size="lg" variant="brandOutline" className={cn(marketingOutlineCtaClassName, "h-14 rounded-full px-8 text-base !w-full lg:!w-auto")}>
           {chrome.hero.seeHowItWorks}
         </Button>
       </Link>

@@ -28,6 +28,7 @@ description: Checklist for marketing i18n copy, locale switcher, RTL logical CSS
 
 ```bash
 npm run check:i18n-rtl
+npm run check:i18n-copy
 npm run typecheck && npm run lint && npm run build
 ```
 

@@ -27,7 +27,7 @@ export function AnimatedHeroTitle({ title, accent, className }: AnimatedHeroTitl
         words={`${title} ${accent}`}
         className="inline"
         accentWords={accent}
-        accentClassName="italic text-brand-turquoise"
+        accentClassName="text-brand-turquoise"
       />
     </h1>
   );

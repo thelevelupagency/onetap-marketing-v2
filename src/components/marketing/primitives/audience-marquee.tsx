@@ -3,6 +3,8 @@
 import { marketingCarouselBleedClass } from "@/components/marketing/primitives/marketing-carousel-frame";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
 import { useMotionConfig } from "@/lib/motion";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome } from "@/content/get-content";
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 
@@ -47,13 +49,15 @@ export function AudienceMarquee({
   className,
 }: AudienceMarqueeProps) {
   const { prefersReducedMotion } = useMotionConfig();
+  const locale = useLocale();
+  const chrome = getChrome(locale);
   const fadeFrom = background === "cream" ? "from-brand-cream" : "from-white";
 
   if (prefersReducedMotion) {
     return (
       <div
         className={cn("flex flex-wrap items-center justify-center gap-x-6 gap-y-3", className)}
-        aria-label="Professionals who use OneTap"
+        aria-label={chrome.aria.audienceMarquee}
       >
         {audiences.map((label) => (
           <span
@@ -69,12 +73,14 @@ export function AudienceMarquee({
 
   return (
     <div
+      dir="ltr"
       className={cn(
         marketingCarouselBleedClass,
-        "relative overflow-hidden max-lg:overflow-hidden lg:left-1/2 lg:w-screen lg:max-w-[100vw] lg:-translate-x-1/2",
+        // Marquee keeps physical centering extras at lg; mobile uses logical bleed.
+        "relative overflow-hidden max-lg:overflow-hidden lg:left-1/2 lg:w-screen lg:max-w-[100vw] lg:ms-0 lg:-translate-x-1/2",
         className
       )}
-      aria-label="Professionals who use OneTap"
+      aria-label={chrome.aria.audienceMarquee}
     >
       <div
         className={cn(

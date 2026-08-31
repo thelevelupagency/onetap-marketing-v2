@@ -13,7 +13,7 @@ import {
   parseBlogPageParam,
 } from "@/lib/blog";
 import { paginateItems } from "@/lib/pagination";
-import { getBlogCategoryLabels } from "@/content/get-content";
+import { getBlogCategoryLabels, getChrome } from "@/content/get-content";
 import type { BlogCategory } from "@/content/blog/types";
 import type { Locale } from "@/lib/i18n/config";
 import { ContentSearch } from "@/components/marketing/content-search";
@@ -43,6 +43,7 @@ interface BlogListProps {
 
 export function BlogList({ locale, initialCategory, initialPage }: BlogListProps) {
   const router = useRouter();
+  const chrome = getChrome(locale);
   const prefersReducedMotion = useReducedMotion() ?? false;
   const [isPending, startTransition] = useTransition();
   const [query, setQuery] = useState("");
@@ -106,7 +107,7 @@ export function BlogList({ locale, initialCategory, initialPage }: BlogListProps
     const categoryLabels = getBlogCategoryLabels(locale);
     return {
       id: cat,
-      label: cat === "all" ? "All" : categoryLabels[cat],
+      label: cat === "all" ? chrome.blog.allCategories : categoryLabels[cat],
       isActive,
       onSelect: () => navigate(cat === "all" ? null : cat, 1, { scrollToPosts: true }),
     };
@@ -123,13 +124,13 @@ export function BlogList({ locale, initialCategory, initialPage }: BlogListProps
             syncPageToUrl(1, activeCategory);
           }
         }}
-        placeholder="Search posts..."
+        placeholder={chrome.blog.searchPlaceholder}
         className="relative mx-auto mb-marketing-stack-gap w-full max-w-md"
       />
 
       <CategoryFilterPills
         items={filterPills}
-        ariaLabel="Blog categories"
+        ariaLabel={chrome.blogUi.categoriesAria}
         className="mb-marketing-header-gap-md"
       />
 

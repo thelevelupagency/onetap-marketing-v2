@@ -18,7 +18,7 @@ import { getChrome } from "@/content/get-content";
 import {
   LOCALES,
   LOCALE_META,
-  getLocaleMeta,
+  isRtlLocale,
   localizePath,
   stripLocalePrefix,
   type Locale,
@@ -36,7 +36,7 @@ export function LanguageSwitcher({ className, variant = "nav" }: LanguageSwitche
   const searchParams = useSearchParams();
   const current = useLocale();
   const chrome = getChrome(current);
-  const meta = getLocaleMeta(current);
+  const isRtl = isRtlLocale(current);
   const bare = stripLocalePrefix(pathname);
   const qs = searchParams?.toString();
   const query = qs ? `?${qs}` : "";
@@ -61,12 +61,12 @@ export function LanguageSwitcher({ className, variant = "nav" }: LanguageSwitche
         <Globe className="h-5 w-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
-        style={{ direction: meta.dir }}
+        align={isRtl ? "start" : "end"}
+        dir={isRtl ? "rtl" : "ltr"}
         className="min-w-44 text-start"
       >
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{chrome.language.switchTo}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-start">{chrome.language.switchTo}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {LOCALES.map((locale: Locale) => {
             const href = `${localizePath(bare, locale)}${query}`;
@@ -83,10 +83,10 @@ export function LanguageSwitcher({ className, variant = "nav" }: LanguageSwitche
                     aria-current={selected ? "page" : undefined}
                   />
                 }
-                className={cn(selected && "bg-accent text-accent-foreground")}
+                className={cn("text-start", selected && "bg-accent text-accent-foreground")}
               >
-                <span className="flex-1">{localeMeta.nativeLabel}</span>
-                {selected ? <Check className="h-4 w-4" /> : null}
+                <span className="flex-1 text-start">{localeMeta.nativeLabel}</span>
+                {selected ? <Check className="ms-2 h-4 w-4 shrink-0" /> : null}
               </DropdownMenuItem>
             );
           })}

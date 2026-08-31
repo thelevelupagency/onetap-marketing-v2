@@ -31,3 +31,6 @@ src/lib/constants.ts, AttributionCapture, AppOutboundLink
 
 2026-08-31 — Marketing i18n hardening: globe locale switcher, live html dir/lang, nav/footer in [locale] layout, logical RTL CSS, check:i18n-rtl guard.
 src/lib/i18n/, src/app/[locale]/layout.tsx, src/components/marketing/language-switcher.tsx, docs/guides/marketing-i18n.md
+
+2026-08-31 — Hebrew RTL polish: LTR infinite-scroll tracks, hero CTA island, process graph desktop layout, carousel/Embla fixes, ChromeCopy wire-up, brand allowlist check:i18n-copy.
+src/components/marketing/, src/content/he/, scripts/check-i18n-copy.ts, docs/guides/marketing-i18n.md
