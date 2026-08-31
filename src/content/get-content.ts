@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/i18n/config";
+import { isNonDefaultLocale } from "@/lib/i18n/config";
 import type { ChromeCopy } from "@/content/en/chrome";
 import { enChrome } from "@/content/en/chrome";
 import { heChrome } from "@/content/he/chrome";
@@ -20,40 +21,40 @@ import type { BlogCategory, BlogPost } from "@/content/blog/types";
 import type { FinalCtaVariant } from "@/content/en/final-cta";
 
 export function getChrome(locale: Locale): ChromeCopy {
-  return locale === "he" ? heChrome : enChrome;
+  return isNonDefaultLocale(locale) ? heChrome : enChrome;
 }
 
 export function getHomepage(locale: Locale) {
-  return locale === "he" ? heHomepage : enHomepage;
+  return isNonDefaultLocale(locale) ? heHomepage : enHomepage;
 }
 
 export function getFaqs(locale: Locale) {
-  return locale === "he" ? heFaqs : enFaqs;
+  return isNonDefaultLocale(locale) ? heFaqs : enFaqs;
 }
 
 export function getPricing(locale: Locale) {
-  return locale === "he" ? hePricing : enPricing;
+  return isNonDefaultLocale(locale) ? hePricing : enPricing;
 }
 
 export function getSolutions(locale: Locale) {
-  return locale === "he" ? heSolutions : enSolutions;
+  return isNonDefaultLocale(locale) ? heSolutions : enSolutions;
 }
 
 export function getFinalCta(locale: Locale, variant: FinalCtaVariant = "default") {
-  const mod = locale === "he" ? heFinalCta : enFinalCta;
+  const mod = isNonDefaultLocale(locale) ? heFinalCta : enFinalCta;
   return mod.getFinalCtaCopy(variant);
 }
 
 export function getSite(locale: Locale) {
-  return locale === "he" ? heSite : enSite;
+  return isNonDefaultLocale(locale) ? heSite : enSite;
 }
 
 export function getBlogPosts(locale: Locale): BlogPost[] {
-  return locale === "he" ? hePosts : enPosts;
+  return isNonDefaultLocale(locale) ? hePosts : enPosts;
 }
 
 export function getBlogCategoryLabels(locale: Locale): Record<BlogCategory, string> {
-  return locale === "he" ? heCategoryLabels : enCategoryLabels;
+  return isNonDefaultLocale(locale) ? heCategoryLabels : enCategoryLabels;
 }
 
 /** Re-export types for convenience */

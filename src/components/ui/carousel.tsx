@@ -140,17 +140,26 @@ function CarouselContent({
   /** Extra classes on the Embla viewport (overflow container). Use padding so hover shadows are not clipped. */
   viewportClassName?: string;
 }) {
-  const { carouselRef, orientation } = useCarousel();
+  const { carouselRef, orientation, opts } = useCarousel();
+  const dir =
+    orientation === "horizontal"
+      ? opts?.direction === "rtl"
+        ? "rtl"
+        : "ltr"
+      : undefined;
 
   return (
     <div
       ref={carouselRef}
       className={cn("overflow-hidden", viewportClassName)}
+      dir={dir}
     >
       <div
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          // Horizontal gap is owned by MarketingCarousel (logical -ms / ps tokens).
+          // Vertical keeps the shadcn default stack gap.
+          orientation === "vertical" && "-mt-4 flex-col",
           className
         )}
         {...props}
@@ -168,7 +177,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       aria-roledescription="slide"
       className={cn(
         "flex min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
+        orientation === "vertical" && "pt-4",
         className
       )}
       {...props}
@@ -193,15 +202,15 @@ function CarouselPrevious({
       className={cn(
         "absolute hidden size-8 rounded-full md:inline-flex",
         orientation === "horizontal"
-          ? "top-1/2 -left-4 -translate-y-1/2 md:-left-12"
-          : "top-0 left-1/2 -translate-x-1/2 rotate-90",
+          ? "top-1/2 -start-4 -translate-y-1/2 md:-start-12"
+          : "top-0 start-1/2 -translate-x-1/2 rotate-90",
         className
       )}
       disabled={!isLooping && !canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="size-4" />
+      <ArrowLeft className="size-4 rtl:rotate-180" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -224,15 +233,15 @@ function CarouselNext({
       className={cn(
         "absolute hidden size-8 rounded-full md:inline-flex",
         orientation === "horizontal"
-          ? "top-1/2 -right-4 -translate-y-1/2 md:-right-12"
-          : "bottom-0 left-1/2 -translate-x-1/2 rotate-90",
+          ? "top-1/2 -end-4 -translate-y-1/2 md:-end-12"
+          : "bottom-0 start-1/2 -translate-x-1/2 rotate-90",
         className
       )}
       disabled={!isLooping && !canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="size-4" />
+      <ArrowRight className="size-4 rtl:rotate-180" />
       <span className="sr-only">Next slide</span>
     </Button>
   );

@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { MarketingBadge, MarketingContainer } from "@/components/marketing/primitives";
 import { RevealStagger, RevealItem } from "@/components/marketing/motion/reveal";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
+import { getChrome } from "@/content/get-content";
+import { useLocale } from "@/components/providers/locale-provider";
+import { isRtlLocale } from "@/lib/i18n/config";
 import { useMotionConfig } from "@/lib/motion";
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -35,10 +38,14 @@ export function ProcessGraphTimeline({
   title,
   accent,
   description,
-  ctaLabel = "Get your card free",
+  ctaLabel,
   ctaHref,
   steps,
 }: ProcessGraphTimelineProps) {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
+  const isRtl = isRtlLocale(locale);
+  const resolvedCtaLabel = ctaLabel ?? chrome.process.defaultCtaLabel;
   const [activeIndex, setActiveIndex] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const ratiosRef = useRef<Map<number, number>>(new Map());
@@ -115,10 +122,10 @@ export function ProcessGraphTimeline({
     <div className="relative w-full overflow-visible">
       {/* Container-Aligned Header Layer with Staggered Scroll Reveal */}
       <MarketingContainer width="wide" className="relative z-30 pointer-events-none">
-        {/* MOBILE HEADER (< lg screen) */}
-        <RevealStagger className="mb-8 flex flex-col items-start lg:hidden pointer-events-auto">
+        {/* MOBILE HEADER (< lg screen) — centered for EN and HE */}
+        <RevealStagger className="pointer-events-auto mb-8 flex flex-col items-center text-center lg:hidden">
           <RevealItem>
-            <MarketingBadge className="mb-3">The Process</MarketingBadge>
+            <MarketingBadge className="mb-3">{chrome.process.badge}</MarketingBadge>
           </RevealItem>
           <RevealItem delay={0.1}>
             <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
@@ -131,50 +138,55 @@ export function ProcessGraphTimeline({
             </h2>
           </RevealItem>
           <RevealItem delay={0.2}>
-            <p className={cn(typography.bodySm, "mb-6 text-brand-midnight/70 max-w-xl")}>
+            <p className={cn(typography.bodySm, "mx-auto mb-6 max-w-xl text-brand-midnight/70")}>
               {description}
             </p>
           </RevealItem>
-          <RevealItem delay={0.3}>
+          <RevealItem delay={0.3} className="flex justify-center">
             <GetCardCta href={ctaHref} size="md" placement="process">
-              {ctaLabel}
+              {resolvedCtaLabel}
             </GetCardCta>
           </RevealItem>
         </RevealStagger>
 
-        {/* DESKTOP HEADER (lg+ screen: absolute overlay aligned with site grid) */}
-        <RevealStagger className="hidden lg:flex flex-col items-start max-w-md pointer-events-auto">
-          <RevealItem>
-            <MarketingBadge className="mb-3">The Process</MarketingBadge>
-          </RevealItem>
-          <RevealItem delay={0.1}>
-            <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
-              {title}{" "}
-              {accent ? (
-                <span className="bg-gradient-to-r from-brand-turquoise to-cyan-500 bg-clip-text text-transparent">
-                  {accent}
-                </span>
-              ) : null}
-            </h2>
-          </RevealItem>
-          <RevealItem delay={0.2}>
-            <p className={cn(typography.bodySm, "mb-6 text-brand-midnight/75 max-w-sm leading-relaxed")}>
-              {description}
-            </p>
-          </RevealItem>
-          <RevealItem delay={0.3}>
-            <GetCardCta href={ctaHref} size="md" placement="process">
-              {ctaLabel}
-            </GetCardCta>
-          </RevealItem>
-        </RevealStagger>
+        {/* DESKTOP HEADER — physical top-left; copy dir follows locale (RTL on /he) */}
+        <div className="pointer-events-none hidden w-full justify-start lg:flex" dir="ltr">
+          <RevealStagger
+            className="pointer-events-auto flex max-w-md flex-col items-start text-start"
+            dir={isRtl ? "rtl" : "ltr"}
+          >
+            <RevealItem>
+              <MarketingBadge className="mb-3">{chrome.process.badge}</MarketingBadge>
+            </RevealItem>
+            <RevealItem delay={0.1}>
+              <h2 className={cn(typography.sectionTitle, "mb-3 text-brand-midnight")}>
+                {title}{" "}
+                {accent ? (
+                  <span className="bg-gradient-to-r from-brand-turquoise to-cyan-500 bg-clip-text text-transparent">
+                    {accent}
+                  </span>
+                ) : null}
+              </h2>
+            </RevealItem>
+            <RevealItem delay={0.2}>
+              <p className={cn(typography.bodySm, "mb-6 max-w-sm leading-relaxed text-brand-midnight/75")}>
+                {description}
+              </p>
+            </RevealItem>
+            <RevealItem delay={0.3}>
+              <GetCardCta href={ctaHref} size="md" placement="process">
+                {resolvedCtaLabel}
+              </GetCardCta>
+            </RevealItem>
+          </RevealStagger>
+        </div>
       </MarketingContainer>
 
       {/* FULL-SECTION FULL-BLEED GRAPH TIMELINE CANVAS */}
       <div className="relative w-full min-h-[660px] lg:min-h-[700px] -mt-0 lg:-mt-48 overflow-visible">
 
         {/* DESKTOP FULL-SECTION GRAPH (lg and above) */}
-        <div className="relative hidden size-full lg:block overflow-visible">
+        <div className="relative hidden size-full overflow-visible lg:block" dir="ltr">
           {/* Ambient persistent glow highlights */}
           <div className="pointer-events-none absolute top-1/4 left-1/3 size-96 rounded-full bg-brand-turquoise/15 blur-3xl" />
           <div className="pointer-events-none absolute top-0 right-10 size-96 rounded-full bg-cyan-400/15 blur-3xl" />
@@ -378,7 +390,7 @@ export function ProcessGraphTimeline({
           <div className="relative w-full pt-2 pb-0">
             {/* Continuous Vertical Timeline Line: Starts below mobile header (top-6) and extends 100% to exact section bottom edge (-bottom-24) */}
             <div
-              className="absolute left-6 top-6 -bottom-24 w-1 pointer-events-none z-0"
+              className="absolute start-6 top-6 -bottom-24 w-1 pointer-events-none z-0"
               aria-hidden
             >
               {/* Base Guide Glow Line */}
@@ -422,7 +434,7 @@ export function ProcessGraphTimeline({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-30px" }}
                     transition={enterTransition(index * 0.12)}
-                    className="relative flex items-start gap-4 pl-2 cursor-pointer"
+                    className="relative flex items-start gap-4 ps-2 cursor-pointer"
                   >
                     {/* Node Dot Marker - Active focus matching desktop */}
                     <div className="relative z-10 mt-2 flex shrink-0 items-center justify-center">
@@ -460,7 +472,7 @@ export function ProcessGraphTimeline({
                     >
                       <span
                         className={cn(
-                          "absolute right-4 top-2 select-none font-display font-black text-6xl leading-none transition-colors duration-300 pointer-events-none",
+                          "absolute end-4 top-2 select-none font-display font-black text-6xl leading-none transition-colors duration-300 pointer-events-none",
                           isActive ? "text-brand-turquoise/20" : "text-brand-midnight/5"
                         )}
                         aria-hidden

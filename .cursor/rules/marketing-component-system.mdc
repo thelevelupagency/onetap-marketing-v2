@@ -13,7 +13,7 @@ Canonical reference: `docs/component-system.md`
 - Export `metadata` from `page.tsx`.
 - Compose with `PageShell` + `PageHero` + domain sections when using the standard marketing chrome.
 - No raw `container` or section `py-*` on route files.
-- No inline `italic text-brand-turquoise` accent spans — use `SectionHeader` / `PageHero` `accent` prop.
+- No inline `text-brand-turquoise` accent spans — use `SectionHeader` / `PageHero` `accent` prop / `BrandAccent`.
 
 ## Sections
 

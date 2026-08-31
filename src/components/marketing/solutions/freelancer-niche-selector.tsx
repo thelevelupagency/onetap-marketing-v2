@@ -130,8 +130,15 @@ export function FreelancerNicheSelector({ locale, background = "white" }: Freela
         />
 
         <div className="mb-marketing-stack-gap space-y-marketing-stack-gap">
-          {/* Mobile: compact horizontal scroll strip */}
-          <div className={cn(marketingCarouselBleedClass, marketingCarouselBleedPaddingClass, "lg:hidden")}>
+          {/* Mobile: compact horizontal scroll strip — inherits page dir so
+              pills start at the content gutter (right in HE) like carousels. */}
+          <div
+            className={cn(
+              marketingCarouselBleedClass,
+              marketingCarouselBleedPaddingClass,
+              "lg:hidden"
+            )}
+          >
             <CategoryFilterPills
               ariaLabel="Freelancer niches"
               layout="row-scroll"

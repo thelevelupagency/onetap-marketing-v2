@@ -10,7 +10,7 @@ import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
 import { marketingCtaSizes, primaryCtaClassName } from "@/components/marketing/get-card-cta";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome } from "@/content/get-content";
-import type { Locale } from "@/lib/i18n/config";
+import { isNonDefaultLocale, isRtlLocale, type Locale } from "@/lib/i18n/config";
 import { navigateToApp } from "@/lib/meta-pixel";
 
 interface SlugClaimCtaProps {
@@ -41,6 +41,7 @@ export function SlugClaimCta({
   const contextLocale = useLocale();
   const locale = localeProp ?? contextLocale;
   const chrome = getChrome(locale);
+  const isRtl = isRtlLocale(locale);
   const resolvedSubmitLabel = submitLabel ?? chrome.slugClaim.submitLabel;
   const resolvedPlaceholder = placeholder ?? chrome.slugClaim.placeholder;
   const resolvedAriaLabel = ariaLabel ?? `${chrome.slugClaim.ariaLabelSuffix} ${CARD_HOST_PREFIX}`;
@@ -51,8 +52,8 @@ export function SlugClaimCta({
 
   const validation = useMemo(() => {
     if (!slug.trim()) return { isValid: true as const, error: undefined };
-    return isCardSlugValid(slug);
-  }, [slug]);
+    return isCardSlugValid(slug, chrome.slugClaim.errors);
+  }, [slug, chrome.slugClaim.errors]);
 
   const canSubmit = !slug.trim() || validation.isValid;
 
@@ -84,7 +85,7 @@ export function SlugClaimCta({
   );
 
   const prefixClass = cn(
-    "flex shrink-0 items-center border-r border-brand-midnight/10 bg-brand-midnight/[0.04] font-medium text-brand-midnight/55",
+    "flex shrink-0 items-center border-e border-brand-midnight/10 bg-brand-midnight/[0.04] font-medium text-brand-midnight/55",
     isStacked
       ? "px-4 py-3 text-sm sm:px-5 sm:text-base"
       : "px-3 text-xs sm:px-4 sm:text-sm"
@@ -98,7 +99,7 @@ export function SlugClaimCta({
   );
 
   const slugField = (
-    <div className={fieldShell}>
+    <div className={fieldShell} dir="ltr">
       <span className={prefixClass} title={CARD_HOST_PREFIX}>
         {CARD_HOST_PREFIX}
       </span>
@@ -133,7 +134,7 @@ export function SlugClaimCta({
       )}
     >
       {resolvedSubmitLabel}
-      <ArrowRight className="ml-2 h-5 w-5 shrink-0 rtl:rotate-180" />
+      <ArrowRight className="ms-2 h-5 w-5 shrink-0" />
     </Button>
   );
 
@@ -154,16 +155,19 @@ export function SlugClaimCta({
           {submitButton}
         </>
       ) : (
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
+        <div dir="ltr" className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
           {slugField}
           {submitButton}
         </div>
       )}
       <div
+        dir={isRtl ? "rtl" : undefined}
         className={cn(
           "min-h-5 px-1",
           isStacked && "mt-2 text-center",
-          isResponsiveRow && "text-center sm:text-left"
+          // Mobile: centered. Desktop: physical left under the LTR slug field
+          // (text-start would pin to the right under dir=rtl).
+          isResponsiveRow && "text-center lg:[text-align:left]"
         )}
       >
         {showError && validation.error ? (
@@ -173,9 +177,18 @@ export function SlugClaimCta({
           >
             {validation.error}
           </p>
-        ) : locale === "he" && chrome.slugClaim.asciiHint ? (
-          <p className={cn("text-sm text-brand-midnight/50", isDark && "text-brand-cream/50")}>
-            {chrome.slugClaim.asciiHint}
+        ) : isNonDefaultLocale(locale) && chrome.slugClaim.asciiHintPrefix ? (
+          <p
+            className={cn(
+              "text-xs text-brand-midnight/35",
+              isDark && "text-brand-cream/35"
+            )}
+          >
+            {chrome.slugClaim.asciiHintPrefix}{" "}
+            <span dir="ltr" className="inline-block">
+              {chrome.slugClaim.asciiHintChars}
+            </span>{" "}
+            {chrome.slugClaim.asciiHintSuffix}
           </p>
         ) : null}
       </div>

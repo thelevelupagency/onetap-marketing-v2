@@ -1,6 +1,7 @@
 import type { BlogPost } from "@/content/blog/types";
 import type { Locale } from "@/lib/i18n/config";
 import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
+import { getChrome } from "@/content/get-content";
 import { formatDate, formatReadingTime, getPostReadingMinutes } from "@/lib/blog";
 import { type as typography } from "@/lib/typography";
 import {
@@ -14,9 +15,15 @@ import { BlogImage } from "@/components/marketing/blog/blog-image";
 export function RelatedPosts({ posts, locale = DEFAULT_LOCALE }: { posts: BlogPost[]; locale?: Locale }) {
   if (posts.length === 0) return null;
 
+  const chrome = getChrome(locale);
+
   return (
     <MarketingSection background="transparent" spacing="compact" className="px-0">
-      <SectionHeader title="Related" accent="posts" className="mb-marketing-header-gap-md" />
+      <SectionHeader
+        title={chrome.blogUi.relatedTitle}
+        accent={chrome.blogUi.relatedAccent}
+        className="mb-marketing-header-gap-md"
+      />
       <div className="grid auto-rows-fr gap-marketing-grid-gap lg:grid-cols-3 lg:gap-marketing-grid-gap-md">
         {posts.map((post) => (
           <MarketingLinkCard

@@ -6,7 +6,7 @@
 /*
  * Brand color semantics (aligned with onetap-app):
  * - Navy: primary CTAs, rings, key actions
- * - Turquoise: italic accents, badges, icons, subtle glows (not full-width CTA fills)
+ * - Turquoise: accent spans, badges, icons, subtle glows (not full-width CTA fills)
  * - Cream: marketing page wash; white: elevated cards
  * - Avoid blue/fuchsia/purple Tailwind accents for solution segments
  */
@@ -241,6 +241,15 @@
 .audience-marquee-track {
   animation: audienceMarquee 45s linear infinite;
   will-change: transform;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {

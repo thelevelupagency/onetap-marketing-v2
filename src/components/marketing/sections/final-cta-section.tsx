@@ -6,7 +6,7 @@ import {
   MarketingContainer,
   MarketingSection,
 } from "@/components/marketing/primitives";
-import { getFinalCta, type FinalCtaVariant } from "@/content/get-content";
+import { getFinalCta, getChrome, type FinalCtaVariant } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
 
 export type { FinalCtaVariant };
@@ -20,6 +20,7 @@ interface FinalCtaSectionProps {
 
 export function FinalCtaSection({ locale, variant = "default" }: FinalCtaSectionProps) {
   const copy = getFinalCta(locale, variant);
+  const chrome = getChrome(locale);
 
   return (
     <MarketingSection background="white" spacing="compact">
@@ -54,7 +55,7 @@ export function FinalCtaSection({ locale, variant = "default" }: FinalCtaSection
 
           <ul
             className="mt-marketing-stack-gap flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-brand-cream/60"
-            aria-label="What's included"
+            aria-label={chrome.aria.whatsIncluded}
           >
             {copy.microcopyItems.map((item) => (
               <li key={item} className="inline-flex items-center gap-1.5">

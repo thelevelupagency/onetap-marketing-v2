@@ -22,7 +22,7 @@ export function TextLink({
       )}
     >
       {children}
-      {showArrow ? <ArrowRight className="h-4 w-4" /> : null}
+      {showArrow ? <ArrowRight className="h-4 w-4 rtl:-scale-x-100" /> : null}
     </Link>
   );
 }

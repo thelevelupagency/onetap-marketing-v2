@@ -6,7 +6,7 @@ interface SectionHeaderProps {
   title: React.ReactNode;
   accent?: React.ReactNode;
   lead?: React.ReactNode;
-  align?: "center" | "left";
+  align?: "center" | "start" | "left";
   /** Section band title (h2) or nested story title (h3) — defaults to section. */
   size?: "section" | "subsection";
   /** Gap below header block before section content. */
@@ -36,8 +36,8 @@ export function SectionHeader({
     <div
       className={cn(
         align === "center" && "mx-auto max-w-3xl text-center",
-        align === "left" &&
-          "mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-none lg:text-left",
+        (align === "start" || align === "left") &&
+          "mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-none lg:text-start",
         spacingBelow === "default" && "mb-marketing-header-gap-md",
         className
       )}

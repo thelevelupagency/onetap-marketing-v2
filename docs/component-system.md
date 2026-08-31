@@ -8,7 +8,7 @@ Reusable layout and brand primitives live in `src/components/marketing/primitive
 
 1. **Pages** — metadata + `PageShell` + `PageHero` + domain sections only. No raw `container` or section `py-*` on route files. Use `PageShell offsetTop="none"` when the page starts with `MarketingPageHero` (hero supplies nav offset).
 2. **Sections** — `MarketingSection` + `SectionHeader` + content. Do not hand-roll section padding.
-3. **Headlines** — `SectionHeader` / `PageHero` with optional `accent` prop. Never inline `italic text-brand-turquoise`.
+3. **Headlines** — `SectionHeader` / `PageHero` with optional `accent` prop. Never inline `text-brand-turquoise` accent spans — use `BrandAccent`.
 4. **CTAs** — `GetCardCta` for signup flows (`CREATE_BASICS_URL` via `@/lib/constants`), `MarketingPrimaryButton` for other primaries (e.g. demo → `LOGIN_URL`). Shared sizes in `get-card-cta.tsx`: `lg` (h-14, heroes + final CTA), `md` (h-12, in-section), `nav` / `sm` (compact). Do not hardcode app origins in new UI.
 5. **FAQs** — `FaqAccordion` + data from `src/content/faqs.ts` (`faqPageEntries`, audience arrays for solution pages). FAQ index: `CategoryFilterPills` with `onSelect` (in-place filter) + `faqEntryMatchesQuery` in `@/lib/search`.
 6. **Final CTA** — `FinalCtaSection` with `variant` from `@/content/final-cta.ts` on every page above the footer. Use `PageShell pageBottom="none"` when the final CTA is the last block (avoids a cream gap above the footer).

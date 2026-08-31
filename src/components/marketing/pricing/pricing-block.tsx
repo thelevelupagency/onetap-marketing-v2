@@ -10,7 +10,7 @@ import {
   TextLink,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
-import { getHomepage } from "@/content/get-content";
+import { getHomepage, getChrome } from "@/content/get-content";
 import type { PricingHeaderCopy } from "@/content/marketing-copy-types";
 import type { Locale } from "@/lib/i18n/config";
 import { localizePath } from "@/lib/i18n/config";
@@ -35,6 +35,7 @@ export function PricingBlock({
   headerCopy,
 }: PricingBlockProps) {
   const [isAnnual, setIsAnnual] = useState(true);
+  const chrome = getChrome(locale);
   const resolvedHeaderCopy = headerCopy ?? getHomepage(locale).homepagePricingHeader;
 
   const content = (
@@ -68,7 +69,7 @@ export function PricingBlock({
       {showFullPricingLink ? (
         <p className="mt-marketing-header-gap-md text-center">
           <TextLink href={localizePath("/pricing", locale)} showArrow={false}>
-            View full pricing & comparison →
+            {chrome.pricingUi.viewFullPricing}
           </TextLink>
         </p>
       ) : null}

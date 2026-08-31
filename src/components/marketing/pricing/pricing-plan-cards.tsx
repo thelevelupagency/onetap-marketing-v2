@@ -3,7 +3,7 @@
 import { Check } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { getPricing } from "@/content/get-content";
+import { getPricing, getChrome } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
 import { MarketingPrimaryButton } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
@@ -36,6 +36,7 @@ function PlanPriceBlock({
   locale: Locale;
 }) {
   const pricing = getPricing(locale);
+  const chrome = getChrome(locale);
   const period = isAnnual ? "annual" : "monthly";
   const plan = pricing.plans.find((p) => p.id === planId)!;
   const { current, previous, billedNote } = pricing.getPlanPriceDisplay(plan, period);
@@ -54,7 +55,9 @@ function PlanPriceBlock({
           {previous !== null && (
             <>
               <span className="sr-only">
-                Was ${previous}, now ${current}
+                {chrome.pricingUi.wasNowSr
+                  .replace("${previous}", String(previous))
+                  .replace("${current}", String(current))}
               </span>
               <span
                 aria-hidden
@@ -69,7 +72,7 @@ function PlanPriceBlock({
           )}
           <span className={typography.price}>${current}</span>
           <span className={isPopular ? "text-brand-cream/50" : "text-brand-midnight/50"}>
-            /month
+            {chrome.pricingUi.perMonth}
           </span>
         </div>
         {billedNote ? (
@@ -96,6 +99,7 @@ export function PricingPlanCards({
 }: PricingPlanCardsProps) {
   const { tokens } = useMotionConfig();
   const pricing = getPricing(locale);
+  const chrome = getChrome(locale);
   const nonPopularCardBg =
     surface === "on-white"
       ? "bg-brand-cream border border-brand-midnight/10"
@@ -117,7 +121,7 @@ export function PricingPlanCards({
           >
             {isPopular ? (
               <span className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-brand-turquoise px-3 py-1 text-xs font-bold text-brand-midnight">
-                Most Popular
+                {chrome.pricingUi.mostPopular}
               </span>
             ) : null}
             <h3

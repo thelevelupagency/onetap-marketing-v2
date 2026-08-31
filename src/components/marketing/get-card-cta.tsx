@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome } from "@/content/get-content";
 import { CREATE_BASICS_URL } from "@/lib/constants";
 import type { MetaCtaPlacement } from "@/lib/meta-pixel";
 
@@ -112,13 +114,16 @@ function CtaAnchor({
 
 export function GetCardCta({
   href = CREATE_BASICS_URL,
-  children = "Get your card free",
+  children,
   size = "lg",
   showArrow = true,
   className,
   onClick,
   placement = "get_card",
 }: GetCardCtaProps) {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
+  const label = children ?? chrome.cta.getCardFree;
   const showArrowIcon = showArrow && size !== "nav";
 
   return (
@@ -137,8 +142,8 @@ export function GetCardCta({
       render={<CtaAnchor href={href} onClick={onClick} placement={placement} />}
       nativeButton={false}
     >
-      {children}
-      {showArrowIcon ? <ArrowRight className="ms-2 h-5 w-5 shrink-0 rtl:rotate-180" /> : null}
+      {label}
+      {showArrowIcon ? <ArrowRight className="ms-2 h-5 w-5 shrink-0 rtl:-scale-x-100" /> : null}
     </Button>
   );
 }

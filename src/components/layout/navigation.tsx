@@ -92,6 +92,8 @@ export function Navigation({ chrome, locale }: NavigationProps) {
           className: "h-9 w-auto",
         }}
         menu={menu}
+        openMenuLabel={chrome.nav.openMenu}
+        closeMenuLabel={chrome.nav.closeMenu}
         languageSwitcher={
           <Suspense fallback={null}>
             <LanguageSwitcher />

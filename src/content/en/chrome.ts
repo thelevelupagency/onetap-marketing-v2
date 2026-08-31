@@ -51,11 +51,63 @@ export type ChromeCopy = {
     message: string;
     backHome: string;
   };
+  process: {
+    defaultCtaLabel: string;
+    badge: string;
+  };
+  faqSection: {
+    title: string;
+    accent: string;
+    viewAll: string;
+  };
+  pricingUi: {
+    monthly: string;
+    annually: string;
+    twoMonthsFree: string;
+    perMonth: string;
+    mostPopular: string;
+    wasNowSr: string;
+    featureTitle: string;
+    featureAccent: string;
+    featureColumn: string;
+    included: string;
+    notIncluded: string;
+    viewFullPricing: string;
+  };
+  blogUi: {
+    relatedTitle: string;
+    relatedAccent: string;
+    copyLink: string;
+    copied: string;
+    onThisPage: string;
+    shareOn: string;
+    categoriesAria: string;
+  };
+  aria: {
+    testimonialsRow1: string;
+    testimonialsRow2: string;
+    whatsIncluded: string;
+    audienceMarquee: string;
+    digitalCardCarousel: string;
+    carouselPrevious: string;
+    carouselNext: string;
+    featurePrevious: string;
+    featureNext: string;
+    pricingHelp: string;
+    faqCategories: string;
+  };
   slugClaim: {
     submitLabel: string;
     placeholder: string;
     ariaLabelSuffix: string;
-    asciiHint: string;
+    asciiHintPrefix: string;
+    asciiHintChars: string;
+    asciiHintSuffix: string;
+    errors: {
+      tooShort: string;
+      tooLong: string;
+      reserved: string;
+    };
   };
   hero: {
     title: string;
@@ -110,6 +162,16 @@ export type ChromeCopy = {
   language: {
     switchTo: string;
   };
+  search: {
+    defaultPlaceholder: string;
+  };
+  pricingFaq: {
+    title: string;
+    accent: string;
+  };
+  cta: {
+    getCardFree: string;
+  };
 };
 
 export const enChrome: ChromeCopy = {
@@ -159,15 +221,67 @@ export const enChrome: ChromeCopy = {
     message: "This page doesn't exist - but your next great connection is one tap away.",
     backHome: "Back to Home",
   },
+  process: {
+    defaultCtaLabel: "Get your card free",
+    badge: "The Process",
+  },
+  faqSection: {
+    title: "Frequently asked",
+    accent: "questions",
+    viewAll: "View all FAQs",
+  },
+  pricingUi: {
+    monthly: "Monthly",
+    annually: "Annually",
+    twoMonthsFree: "2 Months Free",
+    perMonth: "/month",
+    mostPopular: "Most Popular",
+    wasNowSr: "Was ${previous}, now ${current}",
+    featureTitle: "Feature",
+    featureAccent: "comparison",
+    featureColumn: "Feature",
+    included: "Included",
+    notIncluded: "Not included",
+    viewFullPricing: "View full pricing & comparison →",
+  },
+  blogUi: {
+    relatedTitle: "Related",
+    relatedAccent: "posts",
+    copyLink: "Copy Link",
+    copied: "Copied!",
+    onThisPage: "On this page",
+    shareOn: "Share on",
+    categoriesAria: "Blog categories",
+  },
+  aria: {
+    testimonialsRow1: "Testimonials row 1",
+    testimonialsRow2: "Testimonials row 2",
+    whatsIncluded: "What's included",
+    audienceMarquee: "Professionals who use OneTap",
+    digitalCardCarousel: "Digital card examples carousel",
+    carouselPrevious: "Previous slide",
+    carouselNext: "Next slide",
+    featurePrevious: "Previous feature",
+    featureNext: "Next feature",
+    pricingHelp: "Pricing help",
+    faqCategories: "FAQ categories",
+  },
   slugClaim: {
     submitLabel: "Get your card",
     placeholder: "your-name",
     ariaLabelSuffix: "Your name after",
-    asciiHint: "Use English letters for your public link (a-z, 0-9, hyphens).",
+    asciiHintPrefix: "Use English letters for your public link (",
+    asciiHintChars: "a-z, 0-9, hyphens",
+    asciiHintSuffix: ").",
+    errors: {
+      tooShort: "Card name needs at least 3 characters.",
+      tooLong: "Card name cannot exceed 50 characters.",
+      reserved: "This name is reserved and cannot be used.",
+    },
   },
   hero: {
     title: "Your Digital Business Card in",
-    titleAccent: "One Tap.",
+    titleAccent: "ONETAP.",
     titleRest: "Appear Everywhere.",
     seeHowItWorks: "See how it works",
   },
@@ -221,5 +335,15 @@ export const enChrome: ChromeCopy = {
   },
   language: {
     switchTo: "Language",
+  },
+  search: {
+    defaultPlaceholder: "Search…",
+  },
+  pricingFaq: {
+    title: "Billing",
+    accent: "FAQ",
+  },
+  cta: {
+    getCardFree: "Get your card free",
   },
 };

@@ -54,7 +54,7 @@ export function getPlanPriceDisplay(
 export const plans: Plan[] = [
   {
     id: "free",
-    name: "חינם",
+    name: "Free",
     description: "להתחלה",
     monthlyPrice: 0,
     annualPrice: 0,
@@ -80,7 +80,7 @@ export const plans: Plan[] = [
     ctaHref: CREATE_BASICS_URL,
     popular: true,
     features: [
-      "הכל מחינם",
+      "הכל מ-Free",
       "כרטיס דיגיטלי אחד",
       "סקשנים ללא הגבלה, כולל טופס לידים",
       "תיבת לידים עם פילטרים וייצוא CSV",

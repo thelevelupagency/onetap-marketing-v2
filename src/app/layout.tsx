@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Assistant, Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
-import { Navigation } from "@/components/layout/navigation";
-import { Footer } from "@/components/layout/footer";
 import { BackNavigationReloadScript } from "@/components/providers/back-navigation-reload-script";
 import { MarketingConsentProvider } from "@/components/providers/consent-provider";
 import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
@@ -10,7 +8,6 @@ import { AttributionCapture } from "@/components/providers/attribution-capture";
 import { MetaPixelBootstrap } from "@/components/providers/meta-pixel-bootstrap";
 import { LocaleProvider } from "@/components/providers/locale-provider";
 import { MetaPixel } from "@/components/providers/meta-pixel";
-import { getChrome } from "@/content/get-content";
 import {
   DEFAULT_LOCALE,
   LOCALE_META,
@@ -68,7 +65,6 @@ export default async function RootLayout({
 }>) {
   const locale = await readRequestLocale();
   const meta = LOCALE_META[locale];
-  const chrome = getChrome(locale);
 
   return (
     <html
@@ -84,9 +80,7 @@ export default async function RootLayout({
             <AttributionCapture />
             <BackNavigationReloadScript />
             <MetaPixel />
-            <Navigation chrome={chrome} locale={locale} />
-            <div className="flex-1">{children}</div>
-            <Footer />
+            {children}
             <CookieConsentBanner />
           </MarketingConsentProvider>
         </LocaleProvider>
