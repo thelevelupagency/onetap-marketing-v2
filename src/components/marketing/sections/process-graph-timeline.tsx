@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { MarketingBadge, MarketingContainer } from "@/components/marketing/primitives";
 import { RevealStagger, RevealItem } from "@/components/marketing/motion/reveal";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
+import { getChrome } from "@/content/get-content";
+import { useLocale } from "@/components/providers/locale-provider";
 import { useMotionConfig } from "@/lib/motion";
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -35,10 +37,13 @@ export function ProcessGraphTimeline({
   title,
   accent,
   description,
-  ctaLabel = "Get your card free",
+  ctaLabel,
   ctaHref,
   steps,
 }: ProcessGraphTimelineProps) {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
+  const resolvedCtaLabel = ctaLabel ?? chrome.process.defaultCtaLabel;
   const [activeIndex, setActiveIndex] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const ratiosRef = useRef<Map<number, number>>(new Map());
@@ -137,7 +142,7 @@ export function ProcessGraphTimeline({
           </RevealItem>
           <RevealItem delay={0.3}>
             <GetCardCta href={ctaHref} size="md" placement="process">
-              {ctaLabel}
+              {resolvedCtaLabel}
             </GetCardCta>
           </RevealItem>
         </RevealStagger>
@@ -164,7 +169,7 @@ export function ProcessGraphTimeline({
           </RevealItem>
           <RevealItem delay={0.3}>
             <GetCardCta href={ctaHref} size="md" placement="process">
-              {ctaLabel}
+              {resolvedCtaLabel}
             </GetCardCta>
           </RevealItem>
         </RevealStagger>
@@ -378,7 +383,7 @@ export function ProcessGraphTimeline({
           <div className="relative w-full pt-2 pb-0">
             {/* Continuous Vertical Timeline Line: Starts below mobile header (top-6) and extends 100% to exact section bottom edge (-bottom-24) */}
             <div
-              className="absolute left-6 top-6 -bottom-24 w-1 pointer-events-none z-0"
+              className="absolute start-6 top-6 -bottom-24 w-1 pointer-events-none z-0"
               aria-hidden
             >
               {/* Base Guide Glow Line */}
@@ -422,7 +427,7 @@ export function ProcessGraphTimeline({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-30px" }}
                     transition={enterTransition(index * 0.12)}
-                    className="relative flex items-start gap-4 pl-2 cursor-pointer"
+                    className="relative flex items-start gap-4 ps-2 cursor-pointer"
                   >
                     {/* Node Dot Marker - Active focus matching desktop */}
                     <div className="relative z-10 mt-2 flex shrink-0 items-center justify-center">
@@ -460,7 +465,7 @@ export function ProcessGraphTimeline({
                     >
                       <span
                         className={cn(
-                          "absolute right-4 top-2 select-none font-display font-black text-6xl leading-none transition-colors duration-300 pointer-events-none",
+                          "absolute end-4 top-2 select-none font-display font-black text-6xl leading-none transition-colors duration-300 pointer-events-none",
                           isActive ? "text-brand-turquoise/20" : "text-brand-midnight/5"
                         )}
                         aria-hidden

@@ -10,7 +10,7 @@ import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
 import { marketingCtaSizes, primaryCtaClassName } from "@/components/marketing/get-card-cta";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome } from "@/content/get-content";
-import type { Locale } from "@/lib/i18n/config";
+import { isNonDefaultLocale, type Locale } from "@/lib/i18n/config";
 import { navigateToApp } from "@/lib/meta-pixel";
 
 interface SlugClaimCtaProps {
@@ -84,7 +84,7 @@ export function SlugClaimCta({
   );
 
   const prefixClass = cn(
-    "flex shrink-0 items-center border-r border-brand-midnight/10 bg-brand-midnight/[0.04] font-medium text-brand-midnight/55",
+    "flex shrink-0 items-center border-e border-brand-midnight/10 bg-brand-midnight/[0.04] font-medium text-brand-midnight/55",
     isStacked
       ? "px-4 py-3 text-sm sm:px-5 sm:text-base"
       : "px-3 text-xs sm:px-4 sm:text-sm"
@@ -98,7 +98,7 @@ export function SlugClaimCta({
   );
 
   const slugField = (
-    <div className={fieldShell}>
+    <div className={fieldShell} dir="ltr">
       <span className={prefixClass} title={CARD_HOST_PREFIX}>
         {CARD_HOST_PREFIX}
       </span>
@@ -133,7 +133,7 @@ export function SlugClaimCta({
       )}
     >
       {resolvedSubmitLabel}
-      <ArrowRight className="ml-2 h-5 w-5 shrink-0 rtl:rotate-180" />
+      <ArrowRight className="ms-2 h-5 w-5 shrink-0 rtl:-scale-x-100" />
     </Button>
   );
 
@@ -163,7 +163,7 @@ export function SlugClaimCta({
         className={cn(
           "min-h-5 px-1",
           isStacked && "mt-2 text-center",
-          isResponsiveRow && "text-center sm:text-left"
+          isResponsiveRow && "text-center sm:text-start"
         )}
       >
         {showError && validation.error ? (
@@ -173,7 +173,7 @@ export function SlugClaimCta({
           >
             {validation.error}
           </p>
-        ) : locale === "he" && chrome.slugClaim.asciiHint ? (
+        ) : isNonDefaultLocale(locale) && chrome.slugClaim.asciiHint ? (
           <p className={cn("text-sm text-brand-midnight/50", isDark && "text-brand-cream/50")}>
             {chrome.slugClaim.asciiHint}
           </p>

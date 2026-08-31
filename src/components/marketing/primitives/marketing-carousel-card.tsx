@@ -80,7 +80,7 @@ function CarouselImageBody({
         </p>
         <span className="mt-auto inline-flex shrink-0 items-center text-sm font-medium text-brand-midnight transition-colors group-hover:text-brand-turquoise-dark">
           {ctaLabel}
-          <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="ms-1 h-4 w-4 transition-transform group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
         </span>
       </div>
     </>
@@ -124,7 +124,7 @@ export function MarketingCarouselCard(props: MarketingCarouselCardProps) {
       className={cn(
         onDark ? cardShellDark : cardShellLight,
         "p-marketing-card-padding",
-        centerContent ? "items-center text-center" : "items-start text-left"
+        centerContent ? "items-center text-center" : "items-start text-start"
       )}
     >
       <div

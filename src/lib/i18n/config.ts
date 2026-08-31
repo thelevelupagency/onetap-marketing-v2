@@ -39,6 +39,21 @@ export function parseLocale(value: string | null | undefined): Locale {
   return DEFAULT_LOCALE;
 }
 
+export type LocaleMeta = (typeof LOCALE_META)[Locale];
+
+export function getLocaleMeta(locale: Locale): LocaleMeta {
+  return LOCALE_META[locale];
+}
+
+export function isRtlLocale(locale: Locale): boolean {
+  return getLocaleMeta(locale).dir === "rtl";
+}
+
+/** True for any locale other than the English canonical default. */
+export function isNonDefaultLocale(locale: Locale): boolean {
+  return locale !== DEFAULT_LOCALE;
+}
+
 /** Strip a leading `/en` or `/he` segment. Returns path starting with `/`. */
 export function stripLocalePrefix(pathname: string): string {
   const normalized = pathname.startsWith("/") ? pathname : `/${pathname}`;

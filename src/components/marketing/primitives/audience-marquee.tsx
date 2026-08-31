@@ -78,14 +78,14 @@ export function AudienceMarquee({
     >
       <div
         className={cn(
-          "pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent sm:w-24",
+          "pointer-events-none absolute inset-y-0 start-0 z-10 w-16 bg-gradient-to-r to-transparent sm:w-24",
           fadeFrom
         )}
         aria-hidden
       />
       <div
         className={cn(
-          "pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent sm:w-24",
+          "pointer-events-none absolute inset-y-0 end-0 z-10 w-16 bg-gradient-to-l to-transparent sm:w-24",
           fadeFrom
         )}
         aria-hidden

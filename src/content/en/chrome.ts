@@ -110,6 +110,19 @@ export type ChromeCopy = {
   language: {
     switchTo: string;
   };
+  search: {
+    defaultPlaceholder: string;
+  };
+  pricingFaq: {
+    title: string;
+    accent: string;
+  };
+  cta: {
+    getCardFree: string;
+  };
+  process: {
+    defaultCtaLabel: string;
+  };
 };
 
 export const enChrome: ChromeCopy = {
@@ -221,5 +234,18 @@ export const enChrome: ChromeCopy = {
   },
   language: {
     switchTo: "Language",
+  },
+  search: {
+    defaultPlaceholder: "Search…",
+  },
+  pricingFaq: {
+    title: "Billing",
+    accent: "FAQ",
+  },
+  cta: {
+    getCardFree: "Get your card free",
+  },
+  process: {
+    defaultCtaLabel: "Get your card free",
   },
 };

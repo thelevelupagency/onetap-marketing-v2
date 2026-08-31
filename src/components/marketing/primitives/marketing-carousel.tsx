@@ -41,8 +41,8 @@ const CAROUSEL_VIEWPORT_PADDING = "pt-4 pb-8";
  * Matches `pl-4` / `-ml-4` — the shadcn default — so mobile and desktop
  * are visually identical at 16px between slides.
  */
-const SLIDE_GAP = "pl-marketing-stack-gap-sm";
-const SLIDE_GAP_NEGATIVE = "-ml-marketing-stack-gap-sm";
+const SLIDE_GAP = "ps-marketing-stack-gap-sm";
+const SLIDE_GAP_NEGATIVE = "-ms-marketing-stack-gap-sm";
 
 /** Embla disables loop when there are too few slides — duplicate until this minimum. */
 const LOOP_MIN_SLIDES = 6;
@@ -114,13 +114,13 @@ function desktopSlideClass(
     basisClass,
     // balancedSlides: equal gutters (px-3 each side, ml-0 on content)
     // default: standard left-only gap (pl-4 from CarouselItem, -ml-4 on content)
-    balancedSlides ? "px-3 pl-0" : undefined,
+    balancedSlides ? "px-3 ps-0" : undefined,
     centerSlideItems && slideItemCenterClass
   );
 }
 
 function desktopContentClass(balancedSlides: boolean) {
-  return cn(balancedSlides ? "ml-0" : SLIDE_GAP_NEGATIVE, "items-stretch");
+  return cn(balancedSlides ? "ms-0" : SLIDE_GAP_NEGATIVE, "items-stretch");
 }
 
 // ─── Mobile: full-bleed horizontal carousel ──────────────────────────────────

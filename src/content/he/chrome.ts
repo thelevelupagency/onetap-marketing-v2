@@ -108,4 +108,17 @@ export const heChrome: ChromeCopy = {
   language: {
     switchTo: "שפה",
   },
+  search: {
+    defaultPlaceholder: "חיפוש…",
+  },
+  pricingFaq: {
+    title: "שאלות",
+    accent: "חיוב",
+  },
+  cta: {
+    getCardFree: "קבלו כרטיס בחינם",
+  },
+  process: {
+    defaultCtaLabel: "קבלו כרטיס בחינם",
+  },
 };

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen, Briefcase, Building2, HelpCircle, Menu, Trophy } from "lucide-react";
+import { Menu } from "lucide-react";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 
@@ -31,7 +31,9 @@ import {
 } from "@/components/ui/sheet";
 import { Logo } from "@/components/shared/logo";
 import { MarketingContainer } from "@/components/marketing/primitives";
+import { useLocale } from "@/components/providers/locale-provider";
 import type { LogoTheme } from "@/lib/logos";
+import { isRtlLocale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
 interface MenuItem {
@@ -44,15 +46,17 @@ interface MenuItem {
 
 interface Navbar1Props {
   className?: string;
-  logo?: {
+  logo: {
     url: string;
     theme?: LogoTheme;
     variant?: "icon" | "wordmark";
     alt?: string;
     className?: string;
   };
-  menu?: MenuItem[];
+  menu: MenuItem[];
   languageSwitcher?: React.ReactNode;
+  openMenuLabel: string;
+  closeMenuLabel: string;
   auth?: {
     login?: {
       title: string;
@@ -96,7 +100,7 @@ function NavAnchor({
 function LogoMark({
   logo,
 }: {
-  logo: NonNullable<Navbar1Props["logo"]>;
+  logo: Navbar1Props["logo"];
 }) {
   return (
     <Logo
@@ -111,64 +115,18 @@ function LogoMark({
 }
 
 const Navbar1 = ({
-  logo = {
-    url: "/",
-    theme: "dark",
-    alt: "OneTap",
-    className: "h-9 w-auto",
-  },
-  menu = [
-    { title: "Home", url: "/" },
-    {
-      title: "Solutions",
-      url: "#",
-      items: [
-        {
-          title: "Freelancers",
-          description: "Stand out and capture leads on the go",
-          icon: <Briefcase className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/solutions/freelancers",
-        },
-        {
-          title: "Agencies",
-          description: "Brand-locked cards for every team member",
-          icon: <Building2 className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/solutions/agencies",
-        },
-      ],
-    },
-    {
-      title: "Learn",
-      url: "#",
-      items: [
-        {
-          title: "Blog",
-          description: "Tips, guides, and product updates",
-          icon: <BookOpen className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/blog",
-        },
-        {
-          title: "Success Stories",
-          description: "See how professionals grow with OneTap",
-          icon: <Trophy className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/blog?category=success-stories",
-        },
-        {
-          title: "FAQ",
-          description: "Answers to common questions",
-          icon: <HelpCircle className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/faq",
-        },
-      ],
-    },
-    { title: "Pricing", url: "/pricing" },
-  ],
+  logo,
+  menu,
   auth,
   languageSwitcher,
+  openMenuLabel,
+  closeMenuLabel,
   className,
 }: Navbar1Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const locale = useLocale();
+  const sheetSide = isRtlLocale(locale) ? "left" : "right";
 
   const blurMenuFocus = () => {
     requestAnimationFrame(() => {
@@ -245,18 +203,20 @@ const Navbar1 = ({
                     variant="outline"
                     size="icon"
                     className="shrink-0 border-brand-midnight/10 text-brand-midnight"
-                    aria-label="Open menu"
+                    aria-label={openMenuLabel}
                   />
                 }
               >
                 <Menu className="size-4" />
               </SheetTrigger>
               <SheetContent
+                side={sheetSide}
+                closeLabel={closeMenuLabel}
                 showCloseButton
                 className="z-110 flex h-full w-full max-w-none flex-col gap-0 overflow-hidden border-brand-midnight/10 bg-brand-cream p-0 sm:max-w-sm"
               >
-                <SheetHeader className="shrink-0 border-b border-brand-midnight/10 px-4 py-4 pr-14">
-                  <SheetTitle className="text-left font-normal">
+                <SheetHeader className="shrink-0 border-b border-brand-midnight/10 px-4 py-4 pe-14">
+                  <SheetTitle className="text-start font-normal">
                     <LogoMark logo={logo} />
                   </SheetTitle>
                 </SheetHeader>

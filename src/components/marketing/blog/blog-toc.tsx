@@ -157,13 +157,13 @@ export function BlogToc() {
       className="sticky top-28 max-h-[calc(100vh-8rem)] w-full min-w-0 overflow-y-auto pb-marketing-stack-gap"
     >
       <p className="type-eyebrow mb-4 text-brand-midnight/40">On this page</p>
-      <div className="relative pl-4">
+      <div className="relative ps-4">
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-px bg-brand-midnight/10"
+          className="pointer-events-none absolute inset-y-0 start-0 w-px bg-brand-midnight/10"
           aria-hidden
         />
         <motion.div
-          className="pointer-events-none absolute left-0 w-0.5 bg-brand-turquoise"
+          className="pointer-events-none absolute start-0 w-0.5 bg-brand-turquoise"
           aria-hidden
           initial={false}
           animate={{ y: indicator.top, height: indicator.height }}

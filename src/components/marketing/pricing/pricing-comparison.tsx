@@ -79,7 +79,7 @@ export function PricingComparison({ locale }: { locale: Locale }) {
                   scope="col"
                   className={cn(
                     typography.label,
-                    "px-6 py-5 text-left text-brand-midnight/70"
+                    "px-6 py-5 text-start text-brand-midnight/70"
                   )}
                 >
                   Feature
@@ -114,7 +114,7 @@ export function PricingComparison({ locale }: { locale: Locale }) {
                     scope="row"
                     className={cn(
                       typography.bodySm,
-                      "px-6 py-4 text-left font-medium text-brand-midnight"
+                      "px-6 py-4 text-start font-medium text-brand-midnight"
                     )}
                   >
                     {row.name}

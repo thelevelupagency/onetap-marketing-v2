@@ -1,6 +1,8 @@
 import { MarketingSection } from "@/components/marketing/primitives";
 import { ProcessGraphTimeline } from "@/components/marketing/sections/process-graph-timeline";
+import { getChrome } from "@/content/get-content";
 import { CREATE_BASICS_URL } from "@/lib/constants";
+import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
 export interface ProcessStep {
@@ -14,6 +16,7 @@ export interface ProcessStep {
 interface Process1Props {
   className?: string;
   background?: "cream" | "white";
+  locale: Locale;
   title: string;
   accent?: string;
   description: string;
@@ -25,13 +28,16 @@ interface Process1Props {
 export function Process1({
   className,
   background = "white",
+  locale,
   title,
   accent,
   description,
-  ctaLabel = "Get your card free",
+  ctaLabel,
   ctaHref = CREATE_BASICS_URL,
   steps,
 }: Process1Props) {
+  const chrome = getChrome(locale);
+  const resolvedCtaLabel = ctaLabel ?? chrome.process.defaultCtaLabel;
   const stepBadgeBg = background === "cream" ? "bg-white" : "bg-brand-cream";
 
   return (
@@ -40,7 +46,7 @@ export function Process1({
         title={title}
         accent={accent}
         description={description}
-        ctaLabel={ctaLabel}
+        ctaLabel={resolvedCtaLabel}
         ctaHref={ctaHref}
         steps={steps}
         stepBadgeBg={stepBadgeBg}

@@ -12,6 +12,7 @@ export function HowItWorks({ locale }: HowItWorksProps) {
     <div id="how-it-works" className="scroll-mt-[72px]">
       <Process1
         background="cream"
+        locale={locale}
         title={howItWorksCopy.title}
         accent={howItWorksCopy.accent}
         description={howItWorksCopy.description}

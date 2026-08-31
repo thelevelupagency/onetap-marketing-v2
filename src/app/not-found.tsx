@@ -1,13 +1,24 @@
+import { headers } from "next/headers";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
 import { MarketingContainer, PageShell } from "@/components/marketing/primitives";
 import { getChrome } from "@/content/get-content";
-import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
+import {
+  DEFAULT_LOCALE,
+  localizePath,
+  parseLocale,
+  type Locale,
+} from "@/lib/i18n/config";
+import { LOCALE_HEADER } from "@/lib/i18n/locale-header";
 import { type as typography } from "@/lib/typography";
 
-export default function NotFound() {
-  // Root not-found has no [locale] param; default to English chrome + home.
-  const locale = DEFAULT_LOCALE;
+async function readRequestLocale(): Promise<Locale> {
+  const headerStore = await headers();
+  return parseLocale(headerStore.get(LOCALE_HEADER) ?? DEFAULT_LOCALE);
+}
+
+export default async function NotFound() {
+  const locale = await readRequestLocale();
   const chrome = getChrome(locale);
 
   return (

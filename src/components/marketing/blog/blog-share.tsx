@@ -56,7 +56,7 @@ export function BlogShare({
 
   return (
     <div className="flex flex-wrap items-center gap-2" role="group" aria-label={label}>
-      <span className="text-sm font-medium text-brand-midnight/60 mr-1 shrink-0">{label}</span>
+      <span className="text-sm font-medium text-brand-midnight/60 me-1 shrink-0">{label}</span>
       {shareLinks.map((s) => (
         <a
           key={s.label}

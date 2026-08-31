@@ -33,7 +33,7 @@ export function FaqAccordion({
           )}
         >
           {/* Active Left Vertical Accent Bar */}
-          <span className="pointer-events-none absolute bottom-0 left-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
+          <span className="pointer-events-none absolute bottom-0 start-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
 
           <AccordionTrigger
             hideChevron
@@ -91,7 +91,7 @@ export function FaqAccordionComparisonItem({
       )}
     >
       {/* Active Left Vertical Accent Bar */}
-      <span className="pointer-events-none absolute bottom-0 left-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
+      <span className="pointer-events-none absolute bottom-0 start-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
 
       <AccordionTrigger
         hideChevron
