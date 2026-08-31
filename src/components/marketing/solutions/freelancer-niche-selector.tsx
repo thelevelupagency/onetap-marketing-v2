@@ -17,20 +17,22 @@ import {
 } from "@/components/marketing/primitives";
 import { type as typography } from "@/lib/typography";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
-import {
-  freelancersNicheManifest,
-  freelancersNicheSelectorCopy,
-  type FreelancerNicheCard,
-} from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
+import type { FreelancerNicheCard } from "@/content/en/solutions";
 import { PHONE_CAROUSEL_SCALE } from "@/lib/phone-mockup";
 import { MARKETING_CAROUSEL_AUTOPLAY_MS } from "@/lib/use-marketing-carousel";
 import { cn } from "@/lib/utils";
 
 interface FreelancerNicheSelectorProps {
+  locale: Locale;
   background?: MarketingBandBackground;
 }
 
-export function FreelancerNicheSelector({ background = "white" }: FreelancerNicheSelectorProps) {
+export function FreelancerNicheSelector({ locale, background = "white" }: FreelancerNicheSelectorProps) {
+  const solutions = getSolutions(locale);
+  const freelancersNicheManifest = solutions.freelancersNicheManifest;
+  const freelancersNicheSelectorCopy = solutions.freelancersNicheSelectorCopy;
   const [activeNicheId, setActiveNicheId] = useState<string>(
     freelancersNicheManifest.defaultNicheId
   );
@@ -46,7 +48,7 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
 
   const selectNiche = useCallback((nicheId: string) => {
     setActiveNicheId(nicheId);
-  }, []);
+  }, [setActiveNicheId]);
 
   const scrollActivePillHorizontally = useCallback(() => {
     const container = mobilePillScrollRef.current;
@@ -84,7 +86,7 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
           else mobilePillRefs.current.delete(niche.id);
         },
       })),
-    [activeNicheId, selectNiche]
+    [activeNicheId, selectNiche, freelancersNicheManifest.niches]
   );
 
   const desktopFilterPills: CategoryFilterPill[] = useMemo(
@@ -95,7 +97,7 @@ export function FreelancerNicheSelector({ background = "white" }: FreelancerNich
         isActive: niche.id === activeNicheId,
         onSelect: () => selectNiche(niche.id),
       })),
-    [activeNicheId, selectNiche]
+    [activeNicheId, selectNiche, freelancersNicheManifest.niches]
   );
 
   const renderPhoneSlide = useCallback(

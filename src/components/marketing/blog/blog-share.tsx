@@ -5,19 +5,23 @@ import { Link2, Check } from "lucide-react";
 import { IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
 import { getSiteUrl } from "@/lib/site-url";
 
 export function BlogShare({
   title,
   slug,
+  locale = DEFAULT_LOCALE,
   label = "Share",
 }: {
   title: string;
   slug: string;
+  locale?: Locale;
   label?: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const url = `${getSiteUrl()}/blog/${slug}`;
+  const url = `${getSiteUrl()}${localizePath(`/blog/${slug}`, locale)}`;
 
   async function copyLink() {
     try {

@@ -1,7 +1,8 @@
 "use client";
 
 import { Check, X } from "lucide-react";
-import { comparisonFeatures } from "@/content/pricing";
+import { getPricing } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 import { type as typography } from "@/lib/typography";
 import { Accordion } from "@/components/ui/accordion";
@@ -57,7 +58,8 @@ function CellValue({
   );
 }
 
-export function PricingComparison() {
+export function PricingComparison({ locale }: { locale: Locale }) {
+  const { comparisonFeatures } = getPricing(locale);
   return (
     <MarketingSection background="white" spacing="compact">
       <MarketingContainer width="default">

@@ -77,6 +77,8 @@ Allowlisted query params copied marketing → app (never overwrite `slug`):
 
 Marketing stores them **first-touch** in `sessionStorage` (`onetap-attribution`) so a visit to `/pricing` or `/faq` does not drop the ad click. Every app CTA (`GetCardCta`, nav register, slug claim) re-attaches those params on click.
 
+Additionally, marketing always stamps **`lang=en|he`** from the current marketing locale onto outbound app CTAs (`appendLocaleParam` / `navigateToApp`). Hebrew marketing URLs live under `/he`; English stays unprefixed. The app bootstraps product chrome from `?lang=` (onetap-app marketing locale handoff).
+
 The app also stores `_fbp` / `_fbc` when the browser has them, first-touch, on the user. Purchase later uses that so Meta can match the original click even though checkout happens on Lemon (off-site).
 
 **Deduping**

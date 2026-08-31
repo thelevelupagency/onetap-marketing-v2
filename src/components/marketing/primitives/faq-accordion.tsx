@@ -38,14 +38,14 @@ export function FaqAccordion({
           <AccordionTrigger
             hideChevron
             className={cn(
-              "flex w-full items-center justify-between text-left hover:no-underline focus-visible:outline-none",
+              "flex w-full items-center justify-between text-start hover:no-underline focus-visible:outline-none",
               compact ? "py-4" : "py-5"
             )}
           >
             <span
               className={cn(
                 typography.accordionQuestion,
-                "pr-4 text-left transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
+                "pe-4 text-start transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
               )}
             >
               {faq.q}
@@ -95,12 +95,12 @@ export function FaqAccordionComparisonItem({
 
       <AccordionTrigger
         hideChevron
-        className="flex w-full items-center justify-between py-4 text-left hover:no-underline focus-visible:outline-none"
+        className="flex w-full items-center justify-between py-4 text-start hover:no-underline focus-visible:outline-none"
       >
         <span
           className={cn(
             typography.accordionQuestion,
-            "pr-3 text-left font-medium text-brand-midnight transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
+            "pe-3 text-start font-medium text-brand-midnight transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
           )}
         >
           {title}

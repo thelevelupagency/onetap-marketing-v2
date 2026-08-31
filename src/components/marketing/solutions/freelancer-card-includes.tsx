@@ -8,15 +8,17 @@ import {
 } from "@/components/marketing/primitives";
 import { CardReveal, MarketingStaggerGrid, Reveal } from "@/components/marketing/motion";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
-import { freelancersCardIncludesCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { solutionFeatureIcons } from "@/lib/marketing-icons";
 
 interface FreelancerCardIncludesProps {
+  locale: Locale;
   background?: MarketingBandBackground;
 }
 
-export function FreelancerCardIncludes({ background = "cream" }: FreelancerCardIncludesProps) {
-  const copy = freelancersCardIncludesCopy;
+export function FreelancerCardIncludes({ locale, background = "cream" }: FreelancerCardIncludesProps) {
+  const copy = getSolutions(locale).freelancersCardIncludesCopy;
 
   return (
     <MarketingSection background={background} id="card-includes">

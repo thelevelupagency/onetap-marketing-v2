@@ -1,33 +1,40 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
+import { LanguageSwitcher } from "@/components/marketing/language-switcher";
 import { MarketingContainer } from "@/components/marketing/primitives";
-import { footerCopy } from "@/content/site";
-import { PRIVACY_URL, TERMS_URL } from "@/lib/constants";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome, getSite } from "@/content/get-content";
+import { PRIVACY_URL, TERMS_URL, appendLocaleParam } from "@/lib/constants";
+import { localizePath } from "@/lib/i18n/config";
 import { getMetaPixelId } from "@/lib/meta-pixel";
 import { useMarketingConsent } from "@/components/providers/consent-provider";
 
 export function Footer() {
+  const locale = useLocale();
   const currentYear = new Date().getFullYear();
   const pixelId = getMetaPixelId();
   const { reopenPreferences } = useMarketingConsent();
+  const chrome = getChrome(locale);
+  const siteMod = getSite(locale);
 
   const footerLinks = {
-    product: [
-      { name: "Home", href: "/" },
-      { name: "Freelancers", href: "/solutions/freelancers" },
-      { name: "Agencies", href: "/solutions/agencies" },
-      { name: "Pricing", href: "/pricing" },
-      { name: "FAQ", href: "/faq" },
+    [chrome.footer.product]: [
+      { name: chrome.footer.home, href: localizePath("/", locale) },
+      { name: chrome.footer.freelancers, href: localizePath("/solutions/freelancers", locale) },
+      { name: chrome.footer.agencies, href: localizePath("/solutions/agencies", locale) },
+      { name: chrome.footer.pricing, href: localizePath("/pricing", locale) },
+      { name: chrome.footer.faq, href: localizePath("/faq", locale) },
     ],
-    company: [
-      { name: "Blog", href: "/blog" },
+    [chrome.footer.company]: [
+      { name: chrome.footer.blog, href: localizePath("/blog", locale) },
     ],
-    resources: [
-      { name: "Help Center", href: "/faq" },
-      { name: "Terms", href: TERMS_URL, external: true },
-      { name: "Privacy", href: PRIVACY_URL, external: true },
+    [chrome.footer.resources]: [
+      { name: chrome.footer.helpCenter, href: localizePath("/faq", locale) },
+      { name: chrome.footer.terms, href: appendLocaleParam(TERMS_URL, locale), external: true },
+      { name: chrome.footer.privacy, href: appendLocaleParam(PRIVACY_URL, locale), external: true },
     ],
   };
 
@@ -37,13 +44,13 @@ export function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12 md:mb-16">
           <div className="lg:col-span-2">
             <Logo
-              href="/"
+              href={localizePath("/", locale)}
               theme="bright"
               className="mb-6"
               imageClassName="h-10 w-auto md:h-11"
             />
             <p className="text-brand-cream/60 max-w-sm mb-8 text-lg leading-relaxed">
-              {footerCopy.blurb}
+              {siteMod.footerCopy.blurb}
             </p>
           </div>
 
@@ -77,13 +84,16 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-cream/40 border-t border-white/10 pt-8">
-          <span>© {currentYear} OneTap Card. All rights reserved.</span>
-          <div className="flex gap-6">
-            <a href={PRIVACY_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
-              Privacy
+          <span>© {currentYear} OneTap Card. {chrome.footer.rightsReserved}</span>
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <Suspense fallback={null}>
+              <LanguageSwitcher variant="footer" />
+            </Suspense>
+            <a href={appendLocaleParam(PRIVACY_URL, locale)} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
+              {chrome.footer.privacy}
             </a>
-            <a href={TERMS_URL} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
-              Terms
+            <a href={appendLocaleParam(TERMS_URL, locale)} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
+              {chrome.footer.terms}
             </a>
             {pixelId ? (
               <button
@@ -91,7 +101,7 @@ export function Footer() {
                 onClick={reopenPreferences}
                 className="hover:text-brand-turquoise transition-colors"
               >
-                Cookie settings
+                {chrome.footer.cookieSettings}
               </button>
             ) : null}
           </div>

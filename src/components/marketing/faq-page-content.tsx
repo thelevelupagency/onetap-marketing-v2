@@ -1,13 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  faqCategoryLabels,
-  faqCategoryOrder,
-  faqPageEntries,
-  groupFaqsByCategory,
-  type FaqCategory,
-} from "@/content/faqs";
+import { getChrome, getFaqs } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
+import { localizePath } from "@/lib/i18n/config";
 import { faqEntryMatchesQuery } from "@/lib/search";
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -20,7 +16,12 @@ import {
   type CategoryFilterPill,
 } from "@/components/marketing/primitives";
 
-export function FaqPageContent() {
+type FaqCategory = "getting-started" | "your-card" | "business" | "plans-billing";
+
+export function FaqPageContent({ locale }: { locale: Locale }) {
+  const chrome = getChrome(locale);
+  const faqsModule = getFaqs(locale);
+  const { faqCategoryLabels, faqCategoryOrder, faqPageEntries, groupFaqsByCategory } = faqsModule;
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<FaqCategory | null>(null);
 
@@ -32,16 +33,19 @@ export function FaqPageContent() {
         }
         return faqEntryMatchesQuery(entry, query, faqCategoryLabels[entry.category]);
       }),
-    [query, activeCategory]
+    [query, activeCategory, faqPageEntries, faqCategoryLabels],
   );
 
-  const sections = useMemo(() => groupFaqsByCategory(filtered), [filtered]);
+  const sections = useMemo(
+    () => groupFaqsByCategory(filtered),
+    [filtered, groupFaqsByCategory],
+  );
 
   const filterPills: CategoryFilterPill[] = useMemo(
     () => [
       {
         id: "all",
-        label: "All",
+        label: chrome.faqPage.allCategories,
         isActive: activeCategory == null,
         onSelect: () => setActiveCategory(null),
       },
@@ -52,20 +56,20 @@ export function FaqPageContent() {
         onSelect: () => setActiveCategory(category),
       })),
     ],
-    [activeCategory]
+    [activeCategory, chrome.faqPage.allCategories, faqCategoryLabels, faqCategoryOrder],
   );
 
   const hasFilters = query.trim().length > 0 || activeCategory != null;
   const emptyMessage = hasFilters
-    ? "No FAQs match your search or category."
-    : "No FAQs available.";
+    ? chrome.faqPage.emptyFiltered
+    : chrome.faqPage.empty;
 
   return (
     <>
       <ContentSearch
         value={query}
         onChange={setQuery}
-        placeholder="Search FAQs..."
+        placeholder={chrome.faqPage.searchPlaceholder}
         className="relative mx-auto mb-marketing-stack-gap w-full max-w-md"
       />
 
@@ -96,8 +100,8 @@ export function FaqPageContent() {
                   aria-label="Pricing help"
                   className="mt-marketing-stack-gap-sm flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2"
                 >
-                  <TextLink href="/pricing" showArrow={false}>
-                    Compare plans
+                  <TextLink href={localizePath("/pricing", locale)} showArrow={false}>
+                    {chrome.faqPage.comparePlans}
                   </TextLink>
                   <span
                     className="hidden text-brand-midnight/30 sm:inline"
@@ -105,8 +109,8 @@ export function FaqPageContent() {
                   >
                     ·
                   </span>
-                  <TextLink href="/pricing#billing-faq" showArrow={false}>
-                    Billing FAQ on pricing
+                  <TextLink href={localizePath("/pricing#billing-faq", locale)} showArrow={false}>
+                    {chrome.faqPage.billingFaqOnPricing}
                   </TextLink>
                 </nav>
               ) : null}

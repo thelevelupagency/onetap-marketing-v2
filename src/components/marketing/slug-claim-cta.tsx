@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 import { buildCreateBasicsUrl, CARD_HOST_PREFIX } from "@/lib/constants";
 import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
 import { marketingCtaSizes, primaryCtaClassName } from "@/components/marketing/get-card-cta";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { navigateToApp } from "@/lib/meta-pixel";
 
 interface SlugClaimCtaProps {
@@ -15,23 +18,32 @@ interface SlugClaimCtaProps {
   onSlugChange: (slug: string) => void;
   className?: string;
   submitLabel?: string;
-  /** Responsive row: stacked below sm, inline at sm+. `stacked` = always vertical. */
+  placeholder?: string;
+  ariaLabel?: string;
   layout?: "inline" | "stacked";
-  /** `wide` fits longer CTA labels (e.g. final homepage band). */
   size?: "default" | "wide";
-  /** Focus ring offset + error text contrast for section background. */
   surface?: "light" | "dark";
+  locale?: Locale;
 }
 
 export function SlugClaimCta({
   slug,
   onSlugChange,
   className,
-  submitLabel = "Get your card",
+  submitLabel,
+  placeholder,
+  ariaLabel,
   layout = "inline",
   size = "default",
   surface = "light",
+  locale: localeProp,
 }: SlugClaimCtaProps) {
+  const contextLocale = useLocale();
+  const locale = localeProp ?? contextLocale;
+  const chrome = getChrome(locale);
+  const resolvedSubmitLabel = submitLabel ?? chrome.slugClaim.submitLabel;
+  const resolvedPlaceholder = placeholder ?? chrome.slugClaim.placeholder;
+  const resolvedAriaLabel = ariaLabel ?? `${chrome.slugClaim.ariaLabelSuffix} ${CARD_HOST_PREFIX}`;
   const [touched, setTouched] = useState(false);
   const isDark = surface === "dark";
   const isStacked = layout === "stacked";
@@ -55,8 +67,8 @@ export function SlugClaimCta({
       setTouched(true);
       return;
     }
-    window.location.href = navigateToApp(buildCreateBasicsUrl(slug), "hero_slug");
-  }, [canSubmit, slug]);
+    window.location.href = navigateToApp(buildCreateBasicsUrl(slug), "hero_slug", locale);
+  }, [canSubmit, slug, locale]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,11 +107,12 @@ export function SlugClaimCta({
         inputMode="text"
         autoComplete="off"
         spellCheck={false}
-        placeholder="your-name"
+        dir="ltr"
+        placeholder={resolvedPlaceholder}
         value={slug}
         onChange={(e) => handleSlugInput(e.target.value)}
         onBlur={() => setTouched(true)}
-        aria-label={`Your name after ${CARD_HOST_PREFIX}`}
+        aria-label={resolvedAriaLabel}
         aria-invalid={showError}
         className={inputClass}
       />
@@ -119,8 +132,8 @@ export function SlugClaimCta({
         isStacked ? "mt-4 w-full" : "w-full lg:w-auto"
       )}
     >
-      {submitLabel}
-      <ArrowRight className="ml-2 h-5 w-5 shrink-0" />
+      {resolvedSubmitLabel}
+      <ArrowRight className="ml-2 h-5 w-5 shrink-0 rtl:rotate-180" />
     </Button>
   );
 
@@ -159,6 +172,10 @@ export function SlugClaimCta({
             role="alert"
           >
             {validation.error}
+          </p>
+        ) : locale === "he" && chrome.slugClaim.asciiHint ? (
+          <p className={cn("text-sm text-brand-midnight/50", isDark && "text-brand-cream/50")}>
+            {chrome.slugClaim.asciiHint}
           </p>
         ) : null}
       </div>

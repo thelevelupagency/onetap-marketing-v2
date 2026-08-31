@@ -1,7 +1,9 @@
 "use client";
 
-import { homeFaqs } from "@/content/faqs";
+import { getFaqs } from "@/content/get-content";
 import type { MarketingBandBackground, MarketingFaqItem } from "@/content/marketing-copy-types";
+import type { Locale } from "@/lib/i18n/config";
+import { localizePath } from "@/lib/i18n/config";
 import {
   MarketingSection,
   MarketingContainer,
@@ -12,6 +14,7 @@ import {
 import { Reveal } from "@/components/marketing/motion";
 
 interface FaqSectionProps {
+  locale: Locale;
   items?: readonly MarketingFaqItem[];
   title?: string;
   accent?: string;
@@ -19,11 +22,13 @@ interface FaqSectionProps {
 }
 
 export function FaqSection({
-  items = homeFaqs,
+  locale,
+  items,
   title = "Frequently asked",
   accent = "questions",
   background = "cream",
 }: FaqSectionProps) {
+  const resolvedItems = items ?? getFaqs(locale).homeFaqs;
   return (
     <MarketingSection background={background} id="faq">
       <MarketingContainer width="narrow">
@@ -31,10 +36,10 @@ export function FaqSection({
           <SectionHeader title={title} accent={accent} />
         </Reveal>
         <Reveal>
-          <FaqAccordion items={items} />
+          <FaqAccordion items={resolvedItems} />
         </Reveal>
         <div className="mt-marketing-header-gap-md text-center">
-          <TextLink href="/faq">View all FAQs</TextLink>
+          <TextLink href={localizePath("/faq", locale)}>View all FAQs</TextLink>
         </div>
       </MarketingContainer>
     </MarketingSection>

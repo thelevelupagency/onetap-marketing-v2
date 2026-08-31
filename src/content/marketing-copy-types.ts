@@ -1,4 +1,4 @@
-import type { PainPointIconKey } from "@/content/homepage";
+import type { PainPointIconKey } from "@/content/en/homepage";
 
 /** Shared FAQ shape for accordion sections. */
 export type MarketingFaqItem = {

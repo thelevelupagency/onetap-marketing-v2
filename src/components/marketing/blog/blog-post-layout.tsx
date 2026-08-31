@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { BlogHeading } from "@/content/blog/posts";
+import type { BlogHeading } from "@/content/blog/types";
 import { getTocHeadings } from "@/lib/blog";
 import { BlogReadingProgress } from "@/components/marketing/blog/blog-reading-progress";
 import { BlogScrollSpyProvider } from "@/components/marketing/blog/blog-scroll-spy-context";

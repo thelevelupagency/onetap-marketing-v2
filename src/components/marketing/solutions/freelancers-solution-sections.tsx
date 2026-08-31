@@ -6,29 +6,29 @@ import { FreelancerHero } from "@/components/marketing/solutions/freelancer-hero
 import { FreelancerNicheSelector } from "@/components/marketing/solutions/freelancer-niche-selector";
 import { FreelancerCardIncludes } from "@/components/marketing/solutions/freelancer-card-includes";
 import { CardUxSection } from "@/components/marketing/sections/card-ux-section";
-import { freelancersFaqs } from "@/content/faqs";
-import {
-  freelancersPricingHeader,
-  freelancersSocialProofCopy,
-} from "@/content/solutions";
+import { getFaqs, getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 
-export function FreelancersSolutionSections() {
+export function FreelancersSolutionSections({ locale }: { locale: Locale }) {
+  const solutions = getSolutions(locale);
+  const faqs = getFaqs(locale);
   return (
     <>
-      <FreelancerHero />
-      <FreelancerNicheSelector background="white" />
-      <FreelancerCardIncludes background="cream" />
-      <CardUxSection />
-      <SocialProof copy={freelancersSocialProofCopy} background="cream" />
+      <FreelancerHero locale={locale} />
+      <FreelancerNicheSelector locale={locale} background="white" />
+      <FreelancerCardIncludes locale={locale} background="cream" />
+      <CardUxSection locale={locale} />
+      <SocialProof locale={locale} copy={solutions.freelancersSocialProofCopy} background="cream" />
       <PricingBlock
+        locale={locale}
         surface="on-white"
         showHeader
         showFullPricingLink
         wrapInSection
-        headerCopy={freelancersPricingHeader}
+        headerCopy={solutions.freelancersPricingHeader}
       />
-      <FaqSection items={freelancersFaqs} background="cream" />
-      <FinalCtaSection variant="freelancers" />
+      <FaqSection locale={locale} items={faqs.freelancersFaqs} background="cream" />
+      <FinalCtaSection locale={locale} variant="freelancers" />
     </>
   );
 }

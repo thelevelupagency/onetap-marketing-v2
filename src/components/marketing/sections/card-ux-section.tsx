@@ -8,16 +8,22 @@ import {
   FeatureSpotlight,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
-import { cardUxCopy } from "@/content/homepage";
+import { getHomepage } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { cardUxIcons } from "@/lib/marketing-icons";
 
-const cardUxSpotlightItems = cardUxCopy.features.map((f) => ({
-  icon: cardUxIcons[f.icon],
-  title: f.label,
-  description: f.description,
-}));
+interface CardUxSectionProps {
+  locale: Locale;
+}
 
-export function CardUxSection() {
+export function CardUxSection({ locale }: CardUxSectionProps) {
+  const { cardUxCopy } = getHomepage(locale);
+
+  const cardUxSpotlightItems = cardUxCopy.features.map((f) => ({
+    icon: cardUxIcons[f.icon],
+    title: f.label,
+    description: f.description,
+  }));
   return (
     <MarketingSection id="features" background="white" className="overflow-visible">
       <MarketingContainer width="full">

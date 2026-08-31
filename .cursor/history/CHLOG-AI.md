@@ -29,3 +29,5 @@ src/components/providers/meta-pixel-bootstrap.tsx, cookie-consent-banner.tsx
 2026-08-26 — Persist first-touch fbclid/UTMs in sessionStorage for app CTA handoff.
 src/lib/constants.ts, AttributionCapture, AppOutboundLink
 
+2026-08-31 — Marketing i18n: English + Hebrew via /he routes, parallel content configs, RTL, lang handoff to app.
+src/lib/i18n/, src/middleware.ts, src/content/{en,he}/, src/app/[locale]/

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, type MouseEvent, type ReactNode } from "react";
-import type { BlogHeading } from "@/content/blog/posts";
+import type { BlogHeading } from "@/content/blog/types";
 import { getTocHeadings } from "@/lib/blog";
 import { useBlogScrollSpy } from "@/components/marketing/blog/use-blog-scroll-spy";
 

@@ -1,25 +1,63 @@
 import type { MetadataRoute } from "next";
-import { posts } from "@/content/blog/posts";
+import { getBlogPosts } from "@/content/get-content";
+import { LOCALES, getLocaleAlternates, localizePath, type Locale } from "@/lib/i18n/config";
 import { getSiteUrl } from "@/lib/site-url";
 
 const BASE_URL = getSiteUrl();
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const blogPosts = posts.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
+function absoluteLocalizedUrl(path: string, locale: Locale): string {
+  const localized = localizePath(path, locale);
+  return `${BASE_URL}${localized === "/" ? "" : localized}`;
+}
 
-  return [
-    { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${BASE_URL}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/pricing`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/solutions`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
-    { url: `${BASE_URL}/solutions/freelancers`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/solutions/agencies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    ...blogPosts,
+export default function sitemap(): MetadataRoute.Sitemap {
+  const staticRoutes = [
+    "/",
+    "/blog",
+    "/faq",
+    "/pricing",
+    "/solutions",
+    "/solutions/freelancers",
+    "/solutions/agencies",
   ];
+
+  const staticEntries = staticRoutes.flatMap((route) =>
+    LOCALES.map((locale) => {
+      const changeFrequency =
+        route === "/" || route === "/blog"
+          ? ("weekly" as const)
+          : ("monthly" as const);
+      return {
+        url: absoluteLocalizedUrl(route, locale),
+        lastModified: new Date(),
+        changeFrequency,
+        priority:
+          route === "/"
+            ? 1
+            : route === "/blog" || route === "/pricing"
+              ? 0.9
+              : 0.8,
+        alternates: {
+          languages: getLocaleAlternates(route, BASE_URL),
+        },
+      };
+    }),
+  );
+
+  const blogEntries = LOCALES.flatMap((locale: Locale) =>
+    getBlogPosts(locale).map((post) => {
+      const path = `/blog/${post.slug}`;
+      return {
+        url: absoluteLocalizedUrl(path, locale),
+        lastModified: new Date(post.date),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+        alternates: {
+          languages: getLocaleAlternates(path, BASE_URL),
+        },
+      };
+    }),
+  );
+
+  return [...staticEntries, ...blogEntries];
 }

@@ -1,5 +1,16 @@
-import { appendAttributionParams, captureLandingAttribution, getMergedAttributionParams } from "@/lib/constants";
+import {
+  appendAttributionParams,
+  appendLocaleParam,
+  captureLandingAttribution,
+  getMergedAttributionParams,
+} from "@/lib/constants";
 import type { MarketingConsent } from "@/lib/marketing-consent";
+import {
+  DEFAULT_LOCALE,
+  localeFromPathname,
+  stripLocalePrefix,
+  type Locale,
+} from "@/lib/i18n/config";
 
 const PIXEL_ID_PATTERN = /^\d+$/;
 
@@ -110,18 +121,24 @@ export function classifyOutboundHref(href: string): MetaStandardEvent | null {
   }
 }
 
-export function withLandingAttribution(url: string): string {
+export function withLandingAttribution(url: string, locale?: Locale): string {
   if (typeof window === "undefined") {
-    return url;
+    return appendLocaleParam(url, locale ?? DEFAULT_LOCALE);
   }
   const live = new URLSearchParams(window.location.search);
   captureLandingAttribution(live);
-  return appendAttributionParams(url, getMergedAttributionParams(live));
+  const attributed = appendAttributionParams(url, getMergedAttributionParams(live));
+  const resolved = locale ?? localeFromPathname(window.location.pathname);
+  return appendLocaleParam(attributed, resolved);
 }
 
-/** Copy landing `fbclid`/UTMs onto the app URL and fire the matching conversion, if any. */
-export function navigateToApp(href: string, placement?: MetaCtaPlacement | null): string {
-  const attributed = withLandingAttribution(href);
+/** Copy landing `fbclid`/UTMs + `lang` onto the app URL and fire the matching conversion, if any. */
+export function navigateToApp(
+  href: string,
+  placement?: MetaCtaPlacement | null,
+  locale?: Locale,
+): string {
+  const attributed = withLandingAttribution(href, locale);
   if (placement) {
     const event = classifyOutboundHref(attributed);
     if (event === "InitiateCheckout") {
@@ -140,25 +157,26 @@ export function navigateToApp(href: string, placement?: MetaCtaPlacement | null)
 }
 
 export function viewContentForPath(pathname: string): MetaEventParams | null {
-  if (pathname === "/") {
+  const bare = stripLocalePrefix(pathname);
+  if (bare === "/") {
     return { content_name: "home", content_category: "marketing" };
   }
-  if (pathname === "/pricing") {
+  if (bare === "/pricing") {
     return { content_name: "pricing", content_category: "marketing" };
   }
-  if (pathname === "/faq") {
+  if (bare === "/faq") {
     return { content_name: "faq", content_category: "marketing" };
   }
-  if (pathname === "/blog") {
+  if (bare === "/blog") {
     return { content_name: "blog_index", content_category: "marketing" };
   }
-  if (pathname === "/solutions/freelancers") {
+  if (bare === "/solutions/freelancers") {
     return { content_name: "solutions_freelancers", content_category: "marketing" };
   }
-  if (pathname === "/solutions/agencies") {
+  if (bare === "/solutions/agencies") {
     return { content_name: "solutions_agencies", content_category: "marketing" };
   }
-  const blogMatch = pathname.match(/^\/blog\/([^/]+)\/?$/);
+  const blogMatch = bare.match(/^\/blog\/([^/]+)\/?$/);
   if (blogMatch?.[1]) {
     return {
       content_name: "blog_post",

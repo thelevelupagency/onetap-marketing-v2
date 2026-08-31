@@ -27,7 +27,7 @@
   --color-brand-muted: var(--brand-muted);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
-  /* Plus Jakarta Sans (body) | Space Grotesk (display) | Montserrat (logo) */
+  /* Plus Jakarta Sans (body) | Space Grotesk (display) | Montserrat (logo) | Assistant (Hebrew) */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   /* Alias: prefer font-display in new code */
@@ -374,4 +374,22 @@
     letter-spacing: -0.02em;
   }
 
+}
+
+/* Hebrew: Assistant for body + display; no uppercase on headings (breaks Hebrew glyphs) */
+html[lang="he"] {
+  --font-sans: var(--font-hebrew), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-hebrew), var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display);
+}
+
+html[lang="he"] h1,
+html[lang="he"] h2,
+html[lang="he"] h3,
+html[lang="he"] h4,
+html[lang="he"] h5,
+html[lang="he"] h6 {
+  font-family: var(--font-hebrew), var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
 }

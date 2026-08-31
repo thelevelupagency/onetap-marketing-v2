@@ -9,22 +9,24 @@ import {
   FeatureSpotlight,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
-import { dashboardCopy } from "@/content/homepage";
+import { getHomepage } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { dashboardIcons } from "@/lib/marketing-icons";
 
-const dashboardSpotlightItems = dashboardCopy.features.map((f) => ({
-  icon: dashboardIcons[f.icon],
-  title: f.title,
-  description: f.description,
-}));
-
 interface DashboardSectionProps {
-  /** Dark (homepage default) or light (e.g. after a dark hero on solution pages). */
+  locale: Locale;
   variant?: "dark" | "light";
 }
 
-export function DashboardSection({ variant = "dark" }: DashboardSectionProps) {
+export function DashboardSection({ locale, variant = "dark" }: DashboardSectionProps) {
+  const { dashboardCopy } = getHomepage(locale);
   const isLight = variant === "light";
+
+  const dashboardSpotlightItems = dashboardCopy.features.map((f) => ({
+    icon: dashboardIcons[f.icon],
+    title: f.title,
+    description: f.description,
+  }));
 
   return (
     <MarketingSection
