@@ -1,8 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { cn } from "@/lib/utils";
-import { getChrome } from "@/content/get-content";
+import { getChrome, getPricing } from "@/content/get-content";
 import { useLocale } from "@/components/providers/locale-provider";
+import {
+  formatSaveBadgeTemplate,
+  maxYearlySavingPercent,
+} from "@/lib/pricing-savings";
 
 interface PricingBillingToggleProps {
   isAnnual: boolean;
@@ -18,6 +24,17 @@ export function PricingBillingToggle({
   const locale = useLocale();
   const chrome = getChrome(locale);
   const { pricingUi } = chrome;
+  const pricing = getPricing(locale);
+
+  const savePercent = useMemo(
+    () => maxYearlySavingPercent(pricing.plans),
+    [pricing.plans],
+  );
+
+  const saveBadgeLabel =
+    savePercent != null && savePercent > 0
+      ? formatSaveBadgeTemplate(pricingUi.saveBadgeTemplate, savePercent)
+      : null;
 
   return (
     <div className={cn("flex flex-col items-center", className)}>
@@ -43,9 +60,11 @@ export function PricingBillingToggle({
           )}
         >
           {pricingUi.annually}
-          <span className="bg-brand-turquoise/20 text-brand-turquoise-dark text-xs font-bold px-2 py-0.5 rounded-full">
-            {pricingUi.twoMonthsFree}
-          </span>
+          {saveBadgeLabel ? (
+            <span className="bg-brand-turquoise/20 text-brand-turquoise-dark text-xs font-bold px-2 py-0.5 rounded-full">
+              {saveBadgeLabel}
+            </span>
+          ) : null}
         </button>
       </div>
     </div>

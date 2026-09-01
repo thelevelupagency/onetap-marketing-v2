@@ -63,7 +63,7 @@ export type ChromeCopy = {
   pricingUi: {
     monthly: string;
     annually: string;
-    twoMonthsFree: string;
+    saveBadgeTemplate: string;
     perMonth: string;
     mostPopular: string;
     wasNowSr: string;
@@ -233,7 +233,7 @@ export const enChrome: ChromeCopy = {
   pricingUi: {
     monthly: "Monthly",
     annually: "Annually",
-    twoMonthsFree: "2 Months Free",
+    saveBadgeTemplate: "Save {n}%",
     perMonth: "/month",
     mostPopular: "Most Popular",
     wasNowSr: "Was ${previous}, now ${current}",
