@@ -59,7 +59,7 @@ export const heChrome: ChromeCopy = {
   pricingUi: {
     monthly: "חודשי",
     annually: "שנתי",
-    twoMonthsFree: "חודשיים חינם",
+    saveBadgeTemplate: "חסכו {n}%",
     perMonth: "/חודש",
     mostPopular: "הכי פופולרי",
     wasNowSr: "היה ${previous}$, עכשיו ${current}$",
