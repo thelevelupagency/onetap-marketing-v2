@@ -28,8 +28,8 @@ import type {
   DashboardIconKey,
   PainPointIconKey,
   SolutionIconKey,
-} from "@/content/homepage";
-import type { SolutionFeatureIconKey } from "@/content/solutions";
+} from "@/content/en/homepage";
+import type { SolutionFeatureIconKey } from "@/content/en/solutions";
 
 export const cardUxIcons: Record<CardUxIconKey, LucideIcon> = {
   zap: Zap,

@@ -9,21 +9,26 @@ import {
   InfiniteTestimonialTrack,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
-import { socialProofCopy } from "@/content/homepage";
+import { getHomepage, getChrome } from "@/content/get-content";
 import type { MarketingBandBackground, SocialProofCopy } from "@/content/marketing-copy-types";
+import type { Locale } from "@/lib/i18n/config";
 
 export type { SocialProofCopy } from "@/content/marketing-copy-types";
 
 interface SocialProofProps {
+  locale: Locale;
   copy?: SocialProofCopy;
   background?: MarketingBandBackground;
 }
 
 export function SocialProof({
-  copy = socialProofCopy,
+  locale,
+  copy,
   background = "cream",
 }: SocialProofProps) {
-  const testimonials = copy.testimonials;
+  const resolvedCopy = copy ?? getHomepage(locale).socialProofCopy;
+  const chrome = getChrome(locale);
+  const testimonials = resolvedCopy.testimonials;
   const halfCount = Math.ceil(testimonials.length / 2);
   const row1 = testimonials.slice(0, halfCount);
   const row2 = testimonials.slice(halfCount);
@@ -33,9 +38,9 @@ export function SocialProof({
       <MarketingContainer width="wide" className="overflow-visible">
         <Reveal>
           <SectionHeader
-            title={copy.title}
-            accent={copy.accent}
-            lead={copy.lead}
+            title={resolvedCopy.title}
+            accent={resolvedCopy.accent}
+            lead={resolvedCopy.lead}
             spacingBelow="none"
             className="mb-6 sm:mb-8"
           />
@@ -43,7 +48,7 @@ export function SocialProof({
 
         <Reveal>
           <AudienceMarquee
-            audiences={copy.audiences}
+            audiences={resolvedCopy.audiences}
             background={background}
             className="mb-6 sm:mb-8"
           />
@@ -57,7 +62,7 @@ export function SocialProof({
           <InfiniteTestimonialTrack
             direction="right"
             speed={1.0}
-            ariaLabel="Testimonials row 1"
+            ariaLabel={chrome.aria.testimonialsRow1}
           >
             {row1.map((item, index) => (
               <TestimonialCard key={`row1-${item.name}-${index}`} testimonial={item} />
@@ -68,7 +73,7 @@ export function SocialProof({
           <InfiniteTestimonialTrack
             direction="left"
             speed={1.0}
-            ariaLabel="Testimonials row 2"
+            ariaLabel={chrome.aria.testimonialsRow2}
           >
             {row2.map((item, index) => (
               <TestimonialCard key={`row2-${item.name}-${index}`} testimonial={item} />

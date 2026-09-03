@@ -3,11 +3,15 @@
 import { usePathname } from "next/navigation";
 import { getMetaPixelId, syncMetaPixelConsent } from "@/lib/meta-pixel";
 import { useMarketingConsent } from "@/components/providers/consent-provider";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getChrome } from "@/content/get-content";
 
 export function CookieConsentBanner() {
   const pixelId = getMetaPixelId();
   const pathname = usePathname();
   const { consent, hydrated, setConsent } = useMarketingConsent();
+  const locale = useLocale();
+  const chrome = getChrome(locale);
 
   if (!pixelId || !hydrated || consent) {
     return null;
@@ -23,11 +27,10 @@ export function CookieConsentBanner() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="max-w-2xl">
           <p id="cookie-consent-title" className="text-sm font-semibold text-brand-midnight">
-            Marketing cookies
+            {chrome.cookie.title}
           </p>
           <p id="cookie-consent-body" className="mt-1 text-sm text-brand-midnight/70">
-            We use Meta Pixel to measure ads on Facebook and Instagram after you click through to
-            OneTap. Accept to allow this. Essential site cookies are not affected.
+            {chrome.cookie.body}
           </p>
         </div>
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -39,7 +42,7 @@ export function CookieConsentBanner() {
             }}
             className="h-11 rounded-full border border-brand-midnight/20 px-5 text-sm font-medium text-brand-midnight transition-colors hover:bg-brand-midnight/5"
           >
-            Reject
+            {chrome.cookie.reject}
           </button>
           <button
             type="button"
@@ -49,7 +52,7 @@ export function CookieConsentBanner() {
             }}
             className="h-11 rounded-full bg-brand-navy px-5 text-sm font-medium text-white transition-colors hover:bg-brand-midnight"
           >
-            Accept
+            {chrome.cookie.accept}
           </button>
         </div>
       </div>

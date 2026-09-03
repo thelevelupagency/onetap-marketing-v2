@@ -13,8 +13,10 @@ Use when adding routes, changing metadata, or shipping major content updates.
 - [ ] New public route added to `src/app/sitemap.ts` (if not covered by dynamic blog slugs)
 - [ ] Canonical host matches production (`getSiteUrl()` / `NEXT_PUBLIC_SITE_URL`, default `https://onetap-card.com`)
 - [x] `metadataBase` in root layout (`src/app/layout.tsx`) for absolute OG URLs
+- [x] `<html lang>` / `dir` set per locale via middleware + root layout (`en` LTR, `he` RTL)
+- [x] Locale URLs: English unprefixed; Hebrew under `/he`
+- [x] `hreflang` via `alternates.languages` on pages and sitemap
 - [ ] `/solutions` index listed in sitemap when that route is public
-- [ ] `lang="en"` on `<html>` until i18n is implemented
 
 ## Gaps (optional follow-ups)
 

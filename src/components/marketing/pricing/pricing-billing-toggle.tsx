@@ -1,6 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { cn } from "@/lib/utils";
+import { getChrome, getPricing } from "@/content/get-content";
+import { useLocale } from "@/components/providers/locale-provider";
+import {
+  formatSaveBadgeTemplate,
+  maxYearlySavingPercent,
+} from "@/lib/pricing-savings";
 
 interface PricingBillingToggleProps {
   isAnnual: boolean;
@@ -13,6 +21,21 @@ export function PricingBillingToggle({
   onChange,
   className,
 }: PricingBillingToggleProps) {
+  const locale = useLocale();
+  const chrome = getChrome(locale);
+  const { pricingUi } = chrome;
+  const pricing = getPricing(locale);
+
+  const savePercent = useMemo(
+    () => maxYearlySavingPercent(pricing.plans),
+    [pricing.plans],
+  );
+
+  const saveBadgeLabel =
+    savePercent != null && savePercent > 0
+      ? formatSaveBadgeTemplate(pricingUi.saveBadgeTemplate, savePercent)
+      : null;
+
   return (
     <div className={cn("flex flex-col items-center", className)}>
       <div className="bg-brand-midnight/5 p-1 rounded-full inline-flex border border-brand-midnight/10">
@@ -25,7 +48,7 @@ export function PricingBillingToggle({
             !isAnnual ? "bg-white text-brand-midnight shadow-sm" : "text-brand-midnight/60",
           )}
         >
-          Monthly
+          {pricingUi.monthly}
         </button>
         <button
           type="button"
@@ -36,10 +59,12 @@ export function PricingBillingToggle({
             isAnnual ? "bg-white text-brand-midnight shadow-sm" : "text-brand-midnight/60",
           )}
         >
-          Annually
-          <span className="bg-brand-turquoise/20 text-brand-turquoise-dark text-xs font-bold px-2 py-0.5 rounded-full">
-            2 Months Free
-          </span>
+          {pricingUi.annually}
+          {saveBadgeLabel ? (
+            <span className="bg-brand-turquoise/20 text-brand-turquoise-dark text-xs font-bold px-2 py-0.5 rounded-full">
+              {saveBadgeLabel}
+            </span>
+          ) : null}
         </button>
       </div>
     </div>

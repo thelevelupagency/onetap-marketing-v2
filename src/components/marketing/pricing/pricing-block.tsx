@@ -10,12 +10,15 @@ import {
   TextLink,
 } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
-import { homepagePricingHeader } from "@/content/homepage";
+import { getHomepage, getChrome } from "@/content/get-content";
 import type { PricingHeaderCopy } from "@/content/marketing-copy-types";
+import type { Locale } from "@/lib/i18n/config";
+import { localizePath } from "@/lib/i18n/config";
 
 export type { PricingHeaderCopy } from "@/content/marketing-copy-types";
 
 interface PricingBlockProps {
+  locale: Locale;
   surface: "on-white" | "on-cream";
   showHeader?: boolean;
   showFullPricingLink?: boolean;
@@ -24,13 +27,16 @@ interface PricingBlockProps {
 }
 
 export function PricingBlock({
+  locale,
   surface,
   showHeader = false,
   showFullPricingLink = false,
   wrapInSection = false,
-  headerCopy = homepagePricingHeader,
+  headerCopy,
 }: PricingBlockProps) {
   const [isAnnual, setIsAnnual] = useState(true);
+  const chrome = getChrome(locale);
+  const resolvedHeaderCopy = headerCopy ?? getHomepage(locale).homepagePricingHeader;
 
   const content = (
     <MarketingContainer width={showHeader ? "full" : "wide"}>
@@ -38,9 +44,9 @@ export function PricingBlock({
         <>
           <Reveal>
             <SectionHeader
-              title={headerCopy.title}
-              accent={headerCopy.accent}
-              lead={headerCopy.lead}
+              title={resolvedHeaderCopy.title}
+              accent={resolvedHeaderCopy.accent}
+              lead={resolvedHeaderCopy.lead}
             />
           </Reveal>
           <div className="mb-marketing-header-gap-md flex justify-center">
@@ -57,12 +63,13 @@ export function PricingBlock({
         isAnnual={isAnnual}
         surface={surface}
         withStagger={showHeader}
+        locale={locale}
       />
 
       {showFullPricingLink ? (
         <p className="mt-marketing-header-gap-md text-center">
-          <TextLink href="/pricing" showArrow={false}>
-            View full pricing & comparison →
+          <TextLink href={localizePath("/pricing", locale)} showArrow={false}>
+            {chrome.pricingUi.viewFullPricing}
           </TextLink>
         </p>
       ) : null}

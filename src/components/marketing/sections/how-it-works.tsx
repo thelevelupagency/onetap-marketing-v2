@@ -1,11 +1,18 @@
 import { Process1 } from "@/components/marketing/sections/process1";
-import { howItWorksCopy } from "@/content/homepage";
+import { getHomepage } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 
-export function HowItWorks() {
+interface HowItWorksProps {
+  locale: Locale;
+}
+
+export function HowItWorks({ locale }: HowItWorksProps) {
+  const { howItWorksCopy } = getHomepage(locale);
   return (
     <div id="how-it-works" className="scroll-mt-[72px]">
       <Process1
         background="cream"
+        locale={locale}
         title={howItWorksCopy.title}
         accent={howItWorksCopy.accent}
         description={howItWorksCopy.description}

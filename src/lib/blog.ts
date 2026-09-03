@@ -1,12 +1,17 @@
-import { categoryLabels, posts, type BlogCategory, type BlogHeading, type BlogPost } from "@/content/blog/posts";
+import type { BlogCategory, BlogHeading, BlogPost } from "@/content/blog/types";
+import { getBlogCategoryLabels, getBlogPosts, getChrome } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
 import { countBlogWords } from "@/lib/blog-markdown";
 import { textIncludes } from "@/lib/search";
 
+export type { BlogCategory, BlogHeading, BlogPost };
+
 export const BLOG_LIST_PAGE_SIZE = 6;
 
-const validBlogCategories = new Set(Object.keys(categoryLabels) as BlogCategory[]);
-
 export function parseBlogCategoryParam(value: string | null | undefined): BlogCategory | null {
+  const labels = getBlogCategoryLabels(DEFAULT_LOCALE);
+  const validBlogCategories = new Set(Object.keys(labels) as BlogCategory[]);
   if (!value || !validBlogCategories.has(value as BlogCategory)) return null;
   return value as BlogCategory;
 }
@@ -17,16 +22,26 @@ export function parseBlogPageParam(value: string | null | undefined): number {
 }
 
 /** Shareable blog index URL with optional category and page. */
-export function buildBlogPageHref(page: number, category: BlogCategory | null): string {
+export function buildBlogPageHref(
+  page: number,
+  category: BlogCategory | null,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
   const params = new URLSearchParams();
   if (category) params.set("category", category);
   if (page > 1) params.set("page", String(page));
   const qs = params.toString();
-  return `/blog${qs ? `?${qs}` : ""}`;
+  const base = localizePath("/blog", locale);
+  return `${base}${qs ? `?${qs}` : ""}`;
 }
 
-export function filterBlogPostsBySearch(entries: BlogPost[], query: string): BlogPost[] {
+export function filterBlogPostsBySearch(
+  entries: BlogPost[],
+  query: string,
+  locale: Locale = DEFAULT_LOCALE,
+): BlogPost[] {
   if (!query.trim()) return entries;
+  const categoryLabels = getBlogCategoryLabels(locale);
   return entries.filter(
     (post) =>
       textIncludes(post.title, query) ||
@@ -42,13 +57,15 @@ export const BLOG_POSTS_SECTION_ID = "blog-posts";
 export function getBlogListEmptyMessage(
   hasSearchQuery: boolean,
   hasCategoryFilter: boolean,
+  locale: Locale = DEFAULT_LOCALE,
 ): string {
+  const chrome = getChrome(locale);
   if (hasSearchQuery && hasCategoryFilter) {
-    return "No posts match your search or category.";
+    return chrome.blog.emptySearchAndCategory;
   }
-  if (hasSearchQuery) return "No posts match your search.";
-  if (hasCategoryFilter) return "No posts in this category.";
-  return "No posts available.";
+  if (hasSearchQuery) return chrome.blog.emptySearch;
+  if (hasCategoryFilter) return chrome.blog.emptyCategory;
+  return chrome.blog.empty;
 }
 
 export { BLOG_READING_REGION_ID } from "@/lib/blog-reading";
@@ -89,22 +106,32 @@ function categoryOverlap(a: BlogCategory[], b: BlogCategory[]): number {
   return a.filter((c) => b.includes(c)).length;
 }
 
-export function getPosts(category?: BlogCategory | null): BlogPost[] {
+export function getPosts(
+  category?: BlogCategory | null,
+  locale: Locale = DEFAULT_LOCALE,
+): BlogPost[] {
+  const posts = getBlogPosts(locale);
   if (!category) return [...posts].sort((a, b) => b.date.localeCompare(a.date));
   return posts
     .filter((p) => p.categories.includes(category))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  return posts.find((p) => p.slug === slug);
+export function getPostBySlug(
+  slug: string,
+  locale: Locale = DEFAULT_LOCALE,
+): BlogPost | undefined {
+  return getBlogPosts(locale).find((p) => p.slug === slug);
 }
 
 const MAX_INLINE_LINK_LABEL = 50;
 
 /** Short, sentence-friendly label for inline `/blog/slug` links in prose. */
-export function getBlogLinkLabel(slug: string): string {
-  const post = getPostBySlug(slug);
+export function getBlogLinkLabel(
+  slug: string,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  const post = getPostBySlug(slug, locale);
   if (!post) {
     return slug.replace(/-/g, " ");
   }
@@ -124,8 +151,13 @@ export function getBlogLinkLabel(slug: string): string {
   return slug.replace(/-/g, " ");
 }
 
-export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
-  const current = getPostBySlug(slug);
+export function getRelatedPosts(
+  slug: string,
+  limit = 3,
+  locale: Locale = DEFAULT_LOCALE,
+): BlogPost[] {
+  const posts = getBlogPosts(locale);
+  const current = getPostBySlug(slug, locale);
   if (!current) return [];
   return posts
     .filter((p) => p.slug !== slug)
@@ -137,12 +169,13 @@ export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
     .slice(0, limit);
 }
 
-export function getAllSlugs(): string[] {
-  return posts.map((p) => p.slug);
+export function getAllSlugs(locale: Locale = DEFAULT_LOCALE): string[] {
+  return getBlogPosts(locale).map((p) => p.slug);
 }
 
-export function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("en-US", {
+export function formatDate(dateStr: string, locale: Locale = DEFAULT_LOCALE): string {
+  const displayLocale = locale === "he" ? "he-IL" : "en-US";
+  return new Date(dateStr).toLocaleDateString(displayLocale, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -157,8 +190,12 @@ export function estimateReadingMinutes(content: string[]): number {
   return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
 }
 
-export function formatReadingTime(minutes: number): string {
-  return `${minutes} min read`;
+export function formatReadingTime(
+  minutes: number,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  const label = getChrome(locale).blog.minRead;
+  return `${minutes} ${label}`;
 }
 
 export function getPostReadingMinutes(post: Pick<BlogPost, "content">): number {

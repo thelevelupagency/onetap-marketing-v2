@@ -146,7 +146,12 @@ Do not introduce API routes or Supabase dependencies until explicitly requested.
 - Do **not** send email, phone, name, or typed card slugs in Meta event parameters.
 - If adding public forms that collect personal data: visible Privacy Policy link before/at submit; no extra tracking fields without stated legal basis.
 - Avoid logging emails, phone numbers, or names in server logs.
-- CTA or copy changes that affect signup/login flows may need coordination with `onetap-app` — call this out in PRs. Outbound app URLs must forward `fbclid` and UTM query params via `appendAttributionParams` / `navigateToApp`.
+- CTA or copy changes that affect signup/login flows may need coordination with `onetap-app` — call this out in PRs. Outbound app URLs must forward `fbclid` and UTM query params via `appendAttributionParams` / `navigateToApp`, plus `lang=en|he` from the current locale.
+
+## Marketing i18n (EN + HE)
+
+- English at `/`; Hebrew at `/he/...`. Guide: [`docs/guides/marketing-i18n.md`](docs/guides/marketing-i18n.md). Skill: `.cursor/skills/marketing-i18n-change/SKILL.md`.
+- Use logical CSS and `isRtlLocale()` for RTL; slug URL field stays LTR. Run `npm run check:i18n-rtl` when touching locale chrome.
 
 ## Phase 1 Principles
 

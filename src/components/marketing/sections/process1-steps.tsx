@@ -67,10 +67,10 @@ export function Process1Steps({ steps, stepBadgeBg }: Process1StepsProps) {
     steps.length > 1 ? (activeIndex + 1) / steps.length : 1;
 
   return (
-    <ul className="relative w-full lg:pl-20">
+    <ul className="relative w-full lg:ps-20">
       {!isMobile ? (
         <div
-          className="pointer-events-none absolute top-0 left-0 hidden h-full w-px overflow-hidden bg-brand-midnight/10 lg:block"
+          className="pointer-events-none absolute top-0 start-0 hidden h-full w-px overflow-hidden bg-brand-midnight/10 lg:block"
           aria-hidden
         >
           <motion.div
@@ -98,8 +98,8 @@ export function Process1Steps({ steps, stepBadgeBg }: Process1StepsProps) {
               isActive ? "opacity-100" : "opacity-55"
             )}
           >
-            <div className="relative flex min-w-0 flex-1 items-start gap-marketing-grid-gap pr-8 lg:pr-10">
-              <StepIllustration className="absolute top-0 right-0 text-brand-turquoise" />
+            <div className="relative flex min-w-0 flex-1 items-start gap-marketing-grid-gap pe-8 lg:pe-10">
+              <StepIllustration className="absolute top-0 end-0 text-brand-turquoise" />
 
               <div
                 className={cn(

@@ -1,0 +1,19 @@
+---
+description: Marketing i18n — en + he content trees, RTL logical CSS, locale catalog helpers.
+globs:
+  - src/lib/i18n/**
+  - src/content/**
+  - src/components/providers/locale-provider.tsx
+  - src/components/marketing/language-switcher.tsx
+  - src/components/layout/**
+  - src/app/[locale]/**
+---
+
+# Marketing i18n
+
+When changing bilingual marketing copy, locale switching, or RTL layout:
+
+1. Follow [`.cursor/skills/marketing-i18n-change/SKILL.md`](../skills/marketing-i18n-change/SKILL.md).
+2. Update **both** `src/content/en/**` and `src/content/he/**` for chrome/UI strings.
+3. Use logical CSS and `isRtlLocale()` — not `locale === "he"` or physical `left`/`right` for layout.
+4. Guide: [`docs/guides/marketing-i18n.md`](../../docs/guides/marketing-i18n.md).

@@ -1,4 +1,4 @@
-import type { BlogHeading } from "@/content/blog/posts";
+import type { BlogHeading } from "@/content/blog/types";
 
 /** DOM id for the blog article region tracked by the mobile reading bar. */
 export const BLOG_READING_REGION_ID = "blog-reading-region";

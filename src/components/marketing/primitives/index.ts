@@ -52,4 +52,8 @@ export {
   InfiniteTestimonialTrack,
   type InfiniteTestimonialTrackProps,
 } from "./infinite-testimonial-track";
+export {
+  InfiniteScrollTrack,
+  type InfiniteScrollTrackProps,
+} from "./infinite-scroll-track";
 

@@ -1,4 +1,6 @@
 import { sanitizeCardSlug } from "@/lib/card-slug";
+import type { Locale } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 const DEFAULT_APP_ORIGIN = "https://app.onetap-card.com";
 const DEFAULT_CARD_BASE_URL = "https://card.onetap-card.com";
@@ -143,6 +145,33 @@ export function appendAttributionParams(url: string, source: URLSearchParams): s
       continue;
     }
     target.searchParams.set(key, value);
+  }
+
+  if (!/^https?:\/\//i.test(url)) {
+    return `${target.pathname}${target.search}${target.hash}`;
+  }
+  return target.toString();
+}
+
+/**
+ * Stamp marketing locale onto an outbound app URL as `lang`.
+ * Does not overwrite an existing `lang` or `slug`.
+ */
+export function appendLocaleParam(
+  url: string,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  const base =
+    typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";
+  let target: URL;
+  try {
+    target = new URL(url, base);
+  } catch {
+    return url;
+  }
+
+  if (!target.searchParams.has("lang")) {
+    target.searchParams.set("lang", locale);
   }
 
   if (!/^https?:\/\//i.test(url)) {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getBlogLinkLabel } from "@/lib/blog";
+import { DEFAULT_LOCALE, localizePath, type Locale } from "@/lib/i18n/config";
 
 const BLOG_PATH_PATTERN = /(\/blog\/[a-z0-9-]+)/g;
 const URL_PATTERN = /(https?:\/\/[^\s<]+[^\s<.,;:!?)}\]'"])/g;
@@ -22,7 +23,7 @@ function BlogBold({ text }: { text: string }) {
   return <strong className="font-medium text-brand-midnight">{text.slice(2, -2)}</strong>;
 }
 
-function renderSegment(segment: string, keyPrefix: string) {
+function renderSegment(segment: string, keyPrefix: string, locale: Locale) {
   if (!segment) return null;
 
   const blogParts = segment.split(BLOG_PATH_PATTERN);
@@ -33,10 +34,10 @@ function renderSegment(segment: string, keyPrefix: string) {
       return (
         <Link
           key={key}
-          href={part}
+          href={localizePath(part, locale)}
           className="font-medium text-brand-turquoise-dark underline-offset-2 hover:underline"
         >
-          {getBlogLinkLabel(slug)}
+          {getBlogLinkLabel(slug, locale)}
         </Link>
       );
     }
@@ -61,6 +62,12 @@ function renderSegment(segment: string, keyPrefix: string) {
 }
 
 /** Paragraph inline text: internal blog links, external URLs, and **bold**. */
-export function BlogRichText({ text }: { text: string }) {
-  return <>{renderSegment(text, "seg")}</>;
+export function BlogRichText({
+  text,
+  locale = DEFAULT_LOCALE,
+}: {
+  text: string;
+  locale?: Locale;
+}) {
+  return <>{renderSegment(text, "seg", locale)}</>;
 }

@@ -7,7 +7,8 @@ alwaysApply: true
 # Project map
 
 - src/components/marketing/** and src/app/**/page.tsx → @marketing-component-system.mdc @seo-metadata.mdc — see docs/component-system.md
-- src/content/** → @content-authoring.mdc
+- src/content/** → @content-authoring.mdc @i18n-copy.mdc
+- src/lib/i18n/**, locale switcher, `[locale]/layout` → @i18n-copy.mdc docs/guides/marketing-i18n.md
 - src/app/** (routes, layout, sitemap) → @nextjs-marketing.mdc @seo-metadata.mdc
 - src/app/api/** (future) → @marketing-api-future.mdc @supabase-backend-future.mdc
 - src/components/ui/** → @shadcn-marketing.mdc

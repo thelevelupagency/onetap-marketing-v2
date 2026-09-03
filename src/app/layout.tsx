@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
-import { Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
-import { Navigation } from "@/components/layout/navigation";
-import { Footer } from "@/components/layout/footer";
+import { Assistant, Montserrat, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
+import { headers } from "next/headers";
 import { BackNavigationReloadScript } from "@/components/providers/back-navigation-reload-script";
 import { MarketingConsentProvider } from "@/components/providers/consent-provider";
 import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
 import { AttributionCapture } from "@/components/providers/attribution-capture";
 import { MetaPixelBootstrap } from "@/components/providers/meta-pixel-bootstrap";
+import { LocaleProvider } from "@/components/providers/locale-provider";
 import { MetaPixel } from "@/components/providers/meta-pixel";
+import {
+  DEFAULT_LOCALE,
+  LOCALE_META,
+  parseLocale,
+  type Locale,
+} from "@/lib/i18n/config";
+import { LOCALE_HEADER } from "@/lib/i18n/locale-header";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -29,6 +36,12 @@ const montserrat = Montserrat({
   weight: "700",
 });
 
+const assistant = Assistant({
+  variable: "--font-hebrew",
+  subsets: ["hebrew", "latin"],
+  weight: ["400", "600", "700"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: "OneTap-Card | Your professional identity, one tap away",
@@ -40,28 +53,37 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+async function readRequestLocale(): Promise<Locale> {
+  const headerStore = await headers();
+  return parseLocale(headerStore.get(LOCALE_HEADER) ?? DEFAULT_LOCALE);
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await readRequestLocale();
+  const meta = LOCALE_META[locale];
+
   return (
     <html
-      lang="en"
+      lang={meta.htmlLang}
+      dir={meta.dir}
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} antialiased`}
+      className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} ${assistant.variable} antialiased`}
     >
       <body className="min-h-svh flex flex-col font-sans bg-brand-cream overflow-x-clip">
         <MetaPixelBootstrap />
-        <MarketingConsentProvider>
-          <AttributionCapture />
-          <BackNavigationReloadScript />
-          <MetaPixel />
-          <Navigation />
-          <div className="flex-1">{children}</div>
-          <Footer />
-          <CookieConsentBanner />
-        </MarketingConsentProvider>
+        <LocaleProvider locale={locale}>
+          <MarketingConsentProvider>
+            <AttributionCapture />
+            <BackNavigationReloadScript />
+            <MetaPixel />
+            {children}
+            <CookieConsentBanner />
+          </MarketingConsentProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

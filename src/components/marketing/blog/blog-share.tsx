@@ -5,19 +5,26 @@ import { Link2, Check } from "lucide-react";
 import { IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE, localizePath } from "@/lib/i18n/config";
+import { getChrome } from "@/content/get-content";
 import { getSiteUrl } from "@/lib/site-url";
 
 export function BlogShare({
   title,
   slug,
-  label = "Share",
+  locale = DEFAULT_LOCALE,
+  label,
 }: {
   title: string;
   slug: string;
+  locale?: Locale;
   label?: string;
 }) {
+  const chrome = getChrome(locale);
+  const resolvedLabel = label ?? chrome.blog.shareLabel;
   const [copied, setCopied] = useState(false);
-  const url = `${getSiteUrl()}/blog/${slug}`;
+  const url = `${getSiteUrl()}${localizePath(`/blog/${slug}`, locale)}`;
 
   async function copyLink() {
     try {
@@ -51,15 +58,15 @@ export function BlogShare({
     "rounded-full border-brand-midnight/10 h-9 px-3 gap-1.5 inline-flex items-center";
 
   return (
-    <div className="flex flex-wrap items-center gap-2" role="group" aria-label={label}>
-      <span className="text-sm font-medium text-brand-midnight/60 mr-1 shrink-0">{label}</span>
+    <div className="flex flex-wrap items-center gap-2" role="group" aria-label={resolvedLabel}>
+      <span className="text-sm font-medium text-brand-midnight/60 me-1 shrink-0">{resolvedLabel}</span>
       {shareLinks.map((s) => (
         <a
           key={s.label}
           href={s.href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Share on ${s.label}`}
+          aria-label={`${chrome.blogUi.shareOn} ${s.label}`}
           className={cn(
             buttonVariants({ variant: "outline", size: "sm" }),
             buttonClass
@@ -71,7 +78,7 @@ export function BlogShare({
       ))}
       <Button variant="outline" size="sm" className={buttonClass} onClick={copyLink}>
         {copied ? <Check className="w-4 h-4 text-brand-turquoise" /> : <Link2 className="w-4 h-4" />}
-        <span className="text-xs">{copied ? "Copied!" : "Copy Link"}</span>
+        <span className="text-xs">{copied ? chrome.blogUi.copied : chrome.blogUi.copyLink}</span>
       </Button>
     </div>
   );

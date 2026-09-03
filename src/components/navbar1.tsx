@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen, Briefcase, Building2, HelpCircle, Menu, Trophy } from "lucide-react";
+import { Menu } from "lucide-react";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 
@@ -31,7 +31,9 @@ import {
 } from "@/components/ui/sheet";
 import { Logo } from "@/components/shared/logo";
 import { MarketingContainer } from "@/components/marketing/primitives";
+import { useLocale } from "@/components/providers/locale-provider";
 import type { LogoTheme } from "@/lib/logos";
+import { isRtlLocale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
 interface MenuItem {
@@ -44,14 +46,17 @@ interface MenuItem {
 
 interface Navbar1Props {
   className?: string;
-  logo?: {
+  logo: {
     url: string;
     theme?: LogoTheme;
     variant?: "icon" | "wordmark";
     alt?: string;
     className?: string;
   };
-  menu?: MenuItem[];
+  menu: MenuItem[];
+  languageSwitcher?: React.ReactNode;
+  openMenuLabel: string;
+  closeMenuLabel: string;
   auth?: {
     login?: {
       title: string;
@@ -95,7 +100,7 @@ function NavAnchor({
 function LogoMark({
   logo,
 }: {
-  logo: NonNullable<Navbar1Props["logo"]>;
+  logo: Navbar1Props["logo"];
 }) {
   return (
     <Logo
@@ -110,63 +115,20 @@ function LogoMark({
 }
 
 const Navbar1 = ({
-  logo = {
-    url: "/",
-    theme: "dark",
-    alt: "OneTap",
-    className: "h-9 w-auto",
-  },
-  menu = [
-    { title: "Home", url: "/" },
-    {
-      title: "Solutions",
-      url: "#",
-      items: [
-        {
-          title: "Freelancers",
-          description: "Stand out and capture leads on the go",
-          icon: <Briefcase className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/solutions/freelancers",
-        },
-        {
-          title: "Agencies",
-          description: "Brand-locked cards for every team member",
-          icon: <Building2 className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/solutions/agencies",
-        },
-      ],
-    },
-    {
-      title: "Learn",
-      url: "#",
-      items: [
-        {
-          title: "Blog",
-          description: "Tips, guides, and product updates",
-          icon: <BookOpen className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/blog",
-        },
-        {
-          title: "Success Stories",
-          description: "See how professionals grow with OneTap",
-          icon: <Trophy className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/blog?category=success-stories",
-        },
-        {
-          title: "FAQ",
-          description: "Answers to common questions",
-          icon: <HelpCircle className="size-5 shrink-0 text-brand-turquoise-dark" />,
-          url: "/faq",
-        },
-      ],
-    },
-    { title: "Pricing", url: "/pricing" },
-  ],
+  logo,
+  menu,
   auth,
+  languageSwitcher,
+  openMenuLabel,
+  closeMenuLabel,
   className,
 }: Navbar1Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const locale = useLocale();
+  const isRtl = isRtlLocale(locale);
+  const sheetSide = isRtl ? "left" : "right";
+  const menuDir = isRtl ? "rtl" : "ltr";
 
   const blurMenuFocus = () => {
     requestAnimationFrame(() => {
@@ -199,15 +161,17 @@ const Navbar1 = ({
           <div className="flex items-center justify-center overflow-visible">
             <NavigationMenu
               className="flex-none max-w-none overflow-visible"
+              dir={menuDir}
               value={openMenu}
               onValueChange={handleMenuValueChange}
             >
               <NavigationMenuList>
-                {menu.map((item) => renderMenuItem(item, closeDesktopMenu))}
+                {menu.map((item) => renderMenuItem(item, closeDesktopMenu, isRtl))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
           <div className="flex shrink-0 items-center justify-end gap-2">
+            {languageSwitcher}
             {auth?.login?.title ? (
               <Button
                 variant="brandOutline"
@@ -233,25 +197,30 @@ const Navbar1 = ({
         <div className="block h-full lg:hidden">
           <div className="flex h-full items-center justify-between gap-4">
             <LogoMark logo={logo} />
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <div className="flex items-center gap-2">
+              {languageSwitcher}
+              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger
                 render={
                   <Button
                     variant="outline"
                     size="icon"
                     className="shrink-0 border-brand-midnight/10 text-brand-midnight"
-                    aria-label="Open menu"
+                    aria-label={openMenuLabel}
                   />
                 }
               >
                 <Menu className="size-4" />
               </SheetTrigger>
               <SheetContent
+                side={sheetSide}
+                dir={menuDir}
+                closeLabel={closeMenuLabel}
                 showCloseButton
                 className="z-110 flex h-full w-full max-w-none flex-col gap-0 overflow-hidden border-brand-midnight/10 bg-brand-cream p-0 sm:max-w-sm"
               >
-                <SheetHeader className="shrink-0 border-b border-brand-midnight/10 px-4 py-4 pr-14">
-                  <SheetTitle className="text-left font-normal">
+                <SheetHeader className="shrink-0 border-b border-brand-midnight/10 px-4 py-4 pe-14">
+                  <SheetTitle className="text-start font-normal">
                     <LogoMark logo={logo} />
                   </SheetTitle>
                 </SheetHeader>
@@ -260,7 +229,7 @@ const Navbar1 = ({
                   <nav className="flex flex-col gap-4">
                     {menu.map((item) =>
                       item.items
-                        ? renderMobileMenuItem(item, () => setMobileOpen(false))
+                        ? renderMobileMenuItem(item, () => setMobileOpen(false), isRtl)
                         : renderMobileNavLink(item, () => setMobileOpen(false))
                     )}
                   </nav>
@@ -295,6 +264,7 @@ const Navbar1 = ({
                 ) : null}
               </SheetContent>
             </Sheet>
+            </div>
           </div>
         </div>
       </MarketingContainer>
@@ -302,7 +272,7 @@ const Navbar1 = ({
   );
 };
 
-const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void) => {
+const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void, isRtl: boolean) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title} value={item.title}>
@@ -317,7 +287,10 @@ const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void) => {
         >
           {item.title}
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-white text-brand-midnight border border-brand-midnight/10">
+        <NavigationMenuContent
+          dir={isRtl ? "rtl" : "ltr"}
+          className="bg-white text-start text-brand-midnight border border-brand-midnight/10"
+        >
           {item.items.map((subItem) => (
             <NavigationMenuLink
               key={subItem.title}
@@ -365,16 +338,16 @@ const renderMobileNavLink = (item: MenuItem, onNavigate: () => void) => (
   />
 );
 
-const renderMobileMenuItem = (item: MenuItem, onNavigate: () => void) => {
+const renderMobileMenuItem = (item: MenuItem, onNavigate: () => void, isRtl: boolean) => {
   if (!item.items) return null;
 
   return (
-    <Accordion key={item.title} className="w-full">
+    <Accordion key={item.title} dir={isRtl ? "rtl" : "ltr"} className="w-full">
       <AccordionItem value={item.title} className="border-b-0">
         <AccordionTrigger className="py-0 text-base font-semibold text-brand-midnight hover:no-underline">
           {item.title}
         </AccordionTrigger>
-        <AccordionContent className="mt-2 flex flex-col gap-1">
+        <AccordionContent className="mt-2 flex flex-col gap-1 text-start">
           {item.items.map((subItem) => (
             <SheetClose
               key={subItem.title}
@@ -407,12 +380,12 @@ const SubMenuLink = ({
       href={item.url}
       onClick={onClick}
       className={cn(
-        "flex min-w-0 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-brand-cream hover:text-brand-midnight",
+        "flex min-w-0 flex-row items-start gap-4 rounded-md p-3 text-start leading-none no-underline transition-colors outline-none select-none hover:bg-brand-cream hover:text-brand-midnight",
         className
       )}
     >
-      <div>{item.icon}</div>
-      <div>
+      <div className="shrink-0">{item.icon}</div>
+      <div className="min-w-0 flex-1">
         <div className="text-sm font-semibold text-brand-midnight">{item.title}</div>
         {item.description && (
           <p className="text-sm leading-snug text-brand-midnight/60">

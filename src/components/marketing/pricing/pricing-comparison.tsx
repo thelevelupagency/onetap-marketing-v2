@@ -1,7 +1,8 @@
 "use client";
 
 import { Check, X } from "lucide-react";
-import { comparisonFeatures } from "@/content/pricing";
+import { getPricing, getChrome } from "@/content/get-content";
+import { isRtlLocale, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 import { type as typography } from "@/lib/typography";
 import { Accordion } from "@/components/ui/accordion";
@@ -14,31 +15,23 @@ import {
 
 type ComparisonPlanKey = "free" | "pro" | "team";
 
-type ComparisonPlanColumn = {
-  key: ComparisonPlanKey;
-  label: string;
-  highlight?: boolean;
-};
-
-const planColumns: ComparisonPlanColumn[] = [
-  { key: "free", label: "Free" },
-  { key: "pro", label: "Pro", highlight: true },
-  { key: "team", label: "Team" },
-];
-
 function CellValue({
   value,
   className,
+  includedLabel,
+  notIncludedLabel,
 }: {
   value: string | boolean;
   className?: string;
+  includedLabel: string;
+  notIncludedLabel: string;
 }) {
   if (typeof value === "boolean") {
     const Icon = value ? Check : X;
     return (
       <span
         className={cn("inline-flex items-center justify-center", className)}
-        aria-label={value ? "Included" : "Not included"}
+        aria-label={value ? includedLabel : notIncludedLabel}
       >
         <Icon
           className={cn(
@@ -57,11 +50,23 @@ function CellValue({
   );
 }
 
-export function PricingComparison() {
+export function PricingComparison({ locale }: { locale: Locale }) {
+  const { comparisonFeatures, plans } = getPricing(locale);
+  const chrome = getChrome(locale);
+  const isRtl = isRtlLocale(locale);
+  const planColumns = plans.map((plan) => ({
+    key: plan.id as ComparisonPlanKey,
+    label: plan.name,
+    highlight: plan.popular,
+  }));
+
   return (
     <MarketingSection background="white" spacing="compact">
       <MarketingContainer width="default">
-        <SectionHeader title="Feature" accent="comparison" />
+        <SectionHeader
+          title={chrome.pricingUi.featureTitle}
+          accent={chrome.pricingUi.featureAccent}
+        />
 
         <div className="hidden overflow-hidden rounded-3xl border border-brand-midnight/10 bg-brand-cream shadow-sm md:block">
           <table className="w-full table-fixed border-collapse">
@@ -77,10 +82,10 @@ export function PricingComparison() {
                   scope="col"
                   className={cn(
                     typography.label,
-                    "px-6 py-5 text-left text-brand-midnight/70"
+                    "px-6 py-5 text-start text-brand-midnight/70"
                   )}
                 >
-                  Feature
+                  {chrome.pricingUi.featureColumn}
                 </th>
                 {planColumns.map((col) => (
                   <th
@@ -112,7 +117,7 @@ export function PricingComparison() {
                     scope="row"
                     className={cn(
                       typography.bodySm,
-                      "px-6 py-4 text-left font-medium text-brand-midnight"
+                      "px-6 py-4 text-start font-medium text-brand-midnight"
                     )}
                   >
                     {row.name}
@@ -126,7 +131,12 @@ export function PricingComparison() {
                           "border-x border-brand-turquoise/15 bg-brand-turquoise/[0.06]"
                       )}
                     >
-                      <CellValue value={row[col.key]} className="mx-auto" />
+                      <CellValue
+                        value={row[col.key]}
+                        className="mx-auto"
+                        includedLabel={chrome.pricingUi.included}
+                        notIncludedLabel={chrome.pricingUi.notIncluded}
+                      />
                     </td>
                   ))}
                 </tr>
@@ -136,7 +146,7 @@ export function PricingComparison() {
         </div>
 
         <div className="md:hidden">
-          <Accordion className="space-y-marketing-stack-gap-sm">
+          <Accordion dir={isRtl ? "rtl" : "ltr"} className="space-y-marketing-stack-gap-sm">
             {comparisonFeatures.map((row, i) => (
               <FaqAccordionComparisonItem key={row.name} value={`row-${i}`} title={row.name}>
                 {planColumns.map(({ key: tier, label, highlight }) => (
@@ -150,7 +160,11 @@ export function PricingComparison() {
                     <span className={cn(typography.label, "text-brand-midnight/70")}>
                       {label}
                     </span>
-                    <CellValue value={row[tier]} />
+                    <CellValue
+                      value={row[tier]}
+                      includedLabel={chrome.pricingUi.included}
+                      notIncludedLabel={chrome.pricingUi.notIncluded}
+                    />
                   </div>
                 ))}
               </FaqAccordionComparisonItem>

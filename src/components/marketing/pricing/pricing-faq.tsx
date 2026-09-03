@@ -1,4 +1,5 @@
-import { pricingFaqs } from "@/content/pricing";
+import { getChrome, getPricing } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import {
   MarketingSection,
   MarketingContainer,
@@ -6,11 +7,13 @@ import {
   FaqAccordion,
 } from "@/components/marketing/primitives";
 
-export function PricingFaq() {
+export function PricingFaq({ locale }: { locale: Locale }) {
+  const { pricingFaqs } = getPricing(locale);
+  const chrome = getChrome(locale);
   return (
     <MarketingSection background="cream" spacing="compact" id="billing-faq">
       <MarketingContainer width="narrow">
-        <SectionHeader title="Billing" accent="FAQ" />
+        <SectionHeader title={chrome.pricingFaq.title} accent={chrome.pricingFaq.accent} />
         <FaqAccordion
           items={pricingFaqs}
           getValue={(_faq, i) => `pricing-faq-${i}`}

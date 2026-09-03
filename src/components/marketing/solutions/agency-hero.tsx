@@ -4,12 +4,13 @@ import {
   marketingHeroPrimaryOnDarkClassName,
 } from "@/components/marketing/get-card-cta";
 import { AnimatedHeroTitle, MarketingPageHero } from "@/components/marketing/primitives";
-import { agenciesHeroCopy } from "@/content/solutions";
+import { getSolutions } from "@/content/get-content";
+import type { Locale } from "@/lib/i18n/config";
 import { CREATE_BASICS_URL, LOGIN_URL } from "@/lib/constants";
 import { type as typography } from "@/lib/typography";
 
-export function AgencyHero() {
-  const copy = agenciesHeroCopy;
+export function AgencyHero({ locale }: { locale: Locale }) {
+  const copy = getSolutions(locale).agenciesHeroCopy;
 
   return (
     <MarketingPageHero background="midnight">
