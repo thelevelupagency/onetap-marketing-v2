@@ -50,6 +50,8 @@ export const BRAND_ALLOWLIST = [
   "Tip:",
   "Summary:",
   "your-name",
+  "a-z, 0-9",
+  "a-z, 0-9, hyphens",
 ] as const;
 
 const HEBREW_RE = /[\u0590-\u05FF]/;

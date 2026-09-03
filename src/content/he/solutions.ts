@@ -44,10 +44,10 @@ export type FreelancerNiche = {
 const freelancerCardJessicaWalsh: FreelancerNicheCard = {
   id: "jessica-walsh",
   personaName: "Jessica Walsh",
-  styleLabel: "נדל\"ן",
+  styleLabel: "סוכן/ת נדל״ן",
   imageSrc: CARD_SCREENSHOT_JESSICA_WALSH,
   slug: "sofi-schwartz",
-  alt: "כרטיס ביקור דיגיטלי OneTap של Jessica Walsh סוכנת נדל\"ן",
+  alt: "כרטיס ביקור דיגיטלי OneTap של Jessica Walsh סוכנת נדל״ן",
 };
 
 const freelancerCardTorresBuilds: FreelancerNicheCard = {
@@ -71,7 +71,7 @@ const freelancerCardRobHart: FreelancerNicheCard = {
 const freelancerCardKimYoga: FreelancerNicheCard = {
   id: "kim-yoga",
   personaName: "Kim Yoga",
-  styleLabel: "בריאות",
+  styleLabel: "וולנס",
   imageSrc: CARD_SCREENSHOT_KIM_YOGA,
   slug: "almog-menashe",
   alt: "כרטיס ביקור דיגיטלי OneTap של Kim Yoga מדריכה",
@@ -105,16 +105,16 @@ const freelancerCardAmiriRealEstate: FreelancerNicheCard = {
 };
 
 export const freelancersHeroCopy = {
-  title: "הזהות שלכם, בדיגיטל תוך",
+  title: "הזהות המקצועית שלכם - בדיגיטל, בתוך",
   accent: "60 שניות.",
-  lead: "אחדו פורטפוליו, קישורים לרשתות חברתיות ופרטי קשר לכרטיס אחד ללא מגע. שתפו עם NFC, QR או לינק אחד - בלי להוריד אפליקציה.",
-  cta: "צרו את הכרטיס החינמי שלכם",
+  lead: "רכזו את תיק העבודות, הקישורים לרשתות החברתיות ופרטי הקשר בכרטיס דיגיטלי אחד וללא מגע. שתפו באמצעות NFC, קוד QR או קישור אחד - בלי צורך להוריד אפליקציה.",
+  cta: "צרו כרטיס בחינם",
 } as const;
 
 export const freelancersNicheSelectorCopy = {
-  title: "תצוגה מקדימה של כרטיסים",
+  title: "צפו בכרטיסים שמתאימים",
   accent: "לתחום שלכם",
-  lead: "בחרו את התחום שלכם כדי לראות ארבעה סגנונות התחלה שאפשר להשיק תוך דקות.",
+  lead: "בחרו את התחום שלכם וצפו בארבעה סגנונות התחלתיים שאפשר להשיק בתוך דקות.",
 } as const;
 
 export const freelancersNicheManifest = {
@@ -162,7 +162,7 @@ export const freelancersNicheManifest = {
     },
     {
       id: "real-estate",
-      label: "נדל\"ן",
+      label: "נדל״ן",
       cards: [
         freelancerCardJessicaWalsh,
         freelancerCardAmiriRealEstate,
@@ -172,7 +172,7 @@ export const freelancersNicheManifest = {
     },
     {
       id: "creator",
-      label: "יוצרי תוכן",
+      label: "יוצרים",
       cards: [
         freelancerCardRobHart,
         freelancerCardKimYoga,
@@ -192,7 +192,7 @@ export const freelancersNicheManifest = {
     },
     {
       id: "freelance",
-      label: "שירותים עצמאיים",
+      label: "שירותי פרילנס",
       cards: [
         freelancerCardTorresBuilds,
         freelancerCardRobHart,
@@ -204,28 +204,28 @@ export const freelancersNicheManifest = {
 } as const;
 
 export const freelancersCardIncludesCopy = {
-  title: "כל כרטיס",
-  accent: "כולל את היסודות.",
-  lead: "בנו פעם אחת ב-60 שניות - ואז שתפו, שמרו אנשי קשר והישארו ממותגים מלינק או נגיעה אחת.",
+  title: "כל כרטיס כולל את",
+  accent: "כל מה שחיוני.",
+  lead: "בונים פעם אחת בתוך 60 שניות - ואז משתפים, מאפשרים שמירה לאנשי קשר ושומרים על מיתוג עקבי, מקישור אחד או בהצמדה.",
   points: [
     {
       icon: "zap" as SolutionFeatureIconKey,
-      title: "שיתוף בנגיעה אחת",
-      description: `שתפו דרך NFC, קוד QR או הלינק האישי שלכם (${CARD_HOST_PREFIX}username). לינק אחד עובד בכל מקום שאתם עושים נטוורקינג.`,
+      title: "שיתוף בלחיצה אחת",
+      description: `שתפו באמצעות NFC, קוד QR או הקישור הקבוע שלכם (${CARD_HOST_PREFIX}username). קישור אחד שעובד בכל מקום שבו אתם יוצרים קשרים.`,
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
       icon: "contactRound" as SolutionFeatureIconKey,
-      title: "שמירת איש קשר מיידית",
+      title: "שמירה מיידית לאנשי קשר",
       description:
-        "מבקרים שומרים את הפרטים שלכם לאנשי הקשר בטלפון עם vCard מובנה - בלי הורדת אפליקציה, בלי חיכוך.",
+        "מבקרים שומרים את הפרטים שלכם באנשי הקשר באמצעות vCard מובנה - בלי להוריד אפליקציה ובלי חיכוך.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
       icon: "palette" as SolutionFeatureIconKey,
-      title: "מיתוג מבני מותאם אישית",
+      title: "מיתוג מותאם אישית",
       description:
-        "שלטו בצבעים, טיפוגרפיה ופריסה כדי שהכרטיס שלכם ייראה בלעדי - לא תבנית גנרית.",
+        "שלטו בצבעים, בטיפוגרפיה ובפריסה, כדי שהכרטיס ייראה ייחודי לכם - ולא כמו עוד תבנית גנרית.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
     },
   ],
@@ -234,27 +234,27 @@ export const freelancersCardIncludesCopy = {
 export const freelancersPainPointsCopy = {
   title: "נגמרו",
   accent: "ההזדמנויות האבודות.",
-  lead: "פרילנסרים מלהגלים בין אירועים, הודעות וכלי לינק-אין-ביו - ועדיין מאבדים לידים כשהמעקב איטי או הנוכחות הדיגיטלית נראית מפוזרת.",
+  lead: "עצמאים מלהגלים בין אירועים, הודעות וכלי לינק-אין-ביו - ועדיין מאבדים לידים כשהמעקב איטי או הנוכחות הדיגיטלית נראית מפוזרת.",
   points: [
     {
       icon: "contactRound" as PainPointIconKey,
       title: "נגמרו אנשי הקשר שהולכים לאיבוד אחרי אירועים",
       description:
-        "תנו למישהו לינק אחד. הם ישמרו את הפרטים שלכם, ישלחו הודעה או ימלאו טופס ליד לפני שתצאו מהחדר.",
+        "תנו למישהו קישור אחד. הם ישמרו את הפרטים שלכם, ישלחו הודעה או ימלאו טופס ליד לפני שתצאו מהחדר.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
       icon: "link2" as PainPointIconKey,
       title: "נגמר הלינק-אין-ביו המפוזר",
       description:
-        "פורטפוליו, שירותים, רשתות חברתיות ותיאום פגישות חיים בפרופיל מלוטש אחד - לא בחמישה כלים שונים.",
+        "תיק עבודות, שירותים, רשתות חברתיות ותיאום פגישות חיים בפרופיל מלוטש אחד - לא בחמישה כלים שונים.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
       icon: "lineChart" as PainPointIconKey,
       title: "נגמרו הניחושים מה עובד",
       description:
-        "ראו אילו פגישות, פוסטים ואירועים באמת מביאים צפיות, קליקים ופניות.",
+        "ראו אילו פגישות, פוסטים ואירועים באמת מביאים צפיות, לחיצות ופניות.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
     },
   ],
@@ -269,7 +269,7 @@ export const freelancersHowItWorksCopy = {
       step: "01",
       title: "יוצרים",
       description:
-        "הוסיפו תמונה, שירותים, פורטפוליו, המלצות, כפתורי יצירת קשר וטופס לידים - בלי מעצב או מפתח.",
+        "הוסיפו תמונה, שירותים, תיק עבודות, המלצות, כפתורי יצירת קשר וטופס לידים - בלי מעצב או מפתח.",
       image: howItWorksCopy.steps[0].image,
       imageAlt: howItWorksCopy.steps[0].imageAlt,
     },
@@ -277,7 +277,7 @@ export const freelancersHowItWorksCopy = {
       step: "02",
       title: "משתפים",
       description:
-        "שלבו את ה-URL של OneTap בחתימת המייל, לינקדאין, וואטסאפ, QR בתג כנס או ביו באינסטגרם - תמיד ממותגים.",
+        "שלבו את ה-URL של OneTap בחתימת המייל, LinkedIn, WhatsApp, QR בתג כנס או בביו באינסטגרם - תמיד ממותגים.",
       image: howItWorksCopy.steps[1].image,
       imageAlt: howItWorksCopy.steps[1].imageAlt,
     },
@@ -307,21 +307,21 @@ export const freelancersFeaturesCopy = {
       icon: "link2" as SolutionFeatureIconKey,
       title: "תחליף ללינק-אין-ביו",
       description:
-        "URL יפה אחד לפורטפוליו, רשתות חברתיות, שירותים ויצירת קשר - תמיד מעודכן.",
+        "URL יפה אחד לתיק עבודות, רשתות חברתיות, שירותים ויצירת קשר - תמיד מעודכן.",
     },
     {
       icon: "userPlus" as SolutionFeatureIconKey,
-      title: "לכידת לידים אוטומטית",
+      title: "איסוף לידים אוטומטי",
       description: "טפסים מובנים אוספים פרטי לקוחות פוטנציאליים ומתריעים מיידית.",
     },
     {
       icon: "barChart3" as SolutionFeatureIconKey,
-      title: "אנליטיקס מעורבות",
-      description: "עקבו אחרי צפיות, קליקים על כפתורים ושליחות טפסים מלוח בקרה אחד.",
+      title: "אנליטיקה ומעורבות",
+      description: "עקבו אחר צפיות, לחיצות על כפתורים ושליחות טפסים מלוח בקרה אחד.",
     },
     {
       icon: "image" as SolutionFeatureIconKey,
-      title: "פורטפוליו והמלצות",
+      title: "תיק עבודות והמלצות",
       description: "הציגו מקרי בוחן, גלריה וציטוטי לקוחות שבונים אמון במהירות.",
     },
     {
@@ -333,71 +333,71 @@ export const freelancersFeaturesCopy = {
 } as const;
 
 export const freelancersCreatorsCopy = {
-  badge: "ליוצרי תוכן",
+  badge: "ליוצרים",
   title: "חשיפה",
   accent: "פי 5",
-  lead: "הציגו גלריה, הטמיעו סרטונים וקשרו כל פלטפורמה מפרופיל מובייל מרהיב אחד. הקהל שלכם שומר את איש הקשר שלכם בנגיעה אחת.",
+  lead: "הציגו גלריה, הטמיעו סרטונים וקשרו כל פלטפורמה מפרופיל מובייל מרהיב אחד. הקהל שלכם שומר את איש הקשר שלכם בלחיצה אחת.",
   cta: "התחילו ליצור",
-  phoneAlt: "תצוגה מקדימה של כרטיס OneTap ליוצר תוכן",
+  phoneAlt: "תצוגה מקדימה של כרטיס OneTap ליוצר",
 } as const;
 
 export const freelancersSocialProofCopy = {
-  title: "פרילנסרים שסומכים",
-  accent: "ועושים נטוורקינג לפרנסה.",
-  lead: "מיועצים ועד יוצרי תוכן - אנשי מקצוע עצמאיים בכל העולם סומכים על OneTap כדי להפוך כל היכרות למשמעותית.",
+  title: "הבחירה של עצמאים שנטוורקינג",
+  accent: "הוא חלק מהעבודה שלהם.",
+  lead: "מיועצים ועד יוצרים - אנשי מקצוע עצמאיים ברחבי העולם סומכים על OneTap כדי להפוך כל היכרות להזדמנות.",
   audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "Elena Torres",
       role: "אסטרטגית מותג עצמאית",
-      headline: "הקמתי תוך פחות מדקה",
+      headline: "הכול היה מוכן בתוך פחות מדקה",
       content:
-        "הקמתי את הכרטיס תוך פחות מדקה. לקוחות שומרים את איש הקשר שלי עוד לפני שאני מסיימת את ה-pitch.",
+        "הקמתי את הכרטיס בתוך פחות מדקה. לקוחות שומרים את הפרטים שלי עוד לפני שאני מסיימת את הצגת המעלית.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Marcus Chen",
       role: "יועץ עצמאי",
-      headline: "חיבור מהיר יותר ללקוחות",
+      headline: "מתעניינים יוצרים קשר מהר יותר",
       content:
-        "לינק אחד ליומן, פורטפוליו ווואטסאפ. לקוחות פוטנציאליים מגיעים אליי מהר יותר אחרי כל שיחת היכרות.",
+        "קישור אחד ליומן, לתיק העבודות ול-WhatsApp. אחרי כל שיחת היכרות, מתעניינים מגיעים אליי מהר יותר.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Priya Shah",
       role: "יועצת שיווק",
-      headline: "החליפה 3 כלי לינקים בבת אחת",
+      headline: "החלפתי שלושה כלי קישורים בבת אחת",
       content:
-        "החלפתי שלושה כלי לינק-אין-ביו בכרטיס אחד. לידים חדשים מגיעים לתיבה שלי באותו יום שאני פוגשת מישהו באירוע.",
+        "החלפתי שלושה כלי Link in Bio בכרטיס אחד. לידים חדשים מגיעים לתיבה שלי כבר באותו יום שבו אני פוגשת מישהו באירוע.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Diego Ramos",
       role: "צלם עצמאי",
-      headline: "קליטה חלקה לצילומים",
+      headline: "תהליך חלק כבר מיום הצילום",
       content:
-        "בכל צילום אני משתף קוד QR אחד. דוגמנים ולקוחות שומרים את הפרטים שלי וגולשים בפורטפוליו לפני שעוזבים את הסט.",
+        "בכל יום צילום אני משתף קוד QR אחד. דוגמנים ולקוחות שומרים את הפרטים שלי וצופים בתיק העבודות עוד לפני שהם עוזבים את הסט.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Sophia Martinez",
       role: "מעצבת פנים",
-      headline: "פורטפוליו מדהים למובייל",
+      headline: "תיק עבודות מרשים במובייל",
       content:
-        "שיתוף הפורטפוליו שלי ברזולוציה גבוהה דרך כרטיס NFC מרשים לקוחות. קביעת ייעוצים מעולם לא הייתה חלקה יותר.",
+        "שיתוף תיק העבודות האיכותי שלי באמצעות כרטיס NFC מרשים את הלקוחות. קביעת פגישות ייעוץ מעולם לא הייתה פשוטה יותר.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Liam O'Connor",
-      role: "מאמן כושר ובריאות",
-      headline: "הזמנות מיידיות מלקוחות",
+      role: "מאמן כושר ואורח חיים",
+      headline: "לקוחות קובעים מיד",
       content:
-        "לקוחות נוגעים בכרטיס שלי כדי לשמור את פרטי הקשר, לצפות בלוחות זמנים שבועיים ולקבוע אימונים אישיים.",
+        "לקוחות מצמידים את הטלפון לכרטיס כדי לשמור את הפרטים, לצפות במערכת השבועית ולקבוע אימון ישירות.",
       avatar: LOGO_ICON,
       rating: 5,
     },
@@ -405,87 +405,87 @@ export const freelancersSocialProofCopy = {
 } as const;
 
 export const freelancersPricingHeader = {
-  title: "התחילו בחינם.",
-  accent: "שדרגו כשתצמחו.",
-  lead: "השיקו את הכרטיס המקצועי שלכם ללא עלות. הוסיפו אנליטיקס, מיתוג מותאם אישית ועוד כשהעסק מתרחב.",
+  title: "מתחילים בחינם.",
+  accent: "משדרגים כשצומחים.",
+  lead: "השיקו כרטיס מקצועי ללא עלות. הוסיפו אנליטיקה, מיתוג מותאם ויכולות נוספות כשהעסק גדל.",
 } as const;
 
 export const agenciesHeroCopy = {
   title: "מיתוג אחיד.",
-  accent: "שליטה מרכזית.",
-  lead: "תנו לכל חבר צוות כרטיס דיגיטלי ממותג, נהלו חברים מסביבת עבודה אחת, שתפו ערכת מותג ואספו לידים בתיבה אחת.",
-  primaryCta: "התחילו Team",
-  secondaryCta: "התחברות",
+  accent: "שליטה מרוכזת.",
+  lead: "העניקו לכל חברי הצוות כרטיס דיגיטלי במיתוג אחיד, נהלו משתמשים מסביבת עבודה אחת, שתפו ערכת מותג ואספו את כל הלידים לתיבה אחת.",
+  primaryCta: "התחילו עם Team",
+  secondaryCta: "כניסה",
 } as const;
 
 export const agenciesWorkspaceCopy = {
-  title: "נהלו את כל",
-  accent: "הצוות",
-  lead: "הוסיפו חברי צוות, הקצו תפקידים ועקבו אחרי ביצועים מלוח בקרה אחד של סביבת העבודה.",
-  cta: "התחילו Team",
+  title: "נהלו את כל הצוות",
+  accent: "במקום אחד",
+  lead: "הוסיפו חברי צוות, הקצו תפקידים ועקבו אחר ביצועים - מלוח בקרה אחד.",
+  cta: "התחילו עם Team",
 } as const;
 
 export const agenciesGovernanceCopy = {
   title: "שתפו את המותג.",
-  accent: "החזיקו בכל ליד.",
-  lead: "ערכת מותג משותפת ומרכז לידים נותנים לאדמינים מקום אחד לשמור על כרטיסים עקביים - ולראות לאן כל ליד מגיע.",
+  accent: "קחו בעלות על כל ליד.",
+  lead: "ערכת מותג משותפת ומרכז הלידים מעניקים למנהלים מקום אחד לשמור על אחידות הכרטיסים - ולראות לאן מגיע כל ליד.",
   brandLock: {
     badge: "ערכת מותג משותפת",
     title: "שמרו על",
-    accent: "עקביות מותגית",
-    lead: "שתפו לוגואים, צבעים ותבניות כך שכל כרטיס של חבר צוות מתחיל ממותג.",
+    accent: "אחידות המותג",
+    lead: "שתפו לוגואים, צבעים ותבניות, כדי שכל כרטיס חדש יתחיל במיתוג הנכון.",
     capabilities: [
       {
         icon: "lock" as SolutionFeatureIconKey,
-        title: "שתפו מיתוג משרדי",
+        title: "שתפו את מיתוג הארגון",
         description:
-          "שימו לוגואים, צבעים ותבניות מאושרות בערכה אחת כך שכרטיסים חדשים מתחילים ממותגים.",
+          "רכזו לוגואים, צבעים ותבניות מאושרות בערכה אחת, כך שכל כרטיס חדש יתחיל במיתוג אחיד.",
       },
       {
         icon: "palette" as SolutionFeatureIconKey,
         title: "ספריית תבניות",
-        description: "פרסו פריסות מאושרות כך שכרטיסים חדשים יורשים את הסטנדרטים שלכם מהיום הראשון.",
+        description: "החילו פריסות מאושרות, כדי שכרטיסים חדשים יעמדו בסטנדרטים שלכם מהיום הראשון.",
       },
       {
         icon: "users" as SolutionFeatureIconKey,
-        title: "שליטה מבוססת תפקידים",
-        description: "אדמינים מנהלים את סביבת העבודה; חברי צוות מעדכנים את הביו, הקישורים ואפשרויות יצירת הקשר שלהם.",
+        title: "שליטה לפי תפקיד",
+        description: "מנהלים שולטים בסביבת העבודה; חברי הצוות מעדכנים בעצמם את התיאור, הקישורים ואפשרויות יצירת הקשר.",
       },
       {
         icon: "refreshCw" as SolutionFeatureIconKey,
-        title: "עדכוני ערכה משותפים",
+        title: "עדכונים לערכה המשותפת",
         description:
-          "עדכנו את הערכה פעם אחת - כרטיסים חדשים מקבלים את הצבעים והתבניות האחרונים.",
+          "עדכנו את הערכה פעם אחת - וכרטיסים חדשים יקבלו את הצבעים והתבניות העדכניים.",
       },
     ],
     imageAlt: "הגדרות ערכת מותג משותפת של OneTap לצבעים ולוגואים צוותיים",
   },
   leads: {
-    badge: "מרכז לידים",
-    title: "לכידת לידים",
-    accent: "מרכזית",
-    lead: "כל ליד מכל נציג זורם לתצוגת אדמין אחת - סננו, שייכו וייצאו כשצריך.",
+    badge: "מרכז הלידים",
+    title: "איסוף לידים",
+    accent: "מרוכז",
+    lead: "כל ליד מכל נציג מגיע לתצוגת ניהול אחת - סננו, הקצו וייצאו לפי הצורך.",
     capabilities: [
       {
         icon: "inbox" as SolutionFeatureIconKey,
-        title: "תיבה אחת לצוות",
-        description: "נגיעות NFC, סריקות QR ושליחות טפסים מכל נציג מגיעות למרכז לידים אחד.",
+        title: "תיבה אחת לכל הצוות",
+        description: "הצמדות NFC, סריקות QR וטפסים שנשלחו מכל נציג מגיעים למרכז לידים אחד.",
       },
       {
         icon: "users" as SolutionFeatureIconKey,
         title: "שיוך לנציג",
-        description: "ראו מי לכד כל ליד ואיזה ערוץ הביא את האינטראקציה.",
+        description: "ראו מי קלט כל ליד ואיזה ערוץ הוביל לאינטראקציה.",
       },
       {
         icon: "upload" as SolutionFeatureIconKey,
         title: "ייצוא לפי דרישה",
-        description: "הורידו גיבויי CSV או העבירו ל-CRM בלי העברה ידנית.",
+        description: "הורידו גיבוי CSV או העבירו ל-CRM בלי העברה ידנית.",
       },
       {
         icon: "barChart3" as SolutionFeatureIconKey,
-        title: "סינון ושיוך",
+        title: "סינון והקצאה",
         description:
-          "חתכו לידים לפי נציג, ערוץ או תאריך ונתבו מעקבים בלי לעזוב את לוח הבקרה.",
+          "סננו לידים לפי נציג, ערוץ או תאריך, והפנו פולואפים בלי לצאת מלוח הבקרה.",
       },
     ],
     imageAlt: "מרכז לידים של OneTap המציג לכידות צוותיות עם שיוך נציגים וערוצים",
@@ -493,98 +493,98 @@ export const agenciesGovernanceCopy = {
 } as const;
 
 export const agenciesEnterpriseCopy = {
-  title: "נבנה עבור",
-  accent: "צוותות בקנה מידה",
-  lead: "כל מה שהארגון שלכם צריך כדי להגן על שלמות המותג, לקלוט מהר ולהוכיח ROI מנטוורקינג.",
+  title: "נבנה לצוותים",
+  accent: "שצומחים",
+  lead: "כל מה שהארגון צריך כדי לשמור על אחידות המותג, לצרף עובדים במהירות ולהוכיח את ההחזר על ההשקעה בנטוורקינג.",
   pillars: [
     {
       icon: "lock" as SolutionFeatureIconKey,
-      title: "בעלות על המידע",
+      title: "בעלות על הנתונים",
       description:
-        "אדמינים מחזיקים בכל יומן אינטראקציות. בדקו לכידות במרכז הלידים וייצאו ל-CSV כשצריך גיבוי או העברה.",
+        "למנהלים יש בעלות על כל נתוני האינטראקציות. בודקים את הלידים במרכז הלידים ומייצאים ל-CSV בכל פעם שנדרש גיבוי או מעבר למערכת אחרת.",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
     },
     {
       icon: "upload" as SolutionFeatureIconKey,
-      title: "קליטה מיידית",
+      title: "קליטה מיידית לצוות",
       description:
-        "הוסיפו חברי צוות, הקצו תפקידים ופרסו תבניות מותג משותפות כך שנציגים חדשים משיקים כרטיסים ממותגים תוך דקות.",
+        "הוסיפו חברי צוות, הקצו תפקידים והחילו תבניות מותג משותפות, כדי שנציגים חדשים ישיקו כרטיסים ממותגים בתוך דקות.",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
     },
     {
       icon: "barChart3" as SolutionFeatureIconKey,
-      title: "אנליטיקס צוותי",
+      title: "אנליטיקה לצוות",
       description:
-        "עקבו אחרי צפיות, לידים ושמירות vCard לכל נציג מלוח הבקרה של האדמין - זהו טופ פרפורמרים ואמנו עם נתונים אמיתיים.",
+        "עקבו מלוח הניהול אחר צפיות, לידים ושמירות vCard לכל נציג - זהו מצטיינים ושפרו ביצועים על בסיס נתונים אמיתיים.",
       accent: "from-brand-midnight/10 to-brand-navy/10",
     },
     {
       icon: "inbox" as SolutionFeatureIconKey,
       title: "ניתוב לידים",
       description:
-        "שייכו פניות לנציג הנכון ושמרו על מעקבים בתנועה - בלי תיבות דואר מפוזרות או העברות שהולכות לאיבוד.",
+        "הקצו פניות לנציג המתאים ושמרו על רצף הפולואפ - בלי תיבות מפוזרות ובלי העברות שמתפספסות.",
       accent: "from-brand-turquoise/10 to-brand-navy/10",
     },
   ],
 } as const;
 
 export const agenciesSocialProofCopy = {
-  title: "צוותות שנשארים",
-  accent: "ממותגים ביחד.",
+  title: "צוותים שנשארים יחד",
+  accent: "באותו קו מותגי.",
   lead: "סוכנויות וצוותי מכירות משתמשים ב-OneTap כדי לשתף כרטיסים, ערכת מותג ותיבת לידים אחת.",
   audiences: audienceMarqueeItems,
   testimonials: [
     {
       name: "James Okonkwo",
       role: "מייסד, Nova Labs",
-      headline: "מערכת מיתוג צוותית אחידה",
+      headline: "מערכת מיתוג אחידה לצוות",
       content:
-        "הצוות שלנו משתף ערכת מותג אחת. קליטת עובד חדש זה עכשיו לינק ונגיעה.",
+        "הצוות שלנו משתף ערכת מותג אחת. קליטת עובד חדש מסתכמת עכשיו בקישור ולחיצה.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Sarah Kim",
       role: "מנהלת תפעול, Meridian Group",
-      headline: "המשפטית אישרה את הערכה פעם אחת",
+      headline: "המחלקה המשפטית אישרה פעם אחת",
       content:
-        "ערכת המותג המשותפת עצרה עיצובי כרטיס חד-פעמיים. כל כרטיס סוכן מתחיל מהצבעים והלוגו שכבר אישרנו.",
+        "ערכת המותג המשותפת עצרה עיצובים חד-פעמיים. כל כרטיס של סוכן מתחיל מהצבעים ומהלוגו שכבר אישרנו.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "David Ortiz",
       role: "שותף מנהל, Park & Associates",
-      headline: "השקה ממותגת בלי שריפות",
+      headline: "השקה במיתוג אחיד, בלי לחץ",
       content:
-        "הזמנו את הצוות, שיתפנו את הערכה וכל כרטיס חדש התחיל ממותג מהיום הראשון.",
+        "הזמנו את כל הצוות, שיתפנו את הערכה, וכל כרטיס חדש התחיל במיתוג הנכון מהיום הראשון.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Amara Patel",
       role: "צלמת פורטרטים וחתונות",
-      headline: "יצירת לידים חלקה",
+      headline: "יצירת לידים בלי מאמץ",
       content:
-        "טופס הפניות שלי ב-OneTap לוכד העדפות חבילות צילום מיידית כשאני פוגשת זוגות בתערוכות כלות.",
+        "טופס ההתעניינות שלי ב-OneTap אוסף מיד את העדפות חבילת הצילום כשאני פוגשת זוגות בתערוכות חתונה.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Alexandre Dubois",
       role: "ספר ובעל סטודיו",
-      headline: "אף פעם לא מאבדים לקוח חוזר",
+      headline: "אף לקוח חוזר לא הולך לאיבוד",
       content:
-        "אני מחלק כרטיסי NFC של OneTap ללקוחות שנכנסים. הם שומרים את המספר שלי וקובעים את התספורת הבאה לפני שיוצאים.",
+        "אני מציע ללקוחות מזדמנים להצמיד את הטלפון לכרטיס ה-NFC של OneTap. הם שומרים את המספר וקובעים את התספורת הבאה לפני היציאה.",
       avatar: LOGO_ICON,
       rating: 5,
     },
     {
       name: "Marcus Chen",
-      role: "סוכן נדל\"ן",
-      headline: "כלי חיוני לבתים פתוחים",
+      role: "סוכן נדל״ן",
+      headline: "כלי חיוני לימים פתוחים",
       content:
-        "לינק אחד לנכסים, סיורים וירטואליים וצ׳אט וואטסאפ ישיר. לקוחות פוטנציאליים פונים מיד אחרי הסיורים.",
+        "קישור אחד לנכסים, לסיורים וירטואליים ולשיחת WhatsApp ישירה. מתעניינים יוצרים קשר מיד אחרי הסיור.",
       avatar: LOGO_ICON,
       rating: 5,
     },
@@ -592,7 +592,7 @@ export const agenciesSocialProofCopy = {
 } as const;
 
 export const agenciesPricingHeader = {
-  title: "תוכניות לצוותות",
-  accent: "שמתרחבים.",
-  lead: "השוו מקומות Team, ערכת מותג משותפת ואנליטיקס. התחילו עם תוכנית שמתאימה לצוות שלכם - שדרגו ככל שתצמחו.",
+  title: "תוכניות לצוותים",
+  accent: "שצומחים.",
+  lead: "השוו בין מספר המשתמשים ב-Team, ערכת המותג המשותפת והאנליטיקה. התחילו בתוכנית שמתאימה לגודל הצוות - ושדרגו ככל שאתם צומחים.",
 } as const;
