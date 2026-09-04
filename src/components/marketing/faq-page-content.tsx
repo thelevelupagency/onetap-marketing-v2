@@ -93,7 +93,7 @@ export function FaqPageContent({ locale }: { locale: Locale }) {
               />
               <FaqAccordion
                 items={section.items}
-                getValue={(_faq, index) => `${section.category}-${index}`}
+                valuePrefix={section.category}
               />
               {section.category === "plans-billing" ? (
                 <nav
