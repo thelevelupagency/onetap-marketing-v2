@@ -85,7 +85,7 @@ export function MarketingLaptopPreview({
               alt={alt}
               fill
               sizes={`(max-width: 1024px) 100vw, ${MACBOOK_PRO_16_MAX_WIDTH}px`}
-              className="pointer-events-none select-none object-cover object-top"
+              className="pointer-events-none select-none object-fill"
               priority={priority}
               draggable={false}
             />

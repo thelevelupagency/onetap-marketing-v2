@@ -16,7 +16,7 @@ export function PricingFaq({ locale }: { locale: Locale }) {
         <SectionHeader title={chrome.pricingFaq.title} accent={chrome.pricingFaq.accent} />
         <FaqAccordion
           items={pricingFaqs}
-          getValue={(_faq, i) => `pricing-faq-${i}`}
+          valuePrefix="pricing-faq"
         />
       </MarketingContainer>
     </MarketingSection>

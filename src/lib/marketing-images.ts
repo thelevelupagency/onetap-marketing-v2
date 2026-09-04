@@ -1,21 +1,22 @@
-/** Agencies team admin dashboard screenshot (Cloudinary). */
+/** Edit-card dashboard screenshot used in MacBook mockups (Cloudinary). */
 export const AGENCIES_DASHBOARD_IMAGE_URL =
-  "https://res.cloudinary.com/dudwjf2pu/image/upload/v1779393898/onetap/static/marketing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2026-05-13_%D7%91-20.56.31_gtx3y5.png";
+  "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788518754/onetap/static/marketing/dashboard_new_i2at5e.png";
 
 export const AGENCIES_DASHBOARD_IMAGE_ALT =
-  "OneTap team dashboard with branded cards for multiple agents";
+  "OneTap edit-card dashboard with live phone preview";
 
-/** Shared brand kit admin settings — replace with dedicated screenshot when available. */
-export const AGENCIES_BRAND_LOCK_IMAGE_URL = AGENCIES_DASHBOARD_IMAGE_URL;
+/** My Cards mobile screenshot for agencies brand-lock phone mockup. */
+export const AGENCIES_BRAND_LOCK_IMAGE_URL =
+  "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788519040/onetap/static/marketing/all-cards-iphone_wklpyp.webp";
 
 export const AGENCIES_BRAND_LOCK_IMAGE_ALT =
-  "OneTap shared brand kit settings for team colors and logos";
+  "OneTap My Cards screen showing an active digital business card";
 
-/** Leads Center admin table — replace with dedicated screenshot when available. */
+/** Leads Center / team dashboard in MacBook mockup — same edit-card shot until a dedicated capture exists. */
 export const AGENCIES_LEADS_CENTER_IMAGE_URL = AGENCIES_DASHBOARD_IMAGE_URL;
 
 export const AGENCIES_LEADS_CENTER_IMAGE_ALT =
-  "OneTap Leads Center showing team captures with rep attribution and channels";
+  "OneTap dashboard for managing cards, branding, and team leads";
 
 /** MacBook Pro 16" Silver bezel — exported from Figma community device mockups. */
 export const MACBOOK_PRO_16_BEZEL_SRC = "/marketing/devices/macbook-pro-16-silver.png";
