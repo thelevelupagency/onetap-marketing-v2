@@ -179,8 +179,9 @@ export const solutionsCopy = {
       ctaLabel: "Build your personal profile",
       href: "/solutions/freelancers",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
-      image: howItWorksCopy.steps[0].image,
-      imageAlt: "Freelancer working on a digital business card",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/freelance_p1fva5.jpg",
+      imageAlt: "Freelancer typing on a laptop at a desk",
     },
     {
       icon: "home" as const,
@@ -191,8 +192,8 @@ export const solutionsCopy = {
       href: CREATE_BASICS_URL,
       accent: "from-brand-turquoise/15 to-brand-navy/10",
       image:
-        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706607/NFC/screenshots/home-interior_full_dvc_oyw2mr.png",
-      imageAlt: "Real estate agent digital card on a phone",
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/agent_t3e5gu.jpg",
+      imageAlt: "Professional agent meeting clients in a modern lounge",
     },
     {
       icon: "sparkles" as const,
@@ -203,8 +204,8 @@ export const solutionsCopy = {
       href: "/solutions/freelancers#creators",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
       image:
-        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706588/NFC/screenshots/fitness_full_dvc_gxcheq.png",
-      imageAlt: "Creator profile card on a phone",
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/creator_v2msay.jpg",
+      imageAlt: "Creator working at a multi-monitor desk setup",
     },
     {
       icon: "building2" as const,
@@ -215,8 +216,8 @@ export const solutionsCopy = {
       href: CREATE_BASICS_URL,
       accent: "from-brand-midnight/10 to-brand-navy/10",
       image:
-        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706625/NFC/screenshots/barber_full_dvc_e9fmqv.png",
-      imageAlt: "Small business digital card on a phone",
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/small-buisiness_wcplly.jpg",
+      imageAlt: "Small business cafe interior with menu board and bikes",
     },
     {
       icon: "users" as const,
@@ -226,8 +227,9 @@ export const solutionsCopy = {
       ctaLabel: "Explore team cards",
       href: "/solutions/agencies",
       accent: "from-brand-navy/15 to-brand-midnight/10",
-      image: howItWorksCopy.steps[2].image,
-      imageAlt: "Team collaborating with digital business cards",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/agency_obybv9.jpg",
+      imageAlt: "Agency team collaborating around a conference table with laptops",
     },
     {
       icon: "scale" as const,
@@ -237,8 +239,9 @@ export const solutionsCopy = {
       ctaLabel: "Create a trusted profile",
       href: CREATE_BASICS_URL,
       accent: "from-brand-midnight/5 to-brand-turquoise/15",
-      image: howItWorksCopy.steps[1].image,
-      imageAlt: "Professional sharing contact details from a digital card",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/lawyer_thfufm.jpg",
+      imageAlt: "Professional reviewing work on a laptop in a library lounge",
     },
   ],
 } as const;
@@ -251,8 +254,8 @@ export const dashboardCopy = {
   subheadline:
     "Manage your card, update your content, track engagement, and capture leads from one powerful dashboard.",
   imageUrl:
-    "https://res.cloudinary.com/dudwjf2pu/image/upload/v1779393898/onetap/static/marketing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2026-05-13_%D7%91-20.56.31_gtx3y5.png",
-  imageAlt: "OneTap dashboard with card overview, analytics, and live phone preview",
+    "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788518754/onetap/static/marketing/dashboard_new_i2at5e.png",
+  imageAlt: "OneTap edit-card dashboard with live phone preview on a laptop",
   features: [
     {
       icon: "edit3" as const,

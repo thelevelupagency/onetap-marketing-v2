@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   MarketingContainer,
@@ -8,6 +7,7 @@ import {
   SectionHeader,
   FeatureSpotlight,
 } from "@/components/marketing/primitives";
+import { MarketingLaptopPreview } from "@/components/marketing/phones/marketing-laptop-preview";
 import { Reveal } from "@/components/marketing/motion";
 import { getHomepage } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
@@ -56,22 +56,15 @@ export function DashboardSection({ locale, variant = "dark" }: DashboardSectionP
         </Reveal>
 
         <div className="grid items-center gap-marketing-grid-gap-md lg:grid-cols-2">
-          <Reveal direction="left" className="order-2 lg:order-1">
-            <div
-              className={cn(
-                "relative aspect-video w-full overflow-hidden rounded-2xl shadow-2xl lg:aspect-[16/10]",
-                isLight ? "border border-brand-midnight/10" : "border border-white/10"
-              )}
-            >
-              <Image
-                src={dashboardCopy.imageUrl}
-                alt={dashboardCopy.imageAlt}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority={false}
-              />
-            </div>
+          <Reveal
+            direction="left"
+            className="order-2 flex w-full min-w-0 items-center justify-center leading-none lg:order-1"
+          >
+            <MarketingLaptopPreview
+              imageSrc={dashboardCopy.imageUrl}
+              alt={dashboardCopy.imageAlt}
+              className="mx-auto w-full max-w-full min-w-0"
+            />
           </Reveal>
 
           <Reveal

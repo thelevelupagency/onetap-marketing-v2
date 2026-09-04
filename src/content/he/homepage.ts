@@ -179,8 +179,9 @@ export const solutionsCopy = {
       ctaLabel: "בנו את הפרופיל המקצועי שלכם",
       href: "/solutions/freelancers",
       accent: "from-brand-navy/10 to-brand-turquoise/10",
-      image: howItWorksCopy.steps[0].image,
-      imageAlt: "עצמאי עובד על כרטיס ביקור דיגיטלי",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/freelance_p1fva5.jpg",
+      imageAlt: "עצמאי מקליד על מחשב נייד בשולחן עבודה",
     },
     {
       icon: "home" as const,
@@ -191,8 +192,8 @@ export const solutionsCopy = {
       href: CREATE_BASICS_URL,
       accent: "from-brand-turquoise/15 to-brand-navy/10",
       image:
-        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706607/NFC/screenshots/home-interior_full_dvc_oyw2mr.png",
-      imageAlt: "כרטיס דיגיטלי של סוכן נדל״ן על טלפון",
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/agent_t3e5gu.jpg",
+      imageAlt: "סוכן מקצועי בפגישה בלובי מודרני",
     },
     {
       icon: "sparkles" as const,
@@ -203,8 +204,8 @@ export const solutionsCopy = {
       href: "/solutions/freelancers#creators",
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
       image:
-        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706588/NFC/screenshots/fitness_full_dvc_gxcheq.png",
-      imageAlt: "כרטיס פרופיל יוצר על טלפון",
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/creator_v2msay.jpg",
+      imageAlt: "יוצר עובד בתחנת עבודה עם מספר מסכים",
     },
     {
       icon: "building2" as const,
@@ -215,8 +216,8 @@ export const solutionsCopy = {
       href: CREATE_BASICS_URL,
       accent: "from-brand-midnight/10 to-brand-navy/10",
       image:
-        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1757706625/NFC/screenshots/barber_full_dvc_e9fmqv.png",
-      imageAlt: "כרטיס דיגיטלי של עסק קטן על טלפון",
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/small-buisiness_wcplly.jpg",
+      imageAlt: "חלל פנים של בית קפה עם לוח תפריט ואופניים",
     },
     {
       icon: "users" as const,
@@ -226,8 +227,9 @@ export const solutionsCopy = {
       ctaLabel: "גלו את פתרון הכרטיסים לצוותים",
       href: "/solutions/agencies",
       accent: "from-brand-navy/15 to-brand-midnight/10",
-      image: howItWorksCopy.steps[2].image,
-      imageAlt: "צוות משתף פעולה עם כרטיסי ביקור דיגיטליים",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/agency_obybv9.jpg",
+      imageAlt: "צוות סוכנות משתף פעולה סביב שולחן ישיבות עם מחשבים ניידים",
     },
     {
       icon: "scale" as const,
@@ -237,8 +239,9 @@ export const solutionsCopy = {
       ctaLabel: "צרו פרופיל שמעורר אמון",
       href: CREATE_BASICS_URL,
       accent: "from-brand-midnight/5 to-brand-turquoise/15",
-      image: howItWorksCopy.steps[1].image,
-      imageAlt: "איש מקצוע משתף פרטי קשר מכרטיס דיגיטלי",
+      image:
+        "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/lawyer_thfufm.jpg",
+      imageAlt: "איש מקצוע בוחן עבודה על מחשב נייד בלובי ספרייה",
     },
   ],
 } as const;
@@ -251,8 +254,8 @@ export const dashboardCopy = {
   subheadline:
     "נהלו את הכרטיס, עדכנו תוכן, עקבו אחר מעורבות ואספו לידים - הכול מלוח בקרה עוצמתי אחד.",
   imageUrl:
-    "https://res.cloudinary.com/dudwjf2pu/image/upload/v1779393898/onetap/static/marketing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2026-05-13_%D7%91-20.56.31_gtx3y5.png",
-  imageAlt: "לוח בקרה של OneTap עם סקירת כרטיס, אנליטיקה ותצוגת טלפון חיה",
+    "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788518754/onetap/static/marketing/dashboard_new_i2at5e.png",
+  imageAlt: "לוח בקרה לעריכת כרטיס ב-OneTap עם תצוגת טלפון חיה על מחשב נייד",
   features: [
     {
       icon: "edit3" as const,
