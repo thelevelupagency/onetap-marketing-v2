@@ -68,41 +68,55 @@ export function PricingComparison({ locale }: { locale: Locale }) {
           accent={chrome.pricingUi.featureAccent}
         />
 
-        <div className="hidden overflow-hidden rounded-3xl border border-brand-midnight/10 bg-brand-cream shadow-sm md:block">
-          <table className="w-full table-fixed border-collapse">
-            <colgroup>
-              <col className="w-[38%]" />
-              <col className="w-[20.66%]" />
-              <col className="w-[20.66%]" />
-              <col className="w-[20.66%]" />
-            </colgroup>
-            <thead>
-              <tr className="border-b-2 border-brand-midnight/10 bg-brand-cream">
-                <th
-                  scope="col"
-                  className={cn(
-                    typography.label,
-                    "px-6 py-5 text-start text-brand-midnight/70"
-                  )}
-                >
-                  {chrome.pricingUi.featureColumn}
-                </th>
-                {planColumns.map((col) => (
+        <div className="relative mt-5 hidden md:block">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex -translate-y-1/2">
+            <div className="w-[38%] shrink-0" aria-hidden />
+            {planColumns.map((col) => (
+              <div key={col.key} className="flex w-[20.66%] shrink-0 justify-center">
+                {col.highlight ? (
+                  <span className="pointer-events-auto whitespace-nowrap rounded-full bg-brand-turquoise px-3 py-1 text-xs font-bold text-brand-midnight">
+                    {chrome.pricingUi.mostPopular}
+                  </span>
+                ) : null}
+              </div>
+            ))}
+          </div>
+
+          <div className="overflow-hidden rounded-3xl border border-brand-midnight/10 bg-brand-cream shadow-sm">
+            <table className="w-full table-fixed border-collapse">
+              <colgroup>
+                <col className="w-[38%]" />
+                <col className="w-[20.66%]" />
+                <col className="w-[20.66%]" />
+                <col className="w-[20.66%]" />
+              </colgroup>
+              <thead>
+                <tr className="border-b-2 border-brand-midnight/10 bg-brand-cream">
                   <th
-                    key={col.key}
                     scope="col"
                     className={cn(
-                      typography.tableHeading,
-                      "px-4 py-5 text-center",
-                      col.highlight &&
-                        "border-x border-brand-turquoise/25 bg-brand-turquoise/10"
+                      typography.label,
+                      "px-6 py-5 text-start text-brand-midnight/70"
                     )}
                   >
-                    {col.label}
+                    {chrome.pricingUi.featureColumn}
                   </th>
-                ))}
-              </tr>
-            </thead>
+                  {planColumns.map((col) => (
+                    <th
+                      key={col.key}
+                      scope="col"
+                      className={cn(
+                        typography.tableHeading,
+                        "px-4 py-5 text-center",
+                        col.highlight &&
+                          "border-x border-brand-turquoise/25 bg-brand-turquoise/10"
+                      )}
+                    >
+                      {col.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
             <tbody>
               {comparisonFeatures.map((row, i) => (
                 <tr
@@ -143,6 +157,7 @@ export function PricingComparison({ locale }: { locale: Locale }) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="md:hidden">
@@ -157,8 +172,18 @@ export function PricingComparison({ locale }: { locale: Locale }) {
                       highlight && "border-brand-turquoise/20 bg-brand-turquoise/10"
                     )}
                   >
-                    <span className={cn(typography.label, "text-brand-midnight/70")}>
+                    <span
+                      className={cn(
+                        typography.label,
+                        "flex min-w-0 flex-wrap items-center gap-2 text-brand-midnight/70"
+                      )}
+                    >
                       {label}
+                      {highlight ? (
+                        <span className="whitespace-nowrap rounded-full bg-brand-turquoise px-2 py-0.5 text-[10px] font-bold text-brand-midnight">
+                          {chrome.pricingUi.mostPopular}
+                        </span>
+                      ) : null}
                     </span>
                     <CellValue
                       value={row[tier]}
