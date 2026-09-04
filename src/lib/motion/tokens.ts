@@ -5,8 +5,10 @@ export const EASE_OUT: [number, number, number, number] = [0.21, 0.47, 0.32, 0.9
 
 export const MOTION_VIEWPORT: ViewportOptions = {
   once: true,
-  amount: 0.2,
-  margin: "0px 0px -10% 0px",
+  /** Any pixel intersecting — avoids stuck opacity:0 when IO is strict on mobile WebKit. */
+  amount: 0,
+  /** Pixel margin (not %) — Safari is unreliable with percentage rootMargin. */
+  margin: "0px 0px -40px 0px",
 };
 
 /** Per-card grids: fire when each card is meaningfully on screen, not when the grid top peeks in. */
