@@ -14,7 +14,8 @@ export interface FaqItem {
 
 interface FaqAccordionProps {
   items: readonly FaqItem[];
-  getValue?: (item: FaqItem, index: number) => string;
+  /** Serializable prefix for accordion item values (default `"item"`). */
+  valuePrefix?: string;
   compact?: boolean;
   className?: string;
 }
@@ -46,7 +47,7 @@ function FaqToggleIcon({ compact }: { compact: boolean }) {
 
 export function FaqAccordion({
   items,
-  getValue = (_item, index) => `item-${index}`,
+  valuePrefix = "item",
   compact = false,
   className,
 }: FaqAccordionProps) {
@@ -58,42 +59,45 @@ export function FaqAccordion({
       dir={isRtl ? "rtl" : "ltr"}
       className={cn("space-y-4", className)}
     >
-      {items.map((faq, index) => (
-        <AccordionItem
-          key={getValue(faq, index)}
-          value={getValue(faq, index)}
-          className={faqItemShellClass(compact)}
-        >
-          <span className="pointer-events-none absolute bottom-0 start-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
-
-          <AccordionTrigger
-            hideChevron
-            className={cn(
-              "flex w-full items-center justify-between gap-4 text-start hover:no-underline focus-visible:outline-none",
-              compact ? "py-4" : "py-5"
-            )}
+      {items.map((faq, index) => {
+        const value = `${valuePrefix}-${index}`;
+        return (
+          <AccordionItem
+            key={value}
+            value={value}
+            className={faqItemShellClass(compact)}
           >
-            <span
+            <span className="pointer-events-none absolute bottom-0 start-0 top-0 w-1.5 bg-brand-turquoise opacity-0 transition-opacity duration-300 group-data-[open]/faq-item:opacity-100 group-data-[state=open]/faq-item:opacity-100" />
+
+            <AccordionTrigger
+              hideChevron
               className={cn(
-                typography.accordionQuestion,
-                "min-w-0 flex-1 text-start transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
+                "flex w-full items-center justify-between gap-4 text-start hover:no-underline focus-visible:outline-none",
+                compact ? "py-4" : "py-5"
               )}
             >
-              {faq.q}
-            </span>
-            <FaqToggleIcon compact={compact} />
-          </AccordionTrigger>
-          <AccordionContent
-            className={cn(
-              typography.bodySm,
-              "text-start text-brand-midnight/85 leading-relaxed",
-              compact ? "pb-4 pt-1" : "pb-6 pt-1"
-            )}
-          >
-            {faq.a}
-          </AccordionContent>
-        </AccordionItem>
-      ))}
+              <span
+                className={cn(
+                  typography.accordionQuestion,
+                  "min-w-0 flex-1 text-start transition-colors duration-200 group-hover/accordion-trigger:text-brand-navy group-data-[open]/faq-item:font-semibold group-data-[open]/faq-item:text-brand-navy group-data-[state=open]/faq-item:font-semibold group-data-[state=open]/faq-item:text-brand-navy"
+                )}
+              >
+                {faq.q}
+              </span>
+              <FaqToggleIcon compact={compact} />
+            </AccordionTrigger>
+            <AccordionContent
+              className={cn(
+                typography.bodySm,
+                "text-start text-brand-midnight/85 leading-relaxed",
+                compact ? "pb-4 pt-1" : "pb-6 pt-1"
+              )}
+            >
+              {faq.a}
+            </AccordionContent>
+          </AccordionItem>
+        );
+      })}
     </Accordion>
   );
 }

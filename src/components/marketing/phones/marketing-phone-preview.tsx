@@ -16,6 +16,13 @@ export interface MarketingPhonePreviewProps {
   alt?: string;
   className?: string;
   priority?: boolean;
+  /**
+   * How the screenshot fills the screen slot.
+   * - `cover` (default): crop to fill — card screenshots
+   * - `contain`: show the full image (may letterbox)
+   * - `fill`: stretch to the screen bounds
+   */
+  fit?: "cover" | "contain" | "fill";
 }
 
 /** Single iPhone preview — Figma Product Bezels frame + screenshot. */
@@ -25,6 +32,7 @@ export function MarketingPhonePreview({
   alt = "OneTap digital business card example",
   className,
   priority = false,
+  fit = "cover",
 }: MarketingPhonePreviewProps) {
   const layout = phoneLayoutDimensions(scale);
 
@@ -42,7 +50,12 @@ export function MarketingPhonePreview({
           alt={alt}
           fill
           sizes={`${layout.width}px`}
-          className="pointer-events-none select-none object-cover object-top scale-[1.02] origin-top"
+          className={cn(
+            "pointer-events-none select-none",
+            fit === "cover" && "object-cover object-top scale-[1.02] origin-top",
+            fit === "contain" && "object-contain object-top bg-white",
+            fit === "fill" && "object-fill"
+          )}
           priority={priority}
           draggable={false}
         />

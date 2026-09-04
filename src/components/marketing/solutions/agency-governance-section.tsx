@@ -95,6 +95,7 @@ export function AgencyGovernanceSection({
                 scale={PHONE_GOVERNANCE_SCALE}
                 imageSrc={AGENCIES_BRAND_LOCK_IMAGE_URL}
                 alt={AGENCIES_BRAND_LOCK_IMAGE_ALT}
+                fit="fill"
               />
             </Reveal>
           </div>
