@@ -34,3 +34,6 @@ src/lib/i18n/, src/app/[locale]/layout.tsx, src/components/marketing/language-sw
 
 2026-08-31 — Hebrew RTL polish: LTR infinite-scroll tracks, hero CTA island, process graph desktop layout, carousel/Embla fixes, ChromeCopy wire-up, brand allowlist check:i18n-copy.
 src/components/marketing/, src/content/he/, scripts/check-i18n-copy.ts, docs/guides/marketing-i18n.md
+
+2026-09-04 — Fix mobile stuck-invisible device mockups: harden scroll Reveal fallback/viewport and swap MacBook bezel to optimized WebP.
+src/lib/motion/, public/marketing/devices/macbook-pro-16-silver.webp

@@ -18,8 +18,8 @@ export const AGENCIES_LEADS_CENTER_IMAGE_URL = AGENCIES_DASHBOARD_IMAGE_URL;
 export const AGENCIES_LEADS_CENTER_IMAGE_ALT =
   "OneTap dashboard for managing cards, branding, and team leads";
 
-/** MacBook Pro 16" Silver bezel — exported from Figma community device mockups. */
-export const MACBOOK_PRO_16_BEZEL_SRC = "/marketing/devices/macbook-pro-16-silver.png";
+/** MacBook Pro 16" Silver bezel — Figma community mockup, optimized WebP at layout size. */
+export const MACBOOK_PRO_16_BEZEL_SRC = "/marketing/devices/macbook-pro-16-silver.webp";
 
 /** iPhone 13 Pro Max Silver bezel — exported from Figma community device mockups. */
 export const IPHONE_13_PRO_MAX_BEZEL_SRC = "/marketing/devices/iphone-13-pro-max-silver.png";
