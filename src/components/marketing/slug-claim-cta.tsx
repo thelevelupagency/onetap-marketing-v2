@@ -126,6 +126,7 @@ export function SlugClaimCta({
       variant="brandPrimary"
       size="lg"
       disabled={!canSubmit}
+      dir={isRtl ? "rtl" : "ltr"}
       className={cn(
         primaryCtaClassName,
         marketingCtaSizes.lg,
@@ -134,7 +135,7 @@ export function SlugClaimCta({
       )}
     >
       {resolvedSubmitLabel}
-      <ArrowRight className="ms-2 h-5 w-5 shrink-0" />
+      <ArrowRight className="ms-2 h-5 w-5 shrink-0 rtl:-scale-x-100" />
     </Button>
   );
 
