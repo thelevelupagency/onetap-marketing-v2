@@ -1,6 +1,7 @@
 import {
   appendAttributionParams,
   appendLocaleParam,
+  captureCheckoutCoupon,
   captureLandingAttribution,
   getMergedAttributionParams,
 } from "@/lib/constants";
@@ -127,6 +128,7 @@ export function withLandingAttribution(url: string, locale?: Locale): string {
   }
   const live = new URLSearchParams(window.location.search);
   captureLandingAttribution(live);
+  captureCheckoutCoupon(live);
   const attributed = appendAttributionParams(url, getMergedAttributionParams(live));
   const resolved = locale ?? localeFromPathname(window.location.pathname);
   return appendLocaleParam(attributed, resolved);
