@@ -62,9 +62,49 @@ export const ATTRIBUTION_QUERY_KEYS = [
 ] as const;
 
 export const ATTRIBUTION_STORAGE_KEY = "onetap-attribution";
+export const CHECKOUT_COUPON_STORAGE_KEY = "onetap-checkout-coupon";
+export const CHECKOUT_COUPON_QUERY_KEY = "coupon";
+
+const COUPON_PATTERN = /^[A-Z0-9_-]{1,64}$/;
 
 type AttributionKey = (typeof ATTRIBUTION_QUERY_KEYS)[number];
 type AttributionRecord = Partial<Record<AttributionKey, string>>;
+
+/** Sanitize promo code (last-touch). Invalid → null. */
+export function sanitizeCheckoutCouponCode(
+  raw: string | null | undefined,
+): string | null {
+  if (raw == null) return null;
+  const code = raw.trim().toUpperCase();
+  if (!code || !COUPON_PATTERN.test(code)) return null;
+  return code;
+}
+
+function readStoredCoupon(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return sanitizeCheckoutCouponCode(
+      window.sessionStorage.getItem(CHECKOUT_COUPON_STORAGE_KEY),
+    );
+  } catch {
+    return null;
+  }
+}
+
+/** Last-touch: newest valid `?coupon=` wins across marketing pages. */
+export function captureCheckoutCoupon(source: URLSearchParams): string | null {
+  if (typeof window === "undefined") return null;
+  const fromUrl = sanitizeCheckoutCouponCode(source.get(CHECKOUT_COUPON_QUERY_KEY));
+  if (fromUrl) {
+    try {
+      window.sessionStorage.setItem(CHECKOUT_COUPON_STORAGE_KEY, fromUrl);
+    } catch {
+      // Ignore quota / private-mode failures.
+    }
+    return fromUrl;
+  }
+  return readStoredCoupon();
+}
 
 function readStoredAttribution(): AttributionRecord {
   if (typeof window === "undefined") {
@@ -126,6 +166,12 @@ export function getMergedAttributionParams(live: URLSearchParams): URLSearchPara
       merged.set(key, value);
     }
   }
+  const coupon =
+    sanitizeCheckoutCouponCode(live.get(CHECKOUT_COUPON_QUERY_KEY)) ||
+    readStoredCoupon();
+  if (coupon) {
+    merged.set(CHECKOUT_COUPON_QUERY_KEY, coupon);
+  }
   return merged;
 }
 
@@ -145,6 +191,12 @@ export function appendAttributionParams(url: string, source: URLSearchParams): s
       continue;
     }
     target.searchParams.set(key, value);
+  }
+
+  const coupon = sanitizeCheckoutCouponCode(source.get(CHECKOUT_COUPON_QUERY_KEY));
+  if (coupon) {
+    // Last-touch: always overwrite so the latest campaign code wins.
+    target.searchParams.set(CHECKOUT_COUPON_QUERY_KEY, coupon);
   }
 
   if (!/^https?:\/\//i.test(url)) {
