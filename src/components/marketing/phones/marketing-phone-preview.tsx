@@ -38,6 +38,7 @@ export function MarketingPhonePreview({
 
   return (
     <div
+      dir="ltr"
       className={cn("block leading-none overflow-hidden m-0 p-0", className)}
       style={{
         width: layout.width,
