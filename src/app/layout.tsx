@@ -15,6 +15,7 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { LOCALE_HEADER } from "@/lib/i18n/locale-header";
+import { DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_URL } from "@/lib/constants";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -50,6 +51,13 @@ export const metadata: Metadata = {
     icon: [{ url: "/logos/onetap_logo.png", type: "image/png" }],
     apple: [{ url: "/logos/onetap_logo.png", type: "image/png" }],
     shortcut: "/logos/onetap_logo.png",
+  },
+  openGraph: {
+    images: [DEFAULT_OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [DEFAULT_OG_IMAGE_URL],
   },
 };
 
