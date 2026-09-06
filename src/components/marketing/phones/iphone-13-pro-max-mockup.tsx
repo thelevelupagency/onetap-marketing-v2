@@ -15,6 +15,10 @@ interface IPhone13ProMaxMockupProps {
 /**
  * iPhone 13 Pro Max (Silver) device frame.
  * Screen slot + bezel overlay — matches Figma community Product Bezels kit.
+ *
+ * The unscaled bezel stack is position:absolute so the 1500×3000 box stays out of
+ * flow. Under page-level RTL, an in-flow oversized box + transform-origin top left
+ * paints outside the clip shell (blank reserved space on Hebrew).
  */
 export function IPhone13ProMaxMockup({
   children,
@@ -26,14 +30,15 @@ export function IPhone13ProMaxMockup({
 
   return (
     <div
-      className="relative shrink-0 overflow-hidden leading-none"
+      className="relative shrink-0 overflow-hidden isolate leading-none"
       style={{
         width: layoutWidth,
         height: layoutHeight,
+        maxWidth: "100%",
       }}
     >
       <div
-        className="relative"
+        className="absolute left-0 top-0"
         style={{
           width: IPHONE_13_PRO_MAX_OUTER_WIDTH,
           height: IPHONE_13_PRO_MAX_OUTER_HEIGHT,
