@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import {
   MACBOOK_PRO_16_OUTER_HEIGHT,
   MACBOOK_PRO_16_OUTER_WIDTH,
@@ -15,35 +16,44 @@ import { MACBOOK_PRO_16_BEZEL_SRC } from "@/lib/marketing-images";
 interface MacBookPro16MockupProps {
   children: React.ReactNode;
   scale?: number;
+  className?: string;
 }
 
 /**
  * MacBook Pro 16" (5th Gen, Silver) device frame.
  * Screen slot + bezel overlay — matches Figma community mockup node 22:170.
+ *
+ * The unscaled bezel stack is position:absolute so the ~2170px box stays out of
+ * flow and cannot widen the page under body overflow-x-clip on mobile.
  */
 export function MacBookPro16Mockup({
   children,
   scale = MACBOOK_PRO_16_SCALE,
+  className,
 }: MacBookPro16MockupProps) {
   const layoutWidth = MACBOOK_PRO_16_OUTER_WIDTH * scale;
   const layoutHeight = (MACBOOK_PRO_16_OUTER_HEIGHT - MACBOOK_PRO_16_TOP_TRIM) * scale;
 
   return (
     <div
-      className="relative shrink-0 overflow-hidden leading-none"
+      className={cn(
+        "relative shrink-0 overflow-hidden isolate leading-none",
+        className
+      )}
       style={{
         width: layoutWidth,
         height: layoutHeight,
+        maxWidth: "100%",
       }}
     >
       <div
-        className="relative"
+        className="absolute left-0"
         style={{
           width: MACBOOK_PRO_16_OUTER_WIDTH,
           height: MACBOOK_PRO_16_OUTER_HEIGHT,
+          top: -(MACBOOK_PRO_16_TOP_TRIM * scale),
           transform: `scale(${scale})`,
           transformOrigin: "top left",
-          marginTop: -(MACBOOK_PRO_16_TOP_TRIM * scale),
         }}
       >
         {/* Screen content slot (behind bezel) */}

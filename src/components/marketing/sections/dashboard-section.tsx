@@ -56,16 +56,13 @@ export function DashboardSection({ locale, variant = "dark" }: DashboardSectionP
         </Reveal>
 
         <div className="grid items-center gap-marketing-grid-gap-md lg:grid-cols-2">
-          <Reveal
-            direction="left"
-            className="order-2 flex w-full min-w-0 items-center justify-center leading-none lg:order-1"
-          >
+          <div className="order-2 flex w-full min-w-0 items-center justify-center leading-none lg:order-1">
             <MarketingLaptopPreview
               imageSrc={dashboardCopy.imageUrl}
               alt={dashboardCopy.imageAlt}
               className="mx-auto w-full max-w-full min-w-0"
             />
-          </Reveal>
+          </div>
 
           <Reveal
             direction="right"
