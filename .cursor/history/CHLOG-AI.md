@@ -37,3 +37,6 @@ src/components/marketing/, src/content/he/, scripts/check-i18n-copy.ts, docs/gui
 
 2026-09-04 — Fix mobile stuck-invisible device mockups: harden scroll Reveal fallback/viewport and swap MacBook bezel to optimized WebP.
 src/lib/motion/, public/marketing/devices/macbook-pro-16-silver.webp
+
+2026-09-06 — Site-wide brand OG/Twitter image via shared constant; blog posts keep cover overrides.
+src/lib/constants.ts, src/app/layout.tsx, src/lib/i18n/metadata.ts
