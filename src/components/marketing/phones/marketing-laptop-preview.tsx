@@ -5,9 +5,11 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { MacBookPro16Mockup } from "@/components/marketing/phones/macbook-pro-16-mockup";
 import {
+  MACBOOK_PRO_16_OUTER_WIDTH,
+  MACBOOK_PRO_16_VISIBLE_HEIGHT,
   MACBOOK_PRO_16_MAX_WIDTH,
   MACBOOK_PRO_16_SCALE_LG,
-  MACBOOK_PRO_16_SCALE_MOBILE_MAX,
+  MACBOOK_PRO_16_SCALE_MOBILE_DEFAULT,
   macbookPro16LayoutDimensions,
   macbookPro16ScaleForWidth,
 } from "@/lib/laptop-mockup";
@@ -44,7 +46,7 @@ export function MarketingLaptopPreview({
   priority = false,
 }: MarketingLaptopPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [fluidScale, setFluidScale] = useState(MACBOOK_PRO_16_SCALE_MOBILE_MAX);
+  const [fluidScale, setFluidScale] = useState(MACBOOK_PRO_16_SCALE_MOBILE_DEFAULT);
 
   useLayoutEffect(() => {
     if (scaleOverride != null) return;
@@ -68,17 +70,18 @@ export function MarketingLaptopPreview({
   return (
     <div
       ref={containerRef}
-      className={cn("mx-auto w-full leading-none", className)}
+      className={cn("mx-auto w-full min-w-0 leading-none", className)}
       style={{ maxWidth: MACBOOK_PRO_16_MAX_WIDTH }}
     >
       <div
-        className="mx-auto block overflow-hidden m-0 p-0"
+        className="mx-auto block max-w-full overflow-hidden m-0 p-0"
         style={{
           width: layout.width,
-          height: layout.height,
+          maxWidth: "100%",
+          aspectRatio: `${MACBOOK_PRO_16_OUTER_WIDTH} / ${MACBOOK_PRO_16_VISIBLE_HEIGHT}`,
         }}
       >
-        <MacBookPro16Mockup scale={scale}>
+        <MacBookPro16Mockup scale={scale} className="max-w-full">
           <div className="relative h-full w-full">
             <Image
               src={imageSrc}

@@ -44,9 +44,9 @@ export function AgencyWorkspaceSimulator({
           />
         </Reveal>
 
-        <Reveal direction="up" className="mt-6 flex justify-center md:mt-8">
+        <div className="mt-6 flex justify-center md:mt-8">
           <MarketingLaptopPreview priority />
-        </Reveal>
+        </div>
 
         <div className="flex justify-center pt-marketing-stack-gap">
           <GetCardCta href={CREATE_BASICS_URL} size="md" placement="agency_workspace">
