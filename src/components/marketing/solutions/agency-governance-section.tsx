@@ -55,7 +55,6 @@ export function AgencyGovernanceSection({
       background={background}
       spacing="compact"
       id="governance"
-      className="overflow-x-clip"
     >
       <MarketingContainer width="wide" className="min-w-0">
         <Reveal>
@@ -87,31 +86,25 @@ export function AgencyGovernanceSection({
                 className="mt-6 w-full min-w-0"
               />
             </Reveal>
-            <Reveal
-              direction="right"
-              className="flex w-full min-w-0 items-center justify-center leading-none"
-            >
+            <div className="flex w-full min-w-0 items-center justify-center leading-none">
               <MarketingPhonePreview
                 scale={PHONE_GOVERNANCE_SCALE}
                 imageSrc={AGENCIES_BRAND_LOCK_IMAGE_URL}
                 alt={AGENCIES_BRAND_LOCK_IMAGE_ALT}
                 fit="fill"
               />
-            </Reveal>
+            </div>
           </div>
 
           <div className="grid min-w-0 items-center gap-marketing-grid-gap-md pt-marketing-header-gap-md lg:grid-cols-2">
-            <Reveal
-              direction="left"
-              className="order-2 flex w-full min-w-0 items-center justify-center overflow-hidden leading-none lg:order-1"
-            >
+            <div className="order-2 flex w-full min-w-0 items-center justify-center overflow-hidden leading-none lg:order-1">
               <MarketingLaptopPreview
                 maxScale={MACBOOK_GOVERNANCE_SCALE_LG}
                 imageSrc={AGENCIES_LEADS_CENTER_IMAGE_URL}
                 alt={AGENCIES_LEADS_CENTER_IMAGE_ALT}
                 className="mx-auto w-full max-w-full min-w-0"
               />
-            </Reveal>
+            </div>
             <Reveal
               direction="right"
               className={cn(splitCopyColumnClass, "order-1 min-w-0 w-full lg:order-2")}

@@ -49,12 +49,39 @@ export function macbookPro16LayoutDimensions(scale: number) {
   };
 }
 
+/** Aspect ratio of the top-trimmed layout box (height / width). */
+export const MACBOOK_PRO_16_ASPECT_RATIO =
+  MACBOOK_PRO_16_VISIBLE_HEIGHT / MACBOOK_PRO_16_OUTER_WIDTH;
+
+/** Content width below which mobile scaling applies (<648px). */
+export const MACBOOK_PRO_16_MOBILE_MAX_WIDTH = 648;
+
+/** Fraction of container width used on mobile (inset from edges). */
+export const MACBOOK_PRO_16_MOBILE_WIDTH_FACTOR = 0.82;
+
+/** Max scale on mobile — keeps the mock from dominating the fold. */
+export const MACBOOK_PRO_16_SCALE_MOBILE_MAX = 0.24;
+
+/**
+ * Conservative phone content width for SSR / first paint before ResizeObserver.
+ * ~360 CSS px fits iPhone SE–Pro Max content columns without overflowing.
+ */
+export const MACBOOK_PRO_16_MOBILE_DEFAULT_WIDTH = 360;
+
+/**
+ * First-paint / unknown-width scale — fits {@link MACBOOK_PRO_16_MOBILE_DEFAULT_WIDTH},
+ * not {@link MACBOOK_PRO_16_SCALE_MOBILE_MAX} (that is a cap, ~521px wide).
+ */
+export const MACBOOK_PRO_16_SCALE_MOBILE_DEFAULT =
+  (MACBOOK_PRO_16_MOBILE_DEFAULT_WIDTH * MACBOOK_PRO_16_MOBILE_WIDTH_FACTOR) /
+  MACBOOK_PRO_16_OUTER_WIDTH;
+
 /** Fluid scale: fit container width; tighter on viewports under 648px. */
 export function macbookPro16ScaleForWidth(
   containerWidth: number,
   maxScale = MACBOOK_PRO_16_SCALE_LG
 ) {
-  if (containerWidth <= 0) return MACBOOK_PRO_16_SCALE_MOBILE_MAX;
+  if (containerWidth <= 0) return MACBOOK_PRO_16_SCALE_MOBILE_DEFAULT;
 
   const isMobile = containerWidth < MACBOOK_PRO_16_MOBILE_MAX_WIDTH;
   const usableWidth =
@@ -69,15 +96,6 @@ export function macbookPro16ScaleForWidth(
 export function laptopLayoutDimensions(scale: number) {
   return macbookPro16LayoutDimensions(scale);
 }
-
-/** Content width below which mobile scaling applies (<648px). */
-export const MACBOOK_PRO_16_MOBILE_MAX_WIDTH = 648;
-
-/** Fraction of container width used on mobile (inset from edges). */
-export const MACBOOK_PRO_16_MOBILE_WIDTH_FACTOR = 0.82;
-
-/** Max scale on mobile — keeps the mock from dominating the fold. */
-export const MACBOOK_PRO_16_SCALE_MOBILE_MAX = 0.24;
 
 /** Scales tuned for fluid layout (see macbookPro16ScaleForWidth). */
 export const MACBOOK_PRO_16_SCALE = 0.34;
