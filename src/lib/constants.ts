@@ -27,6 +27,17 @@ export const SIGNUP_URL = `${APP_ORIGIN}/register`;
 export const PRIVACY_URL = `${APP_ORIGIN}/privacy`;
 export const TERMS_URL = `${APP_ORIGIN}/terms`;
 
+/** Site-wide Open Graph / Twitter share image (blog posts override with cover). */
+export const DEFAULT_OG_IMAGE_URL =
+  "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788683330/onetap/static/marketing/onetap_og_image_va1yaw.jpg";
+
+export const DEFAULT_OG_IMAGE = {
+  url: DEFAULT_OG_IMAGE_URL,
+  width: 1200,
+  height: 630,
+  alt: "OneTap",
+} as const;
+
 /** Host + trailing slash for inline slug inputs (e.g. `card.onetap-card.com/`). */
 export function getCardHostPrefix(): string {
   try {
