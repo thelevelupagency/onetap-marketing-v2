@@ -1,6 +1,7 @@
 import { sanitizeCardSlug } from "@/lib/card-slug";
 import type { Locale } from "@/lib/i18n/config";
 import { DEFAULT_LOCALE } from "@/lib/i18n/config";
+import { getSiteUrl } from "@/lib/site-url";
 
 const DEFAULT_APP_ORIGIN = "https://app.onetap-card.com";
 const DEFAULT_CARD_BASE_URL = "https://card.onetap-card.com";
@@ -188,7 +189,7 @@ export function getMergedAttributionParams(live: URLSearchParams): URLSearchPara
 
 export function appendAttributionParams(url: string, source: URLSearchParams): string {
   const base =
-    typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";
+    typeof window !== "undefined" ? window.location.origin : getSiteUrl();
   let target: URL;
   try {
     target = new URL(url, base);
@@ -225,7 +226,7 @@ export function appendLocaleParam(
   locale: Locale = DEFAULT_LOCALE,
 ): string {
   const base =
-    typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";
+    typeof window !== "undefined" ? window.location.origin : getSiteUrl();
   let target: URL;
   try {
     target = new URL(url, base);

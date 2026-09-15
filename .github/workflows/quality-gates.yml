@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  NEXT_PUBLIC_SITE_URL: https://onetap-card.com
+  NEXT_PUBLIC_SITE_URL: https://www.onetap-card.com
   NEXT_PUBLIC_CARD_BASE_URL: https://card.onetap-card.com
   NEXT_PUBLIC_MAIN_APP_URL: https://app.onetap-card.com
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: dudwjf2pu

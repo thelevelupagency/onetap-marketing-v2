@@ -30,7 +30,7 @@ Delivery follows **`feature/*` → `dev` → `main`** (never direct merge of pro
 - **Lib:** `src/lib/*` — blog helpers, typography, constants, search. Keep helpers pure and typed.
 - **Cross-app links:** Dashboard CTAs use `APP_ORIGIN`, `LOGIN_URL`, `SIGNUP_URL` from [`src/lib/constants.ts`](src/lib/constants.ts) (`NEXT_PUBLIC_MAIN_APP_URL`). Card host uses `NEXT_PUBLIC_CARD_BASE_URL` via `getCardHostPrefix()` / `buildCreateBasicsUrl()`. Local env: [`.env.example`](.env.example) + [`docs/engineering/environment-variables.md`](docs/engineering/environment-variables.md) (never commit `.env.local` / `.env.development` / `.env.production`). Use `GetCardCta` and `SlugClaimCta` — do not hardcode origins in new UI.
 - **Brand alignment:** Design tokens in `src/app/globals.css` are aligned with `onetap-app`. When changing brand colors or spacing tokens, note whether `onetap-app` needs the same update.
-- **SEO:** Per-route `metadata`; site map in `src/app/sitemap.ts` via `getSiteUrl()` from [`src/lib/site-url.ts`](src/lib/site-url.ts) (default `https://onetap-card.com`). Update sitemap when adding/removing public routes.
+- **SEO / GEO:** Per-route `metadata`; sitemap and robots via Next.js metadata routes (`src/app/sitemap.ts`, `src/app/robots.ts`) using `getSiteUrl()` from [`src/lib/site-url.ts`](src/lib/site-url.ts) (default `https://www.onetap-card.com`). Guide: [`docs/guides/marketing-seo-geo.md`](docs/guides/marketing-seo-geo.md). Update sitemap when adding/removing public routes; keep `/llms.txt` truthful for primary landings.
 
 ## Default Daily Workflow
 
@@ -107,9 +107,9 @@ Skill: `.cursor/skills/blog-content-authoring/SKILL.md`
 
 ### SEO / metadata change
 
-1. Update route `metadata` (title, description, openGraph).
-2. Align canonical host with `sitemap.ts` base URL.
-3. Check [`docs/engineering/seo-checklist.md`](docs/engineering/seo-checklist.md) for robots.txt / JSON-LD gaps.
+1. Update route `metadata` (title, description, openGraph) via `buildLocaleMetadata` where possible.
+2. Align canonical host with `getSiteUrl()` / sitemap (www: `https://www.onetap-card.com`).
+3. Follow [`docs/guides/marketing-seo-geo.md`](docs/guides/marketing-seo-geo.md) and [`docs/engineering/seo-checklist.md`](docs/engineering/seo-checklist.md) for robots, sitemap, JSON-LD, and `/llms.txt`.
 
 Skill: `.cursor/skills/seo-page-setup/SKILL.md`
 

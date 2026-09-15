@@ -56,4 +56,4 @@ export {
   InfiniteScrollTrack,
   type InfiniteScrollTrackProps,
 } from "./infinite-scroll-track";
-
+export { JsonLd } from "./json-ld";

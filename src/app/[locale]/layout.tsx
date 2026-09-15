@@ -1,9 +1,14 @@
 import { notFound } from "next/navigation";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import { JsonLd } from "@/components/marketing/primitives";
 import { getChrome } from "@/content/get-content";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { generateLocaleStaticParams } from "@/lib/i18n/locale-params";
+import {
+  buildOrganizationJsonLd,
+  buildWebSiteJsonLd,
+} from "@/lib/seo/json-ld";
 
 export function generateStaticParams() {
   return generateLocaleStaticParams();
@@ -25,6 +30,7 @@ export default async function LocaleLayout({
 
   return (
     <>
+      <JsonLd data={[buildOrganizationJsonLd(), buildWebSiteJsonLd()]} />
       <Navigation chrome={chrome} locale={locale} />
       <div className="flex-1">{children}</div>
       <Footer />
