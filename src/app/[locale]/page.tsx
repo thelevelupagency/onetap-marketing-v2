@@ -9,9 +9,11 @@ import { SocialProof } from "@/components/marketing/sections/social-proof";
 import { PricingBlock } from "@/components/marketing/pricing/pricing-block";
 import { FaqSection } from "@/components/marketing/sections/faq-section";
 import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
+import { JsonLd } from "@/components/marketing/primitives";
 import { getChrome, getHomepage } from "@/content/get-content";
 import { buildLocaleMetadata } from "@/lib/i18n/metadata";
 import { resolveLocaleParam } from "@/lib/i18n/locale-params";
+import { buildSoftwareApplicationJsonLd } from "@/lib/seo/json-ld";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -34,6 +36,7 @@ export default async function Home({ params }: PageProps) {
 
   return (
     <main>
+      <JsonLd data={buildSoftwareApplicationJsonLd(locale)} />
       <HeroSection locale={locale} />
       <PainPointsSection locale={locale} />
       <HowItWorks locale={locale} />

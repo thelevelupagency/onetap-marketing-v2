@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://onetap-card.com";
+const DEFAULT_SITE_URL = "https://www.onetap-card.com";
 
 /** Canonical marketing site origin (no trailing slash). */
 export function getSiteUrl(): string {

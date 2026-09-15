@@ -5,12 +5,14 @@ Do **not** commit `.env`, `.env.local`, `.env.development`, or `.env.production`
 ## Development / preview
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://onetap-card.com
+NEXT_PUBLIC_SITE_URL=https://www.onetap-card.com
 NEXT_PUBLIC_CARD_BASE_URL=https://card-dev.onetap-card.com
 NEXT_PUBLIC_MAIN_APP_URL=https://app-dev.onetap-card.com
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dudwjf2pu
 NEXT_PUBLIC_META_PIXEL_ID=28011734695135178
 ```
+
+Canonical production host is **www** (`https://www.onetap-card.com`). The apex (`https://onetap-card.com`) 301s to www — set Vercel Production `NEXT_PUBLIC_SITE_URL` to the www origin so sitemap, canonicals, and OG URLs do not advertise redirects.
 
 For local `next dev` overrides:
 
@@ -22,7 +24,7 @@ For local `next dev` overrides:
 ## Production
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://onetap-card.com
+NEXT_PUBLIC_SITE_URL=https://www.onetap-card.com
 NEXT_PUBLIC_CARD_BASE_URL=https://card.onetap-card.com
 NEXT_PUBLIC_MAIN_APP_URL=https://app.onetap-card.com
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dudwjf2pu

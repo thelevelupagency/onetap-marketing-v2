@@ -25,10 +25,18 @@ import { normalizeBlogImageSrc } from "@/lib/blog-images";
 import { getSiteUrl } from "@/lib/site-url";
 import { RelatedPosts } from "@/components/marketing/blog/related-posts";
 import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
-import { MarketingContainer, PageShell } from "@/components/marketing/primitives";
+import {
+  JsonLd,
+  MarketingContainer,
+  PageShell,
+} from "@/components/marketing/primitives";
 import { getChrome } from "@/content/get-content";
 import { LOCALES, localizePath, getLocaleAlternates, LOCALE_META } from "@/lib/i18n/config";
 import { resolveLocaleParam, generateLocaleStaticParams } from "@/lib/i18n/locale-params";
+import {
+  buildBlogPostingJsonLd,
+  buildBreadcrumbJsonLd,
+} from "@/lib/seo/json-ld";
 import { type as typography } from "@/lib/typography";
 
 interface PageProps {
@@ -88,6 +96,27 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <PageShell pageBottom="none">
+      <JsonLd
+        data={[
+          buildBlogPostingJsonLd({
+            locale,
+            slug: post.slug,
+            title: post.title,
+            excerpt: post.excerpt,
+            date: post.date,
+            author: post.author,
+            coverImage: normalizeBlogImageSrc(post.coverImage, 1200),
+          }),
+          buildBreadcrumbJsonLd(
+            [
+              { name: chrome.footer.home, path: "/" },
+              { name: chrome.footer.blog, path: "/blog" },
+              { name: post.title, path: `/blog/${post.slug}` },
+            ],
+            locale,
+          ),
+        ]}
+      />
       <MarketingContainer width="wide">
         <BlogPostLayout headings={post.headings}>
           <MarketingContainer width="narrow" className="w-full min-w-0 px-0 lg:mx-0">

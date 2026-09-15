@@ -20,6 +20,7 @@ description: Delivers new marketing or solutions pages with metadata, primitives
 - [ ] CTAs use `GetCardCta` / constants — no hardcoded app URLs
 - [ ] Sitemap includes new public URL
 - [ ] Semantic heading structure
+- [ ] **SEO/GEO gate:** EN + HE metadata via `buildLocaleMetadata`; JSON-LD/breadcrumbs if nested; update `/llms.txt` if this is a primary landing; follow `seo-page-setup` skill
 
 ## Output format
 
@@ -29,6 +30,7 @@ Page delivery:
 - Metadata:
 - Sections/components:
 - Sitemap updated: yes/no
+- SEO/GEO: locales / JSON-LD / llms.txt
 
 Verification:
 - typecheck / lint / build:
