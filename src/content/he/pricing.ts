@@ -1,4 +1,4 @@
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 
 export type PlanTier = "free" | "pro" | "team";
 
@@ -59,7 +59,7 @@ export const plans: Plan[] = [
     monthlyPrice: 0,
     annualPrice: 0,
     cta: "התחילו בחינם",
-    ctaHref: CREATE_BASICS_URL,
+    ctaHref: SIGNUP_URL,
     features: [
       "כרטיס דיגיטלי אחד",
       "פרופיל, קוד QR וקישור לשיתוף",
@@ -77,7 +77,7 @@ export const plans: Plan[] = [
     annualPrice: 10,
     annualBilled: "חיוב שנתי בסך $120",
     cta: "התחילו תקופת ניסיון ב-Pro",
-    ctaHref: CREATE_BASICS_URL,
+    ctaHref: SIGNUP_URL,
     popular: true,
     features: [
       "כל מה שכלול ב-Free",
@@ -96,7 +96,7 @@ export const plans: Plan[] = [
     annualPrice: 28,
     annualBilled: "חיוב שנתי בסך $336",
     cta: "התחילו עם Team",
-    ctaHref: CREATE_BASICS_URL,
+    ctaHref: SIGNUP_URL,
     features: [
       "כל מה שכלול ב-Pro",
       "עד 10 כרטיסים ו-10 חברי צוות",

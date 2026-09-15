@@ -1,4 +1,4 @@
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 
 export type PlanTier = "free" | "pro" | "team";
 
@@ -59,7 +59,7 @@ export const plans: Plan[] = [
     monthlyPrice: 0,
     annualPrice: 0,
     cta: "Start For Free",
-    ctaHref: CREATE_BASICS_URL,
+    ctaHref: SIGNUP_URL,
     features: [
       "1 digital card",
       "Profile, QR code, and shareable link",
@@ -77,7 +77,7 @@ export const plans: Plan[] = [
     annualPrice: 10,
     annualBilled: "Billed $120 yearly",
     cta: "Start Pro trial",
-    ctaHref: CREATE_BASICS_URL,
+    ctaHref: SIGNUP_URL,
     popular: true,
     features: [
       "Everything in Free",
@@ -96,7 +96,7 @@ export const plans: Plan[] = [
     annualPrice: 28,
     annualBilled: "Billed $336 yearly",
     cta: "Start Team",
-    ctaHref: CREATE_BASICS_URL,
+    ctaHref: SIGNUP_URL,
     features: [
       "Everything in Pro",
       "Up to 10 cards and 10 members",

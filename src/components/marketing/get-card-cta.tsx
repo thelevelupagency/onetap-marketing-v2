@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome } from "@/content/get-content";
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 import type { MetaCtaPlacement } from "@/lib/meta-pixel";
 
 export const primaryCtaClassName = "rounded-full";
@@ -113,7 +113,7 @@ function CtaAnchor({
 }
 
 export function GetCardCta({
-  href = CREATE_BASICS_URL,
+  href = SIGNUP_URL,
   children,
   size = "lg",
   showArrow = true,

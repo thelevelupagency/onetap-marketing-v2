@@ -28,6 +28,20 @@ export const SIGNUP_URL = `${APP_ORIGIN}/register`;
 export const PRIVACY_URL = `${APP_ORIGIN}/privacy`;
 export const TERMS_URL = `${APP_ORIGIN}/terms`;
 
+/** Official brand social profiles (footer + Organization sameAs). */
+export const SOCIAL_FACEBOOK_URL =
+  "https://www.facebook.com/profile.php?id=61586661953454";
+export const SOCIAL_INSTAGRAM_URL = "https://www.instagram.com/onetap_card/";
+export const SOCIAL_LINKEDIN_URL = "https://www.linkedin.com/company/onetap-card/";
+export const SOCIAL_YOUTUBE_URL = "https://www.youtube.com/@ONETAP-CARD";
+
+export const SOCIAL_PROFILE_URLS = [
+  SOCIAL_FACEBOOK_URL,
+  SOCIAL_INSTAGRAM_URL,
+  SOCIAL_LINKEDIN_URL,
+  SOCIAL_YOUTUBE_URL,
+] as const;
+
 /** Site-wide Open Graph / Twitter share image (blog posts override with cover). */
 export const DEFAULT_OG_IMAGE_URL =
   "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788683330/onetap/static/marketing/onetap_og_image_va1yaw.jpg";
@@ -62,6 +76,16 @@ export function buildCreateBasicsUrl(slug?: string): string {
 }
 
 export const CREATE_BASICS_URL = buildCreateBasicsUrl();
+
+/** Register entry; optional slug is sanitized before append (never overwrites later attribution keys). */
+export function buildSignupUrl(slug?: string): string {
+  const base = SIGNUP_URL;
+  const trimmed = slug?.trim();
+  if (!trimmed) return base;
+  const sanitized = sanitizeCardSlug(trimmed);
+  if (!sanitized) return base;
+  return `${base}?slug=${encodeURIComponent(sanitized)}`;
+}
 
 /** Query keys copied from the marketing landing URL onto app CTAs. Never overwrite `slug`. */
 export const ATTRIBUTION_QUERY_KEYS = [

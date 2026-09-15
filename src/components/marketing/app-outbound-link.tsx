@@ -12,6 +12,9 @@ interface AppOutboundLinkProps {
   /** Conversion placement. Omit or pass null to forward click IDs without firing a Meta event (login). */
   placement?: MetaCtaPlacement | null;
   onClick?: () => void;
+  /** When `_blank`, opens attributed URL in a new tab (still stamps fbclid/UTMs/lang/coupon). */
+  target?: "_blank";
+  rel?: string;
 }
 
 export function handleAppOutboundClick(
@@ -19,12 +22,18 @@ export function handleAppOutboundClick(
   href: string,
   placement?: MetaCtaPlacement | null,
   locale?: Locale,
+  target?: "_blank",
 ): void {
   if (!href.startsWith("http")) {
     return;
   }
   event.preventDefault();
-  window.location.assign(navigateToApp(href, placement, locale));
+  const attributed = navigateToApp(href, placement, locale);
+  if (target === "_blank") {
+    window.open(attributed, "_blank", "noopener,noreferrer");
+    return;
+  }
+  window.location.assign(attributed);
 }
 
 /** External app URL that preserves `fbclid`/UTMs/`lang` and fires InitiateCheckout or Lead when classified. */
@@ -34,6 +43,8 @@ export function AppOutboundLink({
   className,
   placement = "get_card",
   onClick,
+  target,
+  rel,
 }: AppOutboundLinkProps) {
   const locale = useLocale();
   const [attributedHref, setAttributedHref] = useState(href);
@@ -42,13 +53,18 @@ export function AppOutboundLink({
     setAttributedHref(withLandingAttribution(href, locale));
   }, [href, locale]);
 
+  const resolvedRel =
+    rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+
   return (
     <a
       href={attributedHref}
       className={className}
+      target={target}
+      rel={resolvedRel}
       onClick={(event) => {
         onClick?.();
-        handleAppOutboundClick(event, href, placement, locale);
+        handleAppOutboundClick(event, href, placement, locale, target);
       }}
     >
       {children}

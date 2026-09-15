@@ -66,8 +66,12 @@ export function stripLocalePrefix(pathname: string): string {
 /**
  * Build a public URL path for a locale.
  * English is unprefixed (`/pricing`); Hebrew uses `/he` (`/he/pricing`).
+ * Absolute `http(s)` URLs are returned unchanged (app / external handoffs).
  */
 export function localizePath(path: string, locale: Locale): string {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
   const bare = stripLocalePrefix(path);
   const safe = bare.startsWith("/") ? bare : `/${bare}`;
   if (locale === DEFAULT_LOCALE) {

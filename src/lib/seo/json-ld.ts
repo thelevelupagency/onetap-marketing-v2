@@ -1,4 +1,4 @@
-import { DEFAULT_OG_IMAGE_URL } from "@/lib/constants";
+import { DEFAULT_OG_IMAGE_URL, SOCIAL_PROFILE_URLS } from "@/lib/constants";
 import type { Locale } from "@/lib/i18n/config";
 import { localizePath } from "@/lib/i18n/config";
 import { getSiteUrl } from "@/lib/site-url";
@@ -22,6 +22,7 @@ export function buildOrganizationJsonLd(): JsonLdRecord {
     logo: `${siteUrl}/logos/onetap_logo.png`,
     description:
       "A premium, web-first digital business card platform for professionals, freelancers, and teams.",
+    sameAs: [...SOCIAL_PROFILE_URLS],
   };
 }
 
