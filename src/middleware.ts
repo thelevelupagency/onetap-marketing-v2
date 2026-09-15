@@ -21,6 +21,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/api") ||
     pathname === "/sitemap.xml" ||
     pathname === "/robots.txt" ||
+    pathname === "/llms.txt" ||
     PUBLIC_FILE.test(pathname)
   ) {
     return NextResponse.next();

@@ -1,7 +1,7 @@
 import { MarketingSection } from "@/components/marketing/primitives";
 import { ProcessGraphTimeline } from "@/components/marketing/sections/process-graph-timeline";
 import { getChrome } from "@/content/get-content";
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +33,7 @@ export function Process1({
   accent,
   description,
   ctaLabel,
-  ctaHref = CREATE_BASICS_URL,
+  ctaHref = SIGNUP_URL,
   steps,
 }: Process1Props) {
   const chrome = getChrome(locale);

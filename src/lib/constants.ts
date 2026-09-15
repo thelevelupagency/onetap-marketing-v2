@@ -1,6 +1,7 @@
 import { sanitizeCardSlug } from "@/lib/card-slug";
 import type { Locale } from "@/lib/i18n/config";
 import { DEFAULT_LOCALE } from "@/lib/i18n/config";
+import { getSiteUrl } from "@/lib/site-url";
 
 const DEFAULT_APP_ORIGIN = "https://app.onetap-card.com";
 const DEFAULT_CARD_BASE_URL = "https://card.onetap-card.com";
@@ -26,6 +27,20 @@ export const LOGIN_URL = `${APP_ORIGIN}/login`;
 export const SIGNUP_URL = `${APP_ORIGIN}/register`;
 export const PRIVACY_URL = `${APP_ORIGIN}/privacy`;
 export const TERMS_URL = `${APP_ORIGIN}/terms`;
+
+/** Official brand social profiles (footer + Organization sameAs). */
+export const SOCIAL_FACEBOOK_URL =
+  "https://www.facebook.com/profile.php?id=61586661953454";
+export const SOCIAL_INSTAGRAM_URL = "https://www.instagram.com/onetap_card/";
+export const SOCIAL_LINKEDIN_URL = "https://www.linkedin.com/company/onetap-card/";
+export const SOCIAL_YOUTUBE_URL = "https://www.youtube.com/@ONETAP-CARD";
+
+export const SOCIAL_PROFILE_URLS = [
+  SOCIAL_FACEBOOK_URL,
+  SOCIAL_INSTAGRAM_URL,
+  SOCIAL_LINKEDIN_URL,
+  SOCIAL_YOUTUBE_URL,
+] as const;
 
 /** Site-wide Open Graph / Twitter share image (blog posts override with cover). */
 export const DEFAULT_OG_IMAGE_URL =
@@ -61,6 +76,16 @@ export function buildCreateBasicsUrl(slug?: string): string {
 }
 
 export const CREATE_BASICS_URL = buildCreateBasicsUrl();
+
+/** Register entry; optional slug is sanitized before append (never overwrites later attribution keys). */
+export function buildSignupUrl(slug?: string): string {
+  const base = SIGNUP_URL;
+  const trimmed = slug?.trim();
+  if (!trimmed) return base;
+  const sanitized = sanitizeCardSlug(trimmed);
+  if (!sanitized) return base;
+  return `${base}?slug=${encodeURIComponent(sanitized)}`;
+}
 
 /** Query keys copied from the marketing landing URL onto app CTAs. Never overwrite `slug`. */
 export const ATTRIBUTION_QUERY_KEYS = [
@@ -188,7 +213,7 @@ export function getMergedAttributionParams(live: URLSearchParams): URLSearchPara
 
 export function appendAttributionParams(url: string, source: URLSearchParams): string {
   const base =
-    typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";
+    typeof window !== "undefined" ? window.location.origin : getSiteUrl();
   let target: URL;
   try {
     target = new URL(url, base);
@@ -225,7 +250,7 @@ export function appendLocaleParam(
   locale: Locale = DEFAULT_LOCALE,
 ): string {
   const base =
-    typeof window !== "undefined" ? window.location.origin : "https://onetap-card.com";
+    typeof window !== "undefined" ? window.location.origin : getSiteUrl();
   let target: URL;
   try {
     target = new URL(url, base);

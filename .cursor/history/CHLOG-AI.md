@@ -40,3 +40,9 @@ src/lib/motion/, public/marketing/devices/macbook-pro-16-silver.webp
 
 2026-09-06 — Site-wide brand OG/Twitter image via shared constant; blog posts keep cover overrides.
 src/lib/constants.ts, src/app/layout.tsx, src/lib/i18n/metadata.ts
+
+2026-09-15 — SEO/GEO foundation: www canonical via getSiteUrl, robots.ts, JSON-LD, /llms.txt, preview noindex, and lasting agent standard (rule/skill/guide).
+src/app/robots.ts, src/lib/seo/, docs/guides/marketing-seo-geo.md, .cursor/rules/seo-geo-standard.mdc
+
+2026-09-15 — Signup-first CTAs (`/register`), fix home carousel app handoff + attribution, footer socials with Organization sameAs.
+src/lib/constants.ts, get-card-cta, solutions-grid, footer, json-ld, docs/plans/2026-09-15-cta-destinations-and-footer-social.md

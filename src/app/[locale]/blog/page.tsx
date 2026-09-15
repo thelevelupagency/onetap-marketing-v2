@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { BlogList } from "@/components/marketing/blog/blog-list";
 import { FinalCtaSection } from "@/components/marketing/sections/final-cta-section";
-import { PageShell, PageHero, MarketingContainer } from "@/components/marketing/primitives";
+import {
+  PageShell,
+  PageHero,
+  MarketingContainer,
+  JsonLd,
+} from "@/components/marketing/primitives";
 import { getChrome } from "@/content/get-content";
 import { buildLocaleMetadata } from "@/lib/i18n/metadata";
 import { resolveLocaleParam } from "@/lib/i18n/locale-params";
+import { buildBreadcrumbJsonLd } from "@/lib/seo/json-ld";
 
 interface BlogPageProps {
   params: Promise<{ locale: string }>;
@@ -29,6 +35,15 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
 
   return (
     <PageShell pageBottom="none">
+      <JsonLd
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: chrome.footer.home, path: "/" },
+            { name: chrome.footer.blog, path: "/blog" },
+          ],
+          locale,
+        )}
+      />
       <PageHero
         title={chrome.metadata.blogHeroTitle}
         accent={chrome.metadata.blogHeroAccent}

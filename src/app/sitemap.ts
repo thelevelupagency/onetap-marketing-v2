@@ -29,7 +29,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
           : ("monthly" as const);
       return {
         url: absoluteLocalizedUrl(route, locale),
-        lastModified: new Date(),
         changeFrequency,
         priority:
           route === "/"

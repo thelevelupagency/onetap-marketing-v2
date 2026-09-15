@@ -35,6 +35,8 @@ description: Adds or edits blog posts in src/content/blog/ with valid slugs, hea
 - [ ] `headings` match `##` / `###` in content
 - [ ] `categories` is a non-empty array
 - [ ] Cover image host allowed in `next.config.ts`
+- [ ] **SEO/GEO gate:** both EN and HE when English is live; unique title/excerpt; real ISO `date`; `BlogPosting` via shared page helper; sitemap picks up slug automatically
+
 ## Output format
 
 ```markdown
@@ -42,6 +44,7 @@ Blog post:
 - Slug:
 - Title:
 - Categories / date:
+- SEO/GEO: locales / excerpt / date OK
 
 Verification:
 - build:

@@ -1,0 +1,43 @@
+---
+description: SEO and GEO (AI search) non-negotiables for marketing discoverability.
+globs: "{src/app/**,src/app/sitemap.ts,src/app/robots.ts,src/lib/site-url.ts,src/lib/seo/**,src/lib/i18n/metadata.ts}"
+alwaysApply: false
+---
+
+# SEO And GEO Standard
+
+Per-route title/description/OG rules: `@seo-metadata.mdc`.
+Workflow: `.cursor/skills/seo-page-setup/SKILL.md`.
+Human guide: `docs/guides/marketing-seo-geo.md`.
+
+## Why this matters
+
+- **Legacy search:** one canonical host (`www`), final URLs in the sitemap, unique metadata. Apex redirects must not appear as canonicals.
+- **AI search / GEO:** answer engines cite pages they can fetch and attribute. JSON-LD, `/llms.txt`, and explicit crawl allow help OneTap appear in citations.
+- **EN + HE:** every public English URL needs its Hebrew twin with hreflang.
+- **Previews:** Vercel preview must stay `noindex` / robots `Disallow` so it does not compete with production.
+
+## Non-negotiables
+
+1. **One origin** — All canonicals, sitemap locs, OG `url`, JSON-LD `url`/`@id`, and robots `Sitemap:` use `getSiteUrl()` → production `https://www.onetap-card.com`. Never hardcode `https://onetap-card.com`.
+2. **Dynamic discovery** — `/sitemap.xml` from `src/app/sitemap.ts`; `/robots.txt` from `src/app/robots.ts`. Do **not** add stale `public/sitemap.xml` or `public/robots.txt`.
+3. **Public pages are discoverable** — New indexable routes: `buildLocaleMetadata` (or blog equivalent), both locales, sitemap static entry (blog slugs via `getAllSlugs()`), JSON-LD that matches **visible** copy.
+4. **App surfaces stay out** — Dashboard, billing, editor, login live on the app host. Do not add them to the marketing sitemap.
+5. **GEO files stay truthful** — Primary landing add/remove must update `/llms.txt` in the same PR.
+6. **Preview never competes** — Do not weaken preview `Disallow` / `noindex` to “test SEO on preview.”
+
+## Schema map
+
+| Surface | Schema |
+|---|---|
+| Locale chrome | `Organization` + `WebSite` |
+| Home | `SoftwareApplication` |
+| `/faq` only | `FAQPage` (do not duplicate on homepage FAQ section) |
+| Blog posts | `BlogPosting` |
+| Nested landings / blog | `BreadcrumbList` |
+
+Helpers: `src/lib/seo/json-ld.ts` + `<JsonLd />`.
+
+## AI crawl policy
+
+Default is **allow** citation crawlers in `robots.ts`. Blocking GPTBot/Claude/Perplexity is an explicit legal/product decision — not a drive-by PR change.

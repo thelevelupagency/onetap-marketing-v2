@@ -6,23 +6,27 @@ alwaysApply: false
 
 # SEO And Metadata
 
+Per-route title, description, and Open Graph. Host, robots, sitemap, JSON-LD, and GEO laws: `@seo-geo-standard.mdc` and `docs/guides/marketing-seo-geo.md`.
+
 ## Per route
 
 - Export `metadata` (or `generateMetadata` when dynamic) with unique `title` and `description`.
 - Blog and shareable landings: include `openGraph` (title, description, images when available).
 - One clear `h1` per page view (via `PageHero` or section hero).
+- Prefer `buildLocaleMetadata` so canonical + hreflang stay consistent.
 
 ## Site map
 
-- Base URL: `getSiteUrl()` in `src/lib/site-url.ts` (`NEXT_PUBLIC_SITE_URL` override) — used by `src/app/sitemap.ts`.
+- Base URL: `getSiteUrl()` in `src/lib/site-url.ts` (`NEXT_PUBLIC_SITE_URL` override) — used by `src/app/sitemap.ts`. Production default is `https://www.onetap-card.com`.
 - Add static routes when introducing new top-level pages.
-- Blog slugs: use `getAllSlugs()` from `@/lib/blog` — do not hardcode slug lists in sitemap.
+- Blog slugs: use `getAllSlugs()` / `getBlogPosts()` — do not hardcode slug lists in sitemap.
 
 ## Checklist
 
-See `docs/engineering/seo-checklist.md` for robots.txt, JSON-LD, and `metadataBase` follow-ups.
+See `docs/engineering/seo-checklist.md` and `docs/guides/marketing-seo-geo.md`.
 
 ## Avoid
 
 - Duplicate default titles across routes.
 - Orphan routes (live URL not in sitemap without intentional `noindex`).
+- Hardcoding apex `https://onetap-card.com` in metadata or OG URLs.

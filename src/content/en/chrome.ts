@@ -40,6 +40,11 @@ export type ChromeCopy = {
     privacy: string;
     cookieSettings: string;
     rightsReserved: string;
+    socialNav: string;
+    socialFacebook: string;
+    socialInstagram: string;
+    socialLinkedin: string;
+    socialYoutube: string;
   };
   cookie: {
     title: string;
@@ -210,6 +215,11 @@ export const enChrome: ChromeCopy = {
     privacy: "Privacy",
     cookieSettings: "Cookie settings",
     rightsReserved: "All rights reserved.",
+    socialNav: "OneTap on social media",
+    socialFacebook: "OneTap on Facebook",
+    socialInstagram: "OneTap on Instagram",
+    socialLinkedin: "OneTap on LinkedIn",
+    socialYoutube: "OneTap on YouTube",
   },
   cookie: {
     title: "Marketing cookies",

@@ -43,10 +43,20 @@ const assistant = Assistant({
   weight: ["400", "600", "700"],
 });
 
+const isPreview = process.env.VERCEL_ENV === "preview";
+
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: "OneTap-Card | Your professional identity, one tap away",
   description: "A premium, web-first digital business card platform.",
+  ...(isPreview
+    ? {
+        robots: {
+          index: false,
+          follow: false,
+        },
+      }
+    : {}),
   icons: {
     icon: [{ url: "/logos/onetap_logo.png", type: "image/png" }],
     apple: [{ url: "/logos/onetap_logo.png", type: "image/png" }],

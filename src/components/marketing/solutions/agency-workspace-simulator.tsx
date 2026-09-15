@@ -9,7 +9,7 @@ import { Reveal } from "@/components/marketing/motion";
 import type { MarketingBandBackground } from "@/content/marketing-copy-types";
 import { getSolutions } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 
 interface AgencyWorkspaceSimulatorProps {
   locale: Locale;
@@ -49,7 +49,7 @@ export function AgencyWorkspaceSimulator({
         </div>
 
         <div className="flex justify-center pt-marketing-stack-gap">
-          <GetCardCta href={CREATE_BASICS_URL} size="md" placement="agency_workspace">
+          <GetCardCta href={SIGNUP_URL} size="md" placement="agency_workspace">
             {copy.cta}
           </GetCardCta>
         </div>

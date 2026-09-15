@@ -2,15 +2,32 @@
 
 import { Suspense } from "react";
 import Link from "next/link";
+import {
+  IconBrandFacebook,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandYoutube,
+} from "@tabler/icons-react";
 import { Logo } from "@/components/shared/logo";
 import { LanguageSwitcher } from "@/components/marketing/language-switcher";
+import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 import { MarketingContainer } from "@/components/marketing/primitives";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome, getSite } from "@/content/get-content";
-import { PRIVACY_URL, TERMS_URL, appendLocaleParam } from "@/lib/constants";
+import {
+  PRIVACY_URL,
+  SOCIAL_FACEBOOK_URL,
+  SOCIAL_INSTAGRAM_URL,
+  SOCIAL_LINKEDIN_URL,
+  SOCIAL_YOUTUBE_URL,
+  TERMS_URL,
+} from "@/lib/constants";
 import { localizePath } from "@/lib/i18n/config";
 import { getMetaPixelId } from "@/lib/meta-pixel";
 import { useMarketingConsent } from "@/components/providers/consent-provider";
+
+const socialIconClassName =
+  "flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-brand-cream/60 transition-colors hover:border-brand-turquoise/40 hover:text-brand-turquoise";
 
 export function Footer() {
   const locale = useLocale();
@@ -33,10 +50,33 @@ export function Footer() {
     ],
     [chrome.footer.resources]: [
       { name: chrome.footer.helpCenter, href: localizePath("/faq", locale) },
-      { name: chrome.footer.terms, href: appendLocaleParam(TERMS_URL, locale), external: true },
-      { name: chrome.footer.privacy, href: appendLocaleParam(PRIVACY_URL, locale), external: true },
+      { name: chrome.footer.terms, href: TERMS_URL, external: true as const },
+      { name: chrome.footer.privacy, href: PRIVACY_URL, external: true as const },
     ],
   };
+
+  const socialLinks = [
+    {
+      href: SOCIAL_FACEBOOK_URL,
+      label: chrome.footer.socialFacebook,
+      Icon: IconBrandFacebook,
+    },
+    {
+      href: SOCIAL_INSTAGRAM_URL,
+      label: chrome.footer.socialInstagram,
+      Icon: IconBrandInstagram,
+    },
+    {
+      href: SOCIAL_LINKEDIN_URL,
+      label: chrome.footer.socialLinkedin,
+      Icon: IconBrandLinkedin,
+    },
+    {
+      href: SOCIAL_YOUTUBE_URL,
+      label: chrome.footer.socialYoutube,
+      Icon: IconBrandYoutube,
+    },
+  ];
 
   return (
     <footer className="relative w-full overflow-hidden bg-brand-midnight text-brand-cream pt-16 md:pt-24 pb-8 md:pb-12 border-t border-white/5">
@@ -52,6 +92,20 @@ export function Footer() {
             <p className="text-brand-cream/60 max-w-sm mb-8 text-lg leading-relaxed">
               {siteMod.footerCopy.blurb}
             </p>
+            <nav aria-label={chrome.footer.socialNav} className="flex flex-wrap items-center gap-3">
+              {socialLinks.map(({ href, label, Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className={socialIconClassName}
+                >
+                  <Icon className="h-5 w-5" aria-hidden />
+                </a>
+              ))}
+            </nav>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:col-span-3 gap-8">
@@ -62,14 +116,14 @@ export function Footer() {
                   {links.map((link) => (
                     <li key={link.name}>
                       {"external" in link && link.external ? (
-                        <a
+                        <AppOutboundLink
                           href={link.href}
-                          className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base"
-                          rel="noopener noreferrer"
+                          placement={null}
                           target="_blank"
+                          className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base"
                         >
                           {link.name}
-                        </a>
+                        </AppOutboundLink>
                       ) : (
                         <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base">
                           {link.name}
@@ -89,12 +143,22 @@ export function Footer() {
             <Suspense fallback={null}>
               <LanguageSwitcher variant="footer" />
             </Suspense>
-            <a href={appendLocaleParam(PRIVACY_URL, locale)} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
+            <AppOutboundLink
+              href={PRIVACY_URL}
+              placement={null}
+              target="_blank"
+              className="hover:text-brand-turquoise transition-colors"
+            >
               {chrome.footer.privacy}
-            </a>
-            <a href={appendLocaleParam(TERMS_URL, locale)} className="hover:text-brand-turquoise transition-colors" rel="noopener noreferrer" target="_blank">
+            </AppOutboundLink>
+            <AppOutboundLink
+              href={TERMS_URL}
+              placement={null}
+              target="_blank"
+              className="hover:text-brand-turquoise transition-colors"
+            >
               {chrome.footer.terms}
-            </a>
+            </AppOutboundLink>
             {pixelId ? (
               <button
                 type="button"
