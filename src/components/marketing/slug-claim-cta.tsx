@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { buildCreateBasicsUrl, CARD_HOST_PREFIX } from "@/lib/constants";
+import { buildSignupUrl, CARD_HOST_PREFIX } from "@/lib/constants";
 import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
 import { marketingCtaSizes, primaryCtaClassName } from "@/components/marketing/get-card-cta";
 import { useLocale } from "@/components/providers/locale-provider";
@@ -68,7 +68,7 @@ export function SlugClaimCta({
       setTouched(true);
       return;
     }
-    window.location.href = navigateToApp(buildCreateBasicsUrl(slug), "hero_slug", locale);
+    window.location.href = navigateToApp(buildSignupUrl(slug), "hero_slug", locale);
   }, [canSubmit, slug, locale]);
 
   const handleSubmit = (e: React.FormEvent) => {

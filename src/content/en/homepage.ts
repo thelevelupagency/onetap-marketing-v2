@@ -1,4 +1,4 @@
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 import { LOGO_ICON } from "@/lib/logos";
 
 export const audienceMarqueeItems = [
@@ -176,8 +176,8 @@ export const solutionsCopy = {
       title: "Freelancers & Consultants",
       description:
         "Services, portfolio, testimonials, and contact options in one polished profile.",
-      ctaLabel: "Build your personal profile",
-      href: "/solutions/freelancers",
+      ctaLabel: "Create your freelancer card",
+      href: SIGNUP_URL,
       accent: "from-brand-navy/10 to-brand-turquoise/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/freelance_p1fva5.jpg",
@@ -188,8 +188,8 @@ export const solutionsCopy = {
       title: "Agents",
       description:
         "Listings, tours, invitation forms, WhatsApp, and booking links in one card.",
-      ctaLabel: "Create your real estate card",
-      href: CREATE_BASICS_URL,
+      ctaLabel: "Create your agent card",
+      href: SIGNUP_URL,
       accent: "from-brand-turquoise/15 to-brand-navy/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/agent_t3e5gu.jpg",
@@ -200,8 +200,8 @@ export const solutionsCopy = {
       title: "Creators & Influencers",
       description:
         "Socials, media kit, portfolio, collaborations, and booking links in one place.",
-      ctaLabel: "Launch your creator card",
-      href: "/solutions/freelancers#creators",
+      ctaLabel: "Create your creator card",
+      href: SIGNUP_URL,
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/creator_v2msay.jpg",
@@ -212,8 +212,8 @@ export const solutionsCopy = {
       title: "Small Businesses",
       description:
         "Hours, location, menu, services, reviews, and offers on a mobile mini-site.",
-      ctaLabel: "Build your business card",
-      href: CREATE_BASICS_URL,
+      ctaLabel: "Create your business card",
+      href: SIGNUP_URL,
       accent: "from-brand-midnight/10 to-brand-navy/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/small-buisiness_wcplly.jpg",
@@ -224,8 +224,8 @@ export const solutionsCopy = {
       title: "Teams & Agencies",
       description:
         "On-brand cards for every teammate, lead capture, and networking insights.",
-      ctaLabel: "Explore team cards",
-      href: "/solutions/agencies",
+      ctaLabel: "Create your team cards",
+      href: SIGNUP_URL,
       accent: "from-brand-navy/15 to-brand-midnight/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/agency_obybv9.jpg",
@@ -236,8 +236,8 @@ export const solutionsCopy = {
       title: "Lawyers & Financial Professionals",
       description:
         "Credentials, services, and contact channels in a profile that builds trust.",
-      ctaLabel: "Create a trusted profile",
-      href: CREATE_BASICS_URL,
+      ctaLabel: "Create your professional card",
+      href: SIGNUP_URL,
       accent: "from-brand-midnight/5 to-brand-turquoise/15",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/lawyer_thfufm.jpg",

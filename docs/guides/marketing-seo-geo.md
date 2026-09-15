@@ -72,4 +72,4 @@ Shipping only one locale for a new public page is incomplete.
 
 ## Later ranking work (after this foundation)
 
-Comparison landings, more verticals, author bios (E-E-A-T), Bing Webmaster + IndexNow, Organization `sameAs` when social URLs exist, optional `llms-full.txt`. Update this guide when those land.
+Comparison landings, more verticals, author bios (E-E-A-T), Bing Webmaster + IndexNow, optional `llms-full.txt`. Organization `sameAs` is populated from footer social profile URLs in `src/lib/constants.ts` / `buildOrganizationJsonLd()`. Update this guide when those land.

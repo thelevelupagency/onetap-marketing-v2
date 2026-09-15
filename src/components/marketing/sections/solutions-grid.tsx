@@ -18,7 +18,9 @@ export function SolutionsGrid({ locale }: { locale: Locale }) {
   const { solutionsCopy } = getHomepage(locale);
   const localizedCards = solutionsCopy.cards.map((card) => ({
     ...card,
-    href: localizePath(card.href, locale),
+    href: card.href.startsWith("http")
+      ? card.href
+      : localizePath(card.href, locale),
   }));
   return (
     <MarketingSection background="cream" id="solutions" className="overflow-visible">

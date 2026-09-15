@@ -6,7 +6,7 @@ import {
 import { AnimatedHeroTitle, MarketingPageHero } from "@/components/marketing/primitives";
 import { getSolutions } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
-import { CREATE_BASICS_URL, LOGIN_URL } from "@/lib/constants";
+import { LOGIN_URL, SIGNUP_URL } from "@/lib/constants";
 import { type as typography } from "@/lib/typography";
 
 export function AgencyHero({ locale }: { locale: Locale }) {
@@ -22,7 +22,7 @@ export function AgencyHero({ locale }: { locale: Locale }) {
       <p className={`${typography.lead} mx-auto mb-10 text-brand-cream/70`}>{copy.lead}</p>
       <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
         <GetCardCta
-          href={CREATE_BASICS_URL}
+          href={SIGNUP_URL}
           size="lg"
           showArrow={false}
           placement="agency_hero"

@@ -1,4 +1,4 @@
-import { CREATE_BASICS_URL } from "@/lib/constants";
+import { SIGNUP_URL } from "@/lib/constants";
 import { LOGO_ICON } from "@/lib/logos";
 
 export const audienceMarqueeItems = [
@@ -176,8 +176,8 @@ export const solutionsCopy = {
       title: "עצמאים ויועצים",
       description:
         "שירותים, תיק עבודות, המלצות ואפשרויות יצירת קשר - בפרופיל מקצועי אחד.",
-      ctaLabel: "בנו את הפרופיל המקצועי שלכם",
-      href: "/solutions/freelancers",
+      ctaLabel: "צרו כרטיס לעצמאים",
+      href: SIGNUP_URL,
       accent: "from-brand-navy/10 to-brand-turquoise/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/freelance_p1fva5.jpg",
@@ -188,8 +188,8 @@ export const solutionsCopy = {
       title: "סוכני נדל״ן",
       description:
         "נכסים, סיורים, טופסי התעניינות, WhatsApp וקישורים לקביעת פגישה - בכרטיס אחד.",
-      ctaLabel: "צרו כרטיס נדל״ן",
-      href: CREATE_BASICS_URL,
+      ctaLabel: "צרו כרטיס לסוכנים",
+      href: SIGNUP_URL,
       accent: "from-brand-turquoise/15 to-brand-navy/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/agent_t3e5gu.jpg",
@@ -200,8 +200,8 @@ export const solutionsCopy = {
       title: "יוצרים ומשפיענים",
       description:
         "רשתות חברתיות, Media Kit, תיק עבודות, שיתופי פעולה וקישורי הזמנה - במקום אחד.",
-      ctaLabel: "השיקו את הכרטיס שלכם",
-      href: "/solutions/freelancers#creators",
+      ctaLabel: "צרו כרטיס ליוצרים",
+      href: SIGNUP_URL,
       accent: "from-brand-turquoise-light to-brand-turquoise/20",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/creator_v2msay.jpg",
@@ -212,8 +212,8 @@ export const solutionsCopy = {
       title: "עסקים קטנים",
       description:
         "שעות פעילות, מיקום, תפריט, שירותים, ביקורות והצעות - במיני-אתר מותאם למובייל.",
-      ctaLabel: "בנו את הכרטיס העסקי שלכם",
-      href: CREATE_BASICS_URL,
+      ctaLabel: "צרו כרטיס לעסק",
+      href: SIGNUP_URL,
       accent: "from-brand-midnight/10 to-brand-navy/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/small-buisiness_wcplly.jpg",
@@ -224,8 +224,8 @@ export const solutionsCopy = {
       title: "צוותים וסוכנויות",
       description:
         "כרטיסים במיתוג אחיד לכל חברי הצוות, איסוף לידים ותובנות על יצירת קשרים.",
-      ctaLabel: "גלו את פתרון הכרטיסים לצוותים",
-      href: "/solutions/agencies",
+      ctaLabel: "צרו כרטיסים לצוות",
+      href: SIGNUP_URL,
       accent: "from-brand-navy/15 to-brand-midnight/10",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517159/onetap/static/marketing/agency_obybv9.jpg",
@@ -236,8 +236,8 @@ export const solutionsCopy = {
       title: "עורכי דין, רואי חשבון ויועצים",
       description:
         "הסמכות, שירותים וערוצי קשר בפרופיל שבונה אמון.",
-      ctaLabel: "צרו פרופיל שמעורר אמון",
-      href: CREATE_BASICS_URL,
+      ctaLabel: "צרו כרטיס מקצועי",
+      href: SIGNUP_URL,
       accent: "from-brand-midnight/5 to-brand-turquoise/15",
       image:
         "https://res.cloudinary.com/dudwjf2pu/image/upload/v1788517158/onetap/static/marketing/lawyer_thfufm.jpg",

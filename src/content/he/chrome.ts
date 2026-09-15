@@ -36,6 +36,11 @@ export const heChrome: ChromeCopy = {
     privacy: "מדיניות פרטיות",
     cookieSettings: "הגדרות עוגיות",
     rightsReserved: "כל הזכויות שמורות.",
+    socialNav: "OneTap ברשתות החברתיות",
+    socialFacebook: "OneTap בפייסבוק",
+    socialInstagram: "OneTap באינסטגרם",
+    socialLinkedin: "OneTap בלינקדאין",
+    socialYoutube: "OneTap ביוטיוב",
   },
   cookie: {
     title: "עוגיות שיווקיות",
