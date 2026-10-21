@@ -27,6 +27,7 @@ export const LOGIN_URL = `${APP_ORIGIN}/login`;
 export const SIGNUP_URL = `${APP_ORIGIN}/register`;
 export const PRIVACY_URL = `${APP_ORIGIN}/privacy`;
 export const TERMS_URL = `${APP_ORIGIN}/terms`;
+export const COOKIES_URL = `${APP_ORIGIN}/cookies`;
 
 /** Official brand social profiles (footer + Organization sameAs). */
 export const SOCIAL_FACEBOOK_URL =
