@@ -38,6 +38,7 @@ export type ChromeCopy = {
     helpCenter: string;
     terms: string;
     privacy: string;
+    cookiePolicy: string;
     cookieSettings: string;
     rightsReserved: string;
     socialNav: string;
@@ -49,6 +50,7 @@ export type ChromeCopy = {
   cookie: {
     title: string;
     body: string;
+    policyLinkLabel: string;
     reject: string;
     accept: string;
   };
@@ -213,6 +215,7 @@ export const enChrome: ChromeCopy = {
     helpCenter: "Help Center",
     terms: "Terms",
     privacy: "Privacy",
+    cookiePolicy: "Cookie policy",
     cookieSettings: "Cookie settings",
     rightsReserved: "All rights reserved.",
     socialNav: "OneTap on social media",
@@ -222,8 +225,9 @@ export const enChrome: ChromeCopy = {
     socialYoutube: "OneTap on YouTube",
   },
   cookie: {
-    title: "Marketing cookies",
-    body: "We use Meta Pixel to measure ads on Facebook and Instagram after you click through to OneTap. Accept to allow this. Essential site cookies are not affected.",
+    title: "We value your privacy",
+    body: "We use essential cookies to keep the site working. With your consent, we also use marketing cookies, including the Meta Pixel, to measure the effectiveness of ads and to help improve our advertising. You can change your choice at any time via Cookie settings.",
+    policyLinkLabel: "Cookie policy",
     reject: "Reject",
     accept: "Accept",
   },
