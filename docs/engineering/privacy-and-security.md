@@ -8,8 +8,8 @@ Canonical compliance checklist: **`onetap-app`** → [`docs/compliance-and-secur
 |------|--------|
 | Third-party trackers | Meta Pixel when `NEXT_PUBLIC_META_PIXEL_ID` is set **and** the visitor accepts marketing cookies. No PostHog, GA4, or Vercel Analytics. |
 | Cookies | First-party `localStorage` key `onetap-consent-marketing`; Meta `_fbp` / `_fbc` only after accept. `sessionStorage` for blog scroll-spy and back-navigation UX. |
-| Cookie banner | Required before `fbevents.js`. Reject keeps the site usable with no Facebook script. |
-| Privacy / Terms | Footer links to app canonical pages via `NEXT_PUBLIC_MAIN_APP_URL` |
+| Cookie banner | Required before `fbevents.js`. Reject keeps the site usable with no Facebook script. Copy is privacy-first; banner links to the app Cookie Policy. |
+| Privacy / Terms / Cookies | Footer links to app canonical pages via `NEXT_PUBLIC_MAIN_APP_URL` (`/privacy`, `/terms`, `/cookies`). Cookie settings re-opens Accept / Reject when the pixel ID is set. |
 | Newsletter | Disabled until a real subscribe API exists |
 | Security headers | `next.config.ts` `headers()` + `src/lib/security/*` |
 | Public APIs | None (`src/app/api/**` dormant) |

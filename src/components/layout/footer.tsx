@@ -15,6 +15,7 @@ import { MarketingContainer } from "@/components/marketing/primitives";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome, getSite } from "@/content/get-content";
 import {
+  COOKIES_URL,
   PRIVACY_URL,
   SOCIAL_FACEBOOK_URL,
   SOCIAL_INSTAGRAM_URL,
@@ -52,6 +53,7 @@ export function Footer() {
       { name: chrome.footer.helpCenter, href: localizePath("/faq", locale) },
       { name: chrome.footer.terms, href: TERMS_URL, external: true as const },
       { name: chrome.footer.privacy, href: PRIVACY_URL, external: true as const },
+      { name: chrome.footer.cookiePolicy, href: COOKIES_URL, external: true as const },
     ],
   };
 
@@ -158,6 +160,14 @@ export function Footer() {
               className="hover:text-brand-turquoise transition-colors"
             >
               {chrome.footer.terms}
+            </AppOutboundLink>
+            <AppOutboundLink
+              href={COOKIES_URL}
+              placement={null}
+              target="_blank"
+              className="hover:text-brand-turquoise transition-colors"
+            >
+              {chrome.footer.cookiePolicy}
             </AppOutboundLink>
             {pixelId ? (
               <button

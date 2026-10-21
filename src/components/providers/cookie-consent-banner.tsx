@@ -1,10 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { getMetaPixelId, syncMetaPixelConsent } from "@/lib/meta-pixel";
+import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
 import { useMarketingConsent } from "@/components/providers/consent-provider";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome } from "@/content/get-content";
+import { COOKIES_URL } from "@/lib/constants";
+import { getMetaPixelId, syncMetaPixelConsent } from "@/lib/meta-pixel";
 
 export function CookieConsentBanner() {
   const pixelId = getMetaPixelId();
@@ -30,7 +32,15 @@ export function CookieConsentBanner() {
             {chrome.cookie.title}
           </p>
           <p id="cookie-consent-body" className="mt-1 text-sm text-brand-midnight/70">
-            {chrome.cookie.body}
+            {chrome.cookie.body}{" "}
+            <AppOutboundLink
+              href={COOKIES_URL}
+              placement={null}
+              target="_blank"
+              className="font-medium text-brand-midnight underline underline-offset-2 hover:text-brand-navy"
+            >
+              {chrome.cookie.policyLinkLabel}
+            </AppOutboundLink>
           </p>
         </div>
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
