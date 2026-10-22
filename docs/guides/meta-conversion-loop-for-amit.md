@@ -18,7 +18,7 @@ The ad is a hop. **Marketing** sees the click. **The app** sees the customer.
 | 5. **New account** | App | `CompleteRegistration` (browser + server once CAPI is on). Deduped to **one** event | **Primary optimization event** |
 | 6. **Paid plan** | App, via Lemon | `Purchase` (server only — checkout is off-site) | **Highest-value event** |
 
-Cookie **Reject** on marketing = no Facebook script. That is intended.
+Cookie **Dismiss** (X) on marketing = no Facebook script. That is intended.
 
 **Not tracked:** customer card sites (`card.onetap-card.com`), preview/dev deploys, login, agency “Contact us”.
 
@@ -76,7 +76,7 @@ You do not set this token on the marketing Vercel project.
 
 **Events Manager → Test events** (private window, production URLs):
 
-1. `https://onetap-card.com/?fbclid=AmitTest1` → **Reject** cookies → no `fbevents.js` in the browser network tab.
+1. `https://onetap-card.com/?fbclid=AmitTest1` → **Dismiss** (X) cookies → no `fbevents.js` in the browser network tab.
 2. Same URL → **Accept** → `PageView` (and `ViewContent` on home).
 3. Click **Get your card** → `InitiateCheckout`, and the app URL still contains `fbclid`.
 4. Register a **new** account → **one** `CompleteRegistration` (not two). After CAPI: source **Browser and Server**.

@@ -51,7 +51,7 @@ export type ChromeCopy = {
     title: string;
     body: string;
     policyLinkLabel: string;
-    reject: string;
+    dismiss: string;
     accept: string;
   };
   notFound: {
@@ -228,7 +228,7 @@ export const enChrome: ChromeCopy = {
     title: "We value your privacy",
     body: "We use essential cookies to keep the site working. With your consent, we also use marketing cookies, including the Meta Pixel, to measure the effectiveness of ads and to help improve our advertising. You can change your choice at any time via Cookie settings.",
     policyLinkLabel: "Cookie policy",
-    reject: "Reject",
+    dismiss: "Dismiss and reject marketing cookies",
     accept: "Accept",
   },
   notFound: {
