@@ -46,3 +46,6 @@ src/app/robots.ts, src/lib/seo/, docs/guides/marketing-seo-geo.md, .cursor/rules
 
 2026-09-15 — Signup-first CTAs (`/register`), fix home carousel app handoff + attribution, footer socials with Organization sameAs.
 src/lib/constants.ts, get-card-cta, solutions-grid, footer, json-ld, docs/plans/2026-09-15-cta-destinations-and-footer-social.md
+
+2026-10-22 — Cookie banner: replace Reject with dismiss X (still stores denied); Accept remains primary CTA.
+src/components/providers/cookie-consent-banner.tsx, src/content/{en,he}/chrome.ts, privacy/meta consent docs

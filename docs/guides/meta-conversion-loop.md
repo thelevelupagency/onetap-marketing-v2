@@ -66,7 +66,7 @@ Meta ad
 
 **Consent**
 
-- Marketing: first-party banner (Accept / Reject). Pixel stub loads immediately with `fbq('consent', 'revoke')`. Tracking (`grant` + PageView) starts on **Accept**. Refresh after Accept grants again from `localStorage`. Reject = site works, no events.
+- Marketing: first-party banner (Accept / dismiss X). Pixel stub loads immediately with `fbq('consent', 'revoke')`. Tracking (`grant` + PageView) starts on **Accept**. Refresh after Accept grants again from `localStorage`. Dismiss (X) stores reject = site works, no events.
 - App: **no** cookie banner. Pixel loads only for people who already have an account (Terms accepted) or at the moment of CompleteRegistration. Anonymous `/register` and `/create/basics` do **not** get a marketing PageView from the app.
 
 **Attribution**
@@ -142,7 +142,7 @@ Do this **after** production pixel + CAPI are verified. Until CAPI is live, do *
 ## Manual join check (when CAPI is live)
 
 1. Open the marketing site in a private window with `?fbclid=test123` (or a real ad click).
-2. **Reject** cookies → no `fbevents.js` in the network tab.
+2. **Dismiss** (X) cookies → no `fbevents.js` in the network tab.
 3. **Accept** → PageView fires.
 4. Click Get your card → `InitiateCheckout` and the app URL still has `fbclid`.
 5. Register a **new** account → Events Manager shows **one** CompleteRegistration.
