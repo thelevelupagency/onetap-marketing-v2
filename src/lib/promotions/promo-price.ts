@@ -3,21 +3,29 @@
  *
  * Lemon checkout totals use half-up rounding to the nearest cent:
  * `Math.round(listCents * (100 - percent) / 100)` for a percent discount,
- * and `max(0, listCents - amountCents)` for a fixed amount.
+ * and `max(0, listCents - fixedCents)` for a fixed amount.
  * Annual checkout is the yearly total (monthly-equivalent list × 12), then
  * the card shows that discounted yearly total and its per-month equivalent.
  */
 
 export type PromoDiscountPeriod = "monthly" | "annual" | "both";
-export type PromoPlanId = "free" | "pro" | "team";
+export type PromoPlanId = "pro" | "team";
+/** Lemon discount duration. Does not change which checkout interval is eligible. */
+export type PromoPriceDuration = "once" | "repeating" | "forever";
+/** Billing intervals on the public payload. The app says `yearly`, not `annual`. */
+export type PromoApiPeriod = "monthly" | "yearly";
 
+/**
+ * Normalized from the public `price` object.
+ * `period` collapses `eligiblePeriods` for the marketing cards.
+ */
 export type PublicPromoDiscount = {
-  type: "percent" | "amount";
+  type: "percent" | "fixed";
   percent: number | null;
-  amountCents: number | null;
-  currency: "USD";
-  period: PromoDiscountPeriod;
+  fixedCents: number | null;
+  duration: PromoPriceDuration;
   plans: PromoPlanId[];
+  period: PromoDiscountPeriod;
 };
 
 export type PromoPriceQuote = {
@@ -34,7 +42,7 @@ type PricedPlan = {
   annualPrice: number | null;
 };
 
-const PLAN_IDS = new Set<PromoPlanId>(["free", "pro", "team"]);
+const PLAN_IDS = new Set<PromoPlanId>(["pro", "team"]);
 
 export function dollarsToCents(dollars: number): number {
   return Math.round(dollars * 100);
@@ -61,7 +69,6 @@ export function discountAppliesTo(
   period: "monthly" | "annual",
 ): discount is PublicPromoDiscount {
   if (!discount) return false;
-  if (discount.currency !== "USD") return false;
   if (!PLAN_IDS.has(planId as PromoPlanId)) return false;
   if (!discount.plans.includes(planId as PromoPlanId)) return false;
   if (discount.period !== "both" && discount.period !== period) return false;
@@ -81,7 +88,7 @@ export function applyDiscountToCents(
     }
     return Math.max(0, Math.round((listCents * (100 - percent)) / 100));
   }
-  const amount = discount.amountCents;
+  const amount = discount.fixedCents;
   if (amount == null || !Number.isInteger(amount) || amount <= 0) return null;
   return Math.max(0, listCents - amount);
 }

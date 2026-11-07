@@ -52,3 +52,6 @@ src/components/providers/cookie-consent-banner.tsx, src/content/{en,he}/chrome.t
 
 2026-11-07 — Promo strip renders on blog layouts, internal links keep a validated slug, and pricing shows the live discount beside the list price.
 src/lib/promotions/, src/middleware.ts, src/app/[locale]/blog/layout.tsx, pricing plan cards
+
+2026-11-07 — Promo prices come from the public promo payload's price object, not a /display route.
+src/lib/promotions/, docs/engineering/public-promo-display.md

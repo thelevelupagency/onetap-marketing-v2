@@ -22,7 +22,7 @@ import {
   signupPromoSlug,
 } from "../src/lib/promotions/promo-navigation";
 import { quotePromoPrice, type PublicPromoDiscount } from "../src/lib/promotions/promo-price";
-import { parsePublicPromoDiscount } from "../src/lib/promotions/public-promo-display";
+import { parsePublicPromoPrice } from "../src/lib/promotions/public-promo-display";
 
 describe("sanitizePromoSlug", () => {
   it("lowercases and accepts kebab slugs", () => {
@@ -283,8 +283,8 @@ describe("promo alias navigation", () => {
 const percentBoth: PublicPromoDiscount = {
   type: "percent",
   percent: 40,
-  amountCents: null,
-  currency: "USD",
+  fixedCents: null,
+  duration: "forever",
   period: "both",
   plans: ["pro", "team"],
 };
@@ -313,10 +313,10 @@ describe("promo display prices", () => {
 
   it("applies a fixed amount to the checkout total", () => {
     const amount: PublicPromoDiscount = {
-      type: "amount",
+      type: "fixed",
       percent: null,
-      amountCents: 480,
-      currency: "USD",
+      fixedCents: 480,
+      duration: "once",
       period: "monthly",
       plans: ["pro"],
     };
@@ -324,32 +324,55 @@ describe("promo display prices", () => {
     assert.equal(monthly?.currentCents, 720);
   });
 
-  it("rejects a payload that contains a coupon code", () => {
+  it("reads price from the public promo payload and rejects a code", () => {
     assert.equal(
-      parsePublicPromoDiscount({
-        discount: {
-          type: "percent",
+      parsePublicPromoPrice({
+        campaign: { slug: "bf-test" },
+        price: {
           percent: 40,
-          amountCents: null,
-          currency: "USD",
-          period: "both",
-          plans: ["pro"],
+          fixedCents: null,
+          duration: "forever",
+          eligiblePlans: ["pro"],
+          eligiblePeriods: ["monthly", "yearly"],
           coupon: "BFTEST",
         },
       }),
       null,
     );
-    const parsed = parsePublicPromoDiscount({
-      discount: {
-        type: "percent",
+    const parsed = parsePublicPromoPrice({
+      campaign: { slug: "bf-test" },
+      price: {
         percent: 40,
-        amountCents: null,
-        currency: "USD",
-        period: "both",
-        plans: ["pro", "team"],
+        fixedCents: null,
+        duration: "forever",
+        eligiblePlans: ["pro", "team"],
+        eligiblePeriods: ["monthly", "yearly"],
       },
     });
+    assert.equal(parsed?.type, "percent");
     assert.equal(parsed?.percent, 40);
+    assert.equal(parsed?.fixedCents, null);
+    assert.equal(parsed?.duration, "forever");
+    assert.equal(parsed?.period, "both");
+    assert.deepEqual(parsed?.plans, ["pro", "team"]);
     assert.equal(JSON.stringify(parsed).includes("BFTEST"), false);
+  });
+
+  it("treats a missing price as list price and maps yearly-only eligibility", () => {
+    assert.equal(parsePublicPromoPrice({ campaign: { slug: "bf-test" }, price: null }), null);
+    const yearly = parsePublicPromoPrice({
+      price: {
+        percent: null,
+        fixedCents: 500,
+        duration: "repeating",
+        eligiblePlans: ["team"],
+        eligiblePeriods: ["yearly"],
+      },
+    });
+    assert.equal(yearly?.type, "fixed");
+    assert.equal(yearly?.fixedCents, 500);
+    assert.equal(yearly?.period, "annual");
+    assert.equal(quotePromoPrice(pro, "monthly", yearly), null);
+    assert.equal(quotePromoPrice({ id: "team", monthlyPrice: 35, annualPrice: 28 }, "annual", yearly)?.yearlyCheckoutCents, 33600 - 500);
   });
 });

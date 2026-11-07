@@ -1,13 +1,14 @@
-import { APP_ORIGIN, sanitizePromoSlug } from "@/lib/constants";
 import {
+  type PromoApiPeriod,
   type PromoDiscountPeriod,
   type PromoPlanId,
+  type PromoPriceDuration,
   type PublicPromoDiscount,
 } from "@/lib/promotions/promo-price";
 
-const FETCH_TIMEOUT_MS = 2500;
-const PLAN_IDS = new Set<PromoPlanId>(["free", "pro", "team"]);
-const PERIODS = new Set<PromoDiscountPeriod>(["monthly", "annual", "both"]);
+const PLAN_IDS = new Set<PromoPlanId>(["pro", "team"]);
+const API_PERIODS = new Set<PromoApiPeriod>(["monthly", "yearly"]);
+const DURATIONS = new Set<PromoPriceDuration>(["once", "repeating", "forever"]);
 const FORBIDDEN_KEYS = new Set([
   "code",
   "coupon",
@@ -18,113 +19,89 @@ const FORBIDDEN_KEYS = new Set([
 ]);
 
 /**
- * Contract assumed for the onetap-app public promo display route
- * (parallel app PR; not required for the strip copy endpoint).
- *
- * `GET {APP_ORIGIN}/api/billing/promotions/public/display?promo={publicSlug}`
- *
- * ```json
- * {
- *   "discount": {
- *     "type": "percent",
- *     "percent": 40,
- *     "amountCents": null,
- *     "currency": "USD",
- *     "period": "both",
- *     "plans": ["pro", "team"]
- *   }
- * }
- * ```
- *
- * `type: "amount"` uses integer `amountCents` (minor units) and `percent: null`.
- * `period` is `monthly`, `annual`, or `both` — which checkout interval the
- * discount changes. `plans` lists eligible marketing plan ids.
- * `discount: null` means the campaign has no price change.
- *
- * The body must not contain a coupon, Lemon code, or any forbidden key.
- * Non-200, timeout, or any unexpected shape → null (list price, no badge).
- * Percent math is half-up to the cent so the card matches Lemon checkout.
+ * `price` on `GET {APP}/api/billing/promotions/public?promo={slug}`.
  * See `docs/engineering/public-promo-display.md`.
+ * A missing, null, or unexpected `price` returns null so cards keep the list price.
  */
-export async function fetchPublicPromoDiscount(
-  promoSlug: string | null,
-): Promise<PublicPromoDiscount | null> {
-  const slug = sanitizePromoSlug(promoSlug);
-  if (!slug) return null;
-  const url = new URL(`${APP_ORIGIN}/api/billing/promotions/public/display`);
-  url.searchParams.set("promo", slug);
-
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => reject(new Error("public_promo_display_timeout")), FETCH_TIMEOUT_MS);
-  });
-  try {
-    const response = await Promise.race([
-      fetch(url.toString(), {
-        method: "GET",
-        headers: { Accept: "application/json" },
-        next: { revalidate: 60 },
-      }),
-      timeout,
-    ]);
-    if (!response.ok) return null;
-    const body = (await response.json()) as unknown;
-    return parsePublicPromoDiscount(body);
-  } catch {
-    return null;
-  } finally {
-    if (timer) clearTimeout(timer);
-  }
-}
-
-export function parsePublicPromoDiscount(body: unknown): PublicPromoDiscount | null {
+export function parsePublicPromoPrice(body: unknown): PublicPromoDiscount | null {
   if (!body || typeof body !== "object") return null;
-  if (hasForbiddenKey(body)) return null;
-  const discount = (body as { discount?: unknown }).discount;
-  if (discount == null) return null;
-  if (typeof discount !== "object") return null;
-  if (hasForbiddenKey(discount)) return null;
-  const record = discount as Record<string, unknown>;
-  const type = record.type;
-  const currency = record.currency;
-  const period = record.period;
-  if (type !== "percent" && type !== "amount") return null;
-  if (currency !== "USD") return null;
-  if (typeof period !== "string" || !PERIODS.has(period as PromoDiscountPeriod)) return null;
-  if (!Array.isArray(record.plans) || record.plans.length === 0) return null;
-  const plans: PromoPlanId[] = [];
-  for (const plan of record.plans) {
-    if (typeof plan !== "string" || !PLAN_IDS.has(plan as PromoPlanId)) return null;
-    plans.push(plan as PromoPlanId);
+  const price = (body as { price?: unknown }).price;
+  if (price == null) return null;
+  if (typeof price !== "object" || Array.isArray(price)) return null;
+  if (hasForbiddenKey(price)) return null;
+
+  const record = price as Record<string, unknown>;
+  const duration = record.duration;
+  if (typeof duration !== "string" || !DURATIONS.has(duration as PromoPriceDuration)) {
+    return null;
   }
+
+  const plans = readPlans(record.eligiblePlans);
+  const apiPeriods = readPeriods(record.eligiblePeriods);
+  if (!plans || !apiPeriods) return null;
+  const period = collapsePeriods(apiPeriods);
+  if (!period) return null;
+
   const percent = record.percent;
-  const amountCents = record.amountCents;
-  if (type === "percent") {
+  const fixedCents = record.fixedCents;
+  const percentSet = percent != null;
+  const fixedSet = fixedCents != null;
+  if (percentSet === fixedSet) return null;
+
+  if (percentSet) {
     if (typeof percent !== "number" || !Number.isFinite(percent) || percent <= 0 || percent > 100) {
       return null;
     }
-    if (amountCents != null) return null;
     return {
-      type,
+      type: "percent",
       percent,
-      amountCents: null,
-      currency: "USD",
-      period: period as PromoDiscountPeriod,
+      fixedCents: null,
+      duration: duration as PromoPriceDuration,
       plans,
+      period,
     };
   }
-  if (typeof amountCents !== "number" || !Number.isInteger(amountCents) || amountCents <= 0) {
+
+  if (typeof fixedCents !== "number" || !Number.isInteger(fixedCents) || fixedCents <= 0) {
     return null;
   }
-  if (percent != null) return null;
   return {
-    type,
+    type: "fixed",
     percent: null,
-    amountCents,
-    currency: "USD",
-    period: period as PromoDiscountPeriod,
+    fixedCents,
+    duration: duration as PromoPriceDuration,
     plans,
+    period,
   };
+}
+
+function readPlans(value: unknown): PromoPlanId[] | null {
+  if (!Array.isArray(value) || value.length === 0) return null;
+  const plans: PromoPlanId[] = [];
+  for (const plan of value) {
+    if (typeof plan !== "string" || !PLAN_IDS.has(plan as PromoPlanId)) return null;
+    if (!plans.includes(plan as PromoPlanId)) plans.push(plan as PromoPlanId);
+  }
+  return plans;
+}
+
+function readPeriods(value: unknown): PromoApiPeriod[] | null {
+  if (!Array.isArray(value) || value.length === 0) return null;
+  const periods: PromoApiPeriod[] = [];
+  for (const period of value) {
+    if (typeof period !== "string" || !API_PERIODS.has(period as PromoApiPeriod)) return null;
+    if (!periods.includes(period as PromoApiPeriod)) periods.push(period as PromoApiPeriod);
+  }
+  return periods;
+}
+
+function collapsePeriods(periods: PromoApiPeriod[]): PromoDiscountPeriod | null {
+  const monthly = periods.includes("monthly");
+  const yearly = periods.includes("yearly");
+  if (monthly && yearly) return "both";
+  if (monthly) return "monthly";
+  if (yearly) return "annual";
+  return null;
 }
 
 function hasForbiddenKey(value: unknown): boolean {

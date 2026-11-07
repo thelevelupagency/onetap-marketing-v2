@@ -1,5 +1,7 @@
 import { APP_ORIGIN, sanitizePromoSlug } from "@/lib/constants";
 import type { Locale } from "@/lib/i18n/config";
+import type { PublicPromoDiscount } from "@/lib/promotions/promo-price";
+import { parsePublicPromoPrice } from "@/lib/promotions/public-promo-display";
 
 export type PublicMarketingPromoCopy = {
   payNow: Record<Locale, string>;
@@ -15,20 +17,24 @@ export type PublicMarketingPromoCampaign = {
   copy: PublicMarketingPromoCopy;
 };
 
-type PublicPromoResponse = {
+export type PublicPromoPayload = {
   campaign: PublicMarketingPromoCampaign | null;
+  discount: PublicPromoDiscount | null;
 };
 
 const FETCH_TIMEOUT_MS = 2500;
 
 /**
- * Server-side fetch of the app public promotions payload.
- * Fail closed: any non-200, timeout, or invalid body → null.
+ * One read of `GET {APP}/api/billing/promotions/public`.
+ * `campaign` is the strip copy. `discount` comes from the sibling `price` object.
+ * A bad or missing `price` leaves `discount` null (list price) and does not drop the strip.
+ * Fail closed on transport errors: both are null.
  */
-export async function fetchPublicPromoCampaign(
+export async function fetchPublicPromoPayload(
   promoSlug: string | null,
   options?: { revalidate?: number | false },
-): Promise<PublicMarketingPromoCampaign | null> {
+): Promise<PublicPromoPayload> {
+  const empty: PublicPromoPayload = { campaign: null, discount: null };
   const slug = sanitizePromoSlug(promoSlug);
   const url = new URL(`${APP_ORIGIN}/api/billing/promotions/public`);
   if (slug) {
@@ -52,15 +58,30 @@ export async function fetchPublicPromoCampaign(
       }),
       timeout,
     ]);
-    if (!response.ok) return null;
-    const body = (await response.json()) as PublicPromoResponse;
-    if (!body || typeof body !== "object") return null;
-    return sanitizePublicCampaign(body.campaign);
+    if (!response.ok) return empty;
+    const body = (await response.json()) as unknown;
+    if (!body || typeof body !== "object") return empty;
+    const campaign = sanitizePublicCampaign(
+      (body as { campaign?: PublicMarketingPromoCampaign | null }).campaign,
+    );
+    return {
+      campaign,
+      discount: campaign ? parsePublicPromoPrice(body) : null,
+    };
   } catch {
-    return null;
+    return empty;
   } finally {
     if (timer) clearTimeout(timer);
   }
+}
+
+/** Campaign half of {@link fetchPublicPromoPayload}. Used when only the slug is needed. */
+export async function fetchPublicPromoCampaign(
+  promoSlug: string | null,
+  options?: { revalidate?: number | false },
+): Promise<PublicMarketingPromoCampaign | null> {
+  const payload = await fetchPublicPromoPayload(promoSlug, options);
+  return payload.campaign;
 }
 
 /** Allowlist fields only — never pass through unexpected keys (e.g. a Lemon code). */

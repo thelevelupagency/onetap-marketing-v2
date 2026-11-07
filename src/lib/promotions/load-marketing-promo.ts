@@ -6,10 +6,9 @@ import {
   sanitizePromoSlug,
 } from "@/lib/constants";
 import {
-  fetchPublicPromoCampaign,
+  fetchPublicPromoPayload,
   selectActiveCampaign,
 } from "@/lib/promotions/public-promo";
-import { fetchPublicPromoDiscount } from "@/lib/promotions/public-promo-display";
 import {
   EMPTY_MARKETING_PROMO,
   type MarketingPromoState,
@@ -25,13 +24,12 @@ export const loadMarketingPromo = cache(async (): Promise<MarketingPromoState> =
     return EMPTY_MARKETING_PROMO;
   }
   const requested = sanitizePromoSlug(headerStore.get(PROMO_SLUG_HEADER));
-  const fetched = await fetchPublicPromoCampaign(requested);
-  const campaign = selectActiveCampaign(fetched, requested);
+  const payload = await fetchPublicPromoPayload(requested);
+  const campaign = selectActiveCampaign(payload.campaign, requested);
   if (!campaign) return EMPTY_MARKETING_PROMO;
-  const discount = await fetchPublicPromoDiscount(campaign.slug);
   return {
     campaign,
-    discount,
+    discount: payload.discount,
     forwardSlug: campaign.slug,
   };
 });
