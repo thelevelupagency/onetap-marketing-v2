@@ -329,7 +329,9 @@
     /* Marketing layout rhythm */
     --marketing-gutter-x: calc(var(--spacing) * 4);
     --marketing-gutter-x-md: calc(var(--spacing) * 8);
-    --marketing-page-top: calc(var(--spacing) * 32);
+    /* Extra offset when the promo strip is mounted (`:has` below). */
+    --marketing-promo-strip: 0px;
+    --marketing-page-top: calc(var(--spacing) * 32 + var(--marketing-promo-strip));
     --marketing-page-bottom: calc(var(--spacing) * 24);
     --marketing-section-y: calc(var(--spacing) * 24);
     --marketing-section-y-compact: calc(var(--spacing) * 16);
@@ -344,6 +346,11 @@
     --marketing-prose-gap: calc(var(--spacing) * 4);
     --marketing-prose-section-gap: calc(var(--spacing) * 10);
     --marketing-prose-list-gap: calc(var(--spacing) * 1);
+  }
+
+  /* Promo strip under the fixed nav — grows page-top offset when mounted. */
+  :root:has([data-marketing-promo-strip]) {
+    --marketing-promo-strip: 2.5rem;
   }
 
   html,

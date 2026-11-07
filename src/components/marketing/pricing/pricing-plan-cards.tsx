@@ -7,8 +7,13 @@ import { getPricing, getChrome } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
 import { MarketingPrimaryButton } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
+import { useMarketingPromoCampaign } from "@/components/providers/marketing-promo-provider";
 import { CardReveal, MarketingStaggerGrid } from "@/components/marketing/motion";
 import { microTransition, useMotionConfig, type MotionTokenSet } from "@/lib/motion";
+import {
+  resolvePriceBadgePhrase,
+  resolveStripSentence,
+} from "@/lib/promotions/public-promo";
 import { type as typography } from "@/lib/typography";
 import type { MetaCtaPlacement } from "@/lib/meta-pixel";
 
@@ -28,18 +33,22 @@ function PlanPriceBlock({
   planId,
   tokens,
   locale,
+  promoPriceBadge,
 }: {
   isAnnual: boolean;
   isPopular: boolean;
   planId: string;
   tokens: MotionTokenSet;
   locale: Locale;
+  promoPriceBadge: string | null;
 }) {
   const pricing = getPricing(locale);
   const chrome = getChrome(locale);
   const period = isAnnual ? "annual" : "monthly";
   const plan = pricing.plans.find((p) => p.id === planId)!;
   const { current, previous, billedNote } = pricing.getPlanPriceDisplay(plan, period);
+  const showPromoBadge =
+    Boolean(promoPriceBadge) && (planId === "pro" || planId === "team");
 
   return (
     <AnimatePresence mode="wait">
@@ -74,6 +83,18 @@ function PlanPriceBlock({
           <span className={isPopular ? "text-brand-cream/50" : "text-brand-midnight/50"}>
             {chrome.pricingUi.perMonth}
           </span>
+          {showPromoBadge ? (
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                isPopular
+                  ? "bg-brand-turquoise text-brand-midnight"
+                  : "bg-brand-navy text-brand-cream",
+              )}
+            >
+              {promoPriceBadge}
+            </span>
+          ) : null}
         </div>
         {billedNote ? (
           <p
@@ -100,6 +121,11 @@ export function PricingPlanCards({
   const { tokens } = useMotionConfig();
   const pricing = getPricing(locale);
   const chrome = getChrome(locale);
+  const promoCampaign = useMarketingPromoCampaign();
+  // Plan fail-closed: blank payNow sentence hides strip and badge together.
+  const promoPriceBadge = resolveStripSentence(promoCampaign, locale)
+    ? resolvePriceBadgePhrase(promoCampaign, locale)
+    : null;
   const nonPopularCardBg =
     surface === "on-white"
       ? "bg-brand-cream border border-brand-midnight/10"
@@ -147,6 +173,7 @@ export function PricingPlanCards({
               planId={plan.id}
               tokens={tokens}
               locale={locale}
+              promoPriceBadge={promoPriceBadge}
             />
             <ul className="mb-0 flex-1 space-y-3">
               {plan.features.map((f) => (
