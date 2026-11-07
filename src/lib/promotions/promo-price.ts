@@ -70,6 +70,36 @@ export function formatUsdAmount(cents: number): string {
   return formatUsdFromCents(cents).replace(/^-?\$/, "");
 }
 
+export type PromoDurationCopy = {
+  onceMonthly: string;
+  onceYearly: string;
+  /** `{n}` is the repeating month count. */
+  repeatingMonths: string;
+  forever: string;
+};
+
+/**
+ * Sentence under a struck promo price.
+ * `once` follows the billing period on screen. `repeating` uses
+ * `durationInMonths`. `forever` is the ongoing sentence.
+ * `eligiblePeriods` is not part of this sentence.
+ */
+export function promoDurationLabel(
+  discount: Pick<PublicPromoDiscount, "duration" | "durationInMonths">,
+  billingPeriod: "monthly" | "annual",
+  copy: PromoDurationCopy,
+): string {
+  if (discount.duration === "forever") return copy.forever;
+  if (discount.duration === "repeating") {
+    const months = discount.durationInMonths;
+    if (months === 1) return copy.onceMonthly;
+    if (months != null && months > 1) {
+      return copy.repeatingMonths.replace("{n}", String(months));
+    }
+  }
+  return billingPeriod === "annual" ? copy.onceYearly : copy.onceMonthly;
+}
+
 export function discountAppliesTo(
   discount: PublicPromoDiscount | null,
   planId: string,

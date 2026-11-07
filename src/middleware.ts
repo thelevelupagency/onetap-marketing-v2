@@ -12,18 +12,21 @@ import {
   PROMO_SLUG_HEADER,
 } from "@/lib/constants";
 import { planPromoNavigation, readPromoAlias } from "@/lib/promotions/promo-navigation";
-import { fetchPublicPromoCampaign, selectActiveCampaign } from "@/lib/promotions/public-promo";
+import { readPublicPromo, slugAfterPublicPromoRead } from "@/lib/promotions/public-promo";
 
 const PUBLIC_FILE = /\.[^/]+$/;
 
+/**
+ * Confirm `?promo=` / `?coupon=` against the public promo route.
+ * A timeout, network error, 408, 429, or 5xx keeps the sanitized slug and
+ * does not count as unknown/expired. Only a completed read with no current
+ * matching campaign returns null, which strips the param and sets the reject cookie.
+ */
 async function validatedSlugFor(request: NextRequest): Promise<string | null> {
   const alias = readPromoAlias(request.nextUrl.searchParams);
   if (alias.kind === "none" || !alias.slug) return null;
-  const campaign = selectActiveCampaign(
-    await fetchPublicPromoCampaign(alias.slug, { revalidate: false }),
-    alias.slug,
-  );
-  return campaign?.slug ?? null;
+  const read = await readPublicPromo(alias.slug, { revalidate: false });
+  return slugAfterPublicPromoRead(alias.slug, read);
 }
 
 function applyRequestHeaders(

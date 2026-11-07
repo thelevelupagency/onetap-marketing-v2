@@ -13,8 +13,9 @@ import { microTransition, useMotionConfig, type MotionTokenSet } from "@/lib/mot
 import {
   formatUsdAmount,
   formatUsdFromCents,
+  promoDurationLabel,
   quotePromoPrice,
-  type PromoDiscountPeriod,
+  type PublicPromoDiscount,
 } from "@/lib/promotions/promo-price";
 import type { ChromeCopy } from "@/content/en/chrome";
 import { type as typography } from "@/lib/typography";
@@ -31,12 +32,16 @@ interface PricingPlanCardsProps {
 }
 
 function discountPeriodLabel(
-  period: PromoDiscountPeriod,
+  discount: PublicPromoDiscount,
+  billingPeriod: "monthly" | "annual",
   pricingUi: ChromeCopy["pricingUi"],
 ): string {
-  if (period === "monthly") return pricingUi.discountPeriodMonthly;
-  if (period === "annual") return pricingUi.discountPeriodAnnual;
-  return pricingUi.discountPeriodBoth;
+  return promoDurationLabel(discount, billingPeriod, {
+    onceMonthly: pricingUi.discountOnceMonthly,
+    onceYearly: pricingUi.discountOnceYearly,
+    repeatingMonths: pricingUi.discountRepeatingMonths,
+    forever: pricingUi.discountForever,
+  });
 }
 
 function PlanPriceBlock({
@@ -62,7 +67,7 @@ function PlanPriceBlock({
   const muted = isPopular ? "text-brand-cream/50" : "text-brand-midnight/50";
   const noteClass = isPopular ? "text-brand-turquoise" : "text-brand-midnight/50";
 
-  if (quote) {
+  if (quote && discount) {
     const currentLabel = formatUsdAmount(quote.currentCents);
     const previousLabel = formatUsdAmount(quote.previousCents);
     return (
@@ -91,7 +96,7 @@ function PlanPriceBlock({
             <span className={muted}>{chrome.pricingUi.perMonth}</span>
           </div>
           <p className={cn("mt-1 text-sm", noteClass)}>
-            {discountPeriodLabel(quote.period, chrome.pricingUi)}
+            {discountPeriodLabel(discount, period, chrome.pricingUi)}
           </p>
           {quote.yearlyCheckoutCents != null && quote.previousYearlyCents != null ? (
             <p className={cn("mt-1 text-sm", noteClass)}>

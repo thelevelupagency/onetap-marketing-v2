@@ -70,4 +70,18 @@ The list price is the Lemon variant charge: the monthly price, or the yearly tot
 
 The payable total is `max(0, listCents - off)`. When it equals the list price, the card shows no strike. The yearly card shows that checkout total and `round(yearlyCents / 12)` per month.
 
-`eligiblePeriods` decides which toggle is rewritten. `429` and `503` (and any other non-200 or transport failure) leave the list price. A `200` with `price: null` still shows the strip when `campaign` is valid.
+`eligiblePeriods` decides which toggle is rewritten. It does not choose the sentence under the struck price. That sentence comes from `duration` and, for a repeating discount, `durationInMonths`, plus the billing period on screen:
+
+| `duration` | Monthly card | Yearly card |
+| --- | --- | --- |
+| `once` | Discounted for the first month / הנחה לחודש הראשון | Discounted for the first year / הנחה לשנה הראשונה |
+| `repeating` | Discounted for the first N months / הנחה ל-N החודשים הראשונים | Same. N is `durationInMonths`. One month uses the first-month sentence. |
+| `forever` | Ongoing discount / הנחה מתמשכת | Same |
+
+`429` and `503` (and any other non-200 or transport failure) leave the list price and hide the strip and badge. A `200` with `price: null` still shows the strip when `campaign` is valid.
+
+## Slug check
+
+Middleware confirms `?promo=` (and the `?coupon=` alias) with the same route, `cache: no-store`, and a 5 second timeout. A timeout, a network error, HTTP 408, HTTP 429, or any HTTP 5xx keeps the sanitized slug on the URL and on the request header, and does not set `onetap-promo-reject`. The page then reads the campaign again. If that read also fails, cards stay on the list price with no badge and no strip, and the slug remains so a refresh can retry.
+
+Only a completed response that is unknown or expired strips the param and sets the reject cookie: HTTP 200 with `campaign: null`, a campaign whose `endsAt` has passed, or a campaign slug that does not match the alias. A locally invalid alias (not a kebab slug) is stripped the same way, without a fetch. The coupon code itself is never written into the page or into an outbound URL.
