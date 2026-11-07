@@ -4,6 +4,7 @@ import {
   type PromoPlanId,
   type PromoPriceDuration,
   type PublicPromoDiscount,
+  type PublicPromoPriceDisplay,
 } from "@/lib/promotions/promo-price";
 
 const PLAN_IDS = new Set<PromoPlanId>(["pro", "team"]);
@@ -19,9 +20,11 @@ const FORBIDDEN_KEYS = new Set([
 ]);
 
 /**
- * `price` on `GET {APP}/api/billing/promotions/public?promo={slug}`.
- * See `docs/engineering/public-promo-display.md`.
- * A missing, null, or unexpected `price` returns null so cards keep the list price.
+ * Top-level `price` on `GET {APP}/api/billing/promotions/public?promo={slug}`.
+ * Matches onetap-app `PublicPromoPriceDisplay`. See
+ * `docs/engineering/public-promo-display.md`.
+ * Missing, null, repeating-without-months, or any other unexpected shape
+ * returns null so cards keep the list price.
  */
 export function parsePublicPromoPrice(body: unknown): PublicPromoDiscount | null {
   if (!body || typeof body !== "object") return null;
@@ -35,44 +38,47 @@ export function parsePublicPromoPrice(body: unknown): PublicPromoDiscount | null
   if (typeof duration !== "string" || !DURATIONS.has(duration as PromoPriceDuration)) {
     return null;
   }
-
-  const plans = readPlans(record.eligiblePlans);
-  const apiPeriods = readPeriods(record.eligiblePeriods);
-  if (!plans || !apiPeriods) return null;
-  const period = collapsePeriods(apiPeriods);
-  if (!period) return null;
-
-  const percent = record.percent;
-  const fixedCents = record.fixedCents;
-  const percentSet = percent != null;
-  const fixedSet = fixedCents != null;
-  if (percentSet === fixedSet) return null;
-
-  if (percentSet) {
-    if (typeof percent !== "number" || !Number.isFinite(percent) || percent <= 0 || percent > 100) {
-      return null;
-    }
-    return {
-      type: "percent",
-      percent,
-      fixedCents: null,
-      duration: duration as PromoPriceDuration,
-      plans,
-      period,
-    };
-  }
-
-  if (typeof fixedCents !== "number" || !Number.isInteger(fixedCents) || fixedCents <= 0) {
+  const durationKind = duration as PromoPriceDuration;
+  const durationInMonths = record.durationInMonths;
+  if (durationKind === "repeating") {
+    if (durationInMonths == null) return null;
+    if (!isPositiveInt(durationInMonths)) return null;
+  } else if (durationInMonths !== null) {
     return null;
   }
-  return {
-    type: "fixed",
-    percent: null,
-    fixedCents,
-    duration: duration as PromoPriceDuration,
-    plans,
-    period,
+
+  const eligiblePlans = readPlans(record.eligiblePlans);
+  const eligiblePeriods = readPeriods(record.eligiblePeriods);
+  if (!eligiblePlans || !eligiblePeriods) return null;
+  const period = collapsePeriods(eligiblePeriods);
+  if (!period) return null;
+
+  const discount = readDiscount(record.discount);
+  if (!discount) return null;
+
+  const display: PublicPromoPriceDisplay = {
+    discount,
+    duration: durationKind,
+    durationInMonths: durationKind === "repeating" ? (durationInMonths as number) : null,
+    eligiblePlans,
+    eligiblePeriods,
   };
+  return { ...display, period };
+}
+
+function readDiscount(value: unknown): PublicPromoPriceDisplay["discount"] | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  if (hasForbiddenKey(value)) return null;
+  const record = value as Record<string, unknown>;
+  if (record.kind === "percent") {
+    if (typeof record.percent !== "number" || !Number.isFinite(record.percent)) return null;
+    return { kind: "percent", percent: record.percent };
+  }
+  if (record.kind === "fixed") {
+    if (!isNonNegativeInt(record.amountCents)) return null;
+    return { kind: "fixed", amountCents: record.amountCents };
+  }
+  return null;
 }
 
 function readPlans(value: unknown): PromoPlanId[] | null {
@@ -102,6 +108,14 @@ function collapsePeriods(periods: PromoApiPeriod[]): PromoDiscountPeriod | null 
   if (monthly) return "monthly";
   if (yearly) return "annual";
   return null;
+}
+
+function isPositiveInt(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value > 0;
+}
+
+function isNonNegativeInt(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0;
 }
 
 function hasForbiddenKey(value: unknown): boolean {

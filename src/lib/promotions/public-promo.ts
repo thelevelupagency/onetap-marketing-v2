@@ -25,6 +25,27 @@ export type PublicPromoPayload = {
 const FETCH_TIMEOUT_MS = 2500;
 
 /**
+ * 429 and 503, and any other non-200, leave both campaign and price empty
+ * so plan cards keep the list price. A 200 with `price: null` still returns
+ * the campaign (strip) and no rewritten price.
+ */
+export function publicPromoPayloadFromHttp(
+  status: number,
+  body: unknown,
+): PublicPromoPayload {
+  const empty: PublicPromoPayload = { campaign: null, discount: null };
+  if (status === 429 || status === 503 || status !== 200) return empty;
+  if (!body || typeof body !== "object") return empty;
+  const campaign = sanitizePublicCampaign(
+    (body as { campaign?: PublicMarketingPromoCampaign | null }).campaign,
+  );
+  return {
+    campaign,
+    discount: campaign ? parsePublicPromoPrice(body) : null,
+  };
+}
+
+/**
  * One read of `GET {APP}/api/billing/promotions/public`.
  * `campaign` is the strip copy. `discount` comes from the sibling `price` object.
  * A bad or missing `price` leaves `discount` null (list price) and does not drop the strip.
@@ -58,16 +79,8 @@ export async function fetchPublicPromoPayload(
       }),
       timeout,
     ]);
-    if (!response.ok) return empty;
-    const body = (await response.json()) as unknown;
-    if (!body || typeof body !== "object") return empty;
-    const campaign = sanitizePublicCampaign(
-      (body as { campaign?: PublicMarketingPromoCampaign | null }).campaign,
-    );
-    return {
-      campaign,
-      discount: campaign ? parsePublicPromoPrice(body) : null,
-    };
+    const body = response.ok ? ((await response.json()) as unknown) : null;
+    return publicPromoPayloadFromHttp(response.status, body);
   } catch {
     return empty;
   } finally {

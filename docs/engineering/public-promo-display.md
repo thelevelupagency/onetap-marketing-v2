@@ -2,7 +2,7 @@
 
 Marketing reads the discount from the same public promo route as the strip. There is no `/display` path. Until `price` is present and valid, plan cards keep the list price.
 
-Source: onetap-app `GET /api/billing/promotions/public` (PR 412).
+Source: onetap-app `src/app/api/billing/promotions/public/route.ts` and `src/slices/billing/domain/promoCheckoutPrice.ts` (`PublicPromoPriceDisplay`, PR 412).
 
 ## Request
 
@@ -12,7 +12,7 @@ Source: onetap-app `GET /api/billing/promotions/public` (PR 412).
 
 ## Response
 
-`200` JSON. `campaign` is the strip copy. `price` is the checkout discount, or `null` when the campaign does not change the price.
+`200` JSON. `campaign` is the strip copy. `price` is top-level and may be `null`.
 
 ```json
 {
@@ -28,46 +28,46 @@ Source: onetap-app `GET /api/billing/promotions/public` (PR 412).
     }
   },
   "price": {
-    "percent": 40,
-    "fixedCents": null,
+    "discount": { "kind": "percent", "percent": 40 },
     "duration": "forever",
+    "durationInMonths": null,
     "eligiblePlans": ["pro", "team"],
     "eligiblePeriods": ["monthly", "yearly"]
   }
 }
 ```
 
-A fixed amount sets `percent` to `null` and `fixedCents` to a positive integer (USD minor units):
+A fixed amount:
 
 ```json
 {
-  "percent": null,
-  "fixedCents": 480,
+  "discount": { "kind": "fixed", "amountCents": 480 },
   "duration": "once",
+  "durationInMonths": null,
   "eligiblePlans": ["pro"],
   "eligiblePeriods": ["monthly"]
 }
 ```
 
+A repeating discount sets `durationInMonths` to a positive integer. `durationInMonths` is `null` unless `duration` is `repeating`.
+
 | Field | Meaning |
 | --- | --- |
-| `percent` | Percent off. `null` when the discount is a fixed amount. |
-| `fixedCents` | Cents off the checkout total. `null` when the discount is a percent. Exactly one of `percent` and `fixedCents` is set. |
-| `duration` | Lemon duration: `once`, `repeating`, or `forever`. |
+| `discount` | `{ kind: "percent", percent }` or `{ kind: "fixed", amountCents }`. `amountCents` is USD minor units off the variant charge. |
+| `duration` | `once`, `repeating`, or `forever`. |
+| `durationInMonths` | Set only when `duration` is `repeating`. `null` on a repeating discount means no promo price. |
 | `eligiblePlans` | `pro` and/or `team`. |
 | `eligiblePeriods` | `monthly` and/or `yearly`. The app uses `yearly`, not `annual`. |
 
-The body must not include a coupon or Lemon code. Marketing ignores `price` when it contains `code`, `coupon`, `couponCode`, `discountCode`, `lemonCode`, or `promoCode`.
+There is no `fixedCents` field and no flat `percent` field beside `discount`. The payload must not include a coupon or Lemon code. Marketing ignores `price` when it contains `code`, `coupon`, `couponCode`, `discountCode`, `lemonCode`, or `promoCode`.
 
 ## Price math
 
-Matches Lemon checkout, half-up to the cent:
+The list price is the Lemon variant charge: the monthly price, or the yearly total (monthly-equivalent × 12).
 
-- Percent: `round(listCents * (100 - percent) / 100)`
-- Fixed: `max(0, listCents - fixedCents)`
+- Percent: `off = Math.round(listCents * percent / 100)`, then clamp `off` at 0. A percent of 100 or more is treated as no off. A percent of 0 or less is no change.
+- Fixed: `max(0, listCents - amountCents)`.
 
-Monthly checkout uses the monthly list price. Yearly checkout uses the yearly total (the card's monthly-equivalent annual price × 12). The card then shows that discounted yearly total and the per-month equivalent (`round(yearlyCents / 12)`).
+The payable total is `max(0, listCents - off)`. When it equals the list price, the card shows no strike. The yearly card shows that checkout total and `round(yearlyCents / 12)` per month.
 
-`eligiblePeriods` decides which toggle is rewritten: `monthly`, `yearly` (shown as annual), or both. `duration` is kept with the discount and does not change that checkout total.
-
-Non-200, timeout, missing `price`, or an unexpected `price`: list price, no promo price. A valid `campaign` can still show the strip.
+`eligiblePeriods` decides which toggle is rewritten. `429` and `503` (and any other non-200 or transport failure) leave the list price. A `200` with `price: null` still shows the strip when `campaign` is valid.

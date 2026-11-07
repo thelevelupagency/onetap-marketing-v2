@@ -1,11 +1,12 @@
 /**
  * Promo price math for marketing plan cards.
  *
- * Lemon checkout totals use half-up rounding to the nearest cent:
- * `Math.round(listCents * (100 - percent) / 100)` for a percent discount,
- * and `max(0, listCents - fixedCents)` for a fixed amount.
- * Annual checkout is the yearly total (monthly-equivalent list × 12), then
- * the card shows that discounted yearly total and its per-month equivalent.
+ * The list price is the Lemon variant charge: the monthly price, or the
+ * yearly total (monthly-equivalent × 12). Percent off is
+ * `Math.round(listCents * percent / 100)` (100 or more counts as no off;
+ * 0 or less is no change). Fixed off subtracts `amountCents`. Both results
+ * clamp at 0. The card shows the yearly checkout total and its per-month
+ * equivalent (`round(yearlyCents / 12)`).
  */
 
 export type PromoDiscountPeriod = "monthly" | "annual" | "both";
@@ -15,16 +16,22 @@ export type PromoPriceDuration = "once" | "repeating" | "forever";
 /** Billing intervals on the public payload. The app says `yearly`, not `annual`. */
 export type PromoApiPeriod = "monthly" | "yearly";
 
-/**
- * Normalized from the public `price` object.
- * `period` collapses `eligiblePeriods` for the marketing cards.
- */
-export type PublicPromoDiscount = {
-  type: "percent" | "fixed";
-  percent: number | null;
-  fixedCents: number | null;
+/** Wire shape from onetap-app `PublicPromoPriceDisplay`. */
+export type PublicPromoPriceDisplay = {
+  discount:
+    | { kind: "percent"; percent: number }
+    | { kind: "fixed"; amountCents: number };
   duration: PromoPriceDuration;
-  plans: PromoPlanId[];
+  /** Set only when `duration` is `repeating`. Null while repeating means no promo price. */
+  durationInMonths: number | null;
+  eligiblePlans: PromoPlanId[];
+  eligiblePeriods: PromoApiPeriod[];
+};
+
+/**
+ * Parsed `price`, plus `period` collapsed from `eligiblePeriods` for the cards.
+ */
+export type PublicPromoDiscount = PublicPromoPriceDisplay & {
   period: PromoDiscountPeriod;
 };
 
@@ -70,27 +77,27 @@ export function discountAppliesTo(
 ): discount is PublicPromoDiscount {
   if (!discount) return false;
   if (!PLAN_IDS.has(planId as PromoPlanId)) return false;
-  if (!discount.plans.includes(planId as PromoPlanId)) return false;
+  if (!discount.eligiblePlans.includes(planId as PromoPlanId)) return false;
   if (discount.period !== "both" && discount.period !== period) return false;
   return true;
 }
 
-/** Lemon half-up cent rounding. Returns null when the discount shape is unusable. */
+/**
+ * Variant charge after the Lemon discount.
+ * Returns null when the list cents are unusable. Equal to `listCents` means no change.
+ */
 export function applyDiscountToCents(
   listCents: number,
   discount: PublicPromoDiscount,
 ): number | null {
   if (!Number.isInteger(listCents) || listCents < 0) return null;
-  if (discount.type === "percent") {
-    const percent = discount.percent;
-    if (percent == null || !Number.isFinite(percent) || percent <= 0 || percent > 100) {
-      return null;
-    }
-    return Math.max(0, Math.round((listCents * (100 - percent)) / 100));
+  if (discount.discount.kind === "percent") {
+    const percent = discount.discount.percent;
+    if (!Number.isFinite(percent) || percent <= 0 || percent >= 100) return listCents;
+    const off = Math.max(0, Math.round((listCents * percent) / 100));
+    return Math.max(0, listCents - off);
   }
-  const amount = discount.fixedCents;
-  if (amount == null || !Number.isInteger(amount) || amount <= 0) return null;
-  return Math.max(0, listCents - amount);
+  return Math.max(0, listCents - discount.discount.amountCents);
 }
 
 /**

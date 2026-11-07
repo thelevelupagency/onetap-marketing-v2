@@ -55,3 +55,6 @@ src/lib/promotions/, src/middleware.ts, src/app/[locale]/blog/layout.tsx, pricin
 
 2026-11-07 — Promo prices come from the public promo payload's price object, not a /display route.
 src/lib/promotions/, docs/engineering/public-promo-display.md
+
+2026-11-07 — Match onetap-app PublicPromoPriceDisplay: discount kind, durationInMonths, and Lemon off rounding.
+src/lib/promotions/promo-price.ts, public-promo-display.ts, docs/engineering/public-promo-display.md
