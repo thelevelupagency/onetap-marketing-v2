@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { cn } from "@/lib/utils";
 
 export interface CategoryFilterPill {
@@ -86,14 +86,14 @@ export function CategoryFilterPills({
       {items.map(({ id, label, href, onSelect, isActive, pillRef }) => {
         if (href != null && onSelect == null) {
           return (
-            <Link
+            <CampaignLink
               key={id}
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(pillFocusClassName, layout === "row-scroll" && "snap-start")}
             >
               <span className={pillStyles(isActive, layout, align, density)}>{label}</span>
-            </Link>
+            </CampaignLink>
           );
         }
 

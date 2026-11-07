@@ -1,9 +1,8 @@
 import {
   appendAttributionParams,
   appendLocaleParam,
-  captureCheckoutCoupon,
   captureLandingAttribution,
-  capturePromoSlug,
+  clearStoredCampaignHandoff,
   getMergedAttributionParams,
 } from "@/lib/constants";
 import type { MarketingConsent } from "@/lib/marketing-consent";
@@ -123,16 +122,29 @@ export function classifyOutboundHref(href: string): MetaStandardEvent | null {
   }
 }
 
-export function withLandingAttribution(url: string, locale?: Locale): string {
-  if (typeof window === "undefined") {
-    return appendLocaleParam(url, locale ?? DEFAULT_LOCALE);
+export function withLandingAttribution(
+  url: string,
+  locale?: Locale,
+  validatedPromoSlug?: string | null,
+): string {
+  const live =
+    typeof window === "undefined"
+      ? new URLSearchParams()
+      : new URLSearchParams(window.location.search);
+  if (typeof window !== "undefined") {
+    captureLandingAttribution(live);
+    clearStoredCampaignHandoff();
   }
-  const live = new URLSearchParams(window.location.search);
-  captureLandingAttribution(live);
-  captureCheckoutCoupon(live);
-  capturePromoSlug(live);
-  const attributed = appendAttributionParams(url, getMergedAttributionParams(live));
-  const resolved = locale ?? localeFromPathname(window.location.pathname);
+  const attributed = appendAttributionParams(
+    url,
+    getMergedAttributionParams(live),
+    validatedPromoSlug,
+  );
+  const resolved =
+    locale ??
+    (typeof window === "undefined"
+      ? DEFAULT_LOCALE
+      : localeFromPathname(window.location.pathname));
   return appendLocaleParam(attributed, resolved);
 }
 
@@ -141,8 +153,9 @@ export function navigateToApp(
   href: string,
   placement?: MetaCtaPlacement | null,
   locale?: Locale,
+  validatedPromoSlug?: string | null,
 ): string {
-  const attributed = withLandingAttribution(href, locale);
+  const attributed = withLandingAttribution(href, locale, validatedPromoSlug);
   if (placement) {
     const event = classifyOutboundHref(attributed);
     if (event === "InitiateCheckout") {

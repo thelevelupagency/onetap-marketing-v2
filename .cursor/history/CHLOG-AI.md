@@ -49,3 +49,12 @@ src/lib/constants.ts, get-card-cta, solutions-grid, footer, json-ld, docs/plans/
 
 2026-10-22 — Cookie banner: replace Reject with dismiss X (still stores denied); Accept remains primary CTA.
 src/components/providers/cookie-consent-banner.tsx, src/content/{en,he}/chrome.ts, privacy/meta consent docs
+
+2026-11-07 — Promo strip renders on blog layouts, internal links keep a validated slug, and pricing shows the live discount beside the list price.
+src/lib/promotions/, src/middleware.ts, src/app/[locale]/blog/layout.tsx, pricing plan cards
+
+2026-11-07 — Promo prices come from the public promo payload's price object, not a /display route.
+src/lib/promotions/, docs/engineering/public-promo-display.md
+
+2026-11-07 — Match onetap-app PublicPromoPriceDisplay: discount kind, durationInMonths, and Lemon off rounding.
+src/lib/promotions/promo-price.ts, public-promo-display.ts, docs/engineering/public-promo-display.md

@@ -8,8 +8,8 @@ import {
 } from "@/lib/constants";
 
 /**
- * Persist first-touch `fbclid`/UTMs and last-touch `?coupon=` / `?promo=` so
- * in-site navigation does not drop the ad click, Lemon code, or campaign pin.
+ * Persist first-touch `fbclid`/UTMs. Promo and coupon codes are not stored:
+ * only a validated public campaign slug is forwarded, from the server.
  */
 export function AttributionCapture() {
   useEffect(() => {

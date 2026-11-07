@@ -12,6 +12,7 @@ import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome } from "@/content/get-content";
 import { isNonDefaultLocale, isRtlLocale, type Locale } from "@/lib/i18n/config";
 import { navigateToApp } from "@/lib/meta-pixel";
+import { useMarketingPromo } from "@/components/providers/marketing-promo-provider";
 
 interface SlugClaimCtaProps {
   slug: string;
@@ -40,6 +41,7 @@ export function SlugClaimCta({
 }: SlugClaimCtaProps) {
   const contextLocale = useLocale();
   const locale = localeProp ?? contextLocale;
+  const { forwardSlug } = useMarketingPromo();
   const chrome = getChrome(locale);
   const isRtl = isRtlLocale(locale);
   const resolvedSubmitLabel = submitLabel ?? chrome.slugClaim.submitLabel;
@@ -68,8 +70,8 @@ export function SlugClaimCta({
       setTouched(true);
       return;
     }
-    window.location.href = navigateToApp(buildSignupUrl(slug), "hero_slug", locale);
-  }, [canSubmit, slug, locale]);
+    window.location.href = navigateToApp(buildSignupUrl(slug), "hero_slug", locale, forwardSlug);
+  }, [canSubmit, slug, locale, forwardSlug]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +14,7 @@ export function TextLink({
   showArrow?: boolean;
 }) {
   return (
-    <Link
+    <CampaignLink
       href={href}
       className={cn(
         "inline-flex items-center gap-2 font-medium text-brand-turquoise-dark hover:underline",
@@ -23,6 +23,6 @@ export function TextLink({
     >
       {children}
       {showArrow ? <ArrowRight className="h-4 w-4 rtl:-scale-x-100" /> : null}
-    </Link>
+    </CampaignLink>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { Menu } from "lucide-react";
 import { GetCardCta } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
@@ -91,9 +91,9 @@ function NavAnchor({
     );
   }
   return (
-    <Link href={href} className={className} onClick={onClick}>
+    <CampaignLink href={href} className={className} onClick={onClick}>
       {children}
-    </Link>
+    </CampaignLink>
   );
 }
 
@@ -313,9 +313,9 @@ const renderMenuItem = (item: MenuItem, closeDesktopMenu: () => void, isRtl: boo
   return (
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
-        href={item.url}
         closeOnClick
         className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-brand-midnight/60 transition-colors hover:bg-brand-cream hover:text-brand-midnight"
+        render={<CampaignLink href={item.url} />}
       >
         {item.title}
       </NavigationMenuLink>

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -106,9 +106,9 @@ function CtaAnchor({
     );
   }
   return (
-    <Link href={href} className={className} onClick={onClick}>
+    <CampaignLink href={href} className={className} onClick={onClick}>
       {children}
-    </Link>
+    </CampaignLink>
   );
 }
 
