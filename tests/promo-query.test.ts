@@ -327,16 +327,21 @@ describe("promo display prices", () => {
     assert.equal(quotePromoPrice(pro, "monthly", amount), null);
   });
 
-  it("does not strike when the percent leaves the list price unchanged", () => {
+  it("strikes the list price and shows $0 at 100 percent", () => {
     const full: PublicPromoDiscount = {
       ...percentBoth,
       discount: { kind: "percent", percent: 100 },
     };
+    const monthly = quotePromoPrice(pro, "monthly", full);
+    assert.equal(monthly?.previousCents, 1200);
+    assert.equal(monthly?.currentCents, 0);
+  });
+
+  it("does not strike when the percent is 0 or less", () => {
     const zero: PublicPromoDiscount = {
       ...percentBoth,
       discount: { kind: "percent", percent: 0 },
     };
-    assert.equal(quotePromoPrice(pro, "monthly", full), null);
     assert.equal(quotePromoPrice(pro, "monthly", zero), null);
   });
 

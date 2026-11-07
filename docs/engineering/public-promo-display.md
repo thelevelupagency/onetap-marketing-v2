@@ -65,7 +65,7 @@ There is no `fixedCents` field and no flat `percent` field beside `discount`. Th
 
 The list price is the Lemon variant charge: the monthly price, or the yearly total (monthly-equivalent × 12).
 
-- Percent: `off = Math.round(listCents * percent / 100)`, then clamp `off` at 0. A percent of 100 or more is treated as no off. A percent of 0 or less is no change.
+- Percent: `off = Math.round(listCents * percent / 100)`, then clamp `off` at 0. A percent of 100 or more prices the variant at 0 (the public payload only sends 100; higher percents are already dropped by the app). A percent of 0 or less is no change.
 - Fixed: `max(0, listCents - amountCents)`.
 
 The payable total is `max(0, listCents - off)`. When it equals the list price, the card shows no strike. The yearly card shows that checkout total and `round(yearlyCents / 12)` per month.

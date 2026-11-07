@@ -3,9 +3,9 @@
  *
  * The list price is the Lemon variant charge: the monthly price, or the
  * yearly total (monthly-equivalent × 12). Percent off is
- * `Math.round(listCents * percent / 100)` (100 or more counts as no off;
- * 0 or less is no change). Fixed off subtracts `amountCents`. Both results
- * clamp at 0. The card shows the yearly checkout total and its per-month
+ * `Math.round(listCents * percent / 100)`, clamped at 0. A percent of 100 or
+ * more prices the variant at 0. A percent of 0 or less is no change. Fixed
+ * off subtracts `amountCents`. Both results clamp at 0. The card shows the yearly checkout total and its per-month
  * equivalent (`round(yearlyCents / 12)`).
  */
 
@@ -93,7 +93,8 @@ export function applyDiscountToCents(
   if (!Number.isInteger(listCents) || listCents < 0) return null;
   if (discount.discount.kind === "percent") {
     const percent = discount.discount.percent;
-    if (!Number.isFinite(percent) || percent <= 0 || percent >= 100) return listCents;
+    if (!Number.isFinite(percent) || percent <= 0) return listCents;
+    if (percent >= 100) return 0;
     const off = Math.max(0, Math.round((listCents * percent) / 100));
     return Math.max(0, listCents - off);
   }
