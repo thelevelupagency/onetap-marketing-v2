@@ -5,10 +5,28 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { LOCALE_HEADER } from "@/lib/i18n/locale-header";
+import { PROMO_SLUG_HEADER, PROMO_SLUG_QUERY_KEY, sanitizePromoSlug } from "@/lib/constants";
 
 const PUBLIC_FILE = /\.[^/]+$/;
 
-function withLocaleHeader(response: NextResponse, locale: Locale): NextResponse {
+function applyLocaleAndPromoHeaders(
+  request: NextRequest,
+  locale: Locale,
+): { requestHeaders: Headers; promo: string | null } {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(LOCALE_HEADER, locale);
+  // Drop any inbound client spoof of the promo header, then set from the query.
+  requestHeaders.delete(PROMO_SLUG_HEADER);
+  const promo = sanitizePromoSlug(
+    request.nextUrl.searchParams.get(PROMO_SLUG_QUERY_KEY),
+  );
+  if (promo) {
+    requestHeaders.set(PROMO_SLUG_HEADER, promo);
+  }
+  return { requestHeaders, promo };
+}
+
+function withResponseHeaders(response: NextResponse, locale: Locale): NextResponse {
   response.headers.set(LOCALE_HEADER, locale);
   return response;
 }
@@ -39,13 +57,21 @@ export function middleware(request: NextRequest) {
   }
 
   if (first && isLocale(first)) {
-    return withLocaleHeader(NextResponse.next(), first);
+    const { requestHeaders } = applyLocaleAndPromoHeaders(request, first);
+    return withResponseHeaders(
+      NextResponse.next({ request: { headers: requestHeaders } }),
+      first,
+    );
   }
 
   // Unprefixed paths → rewrite to /en/... (URL stays unprefixed)
   const url = request.nextUrl.clone();
   url.pathname = pathname === "/" ? `/${DEFAULT_LOCALE}` : `/${DEFAULT_LOCALE}${pathname}`;
-  return withLocaleHeader(NextResponse.rewrite(url), DEFAULT_LOCALE);
+  const { requestHeaders } = applyLocaleAndPromoHeaders(request, DEFAULT_LOCALE);
+  return withResponseHeaders(
+    NextResponse.rewrite(url, { request: { headers: requestHeaders } }),
+    DEFAULT_LOCALE,
+  );
 }
 
 export const config = {

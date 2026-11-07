@@ -101,8 +101,15 @@ export const ATTRIBUTION_QUERY_KEYS = [
 export const ATTRIBUTION_STORAGE_KEY = "onetap-attribution";
 export const CHECKOUT_COUPON_STORAGE_KEY = "onetap-checkout-coupon";
 export const CHECKOUT_COUPON_QUERY_KEY = "coupon";
+/** Campaign pin handoff — separate from Lemon `?coupon=`. */
+export const PROMO_SLUG_STORAGE_KEY = "onetap-promo-slug";
+export const PROMO_SLUG_QUERY_KEY = "promo";
+/** Request header set by middleware from a sanitized `?promo=` (not spoofable from the client). */
+export const PROMO_SLUG_HEADER = "x-onetap-promo-slug";
 
 const COUPON_PATTERN = /^[A-Z0-9_-]{1,64}$/;
+/** Campaign slug: lowercase kebab, 1–63 chars (matches onetap-app). */
+const PROMO_SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{0,62}$/;
 
 type AttributionKey = (typeof ATTRIBUTION_QUERY_KEYS)[number];
 type AttributionRecord = Partial<Record<AttributionKey, string>>;
@@ -117,12 +124,29 @@ export function sanitizeCheckoutCouponCode(
   return code;
 }
 
+/** Sanitize campaign slug for `?promo=`. Invalid → null. */
+export function sanitizePromoSlug(raw: string | null | undefined): string | null {
+  if (raw == null) return null;
+  const slug = raw.trim().toLowerCase();
+  if (!slug || !PROMO_SLUG_PATTERN.test(slug)) return null;
+  return slug;
+}
+
 function readStoredCoupon(): string | null {
   if (typeof window === "undefined") return null;
   try {
     return sanitizeCheckoutCouponCode(
       window.sessionStorage.getItem(CHECKOUT_COUPON_STORAGE_KEY),
     );
+  } catch {
+    return null;
+  }
+}
+
+function readStoredPromoSlug(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return sanitizePromoSlug(window.sessionStorage.getItem(PROMO_SLUG_STORAGE_KEY));
   } catch {
     return null;
   }
@@ -141,6 +165,52 @@ export function captureCheckoutCoupon(source: URLSearchParams): string | null {
     return fromUrl;
   }
   return readStoredCoupon();
+}
+
+/** Last-touch: newest valid `?promo=` wins across marketing pages. Does not touch coupon. */
+export function capturePromoSlug(source: URLSearchParams): string | null {
+  if (typeof window === "undefined") return null;
+  const fromUrl = sanitizePromoSlug(source.get(PROMO_SLUG_QUERY_KEY));
+  if (fromUrl) {
+    try {
+      window.sessionStorage.setItem(PROMO_SLUG_STORAGE_KEY, fromUrl);
+    } catch {
+      // Ignore quota / private-mode failures.
+    }
+    return fromUrl;
+  }
+  return readStoredPromoSlug();
+}
+
+/**
+ * Append a stored/live promo slug onto a same-origin relative href.
+ * Preserves other query keys (`coupon`, `category`, UTMs). Pure — safe for tests.
+ */
+export function appendPromoQueryToHref(
+  href: string,
+  promoSlug: string | null,
+): string {
+  const slug = sanitizePromoSlug(promoSlug);
+  if (!slug) return href;
+  if (
+    !href ||
+    href.startsWith("#") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:") ||
+    href.startsWith("javascript:")
+  ) {
+    return href;
+  }
+  if (/^https?:\/\//i.test(href)) {
+    return href;
+  }
+  try {
+    const url = new URL(href, "https://onetap.local");
+    url.searchParams.set(PROMO_SLUG_QUERY_KEY, slug);
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return href;
+  }
 }
 
 function readStoredAttribution(): AttributionRecord {
@@ -209,6 +279,11 @@ export function getMergedAttributionParams(live: URLSearchParams): URLSearchPara
   if (coupon) {
     merged.set(CHECKOUT_COUPON_QUERY_KEY, coupon);
   }
+  const promo =
+    sanitizePromoSlug(live.get(PROMO_SLUG_QUERY_KEY)) || readStoredPromoSlug();
+  if (promo) {
+    merged.set(PROMO_SLUG_QUERY_KEY, promo);
+  }
   return merged;
 }
 
@@ -234,6 +309,12 @@ export function appendAttributionParams(url: string, source: URLSearchParams): s
   if (coupon) {
     // Last-touch: always overwrite so the latest campaign code wins.
     target.searchParams.set(CHECKOUT_COUPON_QUERY_KEY, coupon);
+  }
+
+  const promo = sanitizePromoSlug(source.get(PROMO_SLUG_QUERY_KEY));
+  if (promo) {
+    // Last-touch: always overwrite so the latest campaign pin wins.
+    target.searchParams.set(PROMO_SLUG_QUERY_KEY, promo);
   }
 
   if (!/^https?:\/\//i.test(url)) {

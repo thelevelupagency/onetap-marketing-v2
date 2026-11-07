@@ -3,6 +3,7 @@ import {
   appendLocaleParam,
   captureCheckoutCoupon,
   captureLandingAttribution,
+  capturePromoSlug,
   getMergedAttributionParams,
 } from "@/lib/constants";
 import type { MarketingConsent } from "@/lib/marketing-consent";
@@ -129,6 +130,7 @@ export function withLandingAttribution(url: string, locale?: Locale): string {
   const live = new URLSearchParams(window.location.search);
   captureLandingAttribution(live);
   captureCheckoutCoupon(live);
+  capturePromoSlug(live);
   const attributed = appendAttributionParams(url, getMergedAttributionParams(live));
   const resolved = locale ?? localeFromPathname(window.location.pathname);
   return appendLocaleParam(attributed, resolved);

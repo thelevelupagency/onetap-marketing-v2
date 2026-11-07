@@ -78,7 +78,7 @@ export function BlogReadingProgress() {
 
   return (
     <div
-      className="pointer-events-none fixed top-[72px] right-0 left-0 z-[99] h-1 bg-brand-midnight/5 lg:hidden"
+      className="pointer-events-none fixed top-[calc(72px+var(--marketing-promo-strip))] right-0 left-0 z-[99] h-1 bg-brand-midnight/5 lg:hidden"
       aria-hidden
     >
       <div
