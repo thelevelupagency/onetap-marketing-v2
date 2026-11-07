@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { ArrowRight } from "lucide-react";
 import { type as typography } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -106,7 +106,7 @@ export function MarketingCarouselCard(props: MarketingCarouselCardProps) {
     }
 
     return (
-      <Link href={href} className={cn(cardShellLight, "group w-full")}>
+      <CampaignLink href={href} className={cn(cardShellLight, "group w-full")}>
         <CarouselImageBody
           image={image}
           imageAlt={imageAlt}
@@ -114,7 +114,7 @@ export function MarketingCarouselCard(props: MarketingCarouselCardProps) {
           description={description}
           ctaLabel={ctaLabel}
         />
-      </Link>
+      </CampaignLink>
     );
   }
 

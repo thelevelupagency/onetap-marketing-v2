@@ -104,8 +104,14 @@ export const CHECKOUT_COUPON_QUERY_KEY = "coupon";
 /** Campaign pin handoff — separate from Lemon `?coupon=`. */
 export const PROMO_SLUG_STORAGE_KEY = "onetap-promo-slug";
 export const PROMO_SLUG_QUERY_KEY = "promo";
-/** Request header set by middleware from a sanitized `?promo=` (not spoofable from the client). */
+/** Request header set by middleware from a validated public campaign slug. */
 export const PROMO_SLUG_HEADER = "x-onetap-promo-slug";
+/** Set when this request's alias was rejected. Value is always `1` — never a code. */
+export const PROMO_REJECTED_HEADER = "x-onetap-promo-rejected";
+/** One-shot cookie so a rejected alias survives the redirect that strips it from the URL. */
+export const PROMO_REJECT_COOKIE = "onetap-promo-reject";
+/** Public pathname (before the `/en` rewrite) so blog layouts can own the strip. */
+export const PATHNAME_HEADER = "x-onetap-pathname";
 
 const COUPON_PATTERN = /^[A-Z0-9_-]{1,64}$/;
 /** Campaign slug: lowercase kebab, 1–63 chars (matches onetap-app). */
@@ -132,81 +138,62 @@ export function sanitizePromoSlug(raw: string | null | undefined): string | null
   return slug;
 }
 
-function readStoredCoupon(): string | null {
-  if (typeof window === "undefined") return null;
+/** Drop legacy coupon/promo session keys so a stale code cannot reach a later CTA. */
+export function clearStoredCampaignHandoff(): void {
+  if (typeof window === "undefined") return;
   try {
-    return sanitizeCheckoutCouponCode(
-      window.sessionStorage.getItem(CHECKOUT_COUPON_STORAGE_KEY),
-    );
+    window.sessionStorage.removeItem(CHECKOUT_COUPON_STORAGE_KEY);
+    window.sessionStorage.removeItem(PROMO_SLUG_STORAGE_KEY);
   } catch {
-    return null;
+    // Ignore quota / private-mode failures.
   }
-}
-
-function readStoredPromoSlug(): string | null {
-  if (typeof window === "undefined") return null;
-  try {
-    return sanitizePromoSlug(window.sessionStorage.getItem(PROMO_SLUG_STORAGE_KEY));
-  } catch {
-    return null;
-  }
-}
-
-/** Last-touch: newest valid `?coupon=` wins across marketing pages. */
-export function captureCheckoutCoupon(source: URLSearchParams): string | null {
-  if (typeof window === "undefined") return null;
-  const fromUrl = sanitizeCheckoutCouponCode(source.get(CHECKOUT_COUPON_QUERY_KEY));
-  if (fromUrl) {
-    try {
-      window.sessionStorage.setItem(CHECKOUT_COUPON_STORAGE_KEY, fromUrl);
-    } catch {
-      // Ignore quota / private-mode failures.
-    }
-    return fromUrl;
-  }
-  return readStoredCoupon();
-}
-
-/** Last-touch: newest valid `?promo=` wins across marketing pages. Does not touch coupon. */
-export function capturePromoSlug(source: URLSearchParams): string | null {
-  if (typeof window === "undefined") return null;
-  const fromUrl = sanitizePromoSlug(source.get(PROMO_SLUG_QUERY_KEY));
-  if (fromUrl) {
-    try {
-      window.sessionStorage.setItem(PROMO_SLUG_STORAGE_KEY, fromUrl);
-    } catch {
-      // Ignore quota / private-mode failures.
-    }
-    return fromUrl;
-  }
-  return readStoredPromoSlug();
 }
 
 /**
- * Append a stored/live promo slug onto a same-origin relative href.
- * Preserves other query keys (`coupon`, `category`, UTMs). Pure — safe for tests.
+ * Marketing no longer persists Lemon codes or unvalidated slugs.
+ * The argument is ignored; the call only clears stale storage.
+ */
+export function captureCheckoutCoupon(source?: URLSearchParams): string | null {
+  void source;
+  clearStoredCampaignHandoff();
+  return null;
+}
+
+/** @see captureCheckoutCoupon */
+export function capturePromoSlug(source?: URLSearchParams): string | null {
+  void source;
+  clearStoredCampaignHandoff();
+  return null;
+}
+
+/**
+ * Carry a validated campaign slug on a same-origin relative href.
+ * Strips `coupon` so a raw code cannot ride along. Other keys (category, UTMs) stay.
+ * Pure — safe for tests. External, hash, and mailto links are unchanged.
  */
 export function appendPromoQueryToHref(
   href: string,
   promoSlug: string | null,
 ): string {
   const slug = sanitizePromoSlug(promoSlug);
-  if (!slug) return href;
   if (
     !href ||
     href.startsWith("#") ||
     href.startsWith("mailto:") ||
     href.startsWith("tel:") ||
-    href.startsWith("javascript:")
+    href.startsWith("javascript:") ||
+    /^([a-z][a-z0-9+.-]*:)?\/\//i.test(href)
   ) {
-    return href;
-  }
-  if (/^https?:\/\//i.test(href)) {
     return href;
   }
   try {
     const url = new URL(href, "https://onetap.local");
-    url.searchParams.set(PROMO_SLUG_QUERY_KEY, slug);
+    const hadCoupon = url.searchParams.has(CHECKOUT_COUPON_QUERY_KEY);
+    const currentPromo = url.searchParams.get(PROMO_SLUG_QUERY_KEY);
+    if (!slug && !hadCoupon && currentPromo == null) return href;
+    url.searchParams.delete(CHECKOUT_COUPON_QUERY_KEY);
+    if (slug) url.searchParams.set(PROMO_SLUG_QUERY_KEY, slug);
+    else url.searchParams.delete(PROMO_SLUG_QUERY_KEY);
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {
     return href;
@@ -273,21 +260,14 @@ export function getMergedAttributionParams(live: URLSearchParams): URLSearchPara
       merged.set(key, value);
     }
   }
-  const coupon =
-    sanitizeCheckoutCouponCode(live.get(CHECKOUT_COUPON_QUERY_KEY)) ||
-    readStoredCoupon();
-  if (coupon) {
-    merged.set(CHECKOUT_COUPON_QUERY_KEY, coupon);
-  }
-  const promo =
-    sanitizePromoSlug(live.get(PROMO_SLUG_QUERY_KEY)) || readStoredPromoSlug();
-  if (promo) {
-    merged.set(PROMO_SLUG_QUERY_KEY, promo);
-  }
   return merged;
 }
 
-export function appendAttributionParams(url: string, source: URLSearchParams): string {
+export function appendAttributionParams(
+  url: string,
+  source: URLSearchParams,
+  validatedPromoSlug?: string | null,
+): string {
   const base =
     typeof window !== "undefined" ? window.location.origin : getSiteUrl();
   let target: URL;
@@ -305,16 +285,13 @@ export function appendAttributionParams(url: string, source: URLSearchParams): s
     target.searchParams.set(key, value);
   }
 
-  const coupon = sanitizeCheckoutCouponCode(source.get(CHECKOUT_COUPON_QUERY_KEY));
-  if (coupon) {
-    // Last-touch: always overwrite so the latest campaign code wins.
-    target.searchParams.set(CHECKOUT_COUPON_QUERY_KEY, coupon);
-  }
-
-  const promo = sanitizePromoSlug(source.get(PROMO_SLUG_QUERY_KEY));
+  // Never copy a Lemon code or an unvalidated slug from the source URL or storage.
+  target.searchParams.delete(CHECKOUT_COUPON_QUERY_KEY);
+  const promo = sanitizePromoSlug(validatedPromoSlug);
   if (promo) {
-    // Last-touch: always overwrite so the latest campaign pin wins.
     target.searchParams.set(PROMO_SLUG_QUERY_KEY, promo);
+  } else {
+    target.searchParams.delete(PROMO_SLUG_QUERY_KEY);
   }
 
   if (!/^https?:\/\//i.test(url)) {

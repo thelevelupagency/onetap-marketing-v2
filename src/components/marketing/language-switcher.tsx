@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { Check, Globe } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -77,7 +77,7 @@ export function LanguageSwitcher({ className, variant = "nav" }: LanguageSwitche
                 key={locale}
                 disabled={selected}
                 render={
-                  <Link
+                  <CampaignLink
                     href={href}
                     hrefLang={localeMeta.htmlLang}
                     aria-current={selected ? "page" : undefined}

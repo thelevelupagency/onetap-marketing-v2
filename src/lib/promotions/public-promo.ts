@@ -27,6 +27,7 @@ const FETCH_TIMEOUT_MS = 2500;
  */
 export async function fetchPublicPromoCampaign(
   promoSlug: string | null,
+  options?: { revalidate?: number | false },
 ): Promise<PublicMarketingPromoCampaign | null> {
   const slug = sanitizePromoSlug(promoSlug);
   const url = new URL(`${APP_ORIGIN}/api/billing/promotions/public`);
@@ -34,6 +35,7 @@ export async function fetchPublicPromoCampaign(
     url.searchParams.set("promo", slug);
   }
 
+  const revalidate = options?.revalidate === undefined ? 60 : options.revalidate;
   let timer: ReturnType<typeof setTimeout> | undefined;
   const timeout = new Promise<never>((_, reject) => {
     timer = setTimeout(() => reject(new Error("public_promo_timeout")), FETCH_TIMEOUT_MS);
@@ -44,7 +46,9 @@ export async function fetchPublicPromoCampaign(
       fetch(url.toString(), {
         method: "GET",
         headers: { Accept: "application/json" },
-        next: { revalidate: 60 },
+        ...(revalidate === false
+          ? { cache: "no-store" as const }
+          : { next: { revalidate } }),
       }),
       timeout,
     ]);
@@ -89,6 +93,31 @@ function sanitizePublicCampaign(
       priceBadge: { en: enBadge, he: heBadge },
     },
   };
+}
+
+/** True when the campaign is public and its end instant is still in the future. */
+export function isCampaignCurrent(
+  campaign: PublicMarketingPromoCampaign | null,
+  now = Date.now(),
+): campaign is PublicMarketingPromoCampaign {
+  if (!campaign?.marketingPublic) return false;
+  const ends = Date.parse(campaign.endsAt);
+  return Number.isFinite(ends) && ends > now;
+}
+
+/**
+ * Keep a campaign only when it is live.
+ * A requested slug must match `campaign.slug` exactly — a lookalike code is not accepted.
+ * Pass `requestedSlug: null` for the unpinned public campaign.
+ */
+export function selectActiveCampaign(
+  campaign: PublicMarketingPromoCampaign | null,
+  requestedSlug: string | null,
+  now = Date.now(),
+): PublicMarketingPromoCampaign | null {
+  if (!isCampaignCurrent(campaign, now)) return null;
+  if (requestedSlug && campaign?.slug !== requestedSlug) return null;
+  return campaign;
 }
 
 /** Locale sentence for the strip. Blank → null (fail closed). */

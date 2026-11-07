@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -52,11 +52,11 @@ export function MarketingLinkCard({
   children: React.ReactNode;
 } & VariantProps<typeof linkCardVariants>) {
   return (
-    <Link
+    <CampaignLink
       href={href}
       className={cn(linkCardVariants({ radius, lift, background, density }), className)}
     >
       {children}
-    </Link>
+    </CampaignLink>
   );
 }

@@ -5,7 +5,6 @@ import { BackNavigationReloadScript } from "@/components/providers/back-navigati
 import { MarketingConsentProvider } from "@/components/providers/consent-provider";
 import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
 import { AttributionCapture } from "@/components/providers/attribution-capture";
-import { PromoQueryCarry } from "@/components/providers/promo-query-carry";
 import { MetaPixelBootstrap } from "@/components/providers/meta-pixel-bootstrap";
 import { LocaleProvider } from "@/components/providers/locale-provider";
 import { MetaPixel } from "@/components/providers/meta-pixel";
@@ -97,7 +96,6 @@ export default async function RootLayout({
         <LocaleProvider locale={locale}>
           <MarketingConsentProvider>
             <AttributionCapture />
-            <PromoQueryCarry />
             <BackNavigationReloadScript />
             <MetaPixel />
             {children}

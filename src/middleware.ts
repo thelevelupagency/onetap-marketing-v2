@@ -5,33 +5,67 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { LOCALE_HEADER } from "@/lib/i18n/locale-header";
-import { PROMO_SLUG_HEADER, PROMO_SLUG_QUERY_KEY, sanitizePromoSlug } from "@/lib/constants";
+import {
+  PATHNAME_HEADER,
+  PROMO_REJECT_COOKIE,
+  PROMO_REJECTED_HEADER,
+  PROMO_SLUG_HEADER,
+} from "@/lib/constants";
+import { planPromoNavigation, readPromoAlias } from "@/lib/promotions/promo-navigation";
+import { fetchPublicPromoCampaign, selectActiveCampaign } from "@/lib/promotions/public-promo";
 
 const PUBLIC_FILE = /\.[^/]+$/;
 
-function applyLocaleAndPromoHeaders(
+async function validatedSlugFor(request: NextRequest): Promise<string | null> {
+  const alias = readPromoAlias(request.nextUrl.searchParams);
+  if (alias.kind === "none" || !alias.slug) return null;
+  const campaign = selectActiveCampaign(
+    await fetchPublicPromoCampaign(alias.slug, { revalidate: false }),
+    alias.slug,
+  );
+  return campaign?.slug ?? null;
+}
+
+function applyRequestHeaders(
   request: NextRequest,
   locale: Locale,
-): { requestHeaders: Headers; promo: string | null } {
+  requestedSlug: string | null,
+  rejected: boolean,
+): Headers {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(LOCALE_HEADER, locale);
-  // Drop any inbound client spoof of the promo header, then set from the query.
+  requestHeaders.set(PATHNAME_HEADER, request.nextUrl.pathname);
   requestHeaders.delete(PROMO_SLUG_HEADER);
-  const promo = sanitizePromoSlug(
-    request.nextUrl.searchParams.get(PROMO_SLUG_QUERY_KEY),
-  );
-  if (promo) {
-    requestHeaders.set(PROMO_SLUG_HEADER, promo);
+  requestHeaders.delete(PROMO_REJECTED_HEADER);
+  if (rejected) {
+    requestHeaders.set(PROMO_REJECTED_HEADER, "1");
+  } else if (requestedSlug) {
+    requestHeaders.set(PROMO_SLUG_HEADER, requestedSlug);
   }
-  return { requestHeaders, promo };
+  return requestHeaders;
 }
 
-function withResponseHeaders(response: NextResponse, locale: Locale): NextResponse {
-  response.headers.set(LOCALE_HEADER, locale);
-  return response;
+function stampRejectCookie(response: NextResponse, plan: { setRejectCookie: boolean; clearRejectCookie: boolean }, secure: boolean) {
+  if (plan.setRejectCookie) {
+    response.cookies.set(PROMO_REJECT_COOKIE, "1", {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 120,
+      secure,
+    });
+  } else if (plan.clearRejectCookie) {
+    response.cookies.set(PROMO_REJECT_COOKIE, "", {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0,
+      secure,
+    });
+  }
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
@@ -45,33 +79,53 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  const validatedSlug = await validatedSlugFor(request);
+  const plan = planPromoNavigation({
+    search: request.nextUrl.searchParams,
+    validatedSlug,
+    rejectCookie: request.cookies.get(PROMO_REJECT_COOKIE)?.value === "1",
+  });
+
   const segments = pathname.split("/").filter(Boolean);
   const first = segments[0];
+  const localeRedirect = first === DEFAULT_LOCALE;
+  const secure = request.nextUrl.protocol === "https:";
 
-  // Canonical English: redirect /en and /en/... → unprefixed
-  if (first === DEFAULT_LOCALE) {
-    const rest = segments.slice(1).join("/");
+  if (localeRedirect || plan.redirectTo) {
     const url = request.nextUrl.clone();
-    url.pathname = rest ? `/${rest}` : "/";
-    return NextResponse.redirect(url, 301);
+    if (localeRedirect) {
+      const rest = segments.slice(1).join("/");
+      url.pathname = rest ? `/${rest}` : "/";
+    }
+    if (plan.redirectTo) {
+      const search = plan.redirectTo.toString();
+      url.search = search ? `?${search}` : "";
+    }
+    const response = NextResponse.redirect(url, plan.redirectTo ? 307 : 301);
+    stampRejectCookie(response, plan, secure);
+    return response;
   }
 
   if (first && isLocale(first)) {
-    const { requestHeaders } = applyLocaleAndPromoHeaders(request, first);
-    return withResponseHeaders(
-      NextResponse.next({ request: { headers: requestHeaders } }),
-      first,
-    );
+    const requestHeaders = applyRequestHeaders(request, first, plan.requestedSlug, plan.rejected);
+    const response = NextResponse.next({ request: { headers: requestHeaders } });
+    response.headers.set(LOCALE_HEADER, first);
+    stampRejectCookie(response, plan, secure);
+    return response;
   }
 
-  // Unprefixed paths → rewrite to /en/... (URL stays unprefixed)
   const url = request.nextUrl.clone();
   url.pathname = pathname === "/" ? `/${DEFAULT_LOCALE}` : `/${DEFAULT_LOCALE}${pathname}`;
-  const { requestHeaders } = applyLocaleAndPromoHeaders(request, DEFAULT_LOCALE);
-  return withResponseHeaders(
-    NextResponse.rewrite(url, { request: { headers: requestHeaders } }),
+  const requestHeaders = applyRequestHeaders(
+    request,
     DEFAULT_LOCALE,
+    plan.requestedSlug,
+    plan.rejected,
   );
+  const response = NextResponse.rewrite(url, { request: { headers: requestHeaders } });
+  response.headers.set(LOCALE_HEADER, DEFAULT_LOCALE);
+  stampRejectCookie(response, plan, secure);
+  return response;
 }
 
 export const config = {

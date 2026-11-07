@@ -10,10 +10,19 @@ import {
   sanitizePromoSlug,
 } from "../src/lib/constants";
 import {
+  isCampaignCurrent,
   resolvePriceBadgePhrase,
   resolveStripSentence,
+  selectActiveCampaign,
   type PublicMarketingPromoCampaign,
 } from "../src/lib/promotions/public-promo";
+import {
+  planPromoNavigation,
+  readPromoAlias,
+  signupPromoSlug,
+} from "../src/lib/promotions/promo-navigation";
+import { quotePromoPrice, type PublicPromoDiscount } from "../src/lib/promotions/promo-price";
+import { parsePublicPromoDiscount } from "../src/lib/promotions/public-promo-display";
 
 describe("sanitizePromoSlug", () => {
   it("lowercases and accepts kebab slugs", () => {
@@ -37,15 +46,21 @@ describe("sanitizeCheckoutCouponCode", () => {
 });
 
 describe("appendPromoQueryToHref", () => {
-  it("appends promo without dropping other query keys", () => {
+  it("appends a validated slug and strips coupon codes", () => {
     const next = appendPromoQueryToHref(
-      "/pricing?coupon=SAVE70&category=success-stories",
-      "black-friday",
+      "/pricing?coupon=BFTEST&category=success-stories",
+      "bf-test",
     );
     const url = new URL(next, "https://onetap.local");
-    assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), "black-friday");
-    assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), "SAVE70");
+    assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), "bf-test");
+    assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), null);
     assert.equal(url.searchParams.get("category"), "success-stories");
+    assert.equal(next.includes("BFTEST"), false);
+  });
+
+  it("drops an invalid or expired promo when no validated slug is supplied", () => {
+    assert.equal(appendPromoQueryToHref("/blog/post?promo=bftest", null), "/blog/post");
+    assert.equal(appendPromoQueryToHref("/blog/post?coupon=BFTEST", null), "/blog/post");
   });
 
   it("skips absolute and hash/mailto links", () => {
@@ -65,41 +80,34 @@ describe("appendPromoQueryToHref", () => {
   });
 });
 
-describe("appendAttributionParams dual keys", () => {
-  it("stamps promo and coupon as separate keys", () => {
+describe("appendAttributionParams validated slug only", () => {
+  it("stamps the validated slug and never a raw coupon", () => {
     const source = new URLSearchParams();
-    source.set(CHECKOUT_COUPON_QUERY_KEY, "SAVE70");
-    source.set(PROMO_SLUG_QUERY_KEY, "black-friday");
+    source.set(CHECKOUT_COUPON_QUERY_KEY, "BFTEST");
+    source.set(PROMO_SLUG_QUERY_KEY, "bftest");
     const stamped = appendAttributionParams(
       "https://app.onetap-card.com/register",
       source,
+      "bf-test",
     );
     const url = new URL(stamped);
-    assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), "SAVE70");
-    assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), "black-friday");
-  });
-
-  it("does not write coupon from a promo slug", () => {
-    const source = new URLSearchParams();
-    source.set(PROMO_SLUG_QUERY_KEY, "black-friday");
-    const stamped = appendAttributionParams(
-      "https://app.onetap-card.com/register",
-      source,
-    );
-    const url = new URL(stamped);
-    assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), "black-friday");
+    assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), "bf-test");
     assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), null);
+    assert.equal(stamped.includes("BFTEST"), false);
+    assert.equal(stamped.includes("bftest"), false);
   });
 
-  it("does not write promo from a coupon code", () => {
+  it("does not write promo from a coupon code or stale source promo", () => {
     const source = new URLSearchParams();
-    source.set(CHECKOUT_COUPON_QUERY_KEY, "SAVE70");
+    source.set(CHECKOUT_COUPON_QUERY_KEY, "BFTEST");
+    source.set(PROMO_SLUG_QUERY_KEY, "bftest");
     const stamped = appendAttributionParams(
       "https://app.onetap-card.com/register",
       source,
+      null,
     );
     const url = new URL(stamped);
-    assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), "SAVE70");
+    assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), null);
     assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), null);
   });
 });
@@ -144,5 +152,204 @@ describe("public promo fail-closed copy helpers", () => {
     };
     assert.equal(resolvePriceBadgePhrase(campaign, "en"), null);
     assert.equal(resolvePriceBadgePhrase(campaign, "he"), "ההנחה הזו");
+  });
+});
+
+const liveCampaign: PublicMarketingPromoCampaign = {
+  slug: "bf-test",
+  endsAt: "2099-12-01T00:00:00.000Z",
+  priority: 10,
+  marketingPublic: true,
+  requiresPromoPin: false,
+  copy: {
+    payNow: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
+    priceBadge: { en: "a test discount", he: "הנחת בדיקה" },
+  },
+};
+
+describe("promo alias navigation", () => {
+  it("treats promo and coupon as slug aliases", () => {
+    assert.deepEqual(readPromoAlias(new URLSearchParams("promo=BF-TEST")), {
+      kind: "promo",
+      slug: "bf-test",
+    });
+    assert.deepEqual(readPromoAlias(new URLSearchParams("coupon=BF-TEST")), {
+      kind: "coupon",
+      slug: "bf-test",
+    });
+    assert.deepEqual(readPromoAlias(new URLSearchParams("coupon=bf-test")), {
+      kind: "coupon",
+      slug: "bf-test",
+    });
+  });
+
+  it("keeps a valid alias on navigation and signup", () => {
+    const plan = planPromoNavigation({
+      search: new URLSearchParams("coupon=BF-TEST&utm_source=meta"),
+      validatedSlug: "bf-test",
+      rejectCookie: false,
+    });
+    assert.equal(plan.rejected, false);
+    assert.equal(plan.requestedSlug, "bf-test");
+    assert.equal(plan.redirectTo?.get(PROMO_SLUG_QUERY_KEY), "bf-test");
+    assert.equal(plan.redirectTo?.get(CHECKOUT_COUPON_QUERY_KEY), null);
+    assert.equal(plan.redirectTo?.get("utm_source"), "meta");
+    assert.equal(plan.redirectTo?.toString().includes("BF"), false);
+
+    const href = appendPromoQueryToHref("/blog/what-is-a-digital-business-card", "bf-test");
+    assert.equal(href, "/blog/what-is-a-digital-business-card?promo=bf-test");
+    assert.equal(
+      signupPromoSlug({
+        rejected: false,
+        campaignSlug: "bf-test",
+        storedCoupon: "BFTEST",
+        storedPromo: "old-slug",
+      }),
+      "bf-test",
+    );
+  });
+
+  it("rejects an invalid promo and does not carry stored codes", () => {
+    const plan = planPromoNavigation({
+      search: new URLSearchParams("promo=BFTEST"),
+      validatedSlug: null,
+      rejectCookie: false,
+    });
+    assert.equal(plan.rejected, true);
+    assert.equal(plan.requestedSlug, null);
+    assert.equal(plan.setRejectCookie, true);
+    assert.equal(plan.redirectTo?.get(PROMO_SLUG_QUERY_KEY), null);
+    assert.equal(plan.redirectTo?.toString().includes("BFTEST"), false);
+    assert.equal(
+      signupPromoSlug({
+        rejected: true,
+        campaignSlug: "bf-test",
+        storedCoupon: "BFTEST",
+        storedPromo: "bf-test",
+      }),
+      null,
+    );
+    const stamped = appendAttributionParams(
+      "https://app.onetap-card.com/register",
+      new URLSearchParams("coupon=BFTEST&promo=bftest"),
+      signupPromoSlug({
+        rejected: true,
+        campaignSlug: "bf-test",
+        storedCoupon: "BFTEST",
+      }),
+    );
+    assert.equal(stamped.includes("BFTEST"), false);
+    assert.equal(stamped.includes("promo="), false);
+    assert.equal(stamped.includes("coupon="), false);
+  });
+
+  it("rejects an expired campaign", () => {
+    const expired: PublicMarketingPromoCampaign = {
+      ...liveCampaign,
+      endsAt: "2000-01-01T00:00:00.000Z",
+    };
+    assert.equal(isCampaignCurrent(expired, Date.parse("2026-11-07T00:00:00.000Z")), false);
+    assert.equal(selectActiveCampaign(expired, "bf-test"), null);
+    const plan = planPromoNavigation({
+      search: new URLSearchParams("promo=bf-test"),
+      validatedSlug: null,
+      rejectCookie: false,
+    });
+    assert.equal(plan.rejected, true);
+    assert.equal(plan.redirectTo?.toString() ?? "", "");
+  });
+
+  it("keeps a live campaign and ignores a stale stored code on the next clean visit", () => {
+    assert.equal(selectActiveCampaign(liveCampaign, "bf-test")?.slug, "bf-test");
+    const followUp = planPromoNavigation({
+      search: new URLSearchParams(),
+      validatedSlug: null,
+      rejectCookie: true,
+    });
+    assert.equal(followUp.rejected, true);
+    assert.equal(followUp.clearRejectCookie, true);
+    assert.equal(
+      signupPromoSlug({
+        rejected: false,
+        campaignSlug: liveCampaign.slug,
+        storedCoupon: "BFTEST",
+        storedPromo: "not-a-campaign",
+      }),
+      "bf-test",
+    );
+  });
+});
+
+const percentBoth: PublicPromoDiscount = {
+  type: "percent",
+  percent: 40,
+  amountCents: null,
+  currency: "USD",
+  period: "both",
+  plans: ["pro", "team"],
+};
+
+describe("promo display prices", () => {
+  const pro = { id: "pro", monthlyPrice: 12, annualPrice: 10 };
+  const free = { id: "free", monthlyPrice: 0, annualPrice: 0 };
+
+  it("prices a percent discount to the Lemon checkout cent", () => {
+    const monthly = quotePromoPrice(pro, "monthly", percentBoth);
+    assert.equal(monthly?.previousCents, 1200);
+    assert.equal(monthly?.currentCents, 720);
+    const annual = quotePromoPrice(pro, "annual", percentBoth);
+    assert.equal(annual?.previousYearlyCents, 12000);
+    assert.equal(annual?.yearlyCheckoutCents, 7200);
+    assert.equal(annual?.currentCents, 600);
+    assert.equal(annual?.previousCents, 1000);
+  });
+
+  it("leaves ineligible plans and the other billing period unchanged", () => {
+    assert.equal(quotePromoPrice(free, "monthly", percentBoth), null);
+    const monthlyOnly: PublicPromoDiscount = { ...percentBoth, period: "monthly" };
+    assert.equal(quotePromoPrice(pro, "annual", monthlyOnly), null);
+    assert.equal(quotePromoPrice(pro, "monthly", null), null);
+  });
+
+  it("applies a fixed amount to the checkout total", () => {
+    const amount: PublicPromoDiscount = {
+      type: "amount",
+      percent: null,
+      amountCents: 480,
+      currency: "USD",
+      period: "monthly",
+      plans: ["pro"],
+    };
+    const monthly = quotePromoPrice(pro, "monthly", amount);
+    assert.equal(monthly?.currentCents, 720);
+  });
+
+  it("rejects a payload that contains a coupon code", () => {
+    assert.equal(
+      parsePublicPromoDiscount({
+        discount: {
+          type: "percent",
+          percent: 40,
+          amountCents: null,
+          currency: "USD",
+          period: "both",
+          plans: ["pro"],
+          coupon: "BFTEST",
+        },
+      }),
+      null,
+    );
+    const parsed = parsePublicPromoDiscount({
+      discount: {
+        type: "percent",
+        percent: 40,
+        amountCents: null,
+        currency: "USD",
+        period: "both",
+        plans: ["pro", "team"],
+      },
+    });
+    assert.equal(parsed?.percent, 40);
+    assert.equal(JSON.stringify(parsed).includes("BFTEST"), false);
   });
 });
