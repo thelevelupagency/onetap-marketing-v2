@@ -15,7 +15,6 @@ import {
   PUBLIC_PROMO_FETCH_TIMEOUT_MS,
   publicPromoPayloadFromHttp,
   readPublicPromo,
-  resolvePriceBadgePhrase,
   resolveStripSentence,
   selectActiveCampaign,
   slugAfterPublicPromoRead,
@@ -130,39 +129,25 @@ describe("public promo fail-closed copy helpers", () => {
     priority: 100,
     marketingPublic: true,
     requiresPromoPin: false,
+    theme: null,
     copy: {
-      payNow: { en: "Upgrade, this discount.", he: "שדרגו, ההנחה הזו." },
-      priceBadge: { en: "this discount", he: "ההנחה הזו" },
+      bannerSentence: { en: "Upgrade, this discount.", he: "שדרגו, ההנחה הזו." },
     },
   };
 
   it("returns null for a null campaign", () => {
     assert.equal(resolveStripSentence(null, "en"), null);
-    assert.equal(resolvePriceBadgePhrase(null, "en"), null);
   });
 
-  it("returns null when the locale payNow sentence is blank", () => {
+  it("returns null when the locale bannerSentence is blank", () => {
     const campaign: PublicMarketingPromoCampaign = {
       ...base,
       copy: {
-        ...base.copy,
-        payNow: { en: "   ", he: base.copy.payNow.he },
+        bannerSentence: { en: "   ", he: base.copy.bannerSentence.he },
       },
     };
     assert.equal(resolveStripSentence(campaign, "en"), null);
     assert.equal(resolveStripSentence(campaign, "he"), "שדרגו, ההנחה הזו.");
-  });
-
-  it("returns null when the locale priceBadge phrase is blank", () => {
-    const campaign: PublicMarketingPromoCampaign = {
-      ...base,
-      copy: {
-        ...base.copy,
-        priceBadge: { en: "", he: base.copy.priceBadge.he },
-      },
-    };
-    assert.equal(resolvePriceBadgePhrase(campaign, "en"), null);
-    assert.equal(resolvePriceBadgePhrase(campaign, "he"), "ההנחה הזו");
   });
 });
 
@@ -172,11 +157,81 @@ const liveCampaign: PublicMarketingPromoCampaign = {
   priority: 10,
   marketingPublic: true,
   requiresPromoPin: false,
+  theme: null,
   copy: {
-    payNow: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
-    priceBadge: { en: "a test discount", he: "הנחת בדיקה" },
+    bannerSentence: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
   },
 };
+
+describe("public campaign sanitizer reads bannerSentence and theme", () => {
+  const validTheme = {
+    background: "#1e3a5f",
+    foreground: "#ffffff",
+    accent: "#f5b301",
+    buttonBackground: "#ffffff",
+    buttonForeground: "#1e3a5f",
+  };
+  const campaignBody = (overrides: Record<string, unknown> = {}) => ({
+    slug: "bf-test",
+    endsAt: "2099-12-01T00:00:00.000Z",
+    priority: 10,
+    marketingPublic: true,
+    requiresPromoPin: false,
+    copy: {
+      bannerSentence: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
+    },
+    ...overrides,
+  });
+
+  it("reads copy.bannerSentence per locale", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody(),
+    });
+    assert.equal(campaign?.copy.bannerSentence.en, "Upgrade, a test discount.");
+    assert.equal(campaign?.copy.bannerSentence.he, "שדרגו, הנחת בדיקה.");
+  });
+
+  it("drops the campaign when copy.bannerSentence is missing", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody({ copy: {} }),
+    });
+    assert.equal(campaign, null);
+  });
+
+  it("keeps a valid #rrggbb theme", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody({ theme: validTheme }),
+    });
+    assert.deepEqual(campaign?.theme, validTheme);
+  });
+
+  it("nulls the whole theme when any field is not #rrggbb", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody({
+        theme: { ...validTheme, accent: "red" },
+      }),
+    });
+    assert.equal(campaign?.slug, "bf-test");
+    assert.equal(campaign?.theme, null);
+  });
+
+  it("nulls the theme when a field is missing", () => {
+    const { background: _omit, ...partial } = validTheme;
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody({ theme: partial }),
+    });
+    assert.equal(campaign?.theme, null);
+  });
+
+  it("leaves theme null when no theme is sent (brand fallback)", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody(),
+    });
+    assert.equal(campaign?.theme, null);
+    // A null theme drives the strip's brand-token fallback (no inline vars).
+    assert.equal(resolveStripSentence(campaign, "en"), "Upgrade, a test discount.");
+  });
+});
 
 describe("promo alias navigation", () => {
   it("treats promo and coupon as slug aliases", () => {
