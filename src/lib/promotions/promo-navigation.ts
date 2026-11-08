@@ -64,8 +64,10 @@ export type PromoNavigationPlan = {
 
 /**
  * Decide the redirect and the request flag for a marketing hit.
- * `validatedSlug` is the public campaign slug the API accepted for this alias,
- * or null when the alias is missing, invalid, or expired.
+ * `validatedSlug` is the slug to keep. Pass the sanitized alias when the public
+ * read timed out or returned 408/429/5xx so the param stays and the reject
+ * cookie is not set. Pass null when the alias is missing, locally invalid, or
+ * the API explicitly returned an unknown or expired campaign.
  */
 export function planPromoNavigation(input: {
   search: URLSearchParams;

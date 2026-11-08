@@ -5,10 +5,7 @@ import {
   PROMO_SLUG_HEADER,
   sanitizePromoSlug,
 } from "@/lib/constants";
-import {
-  fetchPublicPromoPayload,
-  selectActiveCampaign,
-} from "@/lib/promotions/public-promo";
+import { marketingPromoFromRead, readPublicPromo } from "@/lib/promotions/public-promo";
 import {
   EMPTY_MARKETING_PROMO,
   type MarketingPromoState,
@@ -24,12 +21,6 @@ export const loadMarketingPromo = cache(async (): Promise<MarketingPromoState> =
     return EMPTY_MARKETING_PROMO;
   }
   const requested = sanitizePromoSlug(headerStore.get(PROMO_SLUG_HEADER));
-  const payload = await fetchPublicPromoPayload(requested);
-  const campaign = selectActiveCampaign(payload.campaign, requested);
-  if (!campaign) return EMPTY_MARKETING_PROMO;
-  return {
-    campaign,
-    discount: payload.discount,
-    forwardSlug: campaign.slug,
-  };
+  const read = await readPublicPromo(requested);
+  return marketingPromoFromRead(requested, read);
 });

@@ -11,19 +11,29 @@ import {
 } from "../src/lib/constants";
 import {
   isCampaignCurrent,
+  marketingPromoFromRead,
+  PUBLIC_PROMO_FETCH_TIMEOUT_MS,
+  publicPromoPayloadFromHttp,
+  readPublicPromo,
   resolvePriceBadgePhrase,
   resolveStripSentence,
   selectActiveCampaign,
+  slugAfterPublicPromoRead,
   type PublicMarketingPromoCampaign,
+  type PublicPromoRead,
 } from "../src/lib/promotions/public-promo";
 import {
   planPromoNavigation,
   readPromoAlias,
   signupPromoSlug,
 } from "../src/lib/promotions/promo-navigation";
-import { quotePromoPrice, type PublicPromoDiscount } from "../src/lib/promotions/promo-price";
+import {
+  promoDurationLabel,
+  quotePromoPrice,
+  type PromoDurationCopy,
+  type PublicPromoDiscount,
+} from "../src/lib/promotions/promo-price";
 import { parsePublicPromoPrice } from "../src/lib/promotions/public-promo-display";
-import { publicPromoPayloadFromHttp } from "../src/lib/promotions/public-promo";
 
 describe("sanitizePromoSlug", () => {
   it("lowercases and accepts kebab slugs", () => {
@@ -440,5 +450,216 @@ describe("promo display prices", () => {
       assert.equal(payload.campaign, null);
       assert.equal(payload.discount, null);
     }
+  });
+});
+
+const durationCopyEn: PromoDurationCopy = {
+  onceMonthly: "Discounted for the first month",
+  onceYearly: "Discounted for the first year",
+  repeatingMonths: "Discounted for the first {n} months",
+  forever: "Ongoing discount",
+};
+
+const durationCopyHe: PromoDurationCopy = {
+  onceMonthly: "הנחה לחודש הראשון",
+  onceYearly: "הנחה לשנה הראשונה",
+  repeatingMonths: "הנחה ל-{n} החודשים הראשונים",
+  forever: "הנחה מתמשכת",
+};
+
+describe("promo duration notes", () => {
+  const once: PublicPromoDiscount = { ...percentBoth, duration: "once" };
+
+  it("names the first month or year for a one-time discount", () => {
+    assert.equal(promoDurationLabel(once, "monthly", durationCopyEn), "Discounted for the first month");
+    assert.equal(promoDurationLabel(once, "annual", durationCopyEn), "Discounted for the first year");
+    assert.equal(promoDurationLabel(once, "monthly", durationCopyHe), "הנחה לחודש הראשון");
+    assert.equal(promoDurationLabel(once, "annual", durationCopyHe), "הנחה לשנה הראשונה");
+    assert.equal(promoDurationLabel(once, "monthly", durationCopyEn).includes("BFTEST"), false);
+  });
+
+  it("names the first N months for a repeating discount and ongoing for forever", () => {
+    const repeating: PublicPromoDiscount = {
+      ...percentBoth,
+      duration: "repeating",
+      durationInMonths: 3,
+    };
+    assert.equal(
+      promoDurationLabel(repeating, "annual", durationCopyEn),
+      "Discounted for the first 3 months",
+    );
+    assert.equal(
+      promoDurationLabel(repeating, "monthly", durationCopyHe),
+      "הנחה ל-3 החודשים הראשונים",
+    );
+    const oneMonth: PublicPromoDiscount = { ...repeating, durationInMonths: 1 };
+    assert.equal(promoDurationLabel(oneMonth, "annual", durationCopyEn), "Discounted for the first month");
+    assert.equal(promoDurationLabel(percentBoth, "monthly", durationCopyEn), "Ongoing discount");
+    assert.equal(promoDurationLabel(percentBoth, "annual", durationCopyHe), "הנחה מתמשכת");
+  });
+
+  it("prices the live 40% once discount on Pro and Team", () => {
+    const pro = { id: "pro", monthlyPrice: 12, annualPrice: 10 };
+    const team = { id: "team", monthlyPrice: 35, annualPrice: 28 };
+    const proMonth = quotePromoPrice(pro, "monthly", once);
+    const teamMonth = quotePromoPrice(team, "monthly", once);
+    const proYear = quotePromoPrice(pro, "annual", once);
+    const teamYear = quotePromoPrice(team, "annual", once);
+    assert.equal(proMonth?.previousCents, 1200);
+    assert.equal(proMonth?.currentCents, 720);
+    assert.equal(teamMonth?.previousCents, 3500);
+    assert.equal(teamMonth?.currentCents, 2100);
+    assert.equal(proYear?.previousYearlyCents, 12000);
+    assert.equal(proYear?.yearlyCheckoutCents, 7200);
+    assert.equal(teamYear?.previousYearlyCents, 33600);
+    assert.equal(teamYear?.yearlyCheckoutCents, 20160);
+  });
+});
+
+function jsonResponse(status: number, body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+async function withFetch<T>(impl: typeof fetch, run: () => Promise<T>): Promise<T> {
+  const original = globalThis.fetch;
+  globalThis.fetch = impl;
+  try {
+    return await run();
+  } finally {
+    globalThis.fetch = original;
+  }
+}
+
+describe("promo slug validation", () => {
+  const livePrice = {
+    campaign: liveCampaign,
+    price: {
+      discount: { kind: "percent", percent: 40 },
+      duration: "once",
+      durationInMonths: null,
+      eligiblePlans: ["pro", "team"],
+      eligiblePeriods: ["monthly", "yearly"],
+    },
+  };
+
+  it("waits 5 seconds before a public promo read times out", () => {
+    assert.equal(PUBLIC_PROMO_FETCH_TIMEOUT_MS, 5000);
+  });
+
+  it("keeps the slug when the read times out, throws, or returns 429 or 5xx", async () => {
+    const cases: Array<{ name: string; impl: typeof fetch; timeoutMs?: number }> = [
+      {
+        name: "timeout",
+        impl: (() => new Promise<Response>(() => {})) as typeof fetch,
+        timeoutMs: 30,
+      },
+      {
+        name: "network",
+        impl: (() => Promise.reject(new Error("socket"))) as typeof fetch,
+      },
+      {
+        name: "429",
+        impl: (async () => new Response("rate", { status: 429 })) as typeof fetch,
+      },
+      {
+        name: "500",
+        impl: (async () => new Response("down", { status: 500 })) as typeof fetch,
+      },
+      {
+        name: "503",
+        impl: (async () => new Response("down", { status: 503 })) as typeof fetch,
+      },
+    ];
+
+    for (const item of cases) {
+      const read = await withFetch(item.impl, () =>
+        readPublicPromo("BF-TEST", { revalidate: false, timeoutMs: item.timeoutMs ?? 200 }),
+      );
+      assert.equal(read.status, "unavailable", item.name);
+      assert.equal(slugAfterPublicPromoRead("BF-TEST", read), "bf-test", item.name);
+      const plan = planPromoNavigation({
+        search: new URLSearchParams("promo=BF-TEST"),
+        validatedSlug: slugAfterPublicPromoRead("BF-TEST", read),
+        rejectCookie: false,
+      });
+      assert.equal(plan.rejected, false, item.name);
+      assert.equal(plan.setRejectCookie, false, item.name);
+      assert.equal(plan.requestedSlug, "bf-test", item.name);
+      assert.equal(plan.redirectTo?.get(PROMO_SLUG_QUERY_KEY), "bf-test", item.name);
+      assert.equal(plan.redirectTo?.toString().includes("BFTEST"), false, item.name);
+      const kept = planPromoNavigation({
+        search: new URLSearchParams("promo=bf-test"),
+        validatedSlug: "bf-test",
+        rejectCookie: false,
+      });
+      assert.equal(kept.redirectTo, null, item.name);
+      assert.equal(kept.setRejectCookie, false, item.name);
+      assert.equal(kept.rejected, false, item.name);
+      const state = marketingPromoFromRead("bf-test", read);
+      assert.equal(state.campaign, null, item.name);
+      assert.equal(state.discount, null, item.name);
+      assert.equal(state.forwardSlug, "bf-test", item.name);
+    }
+  });
+
+  it("strips the slug and sets the reject cookie for an explicit unknown or expired campaign", () => {
+    const unknown: PublicPromoRead = {
+      status: "ok",
+      payload: { campaign: null, discount: null },
+    };
+    assert.equal(slugAfterPublicPromoRead("bf-test", unknown), null);
+    const unknownPlan = planPromoNavigation({
+      search: new URLSearchParams("promo=bf-test"),
+      validatedSlug: null,
+      rejectCookie: false,
+    });
+    assert.equal(unknownPlan.rejected, true);
+    assert.equal(unknownPlan.setRejectCookie, true);
+    assert.equal(unknownPlan.requestedSlug, null);
+    assert.equal(unknownPlan.redirectTo?.toString() ?? "", "");
+    assert.equal(marketingPromoFromRead("bf-test", unknown).forwardSlug, null);
+
+    const expired: PublicMarketingPromoCampaign = {
+      ...liveCampaign,
+      endsAt: "2000-01-01T00:00:00.000Z",
+    };
+    const expiredRead: PublicPromoRead = {
+      status: "ok",
+      payload: { campaign: expired, discount: null },
+    };
+    assert.equal(slugAfterPublicPromoRead("bf-test", expiredRead), null);
+    const mismatch: PublicPromoRead = {
+      status: "ok",
+      payload: { campaign: { ...liveCampaign, slug: "other-sale" }, discount: null },
+    };
+    assert.equal(slugAfterPublicPromoRead("bf-test", mismatch), null);
+  });
+
+  it("keeps a live campaign and still falls back to the list price when the page read fails", async () => {
+    const read = await withFetch(
+      (async () => jsonResponse(200, livePrice)) as typeof fetch,
+      () => readPublicPromo("bf-test", { revalidate: false, timeoutMs: 200 }),
+    );
+    assert.equal(read.status, "ok");
+    if (read.status !== "ok") return;
+    assert.equal(read.payload.campaign?.slug, "bf-test");
+    assert.equal(read.payload.discount?.discount.kind, "percent");
+    assert.equal(slugAfterPublicPromoRead("bf-test", read), "bf-test");
+    const state = marketingPromoFromRead("bf-test", read);
+    assert.equal(state.forwardSlug, "bf-test");
+    assert.equal(state.discount?.duration, "once");
+    assert.equal(JSON.stringify(state).includes("BFTEST"), false);
+
+    const failed = await withFetch(
+      (async () => new Response("down", { status: 502 })) as typeof fetch,
+      () => readPublicPromo("bf-test", { revalidate: false }),
+    );
+    const fallback = marketingPromoFromRead("bf-test", failed);
+    assert.equal(fallback.discount, null);
+    assert.equal(fallback.campaign, null);
+    assert.equal(fallback.forwardSlug, "bf-test");
   });
 });

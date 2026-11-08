@@ -58,3 +58,6 @@ src/lib/promotions/, docs/engineering/public-promo-display.md
 
 2026-11-07 — Match onetap-app PublicPromoPriceDisplay: discount kind, durationInMonths, and Lemon off rounding.
 src/lib/promotions/promo-price.ts, public-promo-display.ts, docs/engineering/public-promo-display.md
+
+2026-11-07 — Promo slug checks keep ?promo= on timeout/5xx/429, and pricing notes follow discount duration.
+src/middleware.ts, src/lib/promotions/, pricing plan cards, docs/engineering/public-promo-display.md

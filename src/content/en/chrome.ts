@@ -74,9 +74,10 @@ export type ChromeCopy = {
     perMonth: string;
     mostPopular: string;
     wasNowSr: string;
-    discountPeriodMonthly: string;
-    discountPeriodAnnual: string;
-    discountPeriodBoth: string;
+    discountOnceMonthly: string;
+    discountOnceYearly: string;
+    discountRepeatingMonths: string;
+    discountForever: string;
     promoAnnualBilled: string;
     featureTitle: string;
     featureAccent: string;
@@ -255,9 +256,10 @@ export const enChrome: ChromeCopy = {
     perMonth: "/month",
     mostPopular: "Most Popular",
     wasNowSr: "Was ${previous}, now ${current}",
-    discountPeriodMonthly: "Monthly billing",
-    discountPeriodAnnual: "Annual billing",
-    discountPeriodBoth: "Monthly and annual billing",
+    discountOnceMonthly: "Discounted for the first month",
+    discountOnceYearly: "Discounted for the first year",
+    discountRepeatingMonths: "Discounted for the first {n} months",
+    discountForever: "Ongoing discount",
     promoAnnualBilled: "Billed {amount} yearly",
     featureTitle: "Feature",
     featureAccent: "comparison",
