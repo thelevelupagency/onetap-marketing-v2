@@ -1,11 +1,24 @@
 import { APP_ORIGIN, sanitizePromoSlug } from "@/lib/constants";
-import type { Locale } from "@/lib/i18n/config";
+import { LOCALES, type Locale } from "@/lib/i18n/config";
 import type { PublicPromoDiscount } from "@/lib/promotions/promo-price";
 import { parsePublicPromoPrice } from "@/lib/promotions/public-promo-display";
 
+/**
+ * Public-safe campaign palette (hex). Mirrors onetap-app `PromoPalette`.
+ * Applied by surfaces via inline CSS custom properties; a null theme keeps the
+ * site's brand tokens. See `src/slices/billing/domain/promoThemeStyle.ts`.
+ */
+export type PromoTheme = {
+  background: string;
+  foreground: string;
+  accent: string;
+  buttonBackground: string;
+  buttonForeground: string;
+};
+
 export type PublicMarketingPromoCopy = {
-  payNow: Record<Locale, string>;
-  priceBadge: Record<Locale, string>;
+  /** Marketing strip sentence per locale, `{discount}` already interpolated. */
+  bannerSentence: Record<Locale, string>;
 };
 
 export type PublicMarketingPromoCampaign = {
@@ -14,8 +27,21 @@ export type PublicMarketingPromoCampaign = {
   priority: number;
   marketingPublic: boolean;
   requiresPromoPin: boolean;
+  /** Public-safe palette (hex). Null = render against the site's brand tokens. */
+  theme: PromoTheme | null;
   copy: PublicMarketingPromoCopy;
 };
+
+const PROMO_THEME_KEYS = [
+  "background",
+  "foreground",
+  "accent",
+  "buttonBackground",
+  "buttonForeground",
+] as const;
+
+/** `#rrggbb` only. Anything else nulls the whole theme (fail closed). */
+const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 
 export type PublicPromoPayload = {
   campaign: PublicMarketingPromoCampaign | null;
@@ -199,9 +225,8 @@ function sanitizePublicCampaign(
   campaign: PublicMarketingPromoCampaign | null | undefined,
 ): PublicMarketingPromoCampaign | null {
   if (!campaign || typeof campaign !== "object") return null;
-  const payNow = campaign.copy?.payNow;
-  const priceBadge = campaign.copy?.priceBadge;
-  if (!payNow || !priceBadge) return null;
+  const bannerSentence = campaign.copy?.bannerSentence;
+  if (!bannerSentence || typeof bannerSentence !== "object") return null;
   const slug =
     typeof campaign.slug === "string" ? sanitizePromoSlug(campaign.slug) : null;
   if (!slug) return null;
@@ -209,21 +234,36 @@ function sanitizePublicCampaign(
   if (typeof campaign.priority !== "number") return null;
   if (typeof campaign.marketingPublic !== "boolean") return null;
   if (typeof campaign.requiresPromoPin !== "boolean") return null;
-  const enPay = typeof payNow.en === "string" ? payNow.en : "";
-  const hePay = typeof payNow.he === "string" ? payNow.he : "";
-  const enBadge = typeof priceBadge.en === "string" ? priceBadge.en : "";
-  const heBadge = typeof priceBadge.he === "string" ? priceBadge.he : "";
+  const sentence = {} as Record<Locale, string>;
+  for (const locale of LOCALES) {
+    const value = (bannerSentence as Record<string, unknown>)[locale];
+    sentence[locale] = typeof value === "string" ? value : "";
+  }
   return {
     slug,
     endsAt: campaign.endsAt,
     priority: campaign.priority,
     marketingPublic: campaign.marketingPublic,
     requiresPromoPin: campaign.requiresPromoPin,
-    copy: {
-      payNow: { en: enPay, he: hePay },
-      priceBadge: { en: enBadge, he: heBadge },
-    },
+    theme: sanitizePromoTheme(campaign.theme),
+    copy: { bannerSentence: sentence },
   };
+}
+
+/**
+ * Keep a theme only when all five fields are `#rrggbb` hex. A missing field or
+ * a non-hex value nulls the whole theme so the surface keeps its brand tokens.
+ */
+function sanitizePromoTheme(theme: unknown): PromoTheme | null {
+  if (!theme || typeof theme !== "object") return null;
+  const record = theme as Record<string, unknown>;
+  const result = {} as PromoTheme;
+  for (const key of PROMO_THEME_KEYS) {
+    const value = record[key];
+    if (typeof value !== "string" || !HEX_COLOR.test(value)) return null;
+    result[key] = value;
+  }
+  return result;
 }
 
 /** True when the campaign is public and its end instant is still in the future. */
@@ -256,15 +296,6 @@ export function resolveStripSentence(
   campaign: PublicMarketingPromoCampaign | null,
   locale: Locale,
 ): string | null {
-  const sentence = campaign?.copy?.payNow?.[locale]?.trim();
+  const sentence = campaign?.copy?.bannerSentence?.[locale]?.trim();
   return sentence || null;
-}
-
-/** Locale price-badge phrase. Blank → null (fail closed). */
-export function resolvePriceBadgePhrase(
-  campaign: PublicMarketingPromoCampaign | null,
-  locale: Locale,
-): string | null {
-  const phrase = campaign?.copy?.priceBadge?.[locale]?.trim();
-  return phrase || null;
 }

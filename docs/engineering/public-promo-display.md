@@ -2,7 +2,13 @@
 
 Marketing reads the discount from the same public promo route as the strip. There is no `/display` path. Until `price` is present and valid, plan cards keep the list price.
 
-Source: onetap-app `src/app/api/billing/promotions/public/route.ts` and `src/slices/billing/domain/promoCheckoutPrice.ts` (`PublicPromoPriceDisplay`, PR 412).
+Source of truth (onetap-app):
+
+- `src/app/api/billing/promotions/public/route.ts` — the route, `{ campaign, price }`.
+- `src/slices/billing/domain/selectMarketingPromoCampaign.ts` — the `campaign` shape (incl. nullable `theme`).
+- `src/slices/billing/domain/promoCampaignCopy.ts` — `copy.bannerSentence` (`{discount}` already filled).
+- `src/slices/billing/domain/promoThemeStyle.ts` — how the `theme` hex palette becomes `--promo-*` CSS vars.
+- `src/slices/billing/domain/promoCheckoutPrice.ts` — `PublicPromoPriceDisplay` (the `price` object, unchanged).
 
 ## Request
 
@@ -22,9 +28,15 @@ Source: onetap-app `src/app/api/billing/promotions/public/route.ts` and `src/sli
     "priority": 10,
     "marketingPublic": true,
     "requiresPromoPin": false,
+    "theme": {
+      "background": "#1e3a5f",
+      "foreground": "#ffffff",
+      "accent": "#f5b301",
+      "buttonBackground": "#ffffff",
+      "buttonForeground": "#1e3a5f"
+    },
     "copy": {
-      "payNow": { "en": "Upgrade, a test discount.", "he": "שדרגו, הנחת בדיקה." },
-      "priceBadge": { "en": "a test discount", "he": "הנחת בדיקה" }
+      "bannerSentence": { "en": "Upgrade, a test discount.", "he": "שדרגו, הנחת בדיקה." }
     }
   },
   "price": {
@@ -36,6 +48,20 @@ Source: onetap-app `src/app/api/billing/promotions/public/route.ts` and `src/sli
   }
 }
 ```
+
+### `campaign` fields
+
+| Field | Meaning |
+| --- | --- |
+| `slug` | Public campaign slug (kebab). Never a Lemon coupon code. |
+| `endsAt` | ISO instant. A past `endsAt` is treated as expired (strip hidden, slug stripped). |
+| `priority` | App-side ordering; higher wins when no `?promo=` is pinned. |
+| `marketingPublic` | Must be `true` for the strip to render. |
+| `requiresPromoPin` | Link-gated campaigns; informational for the site. |
+| `theme` | Nullable `#rrggbb` palette (`background`, `foreground`, `accent`, `buttonBackground`, `buttonForeground`). Applied as inline `--promo-*` CSS vars on the strip (`bg-[var(--promo-bg)] text-[var(--promo-fg)]`) and as a subtle accent on discounted pricing notes. `null` → keep the site's brand tokens. If any field is missing or not `#rrggbb`, the whole theme is nulled (fail closed). |
+| `copy.bannerSentence` | Marketing strip sentence per locale (`en`, `he`), `{discount}` already interpolated. Replaces the removed `copy.payNow`. |
+
+Removed in the current contract: `copy.payNow` (superseded by `copy.bannerSentence`) and `copy.priceBadge` (the site renders struck prices from `price`, so the badge phrase and its `resolvePriceBadgePhrase` helper are gone).
 
 A fixed amount:
 

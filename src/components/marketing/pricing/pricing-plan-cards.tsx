@@ -59,13 +59,15 @@ function PlanPriceBlock({
 }) {
   const pricing = getPricing(locale);
   const chrome = getChrome(locale);
-  const { discount } = useMarketingPromo();
+  const { discount, campaign } = useMarketingPromo();
   const period = isAnnual ? "annual" : "monthly";
   const plan = pricing.plans.find((p) => p.id === planId)!;
   const { current, previous, billedNote } = pricing.getPlanPriceDisplay(plan, period);
   const quote = quotePromoPrice(plan, period, discount);
   const muted = isPopular ? "text-brand-cream/50" : "text-brand-midnight/50";
   const noteClass = isPopular ? "text-brand-turquoise" : "text-brand-midnight/50";
+  // Subtle campaign accent for the savings note; brand tokens when no theme.
+  const accent = campaign?.theme?.accent ?? null;
 
   if (quote && discount) {
     const currentLabel = formatUsdAmount(quote.currentCents);
@@ -95,7 +97,10 @@ function PlanPriceBlock({
             </span>
             <span className={muted}>{chrome.pricingUi.perMonth}</span>
           </div>
-          <p className={cn("mt-1 text-sm", noteClass)}>
+          <p
+            className={cn("mt-1 text-sm", !accent && noteClass)}
+            style={accent ? { color: accent } : undefined}
+          >
             {discountPeriodLabel(discount, period, chrome.pricingUi)}
           </p>
           {quote.yearlyCheckoutCents != null && quote.previousYearlyCents != null ? (
