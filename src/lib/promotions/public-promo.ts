@@ -19,6 +19,11 @@ export type PromoTheme = {
 export type PublicMarketingPromoCopy = {
   /** Marketing strip sentence per locale, `{discount}` already interpolated. */
   bannerSentence: Record<Locale, string>;
+  /**
+   * Short price-badge phrase per locale (e.g. "40% off"). Empty when the
+   * payload omitted it — cards then show the strike price without a badge.
+   */
+  discountPhrase: Record<Locale, string>;
 };
 
 export type PublicMarketingPromoCampaign = {
@@ -225,7 +230,10 @@ function sanitizePublicCampaign(
   campaign: PublicMarketingPromoCampaign | null | undefined,
 ): PublicMarketingPromoCampaign | null {
   if (!campaign || typeof campaign !== "object") return null;
-  const bannerSentence = campaign.copy?.bannerSentence;
+  const copyRaw = campaign.copy as
+    | { bannerSentence?: unknown; discountPhrase?: unknown }
+    | undefined;
+  const bannerSentence = copyRaw?.bannerSentence;
   if (!bannerSentence || typeof bannerSentence !== "object") return null;
   const slug =
     typeof campaign.slug === "string" ? sanitizePromoSlug(campaign.slug) : null;
@@ -234,11 +242,8 @@ function sanitizePublicCampaign(
   if (typeof campaign.priority !== "number") return null;
   if (typeof campaign.marketingPublic !== "boolean") return null;
   if (typeof campaign.requiresPromoPin !== "boolean") return null;
-  const sentence = {} as Record<Locale, string>;
-  for (const locale of LOCALES) {
-    const value = (bannerSentence as Record<string, unknown>)[locale];
-    sentence[locale] = typeof value === "string" ? value : "";
-  }
+  const sentence = readLocaleCopy(bannerSentence);
+  const discountPhrase = readLocaleCopy(copyRaw?.discountPhrase);
   return {
     slug,
     endsAt: campaign.endsAt,
@@ -246,8 +251,18 @@ function sanitizePublicCampaign(
     marketingPublic: campaign.marketingPublic,
     requiresPromoPin: campaign.requiresPromoPin,
     theme: sanitizePromoTheme(campaign.theme),
-    copy: { bannerSentence: sentence },
+    copy: { bannerSentence: sentence, discountPhrase },
   };
+}
+
+function readLocaleCopy(raw: unknown): Record<Locale, string> {
+  const out = {} as Record<Locale, string>;
+  const obj = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : null;
+  for (const locale of LOCALES) {
+    const value = obj?.[locale];
+    out[locale] = typeof value === "string" ? value : "";
+  }
+  return out;
 }
 
 /**
@@ -298,4 +313,27 @@ export function resolveStripSentence(
 ): string | null {
   const sentence = campaign?.copy?.bannerSentence?.[locale]?.trim();
   return sentence || null;
+}
+
+/** Locale price-badge phrase. Blank → null (fail closed). */
+export function resolvePriceBadgePhrase(
+  campaign: PublicMarketingPromoCampaign | null,
+  locale: Locale,
+): string | null {
+  const phrase = campaign?.copy?.discountPhrase?.[locale]?.trim();
+  return phrase || null;
+}
+
+/**
+ * Badge copy for one plan card. Hidden when the plan/period is ineligible,
+ * the strip sentence is blank, or the locale phrase is blank.
+ */
+export function resolveEligiblePriceBadgePhrase(
+  campaign: PublicMarketingPromoCampaign | null,
+  locale: Locale,
+  eligible: boolean,
+): string | null {
+  if (!eligible) return null;
+  if (!resolveStripSentence(campaign, locale)) return null;
+  return resolvePriceBadgePhrase(campaign, locale);
 }

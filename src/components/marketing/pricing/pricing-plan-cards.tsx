@@ -17,6 +17,7 @@ import {
   quotePromoPrice,
   type PublicPromoDiscount,
 } from "@/lib/promotions/promo-price";
+import { resolveEligiblePriceBadgePhrase } from "@/lib/promotions/public-promo";
 import type { ChromeCopy } from "@/content/en/chrome";
 import { type as typography } from "@/lib/typography";
 import type { MetaCtaPlacement } from "@/lib/meta-pixel";
@@ -68,6 +69,11 @@ function PlanPriceBlock({
   const noteClass = isPopular ? "text-brand-turquoise" : "text-brand-midnight/50";
   // Subtle campaign accent for the savings note; brand tokens when no theme.
   const accent = campaign?.theme?.accent ?? null;
+  const promoPriceBadge = resolveEligiblePriceBadgePhrase(
+    campaign,
+    locale,
+    Boolean(quote),
+  );
 
   if (quote && discount) {
     const currentLabel = formatUsdAmount(quote.currentCents);
@@ -96,6 +102,28 @@ function PlanPriceBlock({
               <span className={typography.price}>{formatUsdFromCents(quote.currentCents)}</span>
             </span>
             <span className={muted}>{chrome.pricingUi.perMonth}</span>
+            {promoPriceBadge ? (
+              <span
+                className={cn(
+                  "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                  !accent &&
+                    (isPopular
+                      ? "bg-brand-turquoise text-brand-midnight"
+                      : "bg-brand-navy text-brand-cream"),
+                )}
+                style={
+                  accent
+                    ? {
+                        backgroundColor: accent,
+                        color: isPopular ? "#161b26" : "#fdfcf0",
+                      }
+                    : undefined
+                }
+                data-testid="promo-price-badge"
+              >
+                {promoPriceBadge}
+              </span>
+            ) : null}
           </div>
           <p
             className={cn("mt-1 text-sm", !accent && noteClass)}

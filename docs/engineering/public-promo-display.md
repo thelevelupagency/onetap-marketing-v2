@@ -6,7 +6,7 @@ Source of truth (onetap-app):
 
 - `src/app/api/billing/promotions/public/route.ts` — the route, `{ campaign, price }`.
 - `src/slices/billing/domain/selectMarketingPromoCampaign.ts` — the `campaign` shape (incl. nullable `theme`).
-- `src/slices/billing/domain/promoCampaignCopy.ts` — `copy.bannerSentence` (`{discount}` already filled).
+- `src/slices/billing/domain/promoCampaignCopy.ts` — `copy.bannerSentence` + `copy.discountPhrase` (`{discount}` already filled).
 - `src/slices/billing/domain/promoThemeStyle.ts` — how the `theme` hex palette becomes `--promo-*` CSS vars.
 - `src/slices/billing/domain/promoCheckoutPrice.ts` — `PublicPromoPriceDisplay` (the `price` object, unchanged).
 
@@ -36,7 +36,8 @@ Source of truth (onetap-app):
       "buttonForeground": "#1e3a5f"
     },
     "copy": {
-      "bannerSentence": { "en": "Upgrade, a test discount.", "he": "שדרגו, הנחת בדיקה." }
+      "bannerSentence": { "en": "Upgrade, a test discount.", "he": "שדרגו, הנחת בדיקה." },
+      "discountPhrase": { "en": "40% off", "he": "40% הנחה" }
     }
   },
   "price": {
@@ -60,8 +61,9 @@ Source of truth (onetap-app):
 | `requiresPromoPin` | Link-gated campaigns; informational for the site. |
 | `theme` | Nullable `#rrggbb` palette (`background`, `foreground`, `accent`, `buttonBackground`, `buttonForeground`). Applied as inline `--promo-*` CSS vars on the strip (`bg-[var(--promo-bg)] text-[var(--promo-fg)]`) and as a subtle accent on discounted pricing notes. `null` → keep the site's brand tokens. If any field is missing or not `#rrggbb`, the whole theme is nulled (fail closed). |
 | `copy.bannerSentence` | Marketing strip sentence per locale (`en`, `he`), `{discount}` already interpolated. Replaces the removed `copy.payNow`. |
+| `copy.discountPhrase` | Short price-badge phrase per locale. Shown only on plans/periods in `price.eligiblePlans` / `price.eligiblePeriods`. Omitted or blank → strike prices still render, badge hidden. |
 
-Removed in the current contract: `copy.payNow` (superseded by `copy.bannerSentence`) and `copy.priceBadge` (the site renders struck prices from `price`, so the badge phrase and its `resolvePriceBadgePhrase` helper are gone).
+Removed in the current contract: `copy.payNow` (superseded by `copy.bannerSentence`) and `copy.priceBadge` (replaced by `copy.discountPhrase` plus struck prices from `price`).
 
 A fixed amount:
 

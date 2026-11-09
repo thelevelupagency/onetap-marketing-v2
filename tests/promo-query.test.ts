@@ -15,6 +15,8 @@ import {
   PUBLIC_PROMO_FETCH_TIMEOUT_MS,
   publicPromoPayloadFromHttp,
   readPublicPromo,
+  resolveEligiblePriceBadgePhrase,
+  resolvePriceBadgePhrase,
   resolveStripSentence,
   selectActiveCampaign,
   slugAfterPublicPromoRead,
@@ -132,11 +134,13 @@ describe("public promo fail-closed copy helpers", () => {
     theme: null,
     copy: {
       bannerSentence: { en: "Upgrade, this discount.", he: "שדרגו, ההנחה הזו." },
+      discountPhrase: { en: "40% off", he: "40% הנחה" },
     },
   };
 
   it("returns null for a null campaign", () => {
     assert.equal(resolveStripSentence(null, "en"), null);
+    assert.equal(resolvePriceBadgePhrase(null, "en"), null);
   });
 
   it("returns null when the locale bannerSentence is blank", () => {
@@ -144,10 +148,32 @@ describe("public promo fail-closed copy helpers", () => {
       ...base,
       copy: {
         bannerSentence: { en: "   ", he: base.copy.bannerSentence.he },
+        discountPhrase: base.copy.discountPhrase,
       },
     };
     assert.equal(resolveStripSentence(campaign, "en"), null);
     assert.equal(resolveStripSentence(campaign, "he"), "שדרגו, ההנחה הזו.");
+  });
+
+  it("hides the price badge when the plan is ineligible or the phrase is blank", () => {
+    assert.equal(resolveEligiblePriceBadgePhrase(base, "en", true), "40% off");
+    assert.equal(resolveEligiblePriceBadgePhrase(base, "en", false), null);
+    const blankPhrase: PublicMarketingPromoCampaign = {
+      ...base,
+      copy: {
+        bannerSentence: base.copy.bannerSentence,
+        discountPhrase: { en: "  ", he: base.copy.discountPhrase.he },
+      },
+    };
+    assert.equal(resolveEligiblePriceBadgePhrase(blankPhrase, "en", true), null);
+    const blankStrip: PublicMarketingPromoCampaign = {
+      ...base,
+      copy: {
+        bannerSentence: { en: "", he: base.copy.bannerSentence.he },
+        discountPhrase: base.copy.discountPhrase,
+      },
+    };
+    assert.equal(resolveEligiblePriceBadgePhrase(blankStrip, "en", true), null);
   });
 });
 
@@ -160,6 +186,7 @@ const liveCampaign: PublicMarketingPromoCampaign = {
   theme: null,
   copy: {
     bannerSentence: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
+    discountPhrase: { en: "40% off", he: "40% הנחה" },
   },
 };
 
@@ -179,6 +206,7 @@ describe("public campaign sanitizer reads bannerSentence and theme", () => {
     requiresPromoPin: false,
     copy: {
       bannerSentence: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
+      discountPhrase: { en: "40% off", he: "40% הנחה" },
     },
     ...overrides,
   });
@@ -189,6 +217,20 @@ describe("public campaign sanitizer reads bannerSentence and theme", () => {
     });
     assert.equal(campaign?.copy.bannerSentence.en, "Upgrade, a test discount.");
     assert.equal(campaign?.copy.bannerSentence.he, "שדרגו, הנחת בדיקה.");
+    assert.equal(campaign?.copy.discountPhrase.en, "40% off");
+    assert.equal(campaign?.copy.discountPhrase.he, "40% הנחה");
+  });
+
+  it("defaults omitted discountPhrase to empty strings without dropping the campaign", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      campaign: campaignBody({
+        copy: {
+          bannerSentence: { en: "Upgrade, a test discount.", he: "שדרגו, הנחת בדיקה." },
+        },
+      }),
+    });
+    assert.ok(campaign);
+    assert.deepEqual(campaign?.copy.discountPhrase, { en: "", he: "" });
   });
 
   it("drops the campaign when copy.bannerSentence is missing", () => {

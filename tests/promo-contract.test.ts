@@ -10,7 +10,7 @@ import { parsePublicPromoPrice } from "../src/lib/promotions/public-promo-displa
  * Source of truth (onetap-app):
  *   - src/app/api/billing/promotions/public/route.ts
  *   - src/slices/billing/domain/selectMarketingPromoCampaign.ts (campaign shape)
- *   - src/slices/billing/domain/promoCampaignCopy.ts (copy.bannerSentence)
+ *   - src/slices/billing/domain/promoCampaignCopy.ts (copy.bannerSentence + copy.discountPhrase)
  *   - src/slices/billing/domain/promoCheckoutPrice.ts (price shape)
  *
  * These tests are pure and offline. A representative payload is fed through the
@@ -37,6 +37,10 @@ const WIRE_PAYLOAD = {
       bannerSentence: {
         en: "Upgrade, a test discount.",
         he: "שדרגו, הנחת בדיקה.",
+      },
+      discountPhrase: {
+        en: "40% off",
+        he: "40% הנחה",
       },
     },
   },
@@ -79,14 +83,32 @@ describe("public promo wire contract — campaign", () => {
     assert.ok(dropped.campaign);
   });
 
-  it("depends on copy.bannerSentence per locale", () => {
+  it("depends on copy.bannerSentence and copy.discountPhrase per locale", () => {
     const { campaign } = publicPromoPayloadFromHttp(200, WIRE_PAYLOAD);
     assert.deepEqual(campaign?.copy, {
       bannerSentence: {
         en: "Upgrade, a test discount.",
         he: "שדרגו, הנחת בדיקה.",
       },
+      discountPhrase: {
+        en: "40% off",
+        he: "40% הנחה",
+      },
     });
+  });
+
+  it("keeps the campaign when copy.discountPhrase is omitted (badge hidden)", () => {
+    const { campaign } = publicPromoPayloadFromHttp(200, {
+      ...WIRE_PAYLOAD,
+      campaign: {
+        ...WIRE_PAYLOAD.campaign,
+        copy: {
+          bannerSentence: WIRE_PAYLOAD.campaign.copy.bannerSentence,
+        },
+      },
+    });
+    assert.ok(campaign);
+    assert.deepEqual(campaign?.copy.discountPhrase, { en: "", he: "" });
   });
 
   it("rejects a campaign missing copy.bannerSentence (app contract drift)", () => {
