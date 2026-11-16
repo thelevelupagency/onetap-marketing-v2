@@ -78,6 +78,10 @@ export type ChromeCopy = {
     discountOnceYearly: string;
     discountRepeatingMonths: string;
     discountForever: string;
+    /** `{n}` = Lemon percent, e.g. "40% off". */
+    promoPercentOffBadge: string;
+    /** `{amount}` = Lemon fixed dollars without `$`, e.g. "$10 off". */
+    promoFixedOffBadge: string;
     promoAnnualBilled: string;
     featureTitle: string;
     featureAccent: string;
@@ -260,6 +264,8 @@ export const enChrome: ChromeCopy = {
     discountOnceYearly: "Discounted for the first year",
     discountRepeatingMonths: "Discounted for the first {n} months",
     discountForever: "Ongoing discount",
+    promoPercentOffBadge: "{n}% off",
+    promoFixedOffBadge: "${amount} off",
     promoAnnualBilled: "Billed {amount} yearly",
     featureTitle: "Feature",
     featureAccent: "comparison",

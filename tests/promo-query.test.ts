@@ -15,7 +15,7 @@ import {
   PUBLIC_PROMO_FETCH_TIMEOUT_MS,
   publicPromoPayloadFromHttp,
   readPublicPromo,
-  resolveEligiblePriceBadgePhrase,
+  resolveEligiblePriceBadgeFromDiscount,
   resolvePriceBadgePhrase,
   resolveStripSentence,
   selectActiveCampaign,
@@ -155,25 +155,39 @@ describe("public promo fail-closed copy helpers", () => {
     assert.equal(resolveStripSentence(campaign, "he"), "שדרגו, ההנחה הזו.");
   });
 
-  it("hides the price badge when the plan is ineligible or the phrase is blank", () => {
-    assert.equal(resolveEligiblePriceBadgePhrase(base, "en", true), "40% off");
-    assert.equal(resolveEligiblePriceBadgePhrase(base, "en", false), null);
-    const blankPhrase: PublicMarketingPromoCampaign = {
-      ...base,
-      copy: {
-        bannerSentence: base.copy.bannerSentence,
-        discountPhrase: { en: "  ", he: base.copy.discountPhrase.he },
-      },
+  it("formats the plan-card badge from Lemon price.discount, not the authored phrase", () => {
+    const templates = {
+      percentOff: "{n}% off",
+      fixedOff: "${amount} off",
     };
-    assert.equal(resolveEligiblePriceBadgePhrase(blankPhrase, "en", true), null);
-    const blankStrip: PublicMarketingPromoCampaign = {
-      ...base,
-      copy: {
-        bannerSentence: { en: "", he: base.copy.bannerSentence.he },
-        discountPhrase: base.copy.discountPhrase,
-      },
+    const percentDiscount = {
+      discount: { kind: "percent" as const, percent: 40 },
+      duration: "once" as const,
+      durationInMonths: null,
+      eligiblePlans: ["pro" as const, "team" as const],
+      eligiblePeriods: ["monthly" as const, "yearly" as const],
+      period: "both" as const,
     };
-    assert.equal(resolveEligiblePriceBadgePhrase(blankStrip, "en", true), null);
+    assert.equal(
+      resolveEligiblePriceBadgeFromDiscount(percentDiscount, true, templates),
+      "40% off",
+    );
+    assert.equal(
+      resolveEligiblePriceBadgeFromDiscount(percentDiscount, false, templates),
+      null,
+    );
+    assert.equal(
+      resolveEligiblePriceBadgeFromDiscount(
+        {
+          ...percentDiscount,
+          discount: { kind: "fixed", amountCents: 1000 },
+        },
+        true,
+        templates,
+      ),
+      "$10 off",
+    );
+    assert.equal(resolveEligiblePriceBadgeFromDiscount(null, true, templates), null);
   });
 });
 

@@ -41,6 +41,17 @@ Partner-facing loop: [meta-conversion-loop.md](../guides/meta-conversion-loop.md
 
 GitHub Actions sets the same public values in `.github/workflows/quality-gates.yml` (except Meta Pixel). Vercel project env should mirror production for the production deployment, including `NEXT_PUBLIC_META_PIXEL_ID` when ads tracking is enabled.
 
+## Promo cache revalidate
+
+```bash
+MARKETING_PROMO_REVALIDATE_SECRET=
+```
+
+Shared with onetap-app `MARKETING_PROMO_REVALIDATE_SECRET`. The app POSTs to
+`/api/revalidate/promo` after a promotion create/update/delete so the tagged
+public-promo fetch drops immediately. When unset, the route returns 503 and
+marketing keeps the 60s fetch TTL.
+
 ## Future API routes
 
-When `src/app/api/**` is added, see commented placeholders in workflow `env` and `AGENTS.md` → Future Backend.
+See commented placeholders in workflow `env` and `AGENTS.md` → Future Backend.

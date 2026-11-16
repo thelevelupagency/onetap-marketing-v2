@@ -74,6 +74,8 @@ export const heChrome: ChromeCopy = {
     discountOnceYearly: "הנחה לשנה הראשונה",
     discountRepeatingMonths: "הנחה ל-{n} החודשים הראשונים",
     discountForever: "הנחה מתמשכת",
+    promoPercentOffBadge: "{n}% הנחה",
+    promoFixedOffBadge: "הנחה של ${amount}$",
     promoAnnualBilled: "חיוב שנתי בסך {amount}",
     featureTitle: "השוואת",
     featureAccent: "יכולות",

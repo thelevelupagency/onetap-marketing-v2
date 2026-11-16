@@ -1,7 +1,14 @@
 import { APP_ORIGIN, sanitizePromoSlug } from "@/lib/constants";
 import { LOCALES, type Locale } from "@/lib/i18n/config";
-import type { PublicPromoDiscount } from "@/lib/promotions/promo-price";
+import {
+  formatPromoPlanCardBadge,
+  type PromoPlanCardBadgeTemplates,
+  type PublicPromoDiscount,
+} from "@/lib/promotions/promo-price";
 import { parsePublicPromoPrice } from "@/lib/promotions/public-promo-display";
+
+/** Next data-cache tag for public promo fetches — busted by `POST /api/revalidate/promo`. */
+export const MARKETING_PROMO_CACHE_TAG = "marketing-promo";
 
 /**
  * Public-safe campaign palette (hex). Mirrors onetap-app `PromoPalette`.
@@ -20,8 +27,8 @@ export type PublicMarketingPromoCopy = {
   /** Marketing strip sentence per locale, `{discount}` already interpolated. */
   bannerSentence: Record<Locale, string>;
   /**
-   * Short price-badge phrase per locale (e.g. "40% off"). Empty when the
-   * payload omitted it — cards then show the strike price without a badge.
+   * Short discount phrase per locale for strip/popup `{discount}` tokens.
+   * Plan-card badges use Lemon `price.discount` instead of this phrase.
    */
   discountPhrase: Record<Locale, string>;
 };
@@ -130,7 +137,7 @@ export async function readPublicPromo(
         headers: { Accept: "application/json" },
         ...(revalidate === false
           ? { cache: "no-store" as const }
-          : { next: { revalidate } }),
+          : { next: { revalidate, tags: [MARKETING_PROMO_CACHE_TAG] } }),
       }),
       timeout,
     ]);
@@ -315,7 +322,10 @@ export function resolveStripSentence(
   return sentence || null;
 }
 
-/** Locale price-badge phrase. Blank → null (fail closed). */
+/**
+ * @deprecated Prefer `formatPromoPlanCardBadge` from Lemon `price.discount`.
+ * Authored discountPhrase stays for the strip/popup `{discount}` token only.
+ */
 export function resolvePriceBadgePhrase(
   campaign: PublicMarketingPromoCampaign | null,
   locale: Locale,
@@ -325,15 +335,15 @@ export function resolvePriceBadgePhrase(
 }
 
 /**
- * Badge copy for one plan card. Hidden when the plan/period is ineligible,
- * the strip sentence is blank, or the locale phrase is blank.
+ * Badge copy for one plan card from Lemon `price.discount`.
+ * Hidden when the plan/period is ineligible or the discount cannot be formatted.
+ * Authored `discountPhrase` is never used here (banner/popup only).
  */
-export function resolveEligiblePriceBadgePhrase(
-  campaign: PublicMarketingPromoCampaign | null,
-  locale: Locale,
+export function resolveEligiblePriceBadgeFromDiscount(
+  discount: PublicPromoDiscount | null | undefined,
   eligible: boolean,
+  templates: PromoPlanCardBadgeTemplates,
 ): string | null {
-  if (!eligible) return null;
-  if (!resolveStripSentence(campaign, locale)) return null;
-  return resolvePriceBadgePhrase(campaign, locale);
+  if (!eligible || !discount) return null;
+  return formatPromoPlanCardBadge(discount.discount, templates);
 }

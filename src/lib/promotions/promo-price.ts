@@ -70,6 +70,35 @@ export function formatUsdAmount(cents: number): string {
   return formatUsdFromCents(cents).replace(/^-?\$/, "");
 }
 
+/** Templates for the plan-card discount badge (Lemon economics only). */
+export type PromoPlanCardBadgeTemplates = {
+  /** `{n}` = percent, e.g. "40% off". */
+  percentOff: string;
+  /** `{amount}` = dollars without `$`, e.g. "10" → "$10 off". */
+  fixedOff: string;
+};
+
+/**
+ * Plan-card badge from the Lemon discount. Never the authored campaign phrase.
+ * Must stay aligned with onetap-app `formatPromoPlanCardBadge`.
+ */
+export function formatPromoPlanCardBadge(
+  discount: PublicPromoPriceDisplay["discount"] | null | undefined,
+  templates: PromoPlanCardBadgeTemplates,
+): string | null {
+  if (!discount) return null;
+  if (discount.kind === "percent") {
+    const percent = discount.percent;
+    if (!Number.isFinite(percent) || percent <= 0) return null;
+    if (typeof templates.percentOff !== "string") return null;
+    const shown = Number.isInteger(percent) ? String(percent) : String(percent);
+    return templates.percentOff.replaceAll("{n}", shown);
+  }
+  if (!Number.isFinite(discount.amountCents) || discount.amountCents < 0) return null;
+  if (typeof templates.fixedOff !== "string") return null;
+  return templates.fixedOff.replaceAll("{amount}", formatUsdAmount(discount.amountCents));
+}
+
 export type PromoDurationCopy = {
   onceMonthly: string;
   onceYearly: string;
