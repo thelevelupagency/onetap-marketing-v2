@@ -17,7 +17,7 @@ import {
   quotePromoPrice,
   type PublicPromoDiscount,
 } from "@/lib/promotions/promo-price";
-import { resolveEligiblePriceBadgePhrase } from "@/lib/promotions/public-promo";
+import { resolveEligiblePriceBadgeFromDiscount } from "@/lib/promotions/public-promo";
 import type { ChromeCopy } from "@/content/en/chrome";
 import { type as typography } from "@/lib/typography";
 import type { MetaCtaPlacement } from "@/lib/meta-pixel";
@@ -69,10 +69,13 @@ function PlanPriceBlock({
   const noteClass = isPopular ? "text-brand-turquoise" : "text-brand-midnight/50";
   // Subtle campaign accent for the savings note; brand tokens when no theme.
   const accent = campaign?.theme?.accent ?? null;
-  const promoPriceBadge = resolveEligiblePriceBadgePhrase(
-    campaign,
-    locale,
+  const promoPriceBadge = resolveEligiblePriceBadgeFromDiscount(
+    discount,
     Boolean(quote),
+    {
+      percentOff: chrome.pricingUi.promoPercentOffBadge,
+      fixedOff: chrome.pricingUi.promoFixedOffBadge,
+    },
   );
 
   if (quote && discount) {
