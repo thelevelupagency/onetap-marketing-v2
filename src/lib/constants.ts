@@ -29,6 +29,18 @@ export const PRIVACY_URL = `${APP_ORIGIN}/privacy`;
 export const TERMS_URL = `${APP_ORIGIN}/terms`;
 export const COOKIES_URL = `${APP_ORIGIN}/cookies`;
 
+/** Purchase-intent plan for post-onboarding billing handoff. Allowlisted only. */
+export const BILLING_INTENT_QUERY_KEY = "billing";
+export type BillingIntentPlan = "pro" | "team";
+
+/** Register entry that remembers Pro or Team for the billing plans page after onboarding. */
+export function buildBillingSignupUrl(plan: BillingIntentPlan): string {
+  return `${SIGNUP_URL}?${BILLING_INTENT_QUERY_KEY}=${plan}`;
+}
+
+export const SIGNUP_PRO_URL = buildBillingSignupUrl("pro");
+export const SIGNUP_TEAM_URL = buildBillingSignupUrl("team");
+
 /** Official brand social profiles (footer + Organization sameAs). */
 export const SOCIAL_FACEBOOK_URL =
   "https://www.facebook.com/profile.php?id=61586661953454";

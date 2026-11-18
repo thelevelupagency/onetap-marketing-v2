@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
-import { SIGNUP_URL } from "@/lib/constants";
+import { SIGNUP_PRO_URL } from "@/lib/constants";
 import type { Locale } from "@/lib/i18n/config";
 import {
   resolveStripSentence,
@@ -48,7 +48,7 @@ export function MarketingPromoStrip({
       data-marketing-promo-strip
     >
       <AppOutboundLink
-        href={SIGNUP_URL}
+        href={SIGNUP_PRO_URL}
         placement="get_card"
         className="text-sm font-medium underline-offset-4 hover:underline"
       >
