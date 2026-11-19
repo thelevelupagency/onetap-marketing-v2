@@ -60,6 +60,15 @@ function Carousel({
   );
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
+  const [trackedApi, setTrackedApi] = React.useState(api);
+
+  // Embla replaces `api` after the viewport mounts. Sync the button flags in
+  // render so the effect only subscribes (setState-in-effect is a lint error).
+  if (api !== trackedApi) {
+    setTrackedApi(api);
+    setCanScrollPrev(api?.canScrollPrev() ?? false);
+    setCanScrollNext(api?.canScrollNext() ?? false);
+  }
 
   const onSelect = React.useCallback((carouselApi: CarouselApi) => {
     if (!carouselApi) return;
@@ -95,7 +104,6 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return;
-    onSelect(api);
     api.on("reInit", onSelect);
     api.on("select", onSelect);
 
