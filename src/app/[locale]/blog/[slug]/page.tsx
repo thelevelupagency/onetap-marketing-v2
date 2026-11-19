@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import {
@@ -121,12 +121,12 @@ export default async function BlogPostPage({ params }: PageProps) {
         <BlogPostLayout headings={post.headings}>
           <MarketingContainer width="narrow" className="w-full min-w-0 px-0 lg:mx-0">
             <div className="mb-marketing-stack-gap-sm flex flex-col gap-marketing-stack-gap-sm">
-              <Link
+              <CampaignLink
                 href={localizePath("/blog", locale)}
                 className={`${typography.label} flex w-fit items-center gap-2 text-brand-midnight/60 transition-colors hover:text-brand-midnight`}
               >
                 <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> {chrome.blog.backToBlog}
-              </Link>
+              </CampaignLink>
               <BlogPostBadges categories={post.categories} locale={locale} />
             </div>
 

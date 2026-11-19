@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import { MarketingPromoShell } from "@/components/marketing/marketing-promo-shell";
 import { JsonLd } from "@/components/marketing/primitives";
 import { getChrome } from "@/content/get-content";
 import { isLocale, type Locale } from "@/lib/i18n/config";
@@ -29,11 +30,11 @@ export default async function LocaleLayout({
   const chrome = getChrome(locale);
 
   return (
-    <>
+    <MarketingPromoShell locale={locale}>
       <JsonLd data={[buildOrganizationJsonLd(), buildWebSiteJsonLd()]} />
       <Navigation chrome={chrome} locale={locale} />
       <div className="flex-1">{children}</div>
       <Footer />
-    </>
+    </MarketingPromoShell>
   );
 }

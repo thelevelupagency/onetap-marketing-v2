@@ -7,8 +7,18 @@ import { getPricing, getChrome } from "@/content/get-content";
 import type { Locale } from "@/lib/i18n/config";
 import { MarketingPrimaryButton } from "@/components/marketing/get-card-cta";
 import { AppOutboundLink } from "@/components/marketing/app-outbound-link";
+import { useMarketingPromo } from "@/components/providers/marketing-promo-provider";
 import { CardReveal, MarketingStaggerGrid } from "@/components/marketing/motion";
 import { microTransition, useMotionConfig, type MotionTokenSet } from "@/lib/motion";
+import {
+  formatUsdAmount,
+  formatUsdFromCents,
+  promoDurationLabel,
+  quotePromoPrice,
+  type PublicPromoDiscount,
+} from "@/lib/promotions/promo-price";
+import { resolveEligiblePriceBadgeFromDiscount } from "@/lib/promotions/public-promo";
+import type { ChromeCopy } from "@/content/en/chrome";
 import { type as typography } from "@/lib/typography";
 import type { MetaCtaPlacement } from "@/lib/meta-pixel";
 
@@ -20,6 +30,19 @@ interface PricingPlanCardsProps {
   className?: string;
   locale: Locale;
   withStagger?: boolean;
+}
+
+function discountPeriodLabel(
+  discount: PublicPromoDiscount,
+  billingPeriod: "monthly" | "annual",
+  pricingUi: ChromeCopy["pricingUi"],
+): string {
+  return promoDurationLabel(discount, billingPeriod, {
+    onceMonthly: pricingUi.discountOnceMonthly,
+    onceYearly: pricingUi.discountOnceYearly,
+    repeatingMonths: pricingUi.discountRepeatingMonths,
+    forever: pricingUi.discountForever,
+  });
 }
 
 function PlanPriceBlock({
@@ -37,9 +60,95 @@ function PlanPriceBlock({
 }) {
   const pricing = getPricing(locale);
   const chrome = getChrome(locale);
+  const { discount, campaign } = useMarketingPromo();
   const period = isAnnual ? "annual" : "monthly";
   const plan = pricing.plans.find((p) => p.id === planId)!;
   const { current, previous, billedNote } = pricing.getPlanPriceDisplay(plan, period);
+  const quote = quotePromoPrice(plan, period, discount);
+  const muted = isPopular ? "text-brand-cream/50" : "text-brand-midnight/50";
+  const noteClass = isPopular ? "text-brand-turquoise" : "text-brand-midnight/50";
+  // Subtle campaign accent for the savings note; brand tokens when no theme.
+  const accent = campaign?.theme?.accent ?? null;
+  const promoPriceBadge = resolveEligiblePriceBadgeFromDiscount(
+    discount,
+    Boolean(quote),
+    {
+      percentOff: chrome.pricingUi.promoPercentOffBadge,
+      fixedOff: chrome.pricingUi.promoFixedOffBadge,
+    },
+  );
+
+  if (quote && discount) {
+    const currentLabel = formatUsdAmount(quote.currentCents);
+    const previousLabel = formatUsdAmount(quote.previousCents);
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`${period}-promo`}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={microTransition(tokens)}
+          className="mb-6 min-h-28"
+          data-promo-price="true"
+        >
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span className="sr-only">
+              {chrome.pricingUi.wasNowSr
+                .replace("${previous}", previousLabel)
+                .replace("${current}", currentLabel)}
+            </span>
+            <span dir="ltr" className="inline-flex items-baseline gap-x-2">
+              <span aria-hidden className={cn("text-xl font-medium line-through", muted)}>
+                {formatUsdFromCents(quote.previousCents)}
+              </span>
+              <span className={typography.price}>{formatUsdFromCents(quote.currentCents)}</span>
+            </span>
+            <span className={muted}>{chrome.pricingUi.perMonth}</span>
+            {promoPriceBadge ? (
+              <span
+                className={cn(
+                  "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                  !accent &&
+                    (isPopular
+                      ? "bg-brand-turquoise text-brand-midnight"
+                      : "bg-brand-navy text-brand-cream"),
+                )}
+                style={
+                  accent
+                    ? {
+                        backgroundColor: accent,
+                        color: isPopular ? "#161b26" : "#fdfcf0",
+                      }
+                    : undefined
+                }
+                data-testid="promo-price-badge"
+              >
+                {promoPriceBadge}
+              </span>
+            ) : null}
+          </div>
+          <p
+            className={cn("mt-1 text-sm", !accent && noteClass)}
+            style={accent ? { color: accent } : undefined}
+          >
+            {discountPeriodLabel(discount, period, chrome.pricingUi)}
+          </p>
+          {quote.yearlyCheckoutCents != null && quote.previousYearlyCents != null ? (
+            <p className={cn("mt-1 text-sm", noteClass)}>
+              <span dir="ltr" className="me-1 line-through">
+                {formatUsdFromCents(quote.previousYearlyCents)}
+              </span>
+              {chrome.pricingUi.promoAnnualBilled.replace(
+                "{amount}",
+                formatUsdFromCents(quote.yearlyCheckoutCents),
+              )}
+            </p>
+          ) : null}
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   return (
     <AnimatePresence mode="wait">
@@ -50,6 +159,7 @@ function PlanPriceBlock({
         exit={{ opacity: 0, y: -6 }}
         transition={microTransition(tokens)}
         className="mb-6 min-h-22"
+        data-promo-price="false"
       >
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
           {previous !== null && (

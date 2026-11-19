@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
@@ -127,9 +127,9 @@ export function Footer() {
                           {link.name}
                         </AppOutboundLink>
                       ) : (
-                        <Link href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base">
+                        <CampaignLink href={link.href} className="text-brand-cream/60 hover:text-brand-turquoise transition-colors text-sm md:text-base">
                           {link.name}
-                        </Link>
+                        </CampaignLink>
                       )}
                     </li>
                   ))}

@@ -98,3 +98,29 @@ jobs:
 
       - name: Build app
         run: npm run build
+
+  test:
+    name: Promo Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies (resilient)
+        shell: bash
+        run: |
+          for i in {1..5}; do
+            npm ci --no-audit --prefer-offline && exit 0
+            echo "npm ci failed (attempt $i), retrying..."
+            sleep $((i * 10))
+          done
+          exit 1
+
+      - name: Run promo unit tests
+        run: npm run test

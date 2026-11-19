@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { cn } from "@/lib/utils";
 import { LOGO_ICON, logoWordmarkSrc, type LogoTheme } from "@/lib/logos";
 
@@ -47,7 +47,7 @@ export function Logo({
   }
 
   return (
-    <Link
+    <CampaignLink
       href={href}
       className={cn(
         "flex shrink-0 items-center transition-opacity hover:opacity-90",
@@ -55,6 +55,6 @@ export function Logo({
       )}
     >
       {image}
-    </Link>
+    </CampaignLink>
   );
 }

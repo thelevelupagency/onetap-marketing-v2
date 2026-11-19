@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CampaignLink } from "@/components/marketing/campaign-link";
 import { getBlogLinkLabel } from "@/lib/blog";
 import { DEFAULT_LOCALE, localizePath, type Locale } from "@/lib/i18n/config";
 
@@ -32,13 +32,13 @@ function renderSegment(segment: string, keyPrefix: string, locale: Locale) {
     if (part.startsWith("/blog/")) {
       const slug = part.slice("/blog/".length);
       return (
-        <Link
+        <CampaignLink
           key={key}
           href={localizePath(part, locale)}
           className="font-medium text-brand-turquoise-dark underline-offset-2 hover:underline"
         >
           {getBlogLinkLabel(slug, locale)}
-        </Link>
+        </CampaignLink>
       );
     }
 
