@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
-import { appendAttributionParams, appendLocaleParam } from "@/lib/constants";
-import { navigateToApp, withLandingAttribution, type MetaCtaPlacement } from "@/lib/meta-pixel";
+import { type MouseEvent, type ReactNode } from "react";
+import {
+  appendAttributionParams,
+  appendLocaleParam,
+  getMergedAttributionParams,
+} from "@/lib/constants";
+import { navigateToApp, type MetaCtaPlacement } from "@/lib/meta-pixel";
 import { useLocale } from "@/components/providers/locale-provider";
 import { useMarketingPromo } from "@/components/providers/marketing-promo-provider";
+import { useIsClient } from "@/lib/use-is-client";
 import type { Locale } from "@/lib/i18n/config";
 
 interface AppOutboundLinkProps {
@@ -39,6 +44,26 @@ export function handleAppOutboundClick(
   window.location.assign(attributed);
 }
 
+/**
+ * Href for the anchor. Live query and stored first-touch are read only after
+ * hydration so the server and first client render match. Click still runs
+ * `navigateToApp`, which writes attribution and fires the Meta event.
+ */
+function attributedAnchorHref(
+  href: string,
+  locale: Locale,
+  forwardSlug: string | null | undefined,
+  includeLiveQuery: boolean,
+): string {
+  const source = includeLiveQuery
+    ? getMergedAttributionParams(new URLSearchParams(window.location.search))
+    : new URLSearchParams();
+  return appendLocaleParam(
+    appendAttributionParams(href, source, forwardSlug),
+    locale,
+  );
+}
+
 /** External app URL that preserves `fbclid`/UTMs/`lang` and fires InitiateCheckout or Lead when classified. */
 export function AppOutboundLink({
   href,
@@ -51,13 +76,8 @@ export function AppOutboundLink({
 }: AppOutboundLinkProps) {
   const locale = useLocale();
   const { forwardSlug } = useMarketingPromo();
-  const [attributedHref, setAttributedHref] = useState(() =>
-    appendLocaleParam(appendAttributionParams(href, new URLSearchParams(), forwardSlug), locale),
-  );
-
-  useEffect(() => {
-    setAttributedHref(withLandingAttribution(href, locale, forwardSlug));
-  }, [href, locale, forwardSlug]);
+  const isClient = useIsClient();
+  const attributedHref = attributedAnchorHref(href, locale, forwardSlug, isClient);
 
   const resolvedRel =
     rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
