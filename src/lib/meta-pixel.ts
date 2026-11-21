@@ -5,7 +5,10 @@ import {
   clearStoredCampaignHandoff,
   getMergedAttributionParams,
 } from "@/lib/constants";
-import type { MarketingConsent } from "@/lib/marketing-consent";
+import {
+  getMarketingConsentSnapshot,
+  type MarketingConsent,
+} from "@/lib/marketing-consent";
 import {
   DEFAULT_LOCALE,
   localeFromPathname,
@@ -45,7 +48,18 @@ export type MetaCtaPlacement =
   | "pricing_free"
   | "pricing_pro"
   | "pricing_team"
+  | "promo_strip"
   | "solutions_carousel";
+
+const CREATE_CARD_PLACEMENTS: ReadonlySet<MetaCtaPlacement> = new Set([
+  "hero_slug",
+  "get_card",
+  "final_cta",
+  "process",
+  "freelancer_hero",
+  "freelancer_niche",
+  "solutions_carousel",
+]);
 
 export type MetaEventParams = {
   content_name?: string;
@@ -57,20 +71,7 @@ function isMetaPixelAllowedInThisEnv(): boolean {
   if (process.env.NEXT_PUBLIC_META_PIXEL_ALLOW_NON_PROD === "true") {
     return true;
   }
-  if (
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
-    process.env.VERCEL_ENV === "production"
-  ) {
-    return true;
-  }
-  // When Vercel's "Automatically expose System Environment Variables" is off,
-  // NEXT_PUBLIC_VERCEL_ENV is missing from client bundles. NODE_ENV is production
-  // on Vercel builds but also on Preview — only use it when the pixel ID is set
-  // (production deploys set NEXT_PUBLIC_META_PIXEL_ID; preview should omit it).
-  return (
-    process.env.NODE_ENV === "production" &&
-    Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim())
-  );
+  return process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
 }
 
 /** Pixel IDs are public (browser snippet). Digits-only avoids injecting untrusted strings. */
@@ -100,11 +101,17 @@ export function trackMetaEvent(
   if (typeof window === "undefined") {
     return;
   }
+  if (getMarketingConsentSnapshot() !== "granted") {
+    return;
+  }
   const id = eventId ?? createMetaEventId();
   window.fbq?.("track", event, params ?? {}, { eventID: id });
 }
 
-export function classifyOutboundHref(href: string): MetaStandardEvent | null {
+export function classifyOutboundHref(
+  href: string,
+  placement?: MetaCtaPlacement | null,
+): MetaStandardEvent | null {
   if (!href.startsWith("http")) {
     return null;
   }
@@ -114,7 +121,9 @@ export function classifyOutboundHref(href: string): MetaStandardEvent | null {
       return "InitiateCheckout";
     }
     if (url.pathname === "/register" || url.pathname.startsWith("/register/")) {
-      return "Lead";
+      return placement && CREATE_CARD_PLACEMENTS.has(placement)
+        ? "InitiateCheckout"
+        : "Lead";
     }
     return null;
   } catch {
@@ -126,6 +135,7 @@ export function withLandingAttribution(
   url: string,
   locale?: Locale,
   validatedPromoSlug?: string | null,
+  options?: { preserveBilling?: boolean },
 ): string {
   const live =
     typeof window === "undefined"
@@ -139,6 +149,7 @@ export function withLandingAttribution(
     url,
     getMergedAttributionParams(live),
     validatedPromoSlug,
+    options,
   );
   const resolved =
     locale ??
@@ -154,10 +165,16 @@ export function navigateToApp(
   placement?: MetaCtaPlacement | null,
   locale?: Locale,
   validatedPromoSlug?: string | null,
+  options?: { preserveBilling?: boolean },
 ): string {
-  const attributed = withLandingAttribution(href, locale, validatedPromoSlug);
+  const attributed = withLandingAttribution(
+    href,
+    locale,
+    validatedPromoSlug,
+    options,
+  );
   if (placement) {
-    const event = classifyOutboundHref(attributed);
+    const event = classifyOutboundHref(attributed, placement);
     if (event === "InitiateCheckout") {
       trackMetaEvent(event, {
         content_name: placement,
@@ -212,39 +229,76 @@ export function trackViewContentForPath(pathname: string): void {
   trackMetaEvent("ViewContent", params);
 }
 
-/** Inline stub + init. Digits-only `pixelId` is required (see getMetaPixelId). */
-export function getMetaPixelBootstrapScript(pixelId: string): string {
-  return `
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('consent', 'revoke');
-fbq('set', 'autoConfig', false, '${pixelId}');
-fbq('init', '${pixelId}');
-`;
+const META_PIXEL_SCRIPT_SRC = "https://connect.facebook.net/en_US/fbevents.js";
+
+/**
+ * Lazy-load `fbevents.js` and initialize the Meta Pixel ONLY after marketing consent
+ * is granted. Zero requests are sent to Facebook prior to Accept.
+ */
+export function ensureMetaPixelLoaded(pixelId: string): void {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    return;
+  }
+  if (!PIXEL_ID_PATTERN.test(pixelId)) {
+    return;
+  }
+  if (typeof window.fbq === "function") {
+    return;
+  }
+
+  const fbqFn: Fbq = function (...args: unknown[]) {
+    if (fbqFn.callMethod) {
+      fbqFn.callMethod(...args);
+    } else {
+      fbqFn.queue.push(args);
+    }
+  } as Fbq;
+  fbqFn.push = fbqFn;
+  fbqFn.loaded = true;
+  fbqFn.version = "2.0";
+  fbqFn.queue = [];
+
+  window.fbq = fbqFn;
+  if (!window._fbq) {
+    window._fbq = fbqFn;
+  }
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = META_PIXEL_SCRIPT_SRC;
+  const firstScript = document.getElementsByTagName("script")[0];
+  if (firstScript?.parentNode) {
+    firstScript.parentNode.insertBefore(script, firstScript);
+  } else {
+    document.head.appendChild(script);
+  }
+
+  fbqFn("consent", "revoke");
+  fbqFn("set", "autoConfig", false, pixelId);
+  fbqFn("init", pixelId);
 }
 
 let lastTrackedPath: string | null = null;
 
 /**
- * Apply consent and fire landing events. Safe to call from the Accept click
- * handler — `fbq` is a stub that queues until fbevents.js loads.
+ * Apply consent and fire landing events. Loads `fbevents.js` on demand when
+ * consent is `"granted"`, and never touches Facebook when rejected or unset.
  */
 export function syncMetaPixelConsent(
   consent: MarketingConsent | null,
   pathname: string,
 ): void {
-  if (typeof window === "undefined" || typeof window.fbq !== "function") {
+  if (typeof window === "undefined") {
     return;
   }
 
   if (consent === "granted") {
-    window.fbq("consent", "grant");
+    const pixelId = getMetaPixelId();
+    if (!pixelId) {
+      return;
+    }
+    ensureMetaPixelLoaded(pixelId);
+    window.fbq?.("consent", "grant");
     if (lastTrackedPath !== pathname) {
       trackMetaEvent("PageView");
       trackViewContentForPath(pathname);
@@ -253,8 +307,8 @@ export function syncMetaPixelConsent(
     return;
   }
 
-  window.fbq("consent", "revoke");
-  if (consent === "denied") {
-    lastTrackedPath = null;
+  if (typeof window.fbq === "function") {
+    window.fbq("consent", "revoke");
   }
+  lastTrackedPath = null;
 }

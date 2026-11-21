@@ -25,7 +25,7 @@ const PUBLIC_FILE = /\.[^/]+$/;
 async function validatedSlugFor(request: NextRequest): Promise<string | null> {
   const alias = readPromoAlias(request.nextUrl.searchParams);
   if (alias.kind === "none" || !alias.slug) return null;
-  const read = await readPublicPromo(alias.slug, { revalidate: false });
+  const read = await readPublicPromo(alias.slug, { revalidate: 60 });
   return slugAfterPublicPromoRead(alias.slug, read);
 }
 

@@ -1,4 +1,4 @@
-import { sanitizeCardSlug } from "@/lib/card-slug";
+import { isCardSlugValid, sanitizeCardSlug } from "@/lib/card-slug";
 import type { Locale } from "@/lib/i18n/config";
 import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 import { getSiteUrl } from "@/lib/site-url";
@@ -130,7 +130,22 @@ const COUPON_PATTERN = /^[A-Z0-9_-]{1,64}$/;
 const PROMO_SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{0,62}$/;
 
 type AttributionKey = (typeof ATTRIBUTION_QUERY_KEYS)[number];
-type AttributionRecord = Partial<Record<AttributionKey, string>>;
+type AttributionRecord = Partial<Record<AttributionKey | BillingIntentKey | "slug", string>>;
+type BillingIntentKey = typeof BILLING_INTENT_QUERY_KEY;
+
+function sanitizeBillingIntent(raw: string | null | undefined): BillingIntentPlan | null {
+  if (raw == null) return null;
+  const normalized = raw.trim().toLowerCase();
+  if (normalized === "pro" || normalized === "team") return normalized;
+  return null;
+}
+
+function sanitizeLandingSlug(raw: string | null | undefined): string | null {
+  if (raw == null) return null;
+  const sanitized = sanitizeCardSlug(raw);
+  if (!sanitized || !isCardSlugValid(sanitized).isValid) return null;
+  return sanitized;
+}
 
 /** Sanitize promo code (last-touch). Invalid → null. */
 export function sanitizeCheckoutCouponCode(
@@ -225,12 +240,27 @@ function readStoredAttribution(): AttributionRecord {
     if (!parsed || typeof parsed !== "object") {
       return {};
     }
+    const record = parsed as Record<string, unknown>;
     const result: AttributionRecord = {};
     for (const key of ATTRIBUTION_QUERY_KEYS) {
-      const value = (parsed as Record<string, unknown>)[key];
+      const value = record[key];
       if (typeof value === "string" && value.trim()) {
         result[key] = value.trim();
       }
+    }
+    const billing = sanitizeBillingIntent(
+      typeof record[BILLING_INTENT_QUERY_KEY] === "string"
+        ? record[BILLING_INTENT_QUERY_KEY]
+        : null,
+    );
+    if (billing) {
+      result[BILLING_INTENT_QUERY_KEY] = billing;
+    }
+    const slug = sanitizeLandingSlug(
+      typeof record.slug === "string" ? record.slug : null,
+    );
+    if (slug) {
+      result.slug = slug;
     }
     return result;
   } catch {
@@ -252,6 +282,16 @@ export function captureLandingAttribution(source: URLSearchParams): void {
       changed = true;
     }
   }
+  const billing = sanitizeBillingIntent(source.get(BILLING_INTENT_QUERY_KEY));
+  if (billing && !next[BILLING_INTENT_QUERY_KEY]) {
+    next[BILLING_INTENT_QUERY_KEY] = billing;
+    changed = true;
+  }
+  const slug = sanitizeLandingSlug(source.get("slug"));
+  if (slug && !next.slug) {
+    next.slug = slug;
+    changed = true;
+  }
   if (!changed) {
     return;
   }
@@ -272,13 +312,30 @@ export function getMergedAttributionParams(live: URLSearchParams): URLSearchPara
       merged.set(key, value);
     }
   }
+  const billing =
+    sanitizeBillingIntent(live.get(BILLING_INTENT_QUERY_KEY)) ??
+    sanitizeBillingIntent(stored[BILLING_INTENT_QUERY_KEY]);
+  if (billing) {
+    merged.set(BILLING_INTENT_QUERY_KEY, billing);
+  }
+  const slug =
+    sanitizeLandingSlug(live.get("slug")) ?? sanitizeLandingSlug(stored.slug);
+  if (slug) {
+    merged.set("slug", slug);
+  }
   return merged;
 }
+
+export type AppendAttributionOptions = {
+  /** Set false on explicit Free plan CTAs so landing `?billing=` does not override Free. */
+  preserveBilling?: boolean;
+};
 
 export function appendAttributionParams(
   url: string,
   source: URLSearchParams,
   validatedPromoSlug?: string | null,
+  options?: AppendAttributionOptions,
 ): string {
   const base =
     typeof window !== "undefined" ? window.location.origin : getSiteUrl();
@@ -295,6 +352,20 @@ export function appendAttributionParams(
       continue;
     }
     target.searchParams.set(key, value);
+  }
+
+  if (options?.preserveBilling !== false && !target.searchParams.has(BILLING_INTENT_QUERY_KEY)) {
+    const billing = sanitizeBillingIntent(source.get(BILLING_INTENT_QUERY_KEY));
+    if (billing) {
+      target.searchParams.set(BILLING_INTENT_QUERY_KEY, billing);
+    }
+  }
+
+  if (!target.searchParams.has("slug")) {
+    const slug = sanitizeLandingSlug(source.get("slug"));
+    if (slug) {
+      target.searchParams.set("slug", slug);
+    }
   }
 
   // Never copy a Lemon code or an unvalidated slug from the source URL or storage.

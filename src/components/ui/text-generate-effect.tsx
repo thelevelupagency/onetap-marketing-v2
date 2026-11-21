@@ -30,9 +30,9 @@ function findSubsequenceStart(haystack: string[], needle: string[]): number {
 function TextGenerateEffect({
   words,
   className,
-  filter = true,
-  duration = 0.5,
-  staggerDelay = 0.2,
+  filter = false,
+  duration = 0.25,
+  staggerDelay = 0.03,
   accentWords,
   accentClassName,
   breakBeforeWord,
@@ -61,7 +61,7 @@ function TextGenerateEffect({
       animate(
         "span[data-slot='text-generate-word']",
         {
-          opacity: 1,
+          opacity: [0.85, 1],
           filter: filter ? "blur(0px)" : "none",
         },
         {
@@ -92,13 +92,10 @@ function TextGenerateEffect({
               ) : null}
               <motion.span
                 className={cn(
-                  "opacity-0 will-change-transform will-change-opacity will-change-filter",
+                  "opacity-100",
                   isAccent && accentClassName,
                 )}
                 data-slot="text-generate-word"
-                style={{
-                  filter: filter ? "blur(10px)" : "none",
-                }}
               >
                 {word}{" "}
               </motion.span>

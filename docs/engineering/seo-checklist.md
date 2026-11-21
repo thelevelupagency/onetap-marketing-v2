@@ -22,10 +22,10 @@ Agent standard: [`.cursor/rules/seo-geo-standard.mdc`](../../.cursor/rules/seo-g
 - [x] `/robots.txt` via `src/app/robots.ts` (Allow `/`, www Sitemap, preview Disallow)
 - [x] `/sitemap.xml` via `src/app/sitemap.ts` (dynamic; no stale `public/sitemap.xml`)
 - [x] `/llms.txt` for AI/GEO brand brief (keep truthful when primary landings change)
-- [x] Preview deployments `noindex` (root metadata when `VERCEL_ENV === "preview"`)
+- [x] Preview & custom staging deployments `noindex` (root metadata and `robots.ts` via `isNonProductionDeployment()`)
 - [ ] New public static route added to `src/app/sitemap.ts` (blog slugs automatic)
 - [ ] Primary landing add/remove updates `/llms.txt`
-- [ ] `/solutions` index listed in sitemap when that route is public (currently redirects; still listed)
+- [x] Redirect-only `/solutions` route excluded from `src/app/sitemap.ts` (only final `/solutions/freelancers` and `/solutions/agencies` landings listed)
 
 ## Blog
 

@@ -58,6 +58,11 @@ export type ChromeCopy = {
     message: string;
     backHome: string;
   };
+  error: {
+    title: string;
+    message: string;
+    tryAgain: string;
+  };
   process: {
     defaultCtaLabel: string;
     badge: string;
@@ -243,6 +248,11 @@ export const enChrome: ChromeCopy = {
   notFound: {
     message: "This page doesn't exist - but your next great connection is one tap away.",
     backHome: "Back to Home",
+  },
+  error: {
+    title: "Something went wrong",
+    message: "We could not load this page right now. Please try again or head back home.",
+    tryAgain: "Try again",
   },
   process: {
     defaultCtaLabel: "Get your card free",
