@@ -13,7 +13,11 @@ export function AnimatedPhoneGrid() {
   const locale = useLocale();
   const chrome = getChrome(locale);
 
-  const renderPhone = (item: { src: string; alt: string }, idx: number) => (
+  const renderPhone = (
+    item: { src: string; alt: string },
+    idx: number,
+    isPrimarySet: boolean,
+  ) => (
     <div key={idx} className="pointer-events-none shrink-0">
       <IPhone13ProMaxMockup scale={0.16}>
         <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-brand-navy">
@@ -21,9 +25,9 @@ export function AnimatedPhoneGrid() {
             src={item.src}
             alt={item.alt}
             fill
-            priority={idx < 3}
+            sizes="240px"
+            priority={isPrimarySet && idx < 2}
             className="object-cover object-top"
-            unoptimized
           />
         </div>
       </IPhone13ProMaxMockup>
@@ -39,9 +43,12 @@ export function AnimatedPhoneGrid() {
         className="h-full w-full"
         scrollClassName="h-full w-full items-center"
         contentClassName="items-center gap-6"
-      >
-        {realMockScreenshots.map((item, i) => renderPhone(item, i))}
-      </InfiniteScrollTrack>
+        renderSet={(setIndex) =>
+          realMockScreenshots.map((item, i) =>
+            renderPhone(item, i, setIndex === 0),
+          )
+        }
+      />
     </div>
   );
 }

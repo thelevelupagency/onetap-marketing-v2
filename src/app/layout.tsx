@@ -5,7 +5,6 @@ import { BackNavigationReloadScript } from "@/components/providers/back-navigati
 import { MarketingConsentProvider } from "@/components/providers/consent-provider";
 import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
 import { AttributionCapture } from "@/components/providers/attribution-capture";
-import { MetaPixelBootstrap } from "@/components/providers/meta-pixel-bootstrap";
 import { LocaleProvider } from "@/components/providers/locale-provider";
 import { MetaPixel } from "@/components/providers/meta-pixel";
 import {
@@ -16,7 +15,7 @@ import {
 } from "@/lib/i18n/config";
 import { LOCALE_HEADER } from "@/lib/i18n/locale-header";
 import { DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_URL } from "@/lib/constants";
-import { getSiteUrl } from "@/lib/site-url";
+import { getSiteUrl, isNonProductionDeployment } from "@/lib/site-url";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -43,7 +42,7 @@ const assistant = Assistant({
   weight: ["400", "600", "700"],
 });
 
-const isPreview = process.env.VERCEL_ENV === "preview";
+const isPreview = isNonProductionDeployment();
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -92,7 +91,6 @@ export default async function RootLayout({
       className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${montserrat.variable} ${assistant.variable} antialiased`}
     >
       <body className="min-h-svh flex flex-col font-sans bg-brand-cream overflow-x-clip">
-        <MetaPixelBootstrap />
         <LocaleProvider locale={locale}>
           <MarketingConsentProvider>
             <AttributionCapture />

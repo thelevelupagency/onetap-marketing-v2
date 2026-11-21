@@ -22,6 +22,18 @@ interface AppOutboundLinkProps {
   /** When `_blank`, opens attributed URL in a new tab (still stamps fbclid/UTMs/lang/promo). */
   target?: "_blank";
   rel?: string;
+  /** Set false on Free-plan CTAs so landing `?billing=` does not override Free. */
+  preserveBilling?: boolean;
+}
+
+function isModifiedClick(event: MouseEvent<HTMLAnchorElement>): boolean {
+  return (
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    event.button !== 0
+  );
 }
 
 export function handleAppOutboundClick(
@@ -31,12 +43,23 @@ export function handleAppOutboundClick(
   locale?: Locale,
   target?: "_blank",
   validatedPromoSlug?: string | null,
+  preserveBilling = true,
 ): void {
   if (!href.startsWith("http")) {
     return;
   }
+  const attributed = navigateToApp(
+    href,
+    placement,
+    locale,
+    validatedPromoSlug,
+    { preserveBilling },
+  );
+  if (isModifiedClick(event)) {
+    event.currentTarget.href = attributed;
+    return;
+  }
   event.preventDefault();
-  const attributed = navigateToApp(href, placement, locale, validatedPromoSlug);
   if (target === "_blank") {
     window.open(attributed, "_blank", "noopener,noreferrer");
     return;
@@ -54,12 +77,13 @@ function attributedAnchorHref(
   locale: Locale,
   forwardSlug: string | null | undefined,
   includeLiveQuery: boolean,
+  preserveBilling: boolean,
 ): string {
   const source = includeLiveQuery
     ? getMergedAttributionParams(new URLSearchParams(window.location.search))
     : new URLSearchParams();
   return appendLocaleParam(
-    appendAttributionParams(href, source, forwardSlug),
+    appendAttributionParams(href, source, forwardSlug, { preserveBilling }),
     locale,
   );
 }
@@ -73,11 +97,18 @@ export function AppOutboundLink({
   onClick,
   target,
   rel,
+  preserveBilling = true,
 }: AppOutboundLinkProps) {
   const locale = useLocale();
   const { forwardSlug } = useMarketingPromo();
   const isClient = useIsClient();
-  const attributedHref = attributedAnchorHref(href, locale, forwardSlug, isClient);
+  const attributedHref = attributedAnchorHref(
+    href,
+    locale,
+    forwardSlug,
+    isClient,
+    preserveBilling,
+  );
 
   const resolvedRel =
     rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
@@ -90,7 +121,15 @@ export function AppOutboundLink({
       rel={resolvedRel}
       onClick={(event) => {
         onClick?.();
-        handleAppOutboundClick(event, href, placement, locale, target, forwardSlug);
+        handleAppOutboundClick(
+          event,
+          href,
+          placement,
+          locale,
+          target,
+          forwardSlug,
+          preserveBilling,
+        );
       }}
     >
       {children}

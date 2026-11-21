@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl } from "@/lib/site-url";
+import { getSiteUrl, isNonProductionDeployment } from "@/lib/site-url";
 
 /** Citation / training crawlers commonly checked in GEO audits. */
 const AI_CRAWLERS = [
@@ -12,9 +12,7 @@ const AI_CRAWLERS = [
 ] as const;
 
 export default function robots(): MetadataRoute.Robots {
-  const isPreview = process.env.VERCEL_ENV === "preview";
-
-  if (isPreview) {
+  if (isNonProductionDeployment()) {
     return {
       rules: {
         userAgent: "*",

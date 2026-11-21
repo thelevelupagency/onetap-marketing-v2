@@ -10,8 +10,9 @@ export function buildContentSecurityPolicy(): string {
     "base-uri 'self'",
     "object-src 'none'",
     "frame-ancestors 'self'",
+    "frame-src 'self' https://www.facebook.com https://connect.facebook.net",
     "form-action 'self'",
-    "img-src 'self' data: blob: https://images.unsplash.com https://res.cloudinary.com https://*.cloudinary.com https://www.facebook.com",
+    "img-src 'self' data: blob: https://images.unsplash.com https://res.cloudinary.com https://*.cloudinary.com https://www.facebook.com https://*.facebook.com",
     "font-src 'self' data:",
     "style-src 'self' 'unsafe-inline'",
     // Next.js App Router & React DevTools require 'unsafe-eval' in development mode for HMR & stack traces.
@@ -19,7 +20,7 @@ export function buildContentSecurityPolicy(): string {
     isDev
       ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net"
       : "script-src 'self' 'unsafe-inline' https://connect.facebook.net",
-    "connect-src 'self' https://www.facebook.com https://connect.facebook.net",
+    "connect-src 'self' https://www.facebook.com https://*.facebook.com https://connect.facebook.net https://*.facebook.net",
     "worker-src 'self' blob:",
   ];
 

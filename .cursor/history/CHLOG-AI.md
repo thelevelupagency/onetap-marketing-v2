@@ -61,3 +61,6 @@ src/lib/promotions/promo-price.ts, public-promo-display.ts, docs/engineering/pub
 
 2026-11-07 — Promo slug checks keep ?promo= on timeout/5xx/429, and pricing notes follow discount duration.
 src/middleware.ts, src/lib/promotions/, pricing plan cards, docs/engineering/public-promo-display.md
+
+2026-11-21 — Pre-production & live Meta campaign hardening: lazy-load fbevents.js only after consent grant, preserve landing billing/slug attribution, accept link-gated pinned promos, deduplicate promo strip across layouts, harden CSP/staging noindex/sitemap, add error boundaries, and optimize hero LCP/phone grid images.
+src/lib/meta-pixel.ts, src/lib/constants.ts, src/lib/promotions/public-promo.ts, src/middleware.ts, src/components/marketing/, src/app/, tests/campaign-audit.test.ts

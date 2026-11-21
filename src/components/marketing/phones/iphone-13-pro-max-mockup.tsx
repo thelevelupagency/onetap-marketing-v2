@@ -64,6 +64,7 @@ export function IPhone13ProMaxMockup({
           alt=""
           width={IPHONE_13_PRO_MAX_OUTER_WIDTH}
           height={IPHONE_13_PRO_MAX_OUTER_HEIGHT}
+          sizes={`${Math.ceil(layoutWidth)}px`}
           className="pointer-events-none absolute inset-0 z-10 size-full select-none"
           draggable={false}
           aria-hidden

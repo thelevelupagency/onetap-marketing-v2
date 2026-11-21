@@ -4,8 +4,10 @@ import { describe, it } from "node:test";
 import {
   CHECKOUT_COUPON_QUERY_KEY,
   PROMO_SLUG_QUERY_KEY,
+  SIGNUP_URL,
   appendAttributionParams,
   appendPromoQueryToHref,
+  buildSignupUrl,
   sanitizeCheckoutCouponCode,
   sanitizePromoSlug,
 } from "../src/lib/constants";
@@ -121,6 +123,35 @@ describe("appendAttributionParams validated slug only", () => {
     const url = new URL(stamped);
     assert.equal(url.searchParams.get(CHECKOUT_COUPON_QUERY_KEY), null);
     assert.equal(url.searchParams.get(PROMO_SLUG_QUERY_KEY), null);
+  });
+
+  it("preserves landing billing and slug without overwriting explicit target params", () => {
+    const source = new URLSearchParams("fbclid=fb123&billing=pro&slug=landing-slug");
+    const defaultTarget = new URL(
+      appendAttributionParams(SIGNUP_URL, source, null),
+    );
+    assert.equal(defaultTarget.searchParams.get("fbclid"), "fb123");
+    assert.equal(defaultTarget.searchParams.get("billing"), "pro");
+    assert.equal(defaultTarget.searchParams.get("slug"), "landing-slug");
+
+    const explicitSlugTarget = new URL(
+      appendAttributionParams(buildSignupUrl("typed-slug"), source, null),
+    );
+    assert.equal(explicitSlugTarget.searchParams.get("slug"), "typed-slug");
+
+    const explicitTeamTarget = new URL(
+      appendAttributionParams(
+        "https://app.onetap-card.com/register?billing=team",
+        source,
+        null,
+      ),
+    );
+    assert.equal(explicitTeamTarget.searchParams.get("billing"), "team");
+
+    const freeTarget = new URL(
+      appendAttributionParams(SIGNUP_URL, source, null, { preserveBilling: false }),
+    );
+    assert.equal(freeTarget.searchParams.get("billing"), null);
   });
 });
 
@@ -747,6 +778,20 @@ describe("promo slug validation", () => {
       payload: { campaign: { ...liveCampaign, slug: "other-sale" }, discount: null },
     };
     assert.equal(slugAfterPublicPromoRead("bf-test", mismatch), null);
+
+    const linkGated: PublicMarketingPromoCampaign = {
+      ...liveCampaign,
+      slug: "vip-offer",
+      marketingPublic: false,
+      requiresPromoPin: true,
+    };
+    const linkGatedRead: PublicPromoRead = {
+      status: "ok",
+      payload: { campaign: linkGated, discount: null },
+    };
+    assert.equal(slugAfterPublicPromoRead("vip-offer", linkGatedRead), "vip-offer");
+    assert.equal(selectActiveCampaign(linkGated, "vip-offer")?.slug, "vip-offer");
+    assert.equal(selectActiveCampaign(linkGated, null), null);
   });
 
   it("keeps a live campaign and still falls back to the list price when the page read fails", async () => {

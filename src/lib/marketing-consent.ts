@@ -43,7 +43,11 @@ export function subscribeMarketingConsent(listener: () => void): () => void {
 
 export function writeMarketingConsent(value: MarketingConsent): void {
   if (typeof window !== "undefined") {
-    window.localStorage.setItem(MARKETING_CONSENT_STORAGE_KEY, value);
+    try {
+      window.localStorage?.setItem(MARKETING_CONSENT_STORAGE_KEY, value);
+    } catch {
+      // Ignore private-mode / storage-restricted failures; in-memory cache still updates.
+    }
   }
   consentCache = value;
   emitConsentChange();
@@ -51,7 +55,11 @@ export function writeMarketingConsent(value: MarketingConsent): void {
 
 export function clearMarketingConsent(): void {
   if (typeof window !== "undefined") {
-    window.localStorage.removeItem(MARKETING_CONSENT_STORAGE_KEY);
+    try {
+      window.localStorage?.removeItem(MARKETING_CONSENT_STORAGE_KEY);
+    } catch {
+      // Ignore private-mode / storage-restricted failures.
+    }
   }
   consentCache = null;
   emitConsentChange();

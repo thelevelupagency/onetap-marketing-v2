@@ -28,6 +28,8 @@ export function PromoQueryCarry() {
   useEffect(() => {
     clearStoredCampaignHandoff();
     const current = new URLSearchParams(window.location.search);
+    const hasAlias = current.has("promo") || current.has("coupon");
+    if (!hasAlias) return;
     const canonical = buildCanonicalPromoSearch(current, forwardSlug);
     if (samePromoSearch(current, canonical)) return;
     const search = canonical.toString();
