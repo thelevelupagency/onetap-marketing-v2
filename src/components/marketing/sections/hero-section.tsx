@@ -114,9 +114,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
               </p>
             </RevealItem>
 
-            <RevealItem className="w-full flex justify-center">
+            <div className="w-full flex justify-center">
               {ctaBlock}
-            </RevealItem>
+            </div>
 
             <RevealItem>
               {microcopyBlock}

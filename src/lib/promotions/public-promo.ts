@@ -288,12 +288,14 @@ function sanitizePromoTheme(theme: unknown): PromoTheme | null {
   return result;
 }
 
-/** True when the campaign is public and its end instant is still in the future. */
+/** True when the campaign is live (and public unless explicitly pinned by slug). */
 export function isCampaignCurrent(
   campaign: PublicMarketingPromoCampaign | null,
   now = Date.now(),
+  allowPinnedNonPublic = false,
 ): campaign is PublicMarketingPromoCampaign {
-  if (!campaign?.marketingPublic) return false;
+  if (!campaign) return false;
+  if (!campaign.marketingPublic && !allowPinnedNonPublic) return false;
   const ends = Date.parse(campaign.endsAt);
   return Number.isFinite(ends) && ends > now;
 }
@@ -301,6 +303,7 @@ export function isCampaignCurrent(
 /**
  * Keep a campaign only when it is live.
  * A requested slug must match `campaign.slug` exactly — a lookalike code is not accepted.
+ * Link-gated campaigns (`marketingPublic: false`) are accepted when `requestedSlug` matches.
  * Pass `requestedSlug: null` for the unpinned public campaign.
  */
 export function selectActiveCampaign(
@@ -308,8 +311,9 @@ export function selectActiveCampaign(
   requestedSlug: string | null,
   now = Date.now(),
 ): PublicMarketingPromoCampaign | null {
-  if (!isCampaignCurrent(campaign, now)) return null;
   if (requestedSlug && campaign?.slug !== requestedSlug) return null;
+  const allowPinned = Boolean(requestedSlug && campaign?.slug === requestedSlug);
+  if (!isCampaignCurrent(campaign, now, allowPinned)) return null;
   return campaign;
 }
 

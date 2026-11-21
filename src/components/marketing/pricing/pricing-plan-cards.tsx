@@ -339,6 +339,7 @@ function PlanCtaLink({
       <AppOutboundLink
         href={href}
         placement={planPlacement(planId)}
+        preserveBilling={planId !== "free"}
         className="mt-marketing-stack-gap block shrink-0"
       >
         {children}

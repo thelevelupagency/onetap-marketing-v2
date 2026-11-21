@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import {
   useInfiniteScrollTrack,
   type InfiniteScrollDirection,
@@ -8,7 +8,9 @@ import {
 import { cn } from "@/lib/utils";
 
 export interface InfiniteScrollTrackProps {
-  children: ReactNode;
+  children?: ReactNode;
+  /** Optional per-copy renderer so only the primary visible set marks priority images. */
+  renderSet?: (setIndex: number) => ReactNode;
   direction?: InfiniteScrollDirection;
   speed?: number;
   /** Outer wrapper (pins dir=ltr for scrollLeft math). */
@@ -26,6 +28,7 @@ export interface InfiniteScrollTrackProps {
  */
 export function InfiniteScrollTrack({
   children,
+  renderSet,
   direction = "right",
   speed = 1,
   className,
@@ -56,10 +59,11 @@ export function InfiniteScrollTrack({
           ref={contentRef}
           className={cn("flex w-max flex-row items-center", contentClassName)}
         >
-          {children}
-          {children}
-          {children}
-          {children}
+          {[0, 1, 2, 3].map((setIndex) => (
+            <Fragment key={setIndex}>
+              {renderSet ? renderSet(setIndex) : children}
+            </Fragment>
+          ))}
         </div>
       </div>
     </div>

@@ -54,6 +54,11 @@ export const heChrome: ChromeCopy = {
     message: "העמוד הזה לא קיים — אבל החיבור הגדול הבא שלכם במרחק הקשה אחת.",
     backHome: "חזרה לדף הבית",
   },
+  error: {
+    title: "משהו השתבש",
+    message: "לא הצלחנו לטעון את העמוד כרגע. נסו לרענן או לחזור לדף הבית.",
+    tryAgain: "נסו שוב",
+  },
   process: {
     defaultCtaLabel: "צרו כרטיס בחינם",
     badge: "התהליך",
