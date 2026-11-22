@@ -8,6 +8,11 @@ import { useMarketingConsent } from "@/components/providers/consent-provider";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getChrome } from "@/content/get-content";
 import { COOKIES_URL } from "@/lib/constants";
+import {
+  trackMarketingConsentAccepted,
+  trackMarketingConsentRejected,
+  trackMarketingConsentShown,
+} from "@/lib/marketing-measurement";
 import { getMetaPixelId, syncMetaPixelConsent } from "@/lib/meta-pixel";
 import { cn } from "@/lib/utils";
 
@@ -26,12 +31,19 @@ export function CookieConsentBanner() {
   const denyMarketingCookies = useCallback(() => {
     setConsent("denied");
     syncMetaPixelConsent("denied", pathname);
-  }, [pathname, setConsent]);
+    trackMarketingConsentRejected({ pathname, locale });
+  }, [locale, pathname, setConsent]);
 
   const acceptMarketingCookies = useCallback(() => {
     setConsent("granted");
     syncMetaPixelConsent("granted", pathname);
-  }, [pathname, setConsent]);
+    trackMarketingConsentAccepted({ pathname, locale });
+  }, [locale, pathname, setConsent]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    trackMarketingConsentShown({ pathname, locale });
+  }, [isVisible, locale, pathname]);
 
   useEffect(() => {
     if (!isVisible) {

@@ -6,6 +6,7 @@ import { MarketingConsentProvider } from "@/components/providers/consent-provide
 import { CookieConsentBanner } from "@/components/providers/cookie-consent-banner";
 import { AttributionCapture } from "@/components/providers/attribution-capture";
 import { LocaleProvider } from "@/components/providers/locale-provider";
+import { MarketingMeasurement } from "@/components/providers/marketing-measurement";
 import { MetaPixel } from "@/components/providers/meta-pixel";
 import {
   DEFAULT_LOCALE,
@@ -96,6 +97,7 @@ export default async function RootLayout({
             <AttributionCapture />
             <BackNavigationReloadScript />
             <MetaPixel />
+            <MarketingMeasurement />
             {children}
             <CookieConsentBanner />
           </MarketingConsentProvider>
