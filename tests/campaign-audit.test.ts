@@ -185,4 +185,20 @@ describe("CSP Facebook Pixel & OpenBridge directives", () => {
     assert.match(csp, /https:\/\/\*\.facebook\.com/);
     assert.match(csp, /https:\/\/\*\.facebook\.net/);
   });
+
+  it("allows PostHog connect-src when NEXT_PUBLIC_POSTHOG_HOST is set", () => {
+    const previous = process.env.NEXT_PUBLIC_POSTHOG_HOST;
+    process.env.NEXT_PUBLIC_POSTHOG_HOST = "https://us.i.posthog.com";
+    try {
+      const csp = buildContentSecurityPolicy();
+      assert.match(csp, /connect-src[^;]*https:\/\/us\.i\.posthog\.com/);
+      assert.match(csp, /connect-src[^;]*https:\/\/us-assets\.i\.posthog\.com/);
+    } finally {
+      if (previous === undefined) {
+        delete process.env.NEXT_PUBLIC_POSTHOG_HOST;
+      } else {
+        process.env.NEXT_PUBLIC_POSTHOG_HOST = previous;
+      }
+    }
+  });
 });
