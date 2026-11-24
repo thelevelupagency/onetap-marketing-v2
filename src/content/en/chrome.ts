@@ -22,6 +22,7 @@ export type ChromeCopy = {
     pricing: string;
     signIn: string;
     getYourCard: string;
+    tryFree: string;
     openMenu: string;
     closeMenu: string;
   };
@@ -212,7 +213,8 @@ export const enChrome: ChromeCopy = {
     faqDescription: "Answers to common questions",
     pricing: "Pricing",
     signIn: "Sign in",
-    getYourCard: "Get your card",
+    getYourCard: "Get your card FREE",
+    tryFree: "Try FREE",
     openMenu: "Open menu",
     closeMenu: "Close menu",
   },
@@ -255,7 +257,7 @@ export const enChrome: ChromeCopy = {
     tryAgain: "Try again",
   },
   process: {
-    defaultCtaLabel: "Get your card free",
+    defaultCtaLabel: "Get your card FREE",
     badge: "The Process",
   },
   faqSection: {
@@ -307,7 +309,7 @@ export const enChrome: ChromeCopy = {
     faqCategories: "FAQ categories",
   },
   slugClaim: {
-    submitLabel: "Get your card",
+    submitLabel: "Claim your FREE card",
     placeholder: "your-name",
     ariaLabelSuffix: "Your name after",
     asciiHintPrefix: "Use English letters for your public link (",
@@ -384,6 +386,6 @@ export const enChrome: ChromeCopy = {
     accent: "FAQ",
   },
   cta: {
-    getCardFree: "Get your card free",
+    getCardFree: "Get your card FREE",
   },
 };

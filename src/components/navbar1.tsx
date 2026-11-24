@@ -55,6 +55,7 @@ interface Navbar1Props {
   };
   menu: MenuItem[];
   languageSwitcher?: React.ReactNode;
+  mobileLanguageSwitcher?: React.ReactNode;
   openMenuLabel: string;
   closeMenuLabel: string;
   auth?: {
@@ -65,6 +66,8 @@ interface Navbar1Props {
     };
     signup?: {
       title: string;
+      /** Short label for the mobile top-bar CTA (e.g. Try FREE). Falls back to title. */
+      shortTitle?: string;
       url: string;
       className?: string;
     };
@@ -119,6 +122,7 @@ const Navbar1 = ({
   menu,
   auth,
   languageSwitcher,
+  mobileLanguageSwitcher,
   openMenuLabel,
   closeMenuLabel,
   className,
@@ -195,10 +199,19 @@ const Navbar1 = ({
         </nav>
 
         <div className="block h-full lg:hidden">
-          <div className="flex h-full items-center justify-between gap-4">
+          <div className="flex h-full items-center justify-between gap-2 sm:gap-4">
             <LogoMark logo={logo} />
             <div className="flex items-center gap-2">
-              {languageSwitcher}
+              {auth?.signup?.title ? (
+                <GetCardCta
+                  href={auth.signup.url}
+                  size="nav"
+                  placement="nav"
+                  className={cn("shrink-0", auth.signup.className)}
+                >
+                  {auth.signup.shortTitle ?? auth.signup.title}
+                </GetCardCta>
+              ) : null}
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger
                 render={
@@ -232,6 +245,7 @@ const Navbar1 = ({
                         ? renderMobileMenuItem(item, () => setMobileOpen(false), isRtl)
                         : renderMobileNavLink(item, () => setMobileOpen(false))
                     )}
+                    {mobileLanguageSwitcher}
                   </nav>
                 </div>
 
