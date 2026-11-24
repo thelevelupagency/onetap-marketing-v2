@@ -99,6 +99,11 @@ export function Navigation({ chrome, locale }: NavigationProps) {
             <LanguageSwitcher />
           </Suspense>
         }
+        mobileLanguageSwitcher={
+          <Suspense fallback={null}>
+            <LanguageSwitcher variant="sheet" />
+          </Suspense>
+        }
         auth={{
           login: {
             title: chrome.nav.signIn,
@@ -107,6 +112,7 @@ export function Navigation({ chrome, locale }: NavigationProps) {
           },
           signup: {
             title: chrome.nav.getYourCard,
+            shortTitle: chrome.nav.tryFree,
             url: SIGNUP_URL,
           },
         }}

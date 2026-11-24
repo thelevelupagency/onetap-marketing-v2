@@ -3,6 +3,12 @@
 import { CampaignLink } from "@/components/marketing/campaign-link";
 import { Check, Globe } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -27,8 +33,8 @@ import { cn } from "@/lib/utils";
 
 type LanguageSwitcherProps = {
   className?: string;
-  /** Compact icon for nav; on-dark styles for footer */
-  variant?: "nav" | "footer";
+  /** Compact icon for nav; on-dark styles for footer; accordion list for mobile sheet */
+  variant?: "nav" | "footer" | "sheet";
 };
 
 export function LanguageSwitcher({ className, variant = "nav" }: LanguageSwitcherProps) {
@@ -40,6 +46,61 @@ export function LanguageSwitcher({ className, variant = "nav" }: LanguageSwitche
   const bare = stripLocalePrefix(pathname);
   const qs = searchParams?.toString();
   const query = qs ? `?${qs}` : "";
+
+  if (variant === "sheet") {
+    return (
+      <Accordion dir={isRtl ? "rtl" : "ltr"} className={cn("w-full", className)}>
+        <AccordionItem value="language" className="border-b-0">
+          <AccordionTrigger className="py-0 text-base font-semibold text-brand-midnight hover:no-underline">
+            {chrome.language.switchTo}
+          </AccordionTrigger>
+          <AccordionContent className="mt-2 flex flex-col gap-1 text-start">
+            {LOCALES.map((locale: Locale) => {
+              const href = `${localizePath(bare, locale)}${query}`;
+              const selected = locale === current;
+              const localeMeta = LOCALE_META[locale];
+              const rowClassName = cn(
+                "flex min-w-0 w-full flex-row items-center gap-4 rounded-md p-3 text-start text-sm leading-none no-underline transition-colors outline-none select-none",
+                selected
+                  ? "bg-brand-midnight/5 text-brand-midnight"
+                  : "text-brand-midnight hover:bg-brand-cream hover:text-brand-midnight",
+              );
+
+              if (selected) {
+                return (
+                  <span
+                    key={locale}
+                    aria-current="page"
+                    className={rowClassName}
+                  >
+                    <Globe className="size-5 shrink-0 text-brand-turquoise-dark" aria-hidden />
+                    <span className="min-w-0 flex-1 text-sm font-semibold text-brand-midnight">
+                      {localeMeta.nativeLabel}
+                    </span>
+                    <Check className="size-4 shrink-0" aria-hidden />
+                  </span>
+                );
+              }
+
+              return (
+                <CampaignLink
+                  key={locale}
+                  href={href}
+                  hrefLang={localeMeta.htmlLang}
+                  className={rowClassName}
+                >
+                  <Globe className="size-5 shrink-0 text-brand-turquoise-dark" aria-hidden />
+                  <span className="min-w-0 flex-1 text-sm font-semibold text-brand-midnight">
+                    {localeMeta.nativeLabel}
+                  </span>
+                </CampaignLink>
+              );
+            })}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    );
+  }
 
   return (
     <DropdownMenu>
