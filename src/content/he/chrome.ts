@@ -17,7 +17,8 @@ export const heChrome: ChromeCopy = {
     faqDescription: "תשובות לשאלות נפוצות",
     pricing: "מחירים",
     signIn: "כניסה",
-    getYourCard: "צרו כרטיס",
+    getYourCard: "צרו כרטיס בחינם",
+    tryFree: "נסו בחינם",
     openMenu: "פתחו תפריט",
     closeMenu: "סגרו תפריט",
   },
@@ -112,7 +113,7 @@ export const heChrome: ChromeCopy = {
     faqCategories: "קטגוריות שאלות נפוצות",
   },
   slugClaim: {
-    submitLabel: "צרו את הכרטיס שלכם",
+    submitLabel: "קבלו כרטיס בחינם",
     placeholder: "your-name",
     ariaLabelSuffix: "השם שלכם אחרי",
     asciiHintPrefix: "השתמשו באותיות באנגלית לקישור הציבורי (",
