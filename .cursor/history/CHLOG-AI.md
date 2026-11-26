@@ -64,3 +64,6 @@ src/middleware.ts, src/lib/promotions/, pricing plan cards, docs/engineering/pub
 
 2026-11-21 — Pre-production & live Meta campaign hardening: lazy-load fbevents.js only after consent grant, preserve landing billing/slug attribution, accept link-gated pinned promos, deduplicate promo strip across layouts, harden CSP/staging noindex/sitemap, add error boundaries, and optimize hero LCP/phone grid images.
 src/lib/meta-pixel.ts, src/lib/constants.ts, src/lib/promotions/public-promo.ts, src/middleware.ts, src/components/marketing/, src/app/, tests/campaign-audit.test.ts
+
+2026-11-26 — Social creative pipeline: English-only Figma art direction and a brief-to-canvas skill, with brand variables seeded in a new OneTap Social file.
+.cursor/rules/social-art-direction.mdc, .cursor/skills/social-creative-pipeline/, AGENTS.md

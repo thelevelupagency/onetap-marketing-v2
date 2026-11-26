@@ -19,3 +19,4 @@ alwaysApply: true
 - Icons in TSX → @icon-usage-centralization.mdc
 - CI / verification → @testing-strategy.mdc docs/engineering/ci-workflow.md
 - Stack, workflows, playbooks → AGENTS.md
+- Social posts, carousels, Stories, Reel covers, promo banners, and the OneTap Social Figma file → @social-art-direction.mdc `.cursor/skills/social-creative-pipeline/SKILL.md` — English only; the brief names the ratio
