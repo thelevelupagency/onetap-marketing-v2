@@ -121,6 +121,12 @@ Skill: `.cursor/skills/seo-page-setup/SKILL.md`
 
 Skill: `.cursor/skills/ui-component-delivery/SKILL.md`
 
+### Social post, carousel, or banner
+
+English only. The brief names the ratio (`1080×1350`, `1080×1080`, or `1080×1920`). Compose in the OneTap Social Figma file. Do not build the asset as a website section.
+
+Skill: `.cursor/skills/social-creative-pipeline/SKILL.md`. Rule: `.cursor/rules/social-art-direction.mdc`.
+
 ### Bug fix
 
 1. Reproduce and isolate.

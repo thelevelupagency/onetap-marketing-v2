@@ -1,0 +1,45 @@
+---
+description: Art direction for OneTap social posts, carousels, Stories, Reel covers, and promo banners composed in Figma. Use when the brief is a social asset. Do not use for marketing website pages.
+alwaysApply: false
+---
+
+# Social art direction
+
+English social assets in the OneTap Social Figma file. Workflow: `.cursor/skills/social-creative-pipeline/SKILL.md`.
+
+This rule does not apply to `src/app`, `src/components`, or website sections. Website pages keep the marketing component system, Lucide/Tabler icons, and responsive layout.
+
+## Brief
+
+Every brief names its own ratio. There is no default size.
+
+| Ratio | Use when the brief says |
+|---|---|
+| `1080×1350` | Feed post or feed carousel |
+| `1080×1080` | Square promo banner |
+| `1080×1920` | Story or Reel cover |
+
+Copy is English. Space Grotesk for the hook and pills. Plus Jakarta Sans for a single short support line. Do not set Hebrew, RTL, or Assistant on these frames.
+
+## Poster hierarchy
+
+- The hook is the picture. Display type fills about **40–50% of the frame height**, two lines maximum, line-height **0.95–1.05**, tracking tight (about `-4%` on the poster style).
+- Build on the Z axis. Back to front: full-bleed ground, studio radial light, overlapping subject (device, illustration, or badge), display type, floating metric or promo pills, grain on top when a grain texture already exists in the file.
+- Subjects may rotate and cross the type. Pills sit on top of the subject, not in a tidy row under a headline.
+- A carousel is one picture cut into frames. A shape, device, or light that exits the right edge of slide N enters the left edge of slide N+1. Ground color and type scale stay locked across the set.
+
+## Color and type
+
+Bind fills, strokes, and text to the **Brand** variables in the OneTap Social file (`var(--brand-navy)`, `var(--brand-midnight)`, `var(--brand-turquoise)`, `var(--brand-cream)`, and the rest of that set). The source hex values live in `src/app/globals.css`.
+
+Use the file’s text styles: `Display/Poster` for the hook, `Label/Pill` for stamps and pills, `Support/Short` for one supporting line.
+
+## Keep these out of the frame
+
+- A website hero: eyebrow, headline, paragraph, button row.
+- Body copy, captions under the hook, or any paragraph.
+- Three-column icon grids, feature lists, and evenly spaced card rows.
+- Flat 1px gray boxes used as the layout. The Foundations swatch chips are a token board, not a poster pattern.
+- Auto-layout as the structure of the poster. Auto-layout is for the inside of a pill or badge only.
+- Lucide, Tabler, outline icons, or any Iconify set other than `solar` names ending in `-bold-duotone` and `ph` names ending in `-fill`. Those icons live inside a badge, stamp, or pill.
+- Inter, or a guessed font, when Space Grotesk or Plus Jakarta Sans is available.
